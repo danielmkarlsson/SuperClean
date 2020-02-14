@@ -1,10 +1,10 @@
 (
     Pdef(\1,
-        Pseed(Pn(9199,1),
+        Pseed(Pn(9159,1),
             Psync(
                 Pbind(
                     \type, \dirt,
-                    \s, \mmd,
+                    \s, \mm2,
                     \n, Pwhite(0,23),
                     \dur, Pwrand([1/12,1/3],[9,1].normalizeSum,inf),
                     \release, Pstutter(Pwhite(1,8),Pseq([1/(16..22),1/8,2],inf)),
@@ -16,10 +16,10 @@
                     \delay, 0.01,
                     \delayfeedback, 0.9,
                     \delaytime, 1/2 / Pstutter(Pwrand([1,2,3],[256,16,1].normalizeSum,inf),Pbrown(1,199,Prand((1..19),inf),inf)),
-                    \room, Pwrand([0,0.05],[199,1].normalizeSum,inf),
+                    \room, Pwrand([0,0.05],[9,1].normalizeSum,inf),
                     \size, 0.97,
-                    \dry, Pstutter(Pwhite(1,9),Pwhite(0.0,1.0)),
-                ),1,64,
+                    \dry, Pstutter(Pwhite(1,9),Pwrand([0,1],[2,1].normalizeSum,inf)),
+                ),1,16,
             )
         )
     ).play(quant:1);
