@@ -1,33 +1,48 @@
-/*
-This is an example startup file. You can load it from your startup file
-(to be found in Platform.userAppSupportDir +/+ "startup.scd")
-*/
-
-
 (
-// configure the sound server: here you could add hardware specific options
-// see http://doc.sccode.org/Classes/ServerOptions.html
-s.options.numBuffers = 1024 * 256; // increase this if you need to load more samples
-s.options.memSize = 8192 * 32; // increase this if you get "alloc failed" messages
-s.options.maxNodes = 1024 * 32; // increase this if you are getting drop outs and the message "too many nodes"
-s.options.numOutputBusChannels = 2; // set this to your hardware output channel size, if necessary
-s.options.numInputBusChannels = 2; // set this to your hardware output channel size, if necessary
-// boot the server and start SuperDirt
-s.waitForBoot {
-	~dirt = SuperDirt(2, s); // two output channels, increase if you want to pan across more channels
-	~dirt.loadSoundFiles;   // load samples (path containing a wildcard can be passed in)
-	// for example: ~dirt.loadSoundFiles("/Users/myUserName/Dirt/samples/*");
-	// s.sync; // optionally: wait for samples to be read
-	~dirt.start(57120, 0 ! 12);   // start listening on port 57120, create two busses each sending audio to channel 0
+"killall scsynth".unixCmd;
+s.options.numBuffers = 1024 * 64; // increase if you need to load more samples
+s.options.memSize = 8192 * 256; // increase if you get "alloc failed" messages
+s.options.maxNodes = 1024 * 32; // increase if drop outs and the message "too many nodes"
+s.options.sampleRate= 44100;
+s.options.numOutputBusChannels = 4; // OUTPUT CHANNELS GO HERE
+s.recSampleFormat = "int24";
+s.recHeaderFormat="wav";
+s.options.numInputBusChannels = 4; // set to hardware input channel size, if necessary
+s.latency = 0.3;
+MIDIClient.init;
+m = MIDIOut.new(0); // Maybe yours is different?
+m.latency = 0; // Faster is better so fastest is bestest right?
 
-	// optional, needed for convenient access from sclang:
-	(
-		~d1 = ~dirt.orbits[0]; ~d2 = ~dirt.orbits[1]; ~d3 = ~dirt.orbits[2];
-		~d4 = ~dirt.orbits[3]; ~d5 = ~dirt.orbits[4]; ~d6 = ~dirt.orbits[5];
-		~d7 = ~dirt.orbits[6]; ~d8 = ~dirt.orbits[7]; ~d9 = ~dirt.orbits[8];
-		~d10 = ~dirt.orbits[9]; ~d11 = ~dirt.orbits[10]; ~d12 = ~dirt.orbits[11];
-	);
+// scnvim
+if (\SCNvim.asClass.notNil) {
+ Server.default.doWhenBooted {
+  \SCNvim.asClass.updateStatusLine(1, 9670);
+ }
 };
 
-s.latency = 0.3; // increase this if you get "late" messages
-);
+// A simple triangle wave synth in stereo with panning and a simple low pass filter
+s.doWhenBooted{
+ SynthDef.new(\default, {
+  arg dur, attack=0.01, release=1.0,
+  t_gate=1, out, freq=442, cutoff=5500,
+  rq=1, pan=0.0, amp=0.5;
+
+  var env = EnvGen.kr(Env.perc(attack, release), t_gate, timeScale: dur, doneAction: 2);
+  var sig = DPW3Tri.ar(freq: freq, mul: env);
+  sig = RLPF.ar(sig, cutoff.clip(20.0, 20000.0), rq.clip(0.0,1.0));
+  sig = Pan2.ar(sig, pan);
+  Out.ar(out, sig * amp);
+ }).add;
+};
+
+s.waitForBoot {
+ ~dirt = SuperDirt(2, s); // two output channels, increase if you want to pan across more channels
+ ~dirt.loadSoundFiles("/home/t36s/Downloads/SuperDirt-InstallParty/SuperDirt/classes/dirt-samples/*"); // specify sample folder to load
+ // for example: ~dirt.loadSoundFiles("/Users/myUserName/Dirt/samples/*");
+ s.sync; // optionally: wait for samples to be read
+    ~dirt.start(57120, [0, 2, 4, 6]);
+// ~dirt.start(57120, 0 ! 8);   // start listening on port 57120, create two busses each sending audio to channel 0
+ SuperDirt.default = ~dirt;
+
+};
+)
