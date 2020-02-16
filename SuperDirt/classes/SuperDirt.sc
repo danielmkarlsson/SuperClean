@@ -183,20 +183,6 @@ SuperDirt {
 		}
 	}
 
-	// initVowels { |register|
-	// 	vowels = ();
-	// 	if(Vowel.formLib.at(\a).at(register).isNil) {
-	// 		"This voice register (%) isn't avaliable. Using counterTenor instead".format(register).warn;
-	// 		"Available registers are: %".format(Vowel.formLib.at(\a).keys).postln;
-	// 		register = \counterTenor;
-	// 	};
-	//
-	// 	[\a, \e, \i, \o, \u].collect { |x|
-	// 		vowels[x] = Vowel(x, register)
-	// 	};
-	// }
-
-
 	connect { |argSenderAddr, argPort|
 
 		if(Main.scVersionMajor == 3 and: { Main.scVersionMinor == 6 }) {
@@ -226,7 +212,7 @@ SuperDirt {
 				index = event[\orbit] ? 0;
 
 				if(warnOutOfOrbit and: { index >= orbits.size } or: { index < 0 }) {
-						"SuperDirt: event falls out of existing orbits, index (%)".format(index).warn
+						"SuperClean: event falls out of existing orbits, index (%)".format(index).warn
 				};
 
 				DirtEvent(orbits @@ index, modules, event).play
@@ -235,7 +221,7 @@ SuperDirt {
 		);
 
 
-		"SuperDirt: listening on port %".format(port).postln;
+		"SuperClean: listening on port %".format(port).postln;
 	}
 
 	closeNetworkConnection {
