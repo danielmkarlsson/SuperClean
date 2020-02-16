@@ -91,22 +91,6 @@ live coding them requires that you have your SuperDirt instance in an environmen
 
 	*/
 
-
-	// SynthDef("dirt_vowel" ++ numChannels, { |out, resonance = 0.5, cutoff = 0|
-	// 	var voweled, signal, vowelFreqs, vowelAmps, vowelRqs;
-	// 	signal = In.ar(out, numChannels);
-	// 	vowelFreqs = \vowelFreqs.ir(1000 ! 5) * cutoff.linexp(0, 1, 1, 2);
-	// 	vowelAmps = \vowelAmps.ir(0 ! 5) * resonance.linlin(0, 1, 50, 200);
-	// 	vowelRqs = \vowelRqs.ir(0 ! 5) / resonance.linlin(0, 1, 1/10, 1/2);
-	// 	vowelFreqs = vowelFreqs.minNyquist; // limit ceiling
-	// 	voweled = BPF.ar([signal], vowelFreqs, vowelRqs, vowelAmps).sum;
-	// 	//voweled = Formlet.ar(signal, vowelFreqs, 0.005, vowelRqs, vowelAmps).sum;
-	// 	signal = XFade2.ar(signal, voweled, resonance.linlin(0, 1, -0.5, 1), 0.25);
-	//
-	// 	ReplaceOut.ar(out, signal);
-	//
-	// }, [\ir, \ir, \ir]).add;
-
 	// would be nice to have some more parameters in some cases
 
 	SynthDef("dirt_crush" ++ numChannels, { |out, crush = 4|
@@ -124,8 +108,8 @@ live coding them requires that you have your SuperDirt instance in an environmen
 
 	SynthDef("dirt_hpf" ++ numChannels, { |out, hcutoff = 440, hresonance = 0|
 		var signal = In.ar(out, numChannels);
-        var cutoffClipped = hcutoff.abs.clip(20, 20000);
-		signal = RHPF.ar(signal, cutoffClipped, hresonance.linexp(0, 1, 1, 0.001));
+        var hcutoffClipped = hcutoff.abs.clip(20, 20000);
+		signal = RHPF.ar(signal, hcutoffClipped, hresonance.linexp(0, 1, 1, 0.001));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
 
@@ -149,7 +133,8 @@ live coding them requires that you have your SuperDirt instance in an environmen
 
 	SynthDef("dirt_lpf" ++ numChannels, { |out, cutoff = 440, resonance = 0|
 		var signal = In.ar(out, numChannels);
-		signal = RLPF.ar(signal, cutoff.abs, resonance.linexp(0, 1, 1, 0.001));
+		var cutoffClipped = cutoff.abs.clip(20, 20000);
+		signal = RLPF.ar(signal, cutoffClipped, resonance.linexp(0, 1, 1, 0.001));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
 
