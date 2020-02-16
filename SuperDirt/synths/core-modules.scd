@@ -99,26 +99,6 @@ they respond to the existence of a value for one of the tidal parameters
 		)
 }, { ~toArg.notNil });
 
-
-
-// ~dirt.addModule('vowel',
-// 	{ |dirtEvent|
-// 		var vowel = ~dirt.vowels[~vowel];
-// 		if(vowel.notNil) {
-// 			dirtEvent.sendSynth("dirt_vowel" ++ ~numChannels,
-// 				[
-// 					out: ~out,
-// 					vowelFreqs: [vowel.freqs],
-// 					vowelAmps: [vowel.amps],
-// 					vowelRqs: [vowel.rqs],
-// 					resonance: ~resonance,
-// 				]
-// 			)
-// 		}
-//
-// }, { ~vowel.notNil });
-
-
 ~dirt.addModule('shape',
 	{ |dirtEvent|
 		dirtEvent.sendSynth("dirt_shape" ++ ~numChannels,
@@ -134,7 +114,7 @@ they respond to the existence of a value for one of the tidal parameters
 		dirtEvent.sendSynth("dirt_hpf" ++ ~numChannels,
 			[
 				hcutoff: ~hpf,
-				hresonance: ~hresonance,
+				hresonance: ~hpr,
 				out: ~out
 		])
 
@@ -144,8 +124,8 @@ they respond to the existence of a value for one of the tidal parameters
 	{ |dirtEvent|
 		dirtEvent.sendSynth("dirt_bpf" ++ ~numChannels,
 			[
-				bandqf: ~bandf,
-				bandq: ~bandq,
+				bandqf: ~bpf,
+				bandq: ~bpq,
 				out: ~out
 		])
 
@@ -176,8 +156,8 @@ they respond to the existence of a value for one of the tidal parameters
 	{ |dirtEvent|
 		dirtEvent.sendSynth("dirt_lpf" ++ ~numChannels,
 			[
-				cutoff: ~cutoff,
-				resonance: ~resonance,
+				cutoff: ~lpf,
+				resonance: ~lpr,
 				out: ~out
 		])
 
@@ -197,9 +177,9 @@ they respond to the existence of a value for one of the tidal parameters
 	{ |dirtEvent|
 		dirtEvent.sendSynth('dirt_envelope' ++ ~numChannels,
 			[
-				attack: ~attack,
-				hold: ~hold,
-				release:~release,
+				attack: ~atk,
+				hold: ~hld,
+				release:~rel,
 				out: ~out
 		])
 }, { ~attack.notNil or: { ~release.notNil }});
