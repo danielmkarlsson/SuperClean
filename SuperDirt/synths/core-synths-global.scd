@@ -101,8 +101,8 @@ CORE SYNTHDEFS FOR DIRT
 
 		}, [\ir, \ir]).add;
 	} {
-		"\n\n ---- SC3-Plugins not found. This is not a problem."
-		"Note that we are using a comb delay, which may not sound the same as SwitchDelay from the plugins".postln;
+		"\n\n ---- SC3-Plugins not found. This is a problem."
+		"Note that we are using a comb delay, which will not sound the same as SwitchDelay from the sc3 plugins".postln;
 
 		SynthDef("dirt_delay" ++ numChannels, { |dryBus, effectBus, gate = 1, delaytime, delayfeedback, delayAmp = 1, lock = 0, cps = 1|
 			var signal = In.ar(dryBus, numChannels);
