@@ -133,12 +133,12 @@ they respond to the existence of a value for one of the tidal parameters
 	{ |dirtEvent|
 		dirtEvent.sendSynth("dirt_hpf" ++ ~numChannels,
 			[
-				hcutoff: ~hcutoff,
+				hcutoff: ~hpf,
 				hresonance: ~hresonance,
 				out: ~out
 		])
 
-}, { ~hcutoff.notNil });
+}, { ~hpf.notNil });
 
 ~dirt.addModule('bpf',
 	{ |dirtEvent|
