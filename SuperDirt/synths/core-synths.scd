@@ -124,7 +124,8 @@ live coding them requires that you have your SuperDirt instance in an environmen
 
 	SynthDef("dirt_hpf" ++ numChannels, { |out, hcutoff = 440, hresonance = 0|
 		var signal = In.ar(out, numChannels);
-		signal = RHPF.ar(signal, hcutoff.abs, hresonance.linexp(0, 1, 1, 0.001));
+        var cutoffClipped = hcutoff.abs.clip(20, 20000);
+		signal = RHPF.ar(signal, cutoffClipped, hresonance.linexp(0, 1, 1, 0.001));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
 
