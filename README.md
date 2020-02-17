@@ -53,4 +53,30 @@ a shameless ripOff / fork of / homage to SuperDirt
         ])
     ).play(quant:1);
 )
+
+(
+    Pdef(\2,
+        Pbind(*[
+        type: \dirt,
+        s: \mmd,
+        n: 9,
+        dur: Pstutter(Pwhite(3,33),Pexprand(0.125,0.666)),
+        attack: (Pkey(\dur)/3),
+        hold: (Pkey(\dur)/3),
+        release: (Pkey(\dur)/3),
+        speed: (Pkey(\dur)*Pstutter(Pwhite(13,133),Pwhite(0.333,33.333))),
+        cut: 1,
+        delay: 1/256,
+        delaytime: 1/1024 / Pstutter(Pexprand(1,3),Pkey(\dur)*Pwhite(0.0,2.0)),
+        delayfeedback: 0.94,
+        stretch: Pstutter(Pwhite(3,33),Pexprand(0.125,1.0)),
+        bandf: Pexprand(20,20000),
+        pan: Pwhite(0,1),
+        gain: 16,
+        room: 1,
+        size: 0.0,
+        dry: 0.999,
+        ])
+    ).play(quant:1);
+)
 ```
