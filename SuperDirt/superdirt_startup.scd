@@ -4,10 +4,10 @@ s.options.numBuffers = 1024 * 64; // increase if you need to load more samples
 s.options.memSize = 8192 * 256; // increase if you get "alloc failed" messages
 s.options.maxNodes = 1024 * 32; // increase if drop outs and the message "too many nodes"
 s.options.sampleRate= 44100;
-s.options.numOutputBusChannels = 4; // OUTPUT CHANNELS GO HERE
+s.options.numOutputBusChannels = 2; // OUTPUT CHANNELS GO HERE
 s.recSampleFormat = "int24";
 s.recHeaderFormat="wav";
-s.options.numInputBusChannels = 4; // set to hardware input channel size, if necessary
+s.options.numInputBusChannels = 2; // set to hardware input channel size, if necessary
 s.latency = 0.3;
 MIDIClient.init;
 m = MIDIOut.new(0); // Maybe yours is different?
@@ -40,9 +40,7 @@ s.waitForBoot {
  ~dirt.loadSoundFiles; // specify sample folder to load
  // for example: ~dirt.loadSoundFiles("/Users/myUserName/Dirt/samples/*");
  s.sync; // optionally: wait for samples to be read
-    ~dirt.start(57120, [0, 2, 4, 6]);
-// ~dirt.start(57120, 0 ! 8);   // start listening on port 57120, create two busses each sending audio to channel 0
- SuperDirt.default = ~dirt;
-
+    ~dirt.start(57120, [0]); // first 8 out looks like [0,2,4,6]
+ SuperDirt.default = ~dirt; // make the dirt key sequanceable inside of SUperCollider
 };
 )
