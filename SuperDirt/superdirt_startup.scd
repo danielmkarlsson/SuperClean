@@ -37,7 +37,7 @@ s.doWhenBooted{
 
 s.waitForBoot {
  ~dirt = SuperDirt(2, s); // two output channels, increase if you want to pan across more channels
- ~dirt.loadSoundFiles("/home/t36s/Downloads/SuperDirt-InstallParty/SuperDirt/classes/dirt-samples/*"); // specify sample folder to load
+ ~dirt.loadSoundFiles; // specify sample folder to load
  // for example: ~dirt.loadSoundFiles("/Users/myUserName/Dirt/samples/*");
  s.sync; // optionally: wait for samples to be read
     ~dirt.start(57120, [0, 2, 4, 6]);
