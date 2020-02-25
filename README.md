@@ -144,3 +144,14 @@ _within_ SuperCollider.
 ).play(quant:1);
 )
 ```
+
+
+## TODO
+
+• ~~.clip value ranges for all filters~~
+• Fix aliases for parameter names
+• All Dirt to Clean
+• Add samples and change path _inside_ 
+• Add pmx synthdef
+• Include `Pxshuf`
+• Include `Bjorklund`
