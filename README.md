@@ -148,10 +148,10 @@ _within_ SuperCollider.
 
 ## TODO
 
-• ~~.clip value ranges for all filters~~
-• Fix aliases for parameter names
-• All Dirt to Clean
-• Add samples and change path _inside_ 
-• Add pmx synthdef
-• Include `Pxshuf`
-• Include `Bjorklund`
+• ~~.clip value ranges for all filters~~  
+• Fix aliases for parameter names  
+• All Dirt to Clean  
+• Add samples and change path _inside_   
+• Add pmx synthdef  
+• Include `Pxshuf`  
+• Include `Bjorklund`  
