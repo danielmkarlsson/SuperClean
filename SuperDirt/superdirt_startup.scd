@@ -37,8 +37,8 @@ s.doWhenBooted{
 
 s.waitForBoot {
  ~dirt = SuperDirt(2, s); // two output channels, increase if you want to pan across more channels
- ~dirt.loadSoundFiles; // specify sample folder to load
- // for example: ~dirt.loadSoundFiles("/Users/myUserName/Dirt/samples/*");
+ ~dirt.loadSoundFiles; // hot swap in samples form anywhere!
+ // for example: ~dirt.loadSoundFiles("~/Downloads/mmd*");
  s.sync; // optionally: wait for samples to be read
     ~dirt.start(57120, [0]); // first 8 out looks like [0,2,4,6]
  SuperDirt.default = ~dirt; // make the dirt key sequanceable inside of SUperCollider
