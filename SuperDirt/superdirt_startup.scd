@@ -9,9 +9,9 @@ s.recSampleFormat = "int24";
 s.recHeaderFormat="wav";
 s.options.numInputBusChannels = 2; // set to hardware input channel size, if necessary
 s.latency = 0.3;
-MIDIClient.init;
-m = MIDIOut.new(0); // Maybe yours is different?
-m.latency = 0; // Faster is better so fastest is bestest right?
+// MIDIClient.init; // Untoggle this when you want to do MIDI
+// m = MIDIOut.new(0); // Maybe yours is different?
+// m.latency = 0; // Faster is better so fastest is bestest right?
 
 // scnvim
 if (\SCNvim.asClass.notNil) {
