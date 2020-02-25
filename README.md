@@ -14,14 +14,14 @@ s.options.numBuffers = 1024 * 128; // increase if you need to load more samples
 s.options.memSize = 8192 * 256; // increase if you get "alloc failed" messages
 s.options.maxNodes = 1024 * 64; // increase if drop outs and the message "too many nodes"
 s.options.sampleRate= 44100;
-s.options.numOutputBusChannels = 4; // OUTPUT CHANNELS GO HERE
+s.options.numOutputBusChannels = 2; // OUTPUT CHANNELS GO HERE
 s.recSampleFormat = "int24";
 s.recHeaderFormat="wav";
 s.options.numInputBusChannels = 2; // set to hardware input channel size, if necessary
 s.latency = 0.1;
-MIDIClient.init;
-m = MIDIOut.new(0); // Maybe yours is different?
-m.latency = 0; // Faster is better so fastest is bestest right?
+// MIDIClient.init; // Untoggle when you want to do MIDI
+// m = MIDIOut.new(0); // Maybe yours is different?
+// m.latency = 0; // Faster is better so fastest is bestest right?
 
 // scnvim
 if (\SCNvim.asClass.notNil) {
@@ -31,6 +31,7 @@ if (\SCNvim.asClass.notNil) {
 };
 
 // A simple triangle wave synth in stereo with panning and a simple low pass filter
+// You need to install sc3 plugins for this to work.
 s.doWhenBooted{
 	SynthDef.new(\default, {
 		arg dur, attack=0.01, release=1.0,
@@ -58,8 +59,10 @@ s.waitForBoot {
 ```
 
 If you _do_ have something in your Startup.scd, then you get to pick and choose which parts of mine you want to add to yours.
-Proly the only part you wan't to add in your Startup.scd for the below code to work on your machine is `SuperDirt.default = ~dirt;` which is what maked dirt sequnceable form _within_ SuperCollider.
 
+If, and only if, you are in that latter category, then proly the only part you for sure wan't to add in your Startup.scd in 
+order for the below code to work on your machine is `SuperDirt.default = ~dirt;` which is what makes dirt sequneceable from
+_within_ SuperCollider.
 
 ```text
 (
