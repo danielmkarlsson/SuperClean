@@ -99,6 +99,8 @@ _within_ SuperCollider.
 • Fix aliases for parameter names  
 • All Dirt to Clean  
 • Add samples and change path _inside_   
-• Add pmx synthdef  
+• Add FM synthdef  
+• Add Additive synthdef    
 • Include `Pxshuf`  
 • Include `Bjorklund`  
+• Add or swap out some effects  
