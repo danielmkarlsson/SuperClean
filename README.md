@@ -31,7 +31,7 @@ if (\SCNvim.asClass.notNil) {
 };
 
 // A simple triangle wave synth in stereo with panning and a simple low pass filter
-// This synthDef was written by Mads Kjeldgaard and requires the sc3 plugins
+// This synthDef was created by Mads Kjeldgaard and requires the sc3 plugins
 s.doWhenBooted{
  SynthDef.new(\default, {
   arg dur, attack=0.01, release=1.0,
