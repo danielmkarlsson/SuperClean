@@ -107,5 +107,5 @@ _within_ SuperCollider.
 • Add FM synthdef  
 • Add Additive synthdef    
 • Include `Pxshuf`  
-• Include `Bjorklund`  
+• Include `Pbjorklund`  
 • Add or swap out some effects  
