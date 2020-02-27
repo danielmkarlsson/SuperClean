@@ -1,5 +1,7 @@
 # SuperClean
-a shameless ripOff / fork of / homage to SuperDirt
+A shameless ripOff / fork of / homage to SuperDirt.
+
+## Installation
 
 `Quarks.install("https://github.com/danielmkarlsson/SuperClean.git");`
 
@@ -93,7 +95,10 @@ _within_ SuperCollider.
 ```
 
 
-## TODO
+## TODO  
+(reOrdered to reflect relevance)  
+
+• Single line installation  
 
 • ~~.clip value ranges for all filters~~  
 • Fix aliases for parameter names  
