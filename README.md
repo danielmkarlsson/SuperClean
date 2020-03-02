@@ -1,11 +1,11 @@
 # SuperClean
-A shameless ripOff / fork of / homage to SuperDirt.
+A shameless ripOff / fork of / homage to SuperClean.
 
 ## Installation
 
 `Quarks.install("https://github.com/danielmkarlsson/SuperClean.git");`
 
-`Quarks.install("https://github.com/danielmkarlsson/dirt-samples.git");`
+`Quarks.install("https://github.com/danielmkarlsson/clean-samples.git");`
 
 If you don't have anything in your Startup.scd file then put this in there:
 
@@ -49,12 +49,12 @@ s.doWhenBooted{
 };
 
 s.waitForBoot {
- ~dirt = SuperDirt(2, s); // two output channels, increase if you want to pan across more channels
- ~dirt.loadSoundFiles; // hot swap in samples from anywhere!
- // for example: ~dirt.loadSoundFiles("~/Downloads/mmd*");
+ ~clean = SuperClean(2, s); // two output channels, increase if you want to pan across more channels
+ ~clean.loadSoundFiles; // hot swap in samples from anywhere!
+ // for example: ~clean.loadSoundFiles("~/Downloads/mmd*");
  s.sync; // optionally: wait for samples to be read
-    ~dirt.start(57120, [0]); // first 8 out looks like [0,2,4,6]
- SuperDirt.default = ~dirt; // make the dirt key sequanceable inside of SUperCollider
+    ~clean.start(57120, [0]); // first 8 out looks like [0,2,4,6]
+ SuperClean.default = ~clean; // make the clean key sequanceable inside of SUperCollider
 };
 )
 ```
@@ -62,7 +62,7 @@ s.waitForBoot {
 If you _do_ have something in your Startup.scd, then you get to pick and choose which parts of mine you want to add to yours.
 
 If, and only if, you are in that latter category, then proly the only part you for sure wan't to add in your Startup.scd in 
-order for the below code to work on your machine is `SuperDirt.default = ~dirt;` which is what makes dirt sequneceable from
+order for the below code to work on your machine is `SuperClean.default = ~clean;` which is what makes clean sequneceable from
 _within_ SuperCollider.
 
 ```text
@@ -71,7 +71,7 @@ _within_ SuperCollider.
         Pseed(Pn(63,1),
             Psync(
                 Pbind(
-                    \type, \dirt,
+                    \type, \clean,
                     \s, \mm2,
                     \n, Pwhite(0,23),
                     \dur, Pwrand([1/12,1/3],[9,1].normalizeSum,inf),
@@ -102,7 +102,7 @@ _within_ SuperCollider.
 
 • ~~.clip value ranges for all filters~~  
 • Fix aliases for parameter names  
-• All Dirt to Clean  
+• All Clean to Clean  
 • Add samples and change path _inside_   
 • Add FM synthdef  
 • Add Additive synthdef    

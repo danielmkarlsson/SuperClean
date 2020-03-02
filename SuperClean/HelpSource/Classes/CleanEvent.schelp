@@ -1,0 +1,8 @@
+CLASS::CleanEvent
+summary::A representation of a sound event in SuperClean
+categories::Live Coding
+
+related::Classes/CleanOrbit, Classes/SuperClean
+
+DESCRIPTION::
+

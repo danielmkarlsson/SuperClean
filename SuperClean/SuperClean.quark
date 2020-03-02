@@ -1,0 +1,7 @@
+(
+	\name: 			"SuperClean",
+	\summary:		"SuperCollider implementation of the Clean sampler for the Tidal programming language",
+	\author: 		"Alex McLean and Julian Rohrhuber",
+	\since: 		"2015",
+	\dependencies:  []
+)
