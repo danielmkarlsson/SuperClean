@@ -4,7 +4,7 @@
             Psync(
                 Pbind(
                     \type, \dirt,
-                    \s, \mm2,
+                    \s, \mmd,
                     \n, Pwhite(0,23),
                     \dur, Pwrand([1/12,1/3],[9,1].normalizeSum,inf),
                     \release, Pstutter(Pwhite(1,8),Pseq([1/(16..22),1/8,2],inf)),
