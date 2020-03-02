@@ -22,7 +22,7 @@ if (\SCNvim.asClass.notNil) {
 
 // A simple triangle wave synth in stereo with panning and a simple low pass filter
 // This synthDef was written by Mads Kjeldgaard and requires the sc3 plugins
-s.doWhenBooted{
+/*s.doWhenBooted{
  SynthDef.new(\default, {
   arg dur, attack=0.01, release=1.0,
   t_gate=1, out, freq=442, cutoff=5500,
@@ -35,6 +35,7 @@ s.doWhenBooted{
   Out.ar(out, sig * amp);
  }).add;
 };
+*/
 
 s.waitForBoot {
  ~dirt = SuperDirt(2, s); // two output channels, increase if you want to pan across more channels
