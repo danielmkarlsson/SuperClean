@@ -133,7 +133,7 @@ DirtSoundLibrary {
 
 
 	loadOnly { |names, path, appendToExisting = false|
-        var defaultSamplePath = Quarks.quarkNameAsLocalPath("SuperClean") +/+ "SuperDirt" +/+ "dirt-samples" +/+ "mmd" +/+"";
+        var defaultSamplePath = Quarks.folder +/+ "SuperClean" +/+ "SuperDirt" +/+ "dirt-samples";
 		path = path ?? { defaultSamplePath };
 		names.do { |name|
 			this.loadSoundFileFolder(path +/+ name, name, appendToExisting)
@@ -143,7 +143,7 @@ DirtSoundLibrary {
 
 	loadSoundFiles { |paths, appendToExisting = false, namingFunction = (_.basename)| // paths are folderPaths
 		var folderPaths, memory;
-        var defaultSamplePath = Quarks.quarkNameAsLocalPath("SuperClean") +/+ "SuperDirt" +/+ "dirt-samples" +/+ "mmd";
+        var defaultSamplePath = Quarks.folder +/+ "SuperClean" +/+ "SuperDirt" +/+ "dirt-samples";
 
 		paths = paths ?? { defaultSamplePath ++ "*" };
 		folderPaths = if(paths.isString) { paths.pathMatch } { paths.asArray };
