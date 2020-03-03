@@ -105,7 +105,8 @@ _within_ SuperCollider.
 • ~~All Clean to Clean~~  
 • ~~Add samples and change path _inside_ SuperClean~~  
 
-• Fix aliases for parameter names (bpf stuck at default value)   
+• Fix aliases in core-synths.scd (bpf stuck at default value)   
+• Fix aliases in core-synths-global.scd (how does this work w/o explicit names anywhere?)   
 • Pros/cons of env keys value range relating to sample length (like `begin` & `end`)  
 • Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
 • `doneAction:2` , why not? Hopefully solves `loop` edge cases and longer releases never finishing
