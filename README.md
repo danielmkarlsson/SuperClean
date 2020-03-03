@@ -3,6 +3,7 @@ A shameless ripOff / fork of / homage to SuperDirt.
 
 ## Installation
 
+Copy this line and evaluate it in SuperCollider:
 `Quarks.install("https://github.com/danielmkarlsson/SuperClean.git");`
 
 If you don't have anything in your Startup.scd, then how about you put what I use in there:
