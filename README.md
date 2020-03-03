@@ -1,5 +1,5 @@
 # SuperClean
-A shameless ripOff / fork of / homage to SuperClean.
+A shameless ripOff / fork of / homage to SuperDirt.
 
 ## Installation
 
