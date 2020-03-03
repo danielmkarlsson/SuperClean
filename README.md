@@ -103,12 +103,18 @@ _within_ SuperCollider.
 • ~~Single line installation~~  
 • ~~.clip value ranges for all filters~~  
 • ~~All Clean to Clean~~  
+• ~~Add samples and change path _inside_ SuperClean~~  
+
 • Fix aliases for parameter names  
-• Add samples and change path _inside_ SuperClean  
 • Pros/cons of env keys value range relating to sample length (like `begin` & `end`)  
 • Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
+• `doneAction:2` , why not? Hopefully solves `loop` edge cases and longer releases never finishing
+
 • Add FM synthdef  
 • Add Additive synthdef    
+
 • Include `Pxshuf`  
 • Include `Pbjorklund`  
-• Add or swap out some effects  
+
+• Maybe add that tape effect
+• Maybe delete some effects  
