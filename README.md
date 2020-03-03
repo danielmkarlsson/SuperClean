@@ -105,7 +105,7 @@ _within_ SuperCollider.
 • ~~All Clean to Clean~~  
 • ~~Add samples and change path _inside_ SuperClean~~  
 
-• Fix aliases for parameter names  
+• Fix aliases for parameter names (bpf stuck at default value)   
 • Pros/cons of env keys value range relating to sample length (like `begin` & `end`)  
 • Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
 • `doneAction:2` , why not? Hopefully solves `loop` edge cases and longer releases never finishing
