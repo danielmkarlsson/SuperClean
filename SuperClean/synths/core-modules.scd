@@ -129,7 +129,7 @@ they respond to the existence of a value for one of the tidal parameters
 				out: ~out
 		])
 
-}, { ~bandf.notNil });
+}, { ~bpf.notNil });
 
 ~clean.addModule('crush',
 	{ |cleanEvent|
