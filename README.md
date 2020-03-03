@@ -100,9 +100,9 @@ _within_ SuperCollider.
 • ~~.clip value ranges for all filters~~  
 • ~~All Clean to Clean~~  
 • Fix aliases for parameter names  
-• Add samples and change path _inside_ SuperClean
-• Pros/cons of env keys value range relating to sample length (like `begin` & `end`)
-• Investigate possible bug where long samples (try an hour) will sound play back at lower sample rate
+• Add samples and change path _inside_ SuperClean  
+• Pros/cons of env keys value range relating to sample length (like `begin` & `end`)  
+• Investigate possible bug where long samples (try an hour) will sound play back at lower sample rate  
 • Add FM synthdef  
 • Add Additive synthdef    
 • Include `Pxshuf`  
