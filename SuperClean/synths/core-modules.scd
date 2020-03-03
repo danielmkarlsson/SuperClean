@@ -124,7 +124,7 @@ they respond to the existence of a value for one of the tidal parameters
 	{ |cleanEvent|
 		cleanEvent.sendSynth("clean_bpf" ++ ~numChannels,
 			[
-				bandqf: ~bpf,
+				bandf: ~bpf,
 				bandq: ~bpq,
 				out: ~out
 		])
@@ -161,7 +161,7 @@ they respond to the existence of a value for one of the tidal parameters
 				out: ~out
 		])
 
-}, { ~cutoff.notNil });
+}, { ~lpf.notNil });
 
 ~clean.addModule('pshift',
 	{ |cleanEvent|
@@ -182,7 +182,7 @@ they respond to the existence of a value for one of the tidal parameters
 				release:~rel,
 				out: ~out
 		])
-}, { ~attack.notNil or: { ~release.notNil }});
+}, { ~atk.notNil or: { ~rel.notNil }});
 
 
 ~clean.addModule('tremolo',
