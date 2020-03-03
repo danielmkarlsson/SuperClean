@@ -5,8 +5,6 @@ A shameless ripOff / fork of / homage to SuperDirt.
 
 `Quarks.install("https://github.com/danielmkarlsson/SuperClean.git");`
 
-`Quarks.install("https://github.com/danielmkarlsson/clean-samples.git");`
-
 If you don't have anything in your Startup.scd file then put this in there:
 
 ```
