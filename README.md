@@ -5,7 +5,7 @@ A shameless ripOff / fork of / homage to SuperDirt.
 
 `Quarks.install("https://github.com/danielmkarlsson/SuperClean.git");`
 
-If you don't have anything in your Startup.scd file then put this in there:
+If you don't have anything in your Startup.scd, then how about you put what I use in there:
 
 ```
 (
@@ -96,12 +96,13 @@ _within_ SuperCollider.
 ## TODO  
 (reOrdered to reflect relevance)  
 
-• Single line installation  
-
+• ~~Single line installation~~  
 • ~~.clip value ranges for all filters~~  
+• ~~All Clean to Clean~~  
 • Fix aliases for parameter names  
-• All Clean to Clean  
-• Add samples and change path _inside_   
+• Add samples and change path _inside_ SuperClean
+• Pros/cons of env keys value range relating to sample length (like `begin` & `end`)
+• Investigate possible bug where long samples (try an hour) will sound play back at lower sample rate
 • Add FM synthdef  
 • Add Additive synthdef    
 • Include `Pxshuf`  
