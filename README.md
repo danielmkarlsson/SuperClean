@@ -116,5 +116,5 @@ _within_ SuperCollider.
 • Include `Pxshuf`  
 • Include `Pbjorklund`  
 
-• Maybe add that tape effect
-• Maybe delete some effects  
+• Maybe add that tape effect  
+• Maybe delete some effects    
