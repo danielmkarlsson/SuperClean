@@ -15,7 +15,8 @@ SuperDirt.
 
 I only included a tiny amount of samples inside the clean-samples folder. I also trimmed the fat a lil bit with regards to the 
 effects and synths that are included. That's the main thing. I did that because that's a lot of data to have to download if 
-you're sharing a very slow wifi connection with 20 other kids who are also trying to get sat up at the same time. 
+you're sharing a very slow wifi connection with 20 other kids who are also trying to get sat up at the same time. Also fewer 
+dependencies means less things that can go sideways with the install procedure.
 
 There's a way to hot swap in samples as needed:
 
