@@ -8,7 +8,7 @@ essentially a shameless ripOff / fork of / homage to SuperDirt.
 ## Requirements
 
 * SuperCollider v3.7 or above  
-* Mos def you should get: sc3-plugins: https://github.com/supercollider/sc3-plugins/  (entirely essential)
+* Mos def you should get the entirely essential sc3-plugins: https://github.com/supercollider/sc3-plugins/
 * git  
 
 ## Lean is good
