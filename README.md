@@ -98,7 +98,8 @@ _within_ SuperCollider.
 
 
 ## TODO  
-(reOrdered to reflect relevance)  
+<details>
+<summary>(reOrdered to reflect relevance)</summary>
 
 • ~~Single line installation~~  
 • ~~.clip value ranges for all filters~~  
@@ -119,3 +120,5 @@ _within_ SuperCollider.
 
 • Maybe add that tape effect  
 • Maybe delete some effects    
+
+</details>
