@@ -7,7 +7,7 @@ Core Modules: these are called for each event from tidal,
 and they represent the list of possible (effect) synths on the event level
 
 Usually, they correspond to a SynthDef (here in core-synths), you could call any function in them
-They will be called when the test is fulfilled (e.g. ~vowel.notNil)
+They will be called when the test is fulfilled (e.g. ~attack.notNil)
 
 You can't currently add your own, because Tidal needs to support this extension first.
 
@@ -64,7 +64,7 @@ this may be refacored later.
 
 /*
 these function as effects on the input of the synth or sample (see SynthDefs in core-synths)
-they respond to the existence of a value for one of the tidal parameters
+they respond to the existence of a value for one of the parameters
 */
 
 
@@ -103,11 +103,11 @@ they respond to the existence of a value for one of the tidal parameters
 	{ |cleanEvent|
 		cleanEvent.sendSynth("clean_shape" ++ ~numChannels,
 			[
-				shape: ~shape,
+				shape: ~shp,
 				out: ~out
 		])
 
-}, { ~shape.notNil });
+}, { ~shp.notNil });
 
 ~clean.addModule('hpf',
 	{ |cleanEvent|
@@ -135,22 +135,22 @@ they respond to the existence of a value for one of the tidal parameters
 	{ |cleanEvent|
 		cleanEvent.sendSynth("clean_crush" ++ ~numChannels,
 			[
-				crush: ~crush,
+				crush: ~cru,
 				out: ~out
 		])
 
-}, { ~crush.notNil });
+}, { ~cru.notNil });
 
 
 ~clean.addModule('coarse',
 	{ |cleanEvent|
 		cleanEvent.sendSynth("clean_coarse" ++ ~numChannels,
 			[
-				coarse: ~coarse,
+				coarse: ~crs,
 				out: ~out
 		])
 
-}, { ~coarse.notNil and: { ~coarse > 1 } }); // coarse == 1 => full rate
+}, { ~crs.notNil and: { ~crs > 1 } }); // crs == 1 => full rate
 
 ~clean.addModule('lpf',
 	{ |cleanEvent|
@@ -162,16 +162,6 @@ they respond to the existence of a value for one of the tidal parameters
 		])
 
 }, { ~lpf.notNil });
-
-~clean.addModule('pshift',
-	{ |cleanEvent|
-		cleanEvent.sendSynth('clean_pitch_shift' ++ ~numChannels,
-			[
-				psrate: ~psrate,
-				sustain: ~sustain,
-				out: ~out
-		])
-}, { ~psrate.notNil });
 
 ~clean.addModule('envelope',
 	{ |cleanEvent|
@@ -189,21 +179,21 @@ they respond to the existence of a value for one of the tidal parameters
 	{ |cleanEvent|
 		cleanEvent.sendSynth('clean_tremolo' ++ ~numChannels,
 			[
-				tremolorate: ~tremolorate,
-				tremolodepth: ~tremolodepth,
+				tremolorate: ~trr,
+				tremolodepth: ~trd,
 				out: ~out
 		])
-}, { ~tremolorate.notNil });
+}, { ~trr.notNil });
 
 // Phaser audio DSP effect declaration
 ~clean.addModule('phaser',
 	{ |cleanEvent|
 		cleanEvent.sendSynth('clean_phaser' ++ ~numChannels,
 			[
-				phaserrate: ~phaserrate,
-				phaserdepth: ~phaserdepth,
+				phaserrate: ~phr,
+				phaserdepth: ~phd,
 				out: ~out
 		])
-}, { ~phaserrate.notNil });
+}, { ~phr.notNil });
 
 );
