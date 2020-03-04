@@ -1,7 +1,7 @@
 # SuperClean
 SuperCollider implementation of the Clean sampler for use inside of SuperCollider itself.
 
-Alex McLean and Julian Rohrhuber built the thing initially, then I changed a few little things here and there.
+Alex McLean and Julian Rohrhuber built the thing initially, then I changed a few little things here and there.  
 Scott Cazan did _all_ of the heavy lifting. What you have here is essentially a shameless ripOff / fork of / homage to 
 SuperDirt. 
 
