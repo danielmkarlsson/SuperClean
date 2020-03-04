@@ -1,15 +1,15 @@
 # SuperClean
 A SuperCollider implementation of the Clean sampler for use _inside_ of SuperCollider itself.
 
-Alex McLean and Julian Rohrhuber built the thing initially, then I changed a few little things here and there.  
+Alex McLean and Julian Rohrhuber built this thing initially, then I changed a few little things here and there.  
 I need everyone to know that Scott Cazan did _all_ of the heavy lifting in my little remodeling efforts. What you have here is 
-essentially a shameless ripOff / fork of / homage to SuperDirt. 
+essentially a shameless ripOff / fork of / homage to SuperDirt where folks are free to revel in compression artefacts.
 
 ## Requirements
 
-* SuperCollider v3.7 or above  
+* SuperCollider v3.7 or above: https://supercollider.github.io/download
 * Mos def you should get the entirely essential sc3-plugins: https://github.com/supercollider/sc3-plugins/
-* git  
+* git (no link here because this will get taken care of below)
 
 ## Lean is good
 
