@@ -139,7 +139,7 @@ which is what makes clean sequneceable from _within_ SuperCollider.
 • ~~Add samples and change path _inside_ SuperClean~~  
 
 • Fix aliases in core-synths.scd (bpf stuck at default value)   
-• Fix aliases in core-synths-global.scd (how does this work w/o explicit names anywhere?) Tried renaming in delay Synthdef  
+• Fix aliases in core-synths-global.scd, seems to inherit keys from Synthdef args, dla,dlf,dlt is goal   
 • Pros/cons of env keys value range relating to sample length (like `begin` & `end`)  
 • Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
 • `doneAction:2` , why not? Hopefully solves `loop` edge cases and longer releases never finishing
