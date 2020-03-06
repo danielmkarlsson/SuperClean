@@ -128,6 +128,8 @@ CleanEvent {
 		~delayfeedback = ~dlf ? 0.0;
 		~bandf = ~bpf ? 0.0;
 		~bandq = ~bpq ? 0.0;
+		~speed = ~spd ? 1.0;
+
 
 		
 		
