@@ -1,13 +1,13 @@
 /*
 
 CORE MODULES
-(REQUiRE: CORE SYNTHS)
+(REQUIRE: CORE SYNTHS)
 
 Core Modules: these are called for each event from tidal,
 and they represent the list of possible (effect) synths on the event level
 
 Usually, they correspond to a SynthDef (here in core-synths), you could call any function in them
-They will be called when the test is fulfilled (e.g. ~attack.notNil)
+They will be called when the test is fulfilled (e.g. ~vowel.notNil)
 
 You can't currently add your own, because Tidal needs to support this extension first.
 
@@ -64,7 +64,7 @@ this may be refacored later.
 
 /*
 these function as effects on the input of the synth or sample (see SynthDefs in core-synths)
-they respond to the existence of a value for one of the parameters
+they respond to the existence of a value for one of the tidal parameters
 */
 
 
@@ -114,7 +114,7 @@ they respond to the existence of a value for one of the parameters
 		cleanEvent.sendSynth("clean_hpf" ++ ~numChannels,
 			[
 				hcutoff: ~hpf,
-				hresonance: ~hpr,
+				hresonance: ~hpq,
 				out: ~out
 		])
 
@@ -124,12 +124,12 @@ they respond to the existence of a value for one of the parameters
 	{ |cleanEvent|
 		cleanEvent.sendSynth("clean_bpf" ++ ~numChannels,
 			[
-				bandf: ~bpf,
-				bandq: ~bpq,
+				bandqf: ~bandf,
+				bandq: ~bandq,
 				out: ~out
 		])
 
-}, { ~bpf.notNil });
+}, { ~bandf.notNil });
 
 ~clean.addModule('crush',
 	{ |cleanEvent|
@@ -150,18 +150,28 @@ they respond to the existence of a value for one of the parameters
 				out: ~out
 		])
 
-}, { ~crs.notNil and: { ~crs > 1 } }); // crs == 1 => full rate
+}, { ~crs.notNil and: { ~crs > 1 } }); // coarse == 1 => full rate
 
 ~clean.addModule('lpf',
 	{ |cleanEvent|
 		cleanEvent.sendSynth("clean_lpf" ++ ~numChannels,
 			[
 				cutoff: ~lpf,
-				resonance: ~lpr,
+				resonance: ~lpq,
 				out: ~out
 		])
 
 }, { ~lpf.notNil });
+
+// ~clean.addModule('pshift',
+// 	{ |cleanEvent|
+// 		cleanEvent.sendSynth('clean_pitch_shift' ++ ~numChannels,
+// 			[
+// 				psrate: ~psr,
+// 				sustain: ~sustain,
+// 				out: ~out
+// 		])
+// }, { ~psr.notNil });
 
 ~clean.addModule('envelope',
 	{ |cleanEvent|
