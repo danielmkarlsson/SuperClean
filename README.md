@@ -140,7 +140,6 @@ which is what makes clean sequenceable from _within_ SuperCollider.
 
 // fmx demo
 (
-t = Tuning.just;
 Pdef(\0,
     Pseed(99,
     Pbind(*[
