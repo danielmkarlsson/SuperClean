@@ -147,20 +147,19 @@ which is what makes clean sequneceable from _within_ SuperCollider.
 • ~~.clip value ranges for all filters~~  
 • ~~All Clean to Clean~~  
 • ~~Add samples and change path _inside_ SuperClean~~  
+• ~~Fix aliases in core-synths.scd (bpf stuck at default value)~~  
+• ~~Fix aliases in core-synths-global.scd, seems to inherit keys from Synthdef args, dla,dlf,dlt is goal~~   
+• ~~Add FM synthdef~~  
+• ~~Add Additive synthdef~~ 
 
-• Fix aliases in core-synths.scd (bpf stuck at default value)   
-• Fix aliases in core-synths-global.scd, seems to inherit keys from Synthdef args, dla,dlf,dlt is goal   
 • Pros/cons of env keys value range relating to sample length (like `begin` & `end`)  
 • Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
 • `doneAction:2` , why not? Hopefully solves `loop` edge cases and longer releases never finishing
 
-• Add FM synthdef  
-• Add Additive synthdef    
-
 • Include `Pxshuf`  
 • Include `Pbjorklund`  
 
-• Swap out the reverb for Jpverb
+• Swap out the reverb (how to make it sound better while still low cpu?)
 • Maybe add that tape effect  
 • Maybe delete some effects    
 
