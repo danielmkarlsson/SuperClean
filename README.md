@@ -109,6 +109,7 @@ evaluate every time you want to run some SuperClean) in order for the below code
 which is what makes clean sequneceable from _within_ SuperCollider.
 
 ```text
+// mmd demo
 (
     Pdef(\0,
         Pseed(Pn(999,1),
@@ -135,6 +136,45 @@ which is what makes clean sequneceable from _within_ SuperCollider.
             )
         )
     ).play(quant:1);
+);
+
+// fmx demo
+(
+t = Tuning.just;
+Pdef(\0,
+    Pseed(99,
+    Pbind(*[
+        type: \clean,
+        s: \fmx,
+        rps: Pwhite(1,99),
+        hr1: Pstutter(Pkey(\rps)+Pwhite(0,7),Pxshuf((1..4),inf)),
+        hr2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pxshuf((1..4),inf)),
+        hr3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pxshuf((1..4),inf)),
+        hr4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pxshuf((1..4),inf)),
+        mi2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pxshuf((1.0..4.0),inf)),
+        mi3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pxshuf((1.0..4.0),inf)),
+        mi4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pxshuf((1.0..4.0),inf)),
+        fdb: Pexprand(0.01,100.0),
+        amp: Pexprand(0.25,4.0),
+        en1: Pstutter(Pkey(\rps)+Pwhite(0,7),Pexprand(0.0001,1.1)),
+        en2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pkey(\en1)*Pexprand(0.0001,2.1)),
+        en3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pkey(\en1)*Pkey(\en2)/Pexprand(0.0001,3.1)),
+        en4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pkey(\en1)*Pkey(\en2)/Pkey(\en3)*Pexprand(0.0001,4.1)),
+        hl1: Pexprand(0025,1.125),
+        hl2: Pexprand(0.025,1.125),
+        hl3: Pexprand(0.025,1.125),
+        hl4: Pexprand(0.025,1.125),
+        cu1: Pstutter(Pkey(\rps)+Pwhite(0,7),Pwhite(0.0,4.0)),
+        cu2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pwhite(0.0,4.0)),
+        cu3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pwhite(0.0,4.0)),
+        cu4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pwhite(0.0,4.0)),
+        dur: Pstutter(Pkey(\rps)+Pwhite(2,9),1.25/Pbrown(3,17,Pwhite(1,3),inf)),
+        legato: Pexprand(7.5,90.0),
+        freq: Pstutter(Pwhite(8,16),Prand((10,20..40),inf))*Pwhite(1,5),
+        hpf: Pexprand(20,20000).trace,
+    ]);
+)
+).play;
 );
 ```
 
