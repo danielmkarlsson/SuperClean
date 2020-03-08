@@ -200,7 +200,7 @@ Pdef(\0,
 • Include `Pxshuf`  
 • Include `Pbjorklund`  
 
-• Swap out the reverb (how to make it sound better while still low cpu?)
+• Swap out the reverb (how to make it sound better while still low cpu?)  
 • Maybe add that tape effect  
 • Maybe delete some effects    
 
