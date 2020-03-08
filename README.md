@@ -19,6 +19,8 @@ effects and synths that are included. That's the main thing. I did that because 
 you're sharing a very slow wifi connection with 20 other kids who are also trying to get sat up at the same time. Also fewer 
 dependencies means less things that can go sideways with the install procedure.
 
+## Be free to be you
+
 There's a way to hot swap in samples as needed:
 
 ```
@@ -26,7 +28,13 @@ There's a way to hot swap in samples as needed:
 ```
 
 Get your own samples in there! That's what I think everyone should do. That way you'll make this thing your own and in no time
-you'll be making your own kind of weird music.
+you'll be making your own kind of weird music. This also makes it so you don't have to wait around for a bunch of samples to
+load all the samples in to ram all the time when you need to start over because reasons.
+
+## Safe is necessary
+
+I asked Scott to make sure that the filters are only able to accept values in the range of human hearing, 20 to 20000 hz. 
+This way the filters wont blow up.
 
 ## Installation
 
