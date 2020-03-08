@@ -106,7 +106,7 @@ evaluate every time you want to run some SuperClean) in order for the below code
 
 `SuperClean.default = ~clean;` 
 
-which is what makes clean sequneceable from _within_ SuperCollider.
+which is what makes clean sequenceable from _within_ SuperCollider.
 
 ```text
 // mmd demo
