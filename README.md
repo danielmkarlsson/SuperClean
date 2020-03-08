@@ -152,6 +152,7 @@ which is what makes clean sequneceable from _within_ SuperCollider.
 • ~~Add FM synthdef~~  
 • ~~Add Additive synthdef~~ 
 
+• Pan not working in fmx
 • Pros/cons of env keys value range relating to sample length (like `begin` & `end`)  
 • Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
 • `doneAction:2` , why not? Hopefully solves `loop` edge cases and longer releases never finishing
