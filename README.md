@@ -4,7 +4,7 @@ A SuperCollider implementation of the Clean sampler for use _inside_ of SuperCol
 Alex McLean and Julian Rohrhuber built this thing initially, then I changed a few little things here and there.  
 I need everyone to know that Scott Cazan did the heavy lifting in my little remodeling efforts. What you have here is 
 essentially a shameless ripOff / fork of / homage to SuperDirt.  
-Marcus Pal created the FM synth and the Additive synth.
+Marcus Pal created the FM synth and the additive synth.
 
 ## Requirements
 
@@ -109,7 +109,7 @@ evaluate every time you want to run some SuperClean) in order for the below code
 which is what makes clean sequenceable from _within_ SuperCollider.
 
 ```text
-// mmd demo
+// mmd example
 (
     Pdef(\0,
         Pseed(Pn(999,1),
@@ -138,7 +138,7 @@ which is what makes clean sequenceable from _within_ SuperCollider.
     ).play(quant:1);
 );
 
-// fmx demo
+// fmx example
 (
 Pdef(\0,
     Pseed(99,
@@ -179,6 +179,41 @@ Pdef(\0,
 )
 ).play;
 );
+
+// uio example
+
+(
+    Pdef(\0, 
+        Pseed(11,
+        Pbind(*[
+            type: \clean,
+            s: \uio,
+            tempo: 3,
+            rps: Pexprand(1,149),
+            rpf: Pstutter(Pkey(\rps),Pwhite(1,9999)),
+            psi: Pstutter(Pkey(\rps),Psinen(0.1).linlin(0,1,0.25,1.0)),
+            pwi: Pstutter(Pkey(\rps),20000/Pwhite(1,99)),
+            freq: Pfunc{|envir|
+                var psi = envir.psi;
+                var pwi = envir.pwi;
+                var rpf = envir.rpf;
+                var x = pwi * rpf.geom(1,90/(89*psi).asInteger);
+                //x.postln;
+                x.reject{|i| i > 20000 }
+            } * Pstutter(Pkey(\rps),Pwhite(0.9,1.1)),
+            dur: 1/Pstutter(Pkey(\rps),Pwhite(2,11),inf)*Pstutter(Pkey(\rps),Pexprand(1.0,2.0)).trace,
+            attack: Pstutter(Pkey(\rps),Pexprand(0.00001,0.01)),
+            release: Pstutter(Pkey(\rps),Pexprand(0.01,20.0)),
+            curve: -8,
+            stereoDetune: Pstutter(Pkey(\rps),Pwhite(100.0,1000.0)),
+            stretch: Pseg([Pwhite(1/2,2.0),Pwhite(1/2,2.0)],Pwhite(15,90),\lin,inf),
+            gain: Pseg([Pwhite(2.0,8.0),Pwhite(2.0,8.0)],Pwhite(15,90),\welch,inf),
+            hpf: Pseg([20,2000,20,20],Pwhite(15,90),\welch,inf),
+            bpf: Pstutter(Pkey(\rps),Pexprand(20,10000)),
+            bpq: Pstutter(Pkey(\rps),Pexprand(0.1,1.0)),
+        ]))
+    ).play;
+)
 ```
 
 
