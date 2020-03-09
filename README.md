@@ -2,8 +2,8 @@
 A SuperCollider implementation of the Clean sampler for use _inside_ of SuperCollider itself.
 
 Alex McLean and Julian Rohrhuber built this thing initially, then I changed a few little things here and there.  
-I need everyone to know that Scott Cazan did the heavy lifting in my little remodeling efforts. What you have here is 
-essentially a shameless ripOff / fork of / homage to SuperDirt.  
+Scott Cazan gave me much needed assistance in my little remodeling efforts. What you have here is essentially a shameless
+ripOff / fork of / homage to SuperDirt.  
 Marcus Pal created the FM synth and the additive synth.
 
 ## Requirements
