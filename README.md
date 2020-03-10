@@ -5,9 +5,9 @@ SuperClean now also contains an FM synth whose four justly tuned operators deliv
 modulation indexes. SuperClean even includes a remarkably efficient additive synth which literally sounds out of this world.
 It is in short a one-stop-shopping-experience for folks who want: 
 
-• An MPC, 
-• A bunch of effects, and 
-• A couple of synths 
+• An MPC,  
+• A bunch of effects, and   
+• A couple of synths   
 
 for at the low, low asking price of: _free_.
 
