@@ -44,7 +44,9 @@ to load in to ram all the time when you need to start over quickly because reaso
 ## Safe is necessary
  
 I asked Scott to make sure that the filters are only able to accept values in the range of human hearing, 20 to 20000 hz. 
-This way the filters wont blow up.
+This way the filters wont blow up. Also there is a nifty compressor that saves our ears when things get unexpectedly loud.
+This compressor can also bea leaned in to on purpose yielding all manner of hawt sound. Don't miss out on the fun of sending
+values greater than one to `gain` .
 
 <br>
 
