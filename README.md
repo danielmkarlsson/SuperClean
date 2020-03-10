@@ -58,7 +58,7 @@ This way the filters wont blow up. Also there is a nifty compressor that saves o
 This compressor can also bea leaned in to on purpose yielding all manner of hawt sound. Be sure to not miss out on the fun of
 sending values greater than one to `gain`.
 
-<br>
+## Start yer engines!
 
 If you don't have anything in your Startup.scd, then how about you put what I use in there:
 
