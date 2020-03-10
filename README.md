@@ -1,5 +1,5 @@
 # SuperClean
-A SuperCollider implementation of the Clean sampler for use _inside_ of SuperCollider itself.
+A SuperCollider implementation of the SuperClean sampler for use _inside_ of SuperCollider itself.
 
 ## Installation
 
