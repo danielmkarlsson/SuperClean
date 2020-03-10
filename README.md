@@ -8,7 +8,7 @@ Marcus Pal created the FM synth and the additive synth.
 
 ## Requirements
 
-* SuperCollider v3.7 or above: https://supercollider.github.io/download
+* SuperCollider v3.9 or above: https://supercollider.github.io/download
 * Mos def you should get the entirely essential sc3-plugins: https://github.com/supercollider/sc3-plugins/
 * git (no link here because this will get taken care of below)
 
