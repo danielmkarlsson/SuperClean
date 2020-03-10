@@ -13,9 +13,8 @@ line. Git is good to have. It let's us have version control and install all kind
 ## Origins and acknowledgements
 
 Alex McLean and Julian Rohrhuber built this thing initially, then I changed a few little things here and there.  
-Scott Cazan gave me much needed assistance in my little remodeling efforts. What you have here is essentially a shameless
-ripOff / fork of / homage to SuperDirt.  
-Marcus Pal created the FM synth and the additive synth.
+Scott Cazan then gave me some much needed assistance in my little remodeling efforts. What you have here is essentially a
+shameless ripOff / fork of / homage to SuperDirt. Marcus Pal created the FM synth and the additive synth.
 
 ## Requirements
 
