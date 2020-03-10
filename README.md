@@ -121,6 +121,12 @@ evaluate every time you want to run some SuperClean) in order for the below code
 
 which is what makes clean sequenceable from _within_ SuperCollider.
 
+## Whatsit look like?
+
+Here are some examples of using the Pattern paradigm within SuperCollider to control SuperClean. First triggering samples I 
+made with my Micro Modular. Halfway down is an example of using the `fmx` synth that ships with SuperClean. Finally at the
+there you'll find an example of working with `uio` which is the additive synth.
+
 ```text
 // mmd example
 (
@@ -253,7 +259,7 @@ Pdef(\0,
 • Include `Pxshuf`  
 • Include `Pbjorklund`  
 
-• Swap out the reverb (how to make it sound better while still low cpu?)  
+• Swap out the reverb (how to make it sound better while still at low cpu?)  
 • Maybe add that tape effect  
 • Maybe delete some effects    
 
