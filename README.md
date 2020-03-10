@@ -1,10 +1,15 @@
 # SuperClean
 A SuperCollider implementation of the SuperClean sampler for use _inside_ of SuperCollider itself.  
-Not only can you play back all of your samples smoothly in an environment that can grow with you.
+Not only can you play back all of your samples without needless hassle in an environment that can grow with you.
 SuperClean now also contains an FM synth whose four justly tuned operators deliver unparalleled clenaliness, even at extreme
-modulation indexes. SuperClean even includes a remarkably efficient additive synth. It is in short a 
-one-stop-shopping-experience for folks who want an MPC, a bunch of effects and a couple of synths for at the low, low asking
-price of free.
+modulation indexes. SuperClean even includes a remarkably efficient additive synth which literally sounds out of this world.
+It is in short a one-stop-shopping-experience for folks who want: 
+
+• An MPC, 
+• A bunch of effects, and 
+• A couple of synths 
+
+for at the low, low asking price of: _free_.
 
 ## Installation
 
