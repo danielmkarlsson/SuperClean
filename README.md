@@ -1,6 +1,17 @@
 # SuperClean
 A SuperCollider implementation of the Clean sampler for use _inside_ of SuperCollider itself.
 
+## Installation
+
+Copy this line and evaluate it in SuperCollider:
+
+`Quarks.install("https://github.com/danielmkarlsson/SuperClean.git");`
+
+If you don't have git, then go ahead and get git, when you hopefully get asked to get git, as a consequence of running that
+line. Git is good to have. It let's us have version control and install all kinds of neat stuff.
+
+## Origins and acknowledgements
+
 Alex McLean and Julian Rohrhuber built this thing initially, then I changed a few little things here and there.  
 Scott Cazan gave me much needed assistance in my little remodeling efforts. What you have here is essentially a shameless
 ripOff / fork of / homage to SuperDirt.  
@@ -35,15 +46,6 @@ to load in to ram all the time when you need to start over quickly because reaso
  
 I asked Scott to make sure that the filters are only able to accept values in the range of human hearing, 20 to 20000 hz. 
 This way the filters wont blow up.
-
-## Installation
-
-Copy this line and evaluate it in SuperCollider:
-
-`Quarks.install("https://github.com/danielmkarlsson/SuperClean.git");`
-
-If you don't have git, then go ahead and get git, when you hopefully get asked to get git, as a consequence of running that
-line. Git is good to have. It let's us have version control and install all kinds of neat stuff.
 
 <br>
 
