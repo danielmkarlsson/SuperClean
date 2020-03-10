@@ -1,5 +1,10 @@
 # SuperClean
-A SuperCollider implementation of the SuperClean sampler for use _inside_ of SuperCollider itself.
+A SuperCollider implementation of the SuperClean sampler for use _inside_ of SuperCollider itself.  
+Not only can you play back all of your samples smoothly in an environment that can grow with you.
+SuperClean now also contains an FM synth whose four justly tuned operators deliver unparalleled clenaliness, even at extreme
+modulation indexes. SuperClean even includes a remarkably efficient additive synth. It is in short a 
+one-stop-shopping-experience for folks who want an MPC, a bunch of effects and a couple of synths for at the low, low asking
+price of free.
 
 ## Installation
 
@@ -45,8 +50,8 @@ to load in to ram all the time when you need to start over quickly because reaso
  
 I asked Scott to make sure that the filters are only able to accept values in the range of human hearing, 20 to 20000 hz. 
 This way the filters wont blow up. Also there is a nifty compressor that saves our ears when things get unexpectedly loud.
-This compressor can also bea leaned in to on purpose yielding all manner of hawt sound. Don't miss out on the fun of sending
-values greater than one to `gain` .
+This compressor can also bea leaned in to on purpose yielding all manner of hawt sound. Be sure to not miss out on the fun of
+sending values greater than one to `gain`.
 
 <br>
 
