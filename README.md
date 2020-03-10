@@ -141,7 +141,7 @@ which is what makes clean sequenceable from _within_ SuperCollider.
 // fmx example
 (
 Pdef(\0,
-    Pseed(99,
+    Pseed(4,
     Pbind(*[
         type: \clean,
         s: \fmx,
@@ -169,12 +169,13 @@ Pdef(\0,
         cu4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pwhite(0.0,4.0)),
         dur: Pstutter(Pkey(\rps)+Pwhite(2,9),1.25/Pbrown(3,17,Pwhite(1,3),inf)),
         legato: Pexprand(7.5,90.0),
-        freq: Pstutter(Pwhite(8,16),Prand((10,20..40),inf))*Pwhite(1,5)*Pstutter(Pkey(\rps),Pwhite(1,5)),
+        freq: (Pstutter(Pwhite(8,16),Prand((10,20..40),inf))*Pwhite(1,5)*Pstutter(Pkey(\rps),Pwhite(1,5))).trace,
         hpf: Pexprand(20,20000),
-        lpf: Pkey(\freq).linlin(10,1600,20000,100,\minmax).trace,
-        room: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
-        size: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
-        dry: Pseg(Pexprand(0.1,1),Pexprand(2.0,32.0),\welch,inf).linlin(0.1,1,1,0,\minmax),
+        lpf: Pkey(\freq).linlin(10,1600,20000,100,\minmax),
+        room: Pseg(Pexprand(0.9,1),Pexprand(2.0,8.0),\welch,inf),
+        size: Pseg(Pexprand(0.9,1),Pexprand(4.0,16.0),\welch,inf),
+        dry: Pseg(Pexprand(0.9,1),Pexprand(8.0,32.0),\welch,inf),
+        //orbit: Pwhite(0,3), // untoggle if you have 8 outputs
     ]);
 )
 ).play;
@@ -231,6 +232,7 @@ Pdef(\0,
 • ~~Add Additive synthdef~~ 
 
 • Pan not working in fmx  
+• Pan not working in uio  
 • Pros/cons of env keys value range relating to sample length (like `begin` & `end`)  
 • Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
 • `doneAction:2` , why not? Hopefully solves `loop` edge cases and longer releases never finishing
