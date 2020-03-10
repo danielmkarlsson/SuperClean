@@ -45,7 +45,7 @@ Copy this line and evaluate it in SuperCollider:
 If you don't have git, then go ahead and get git, when you hopefully get asked to get git, as a consequence of running that
 line. Git is good to have. It let's us have version control and install all kinds of neat stuff.
 
-<br><br>
+<br>
 
 If you don't have anything in your Startup.scd, then how about you put what I use in there:
 
