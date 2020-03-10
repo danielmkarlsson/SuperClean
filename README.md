@@ -123,9 +123,9 @@ which is what makes clean sequenceable from _within_ SuperCollider.
 
 ## Whatsit look like?
 
-Here are some examples of using the Pattern paradigm within SuperCollider to control SuperClean. First triggering samples I 
-made with my Micro Modular. Halfway down is an example of using the `fmx` synth that ships with SuperClean. Finally at the
-there you'll find an example of working with `uio` which is the additive synth.
+Here are some examples of using the Pattern paradigm within SuperCollider to control SuperClean. First ther's an example of 
+sequencing samples I made with my Micro Modular. Halfway down is an example of using the `fmx` synth that ships with 
+SuperClean. Finally at the end there you'll find an example of working with `uio` which is the additive synth.
 
 ```text
 // mmd example
