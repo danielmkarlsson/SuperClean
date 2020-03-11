@@ -54,8 +54,8 @@ to load in to ram all the time when you need to start over quickly because reaso
 ## Safe is necessary
  
 I asked Scott to make sure that the filters are only able to accept values in the range of human hearing, 20 to 20000 hz. 
-This way the filters wont blow up. Also there is a nifty compressor that saves our ears when things get unexpectedly loud.
-This compressor can also bea leaned in to on purpose yielding all manner of hawt sound. Be sure to not miss out on the fun of
+This way the filters won't blow up. Also there is a nifty compressor that saves our ears when things get unexpectedly loud.
+This compressor can also be leaned in to on purpose yielding all manner of hawt sound. Be sure to not miss out on the fun of
 sending values greater than one to `gain`.
 
 ## Start yer engines!
@@ -114,7 +114,7 @@ s.waitForBoot {
 
 If you _do_ have something in your Startup.scd, then you get to pick and choose which parts of mine you want to add to yours.
 
-If, and only if, you are in that latter category, then proly the only part you for sure wan't to add in your Startup.scd (or
+If, and only if, you are in that latter category, then proly the only part you for sure want to add in your Startup.scd (or
 evaluate every time you want to run some SuperClean) in order for the below code to work on your machine is:
 
 `SuperClean.default = ~clean;` 
@@ -130,7 +130,7 @@ uses a `Pfunc` to generate not just one pitch but a whole _bunch_ of pitches at 
 different. It is bringing another paradigm, functions, into Patterns. In SuperCollider there are many ways of doing the same
 thing. Different strokes for different folks is all. Additive is such a wildly different way of making sound that it warranted
 a different approach to control. I would have prefered to stay within the Pattern paradigm as it has been my experience that 
-SuperCollider is so vast that the scope needs to be narrowed somewhat in order to 
+SuperCollider is so vast that the scope needs to be narrowed somewhat in order to be approachable.
 
 ```text
 // mmd example
