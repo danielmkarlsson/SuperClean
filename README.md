@@ -9,7 +9,7 @@ It is in short a one-stop-shopping-experience for folks who want:
 • A bunch of effects, and   
 • A couple of synths   
 
-for at the low, low asking price of: _free_.
+for the low, low asking price of: _free_.
 
 ## Installation
 
