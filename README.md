@@ -44,7 +44,7 @@ dependencies means less things that can go sideways with the install procedure.
 There's a way to hot swap in samples as needed:
 
 ```
-~clean.loadSoundFiles("~/Downloads/mmd*");
+~clean.loadSoundFiles("~/Downloads/rnb");
 ```
 
 Get your own samples in there! That's what I think everyone should do. That way you'll make this thing your own, and in no 
