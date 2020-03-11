@@ -250,6 +250,7 @@ Pdef(\0,
 • ~~Add FM synthdef~~  
 • ~~Add Additive synthdef~~ 
 
+• Set audible default values for fmx, what are sensible defaults?
 • Pan not working in fmx  
 • Pan not working in uio  
 • Pros/cons of env keys value range relating to sample length (like `begin` & `end`)  
