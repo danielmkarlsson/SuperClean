@@ -124,7 +124,7 @@ which is what makes clean sequenceable from _within_ SuperCollider.
 ## Whatsit look like?
 
 Here are some examples of using the Pattern paradigm within SuperCollider to control SuperClean. First there's an example of 
-sequencing samples I made with my Micro Modular. Halfway down is an example of using the `fmx` synth which ships with 
+sequencing samples I made with my Micro Modular. Halfway down are a couple of examples using the `fmx` synth which ships with 
 SuperClean. Finally at the end there you'll find an example of working with `uio` which is the additive synth. That example
 uses a `Pfunc` to generate not just one pitch but a whole _bunch_ of pitches at the same. Now, I know that looks a little 
 different. It is bringing another paradigm, functions, into Patterns. In SuperCollider there are many ways of doing the same
@@ -162,7 +162,7 @@ SuperCollider is so vast that the scope needs to be narrowed somewhat in order t
     ).play(quant:1);
 );
 
-// fmx example
+// fmx examples
 (
 Pdef(\0,
     Pseed(4,
@@ -204,6 +204,45 @@ Pdef(\0,
 )
 ).play;
 );
+
+(
+    Pdef(\0,
+        Pseed(12,
+        Pbind(*[
+            type: \clean,
+            s: \fmx,
+        hr1: Pwhite(0,7),
+        hr2: Pwhite(0,7),
+        hr3: Pwhite(0,7),
+        hr4: Pwhite(0,7),
+        mi2: Pexprand(0.1,1.5),
+        mi3: Pexprand(0.1,1.5),
+        mi4: Pexprand(0.1,1.5),
+        fdb: Pexprand(0.1,100.0),
+        en1: Pwhite(0.5,0.5),
+        en2: Pwhite(0.5,0.5),
+        en3: Pwhite(0.5,0.5),
+        en4: Pwhite(0.5,0.5),
+        hl1: Pwhite(0.0,4.0),
+        hl2: Pwhite(0.0,4.0),
+        hl3: Pwhite(0.0,4.0),
+        hl4: Pwhite(0.0,4.0),
+        cu1: Pwhite(-4.0,4.0),
+        cu2: Pwhite(-4.0,4.0),
+        cu3: Pwhite(-4.0,4.0),
+        cu4: Pwhite(-4.0,4.0),
+        rps: Pwhite(16,128),
+        freq: (Pstutter(Pkey(\rps),Pexprand(20,80))*Pstutter(Pwhite(1,7),Pwhite(1,7))),
+        stretch: Pseg([1.0,0.1,2.0,2.0,1.0],Pwhite(12.0,24.0),\welch,inf),
+        legato: (4.9*Pkey(\stretch)),
+        amp: Pkey(\stretch).linlin(0.0,1.0,0.3,1.7,\minmax),
+        dry: Pkey(\stretch).linlin(0.0,1.0,0.25,1.0,\minmax),
+        room: Pkey(\stretch).linlin(0.0,1.0,1.0,0.7,\minmax),
+        size: Pkey(\stretch).linlin(0.0,1.0,1.0,0.7,\minmax),
+        hpf: Pkey(\stretch).linlin(0.0,1.0,1500,20,\minmax).trace,
+        ]))
+    ).play(quant:1);
+)
 
 // uio example
 
