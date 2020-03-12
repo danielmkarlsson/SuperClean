@@ -294,6 +294,7 @@ Pdef(\0,
 • ~~Add FM synthdef~~  
 • ~~Add Additive synthdef~~ 
 
+• Raise output volume  
 • ReDo rm with feedback  
 • Set audible default values for fmx, what are sensible defaults?  
 • Might there be a way to lessen the likeliness of the envelopes in fmx clicking?  
