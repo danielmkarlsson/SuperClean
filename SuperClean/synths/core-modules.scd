@@ -163,23 +163,14 @@ they respond to the existence of a value for one of the tidal parameters
 
 }, { ~lpf.notNil });
 
-// ~clean.addModule('pshift',
-// 	{ |cleanEvent|
-// 		cleanEvent.sendSynth('clean_pitch_shift' ++ ~numChannels,
-// 			[
-// 				psrate: ~psr,
-// 				sustain: ~sustain,
-// 				out: ~out
-// 		])
-// }, { ~psr.notNil });
-
 ~clean.addModule('envelope',
 	{ |cleanEvent|
 		cleanEvent.sendSynth('clean_envelope' ++ ~numChannels,
 			[
 				attack: ~atk,
 				hold: ~hld,
-				release:~rel,
+				release: ~rel,
+				crv: ~crv,
 				out: ~out
 		])
 }, { ~atk.notNil or: { ~rel.notNil }});
