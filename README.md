@@ -292,9 +292,8 @@ Pdef(\0,
 • ~~Fix aliases in core-synths.scd (bpf stuck at default value)~~  
 • ~~Fix aliases in core-synths-global.scd, seems to inherit keys from Synthdef args, dla,dlf,dlt is goal~~   
 • ~~Add FM synthdef~~  
-• ~~Add Additive synthdef~~ 
+• ~~Add Additive synthdef~~   
 • ~~Add `crv` param to env~~  
-
 
 • Raise output volume  
 • Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
