@@ -293,15 +293,16 @@ Pdef(\0,
 • ~~Fix aliases in core-synths-global.scd, seems to inherit keys from Synthdef args, dla,dlf,dlt is goal~~   
 • ~~Add FM synthdef~~  
 • ~~Add Additive synthdef~~ 
+• ~~Add `crv` param to env~~
 
 • Raise output volume  
-• ReDo rm with feedback  
-• Set audible default values for fmx, what are sensible defaults?  
-• Might there be a way to lessen the likeliness of the envelopes in fmx clicking?  
-• Pan not working in fmx  
-• Pan not working in uio  
-• Pros/cons of env keys value range relating to sample length (like `begin` & `end`)  
 • Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
+• ReDo rm with feedback  
+• Set audible default values for `fmx`, what are sensible defaults?  
+• Might there be a way to lessen the likeliness of the envelopes in `fmx` clicking?  
+• Pan not working in `fmx`  
+• Pan not working in `uio`  
+• Pros/cons of env keys value range relating to sample length (like `begin` & `end`)  
 • `doneAction:2` , why not? Hopefully solves `loop` edge cases and longer releases never finishing
 
 • Include `Pxshuf`  
