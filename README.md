@@ -248,36 +248,43 @@ Pdef(\0,
 // uio example
 
 (
-    Pdef(\0, 
-        Pseed(11,
+Pdef(\0,
+    Ppar([
         Pbind(*[
+            type: \rest,
+            dur: 64,
+            func: Pfunc{~x=rrand(111,118)},
+        ]),
+        Pseq([
+            Pseed(PL(\x),
+            Pbind(*[
             type: \clean,
             s: \uio,
             tempo: 3,
-            rps: Pexprand(1,149),
-            rpf: Pstutter(Pkey(\rps),Pwhite(1,9999)),
-            psi: Pstutter(Pkey(\rps),Pwhite(0,1).linlin(0,1,0.25,1.0)),
-            pwi: Pstutter(Pkey(\rps),20000/Pwhite(1,99)),
+            rps: 32-Pexprand(1,32),
+            rpf: Pstutter(Pkey(\rps),Pwhite(8,888)),
+            psi: Pstutter(Pkey(\rps),1-Pwhite(0.5,1)),
+            pwi: Pstutter(Pkey(\rps),20000/Pwhite(1000,4999)),
             freq: Pfunc{|envir|
                 var psi = envir.psi;
                 var pwi = envir.pwi;
                 var rpf = envir.rpf;
-                var x = pwi * rpf.geom(1,90/(89*psi).asInteger);
+                var x = pwi * rpf.geom(1,190/(189*psi).asInteger);
                 //x.postln;
                 x.reject{|i| i > 20000 }
-            } * Pstutter(Pkey(\rps),Pwhite(0.9,1.1)),
-            dur: 1/Pstutter(Pkey(\rps),Pwhite(2,11),inf)*Pstutter(Pkey(\rps),Pexprand(1.0,2.0)).trace,
-            attack: Pstutter(Pkey(\rps),Pexprand(0.00001,0.01)),
-            release: Pstutter(Pkey(\rps),Pexprand(0.01,20.0)),
-            curve: -8,
-            stereoDetune: Pstutter(Pkey(\rps),Pwhite(100.0,1000.0)),
-            stretch: Pseg([Pwhite(1/2,2.0),Pwhite(1/2,2.0)],Pwhite(15,90),\lin,inf),
-            gain: Pseg([Pwhite(2.0,8.0),Pwhite(2.0,8.0)],Pwhite(15,90),\welch,inf),
-            hpf: Pseg([20,2000,20,20],Pwhite(15,90),\welch,inf),
-            bpf: Pstutter(Pkey(\rps),Pexprand(20,10000)),
-            bpq: Pstutter(Pkey(\rps),Pexprand(0.1,1.0)),
-        ]))
-    ).play;
+            } * Pstutter(Pkey(\rps),Pwhite(0.5,2.0)),
+            dur: (1/Pstutter(Pkey(\rps),Pwhite(5,9),inf)*Pstutter(Pkey(\rps),Pexprand(1.0,2.0).explin(1.0,2.0,2.0,1.0))).trace,
+            rel: Pstutter(Pkey(\rps),1-Pexprand(0.002,1)),
+            crv: Pexprand(-10,-6),
+            stereoDetune: Pstutter(Pkey(\rps),1000-Pexprand(100,1000.0)),
+            stretch: Pseg(Pwhite(0.75,3.0),Pwhite(5,19),\lin,inf),
+            gain: Pseg(Pwhite(0.75,1.125),Pwhite(5,19),\welch,inf),
+            bpf: Pstutter(Pkey(\rps),Pexprand(40,400)),
+			hpf: Pseg(Pexprand(20,2000),Pwhite(5,19),\exp,inf),
+                //out: Pfunc{(0..16).scramble[..rrand(0,1)]},
+            ])
+        ).finDur(rrand(2,64))
+    ],8)])).play(quant:1);
 )
 ```
 
