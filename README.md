@@ -295,6 +295,7 @@ Pdef(\0,
 • ~~Add Additive synthdef~~ 
 • ~~Add `crv` param to env~~  
 
+
 • Raise output volume  
 • Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
 • ReDo rm with feedback  
