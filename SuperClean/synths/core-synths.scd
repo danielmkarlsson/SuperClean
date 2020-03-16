@@ -141,9 +141,9 @@ live coding them requires that you have your SuperClean instance in an environme
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
 
-	SynthDef("clean_envelope" ++ numChannels, { |out, attack = 0, hold = 0, release = inf |
+	SynthDef("clean_envelope" ++ numChannels, { |out, attack = 0, hold = 0, release = inf, crv = 0.3 |
 		var signal = In.ar(out, numChannels);
-		signal = signal * EnvGen.ar(Env.linen(attack, hold, release, 1, -3));
+		signal = signal * EnvGen.ar(Env.linen(attack, hold, release, 1, crv));
 		ReplaceOut.ar(out, signal);
 	}, [\ir, \ir, \ir, \ir]).add;
 
