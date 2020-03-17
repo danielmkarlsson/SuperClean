@@ -3,8 +3,8 @@ SuperClean.default = ~clean;
 
 // test, can you hear
 (
-(type:\clean, orbit:0, s: \cr).play;
-(type:\clean, orbit:1, s: \cr, speed:2/5).play;
+(type:\clean, orbit:0, s: \mmd).play;
+(type:\clean, orbit:1, s: \mmd, speed:2/5).play;
 )
 
 
@@ -13,7 +13,7 @@ SuperClean.default = ~clean;
 Pdef(\x,
 	Pbind(
 		\type, \clean,
-		\s, \hh,
+		\s, \mmd,
 		\n, Pseq([1, 0, 0, 0, 0], inf),
 		\speed, Pseq([1, 1, 0.5, 1.2], inf),
 		\dur, 0.25 * Pseq([1, 1/2, 1, 2, 2, 1/2], inf),
@@ -28,7 +28,7 @@ Pdef(\x,
 	Ppar([
 		Pbind(
 			\type, \clean,
-			\s, Pwrand([\hh, \cr, \ho], [2, 1, 1].normalizeSum, inf),
+			\s, \mmd,
 			\cut, Prand([0, 1, 2], inf),
 			\n, Pseq([Prand([1, Pseq([1, 0, 5], 1), Pseq([0, 0])], 1), 0, 0, 0, 0, 0, 0, 0, 0], inf),
 			\speed, Pseq([1, 1, 0.5, 1.2], inf),
@@ -37,7 +37,7 @@ Pdef(\x,
 		),
 		Pbind(
 			\type, \clean,
-			\s, \bd,
+			\s, \mmd,
 			\dur, Pseq([0.5, 0.25, 0.25], inf),
 			\amp, Prand([0.5, 0], inf)
 		)
@@ -50,7 +50,7 @@ Pdef(\x,
 Pdef(\x,
 	Pbind(
 		\type, \clean,
-		\s, \hh,
+		\s, \mmd,
 		\n, Pseq([1, 0, 0, 0, 0], inf),
 		\speed, Pseq([1, 1, 0.5, 1.2], inf),
 		\dur, 0.25 * Pseq([1, 1/2, Prand([1, 1/2], 1), 2, 2, 1/2], inf),
@@ -68,7 +68,7 @@ Pdef(\x,
 Pdef(\x,
 	Pbind(
 		\type, \clean,
-		\s, \hh,
+		\s, \mmd,
 		\n, Pseries(),
 		\dur, 0.25 * Pseq([1, 1/2, 1], inf)
 	)
@@ -80,7 +80,7 @@ Pdef(\x,
 Pdef(\x,
 	Pbind(
 		\type, \clean,
-		\s, Pseq([\bd, \hh, \bd, \hh], inf),
+		\s, \mmd,
 		\n, Pseries(),
 		\dur, 0.25 * Pseq([1, 1/2, 1], inf)
 	)
@@ -93,7 +93,7 @@ Pdef(\x,
 Pdef(\x,
 	Pbind(
 		\type, \clean,
-		\s, Pseq([\bd, \hh, \bd, \hh], inf),
+		\s, \mmd,
 		\dur, 0.25 * Pseq([1, 1/2, 1], inf),
 		\cutoff, [1345, 1000, 400] + Prand([0, 0, 0, 0, 0, 0, -100, 200, [-100, 210]], inf),
 		\resonance, 0.8
@@ -101,21 +101,3 @@ Pdef(\x,
 
 ).play
 )
-
-
-
-// vowel tennis
-(
-Pdef(\x,
-	Pbind(
-		\type, \clean,
-		\speed, 2,
-		\sound, Pseq([\bd, \hh, \bd, \hh], inf),
-		\vowel, Pn(Plazy {Pshuf([\a, \i, \o, \i, \u, [\i, \a], [\o, \u, \e]], rrand(3, 8)) }),
-		\resonance, 0.7,
-		\shape, Pseq([0.5, 0.8, 0.3, 0.2, 0.2], inf),
-		\dur, 0.25 * Pseq([1, 1/2, 1], inf)
-	)
-).play
-)
-
