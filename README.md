@@ -6,8 +6,8 @@ modulation indexes. SuperClean even includes a remarkably efficient additive syn
 It is in short a one-stop-shopping-experience for folks who want: 
 
 • An MPC,  
-• A bunch of effects, and   
-• A couple of synths   
+• a bunch of effects, and   
+• a couple of synths   
 
 for the low, low asking price of: _free_.
 
