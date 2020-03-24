@@ -136,50 +136,49 @@ SuperCollider is so vast that the scope needs to be narrowed somewhat in order t
 // mmd example
 (
     Pdef(\0,
-        Pseed(Pn(9,1),
+        Pseed(Pn(63,1),
             Psync(
                 Pbind(*[
                     type: \clean,
                     s: \mmd,
                     n: Pwhite(0,23),
                     dur: Pwrand([1/12,1/3],[9,1].normalizeSum,inf),
-                    crv: Pseg(Pwhite(-9,-3),Pexprand(1.0,16.0),\exp,inf),
-                    rel: (1/Pstutter(Pwhite(1,8),Pseq([16,7,8,19,20,21,22,8,2],inf))*Pexprand(0.1,200.0)),
-                    gain: Pexprand(2.0,8.0),
+                    rel: Pstutter(Pwhite(1,8),Pseq([1/16,1/17,1/18,1/19,1/20,1/21,1/22,1/8,2],inf))*Pexprand(0.1,10.0),
+                    gain: Pexprand(1.0,4.0),
                     pan: Pstutter(Pwhite(0,28),Pwrand([Pwhite(0.0,0.333),Pwhite(0.666,1.0)],[1,1.5].normalizeSum,inf)),
-                    lpf: Pwrand([625,1250,2500,5000,10000,20000],[1,4,16,64,256,1024].normalizeSum,inf),
-                    speed: Pwrand([1/64,1/32,1/16,1/8,1/4,1/2,1,2,4,8,16,32,64],[1,2,4,8,16,32,128,64,32,16,8,4,2].normalizeSum,inf),
+                    lpf: Pwrand([625,1250,2500,5000,10000,20000],(1..6).normalizeSum,inf),
+                    speed: Pwrand([1/64,1/32,1/16,1/8,1/4,1/2,1,2,4,8,16,32,64],[1,2,4,8,16,32,64,32,16,8,4,2,1].normalizeSum,inf),
                     shp: Pwhite(0.0,0.999).trace,
-                    dla: 0.00125,
+                    dla: 0.01,
                     dlf: 0.94,
                     dlt: 1/2 / Pstutter(Pwrand([1,2,3],[256,16,1].normalizeSum,inf),Pbrown(1,199,Prand((1..19),inf),inf)),
                     room: Pwrand([0,0.05],[9,1].normalizeSum,inf),
                     size: 0.97,
-                    dry: Pstutter(Pwhite(1,9),Pwrand([0.25,1],[1,2].normalizeSum,inf)),
-                    hpf: 60,
-                ]),1,15,
+                    dry: Pstutter(Pwhite(1,9),Pwrand([0.25,1],[3,1].normalizeSum,inf)),
+                    hpf: 40,
+                ]),1,9,
             )
         )
     ).play(quant:1);
 );
 
-// fmx examples
+// fmx example
 (
 Pdef(\0,
-    Pseed(4,
+    Pseed(99,
     Pbind(*[
         type: \clean,
         s: \fmx,
         rps: Pwhite(1,99),
-        hr1: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
-        hr2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
-        hr3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
-        hr4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
-        mi2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1.0..4.0),inf)),
-        mi3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1.0..4.0),inf)),
-        mi4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1.0..4.0),inf)),
+        hr1: Pstutter(Pkey(\rps)+Pwhite(0,7),Pxshuf((1..4),inf)),
+        hr2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pxshuf((1..4),inf)),
+        hr3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pxshuf((1..4),inf)),
+        hr4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pxshuf((1..4),inf)),
+        mi2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pxshuf((1.0..4.0),inf)),
+        mi3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pxshuf((1.0..4.0),inf)),
+        mi4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pxshuf((1.0..4.0),inf)),
         fdb: Pexprand(0.01,100.0),
-        amp: Pexprand(0.1,8.0),
+        amp: Pexprand(0.01,0.5),
         en1: Pstutter(Pkey(\rps)+Pwhite(0,7),Pexprand(0.0001,1.1)),
         en2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pkey(\en1)*Pexprand(0.0001,2.1)),
         en3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pkey(\en1)*Pkey(\en2)/Pexprand(0.0001,3.1)),
@@ -194,98 +193,51 @@ Pdef(\0,
         cu4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pwhite(0.0,4.0)),
         dur: Pstutter(Pkey(\rps)+Pwhite(2,9),1.25/Pbrown(3,17,Pwhite(1,3),inf)),
         legato: Pexprand(7.5,90.0),
-        freq: (Pstutter(Pwhite(8,16),Prand((10,20..40),inf))*Pwhite(1,5)*Pstutter(Pkey(\rps),Pwhite(1,5))).trace,
+        freq: Pstutter(Pwhite(8,16),Prand((10,20..40),inf))*Pwhite(1,5)*Pstutter(Pkey(\rps),Pwhite(1,5)),
         hpf: Pexprand(20,20000),
-        lpf: Pkey(\freq).linlin(10,1600,20000,100,\minmax),
-        room: Pseg(Pexprand(0.9,1),Pexprand(2.0,8.0),\welch,inf),
-        size: Pseg(Pexprand(0.9,1),Pexprand(4.0,16.0),\welch,inf),
-        dry: Pseg(Pexprand(0.9,1),Pexprand(8.0,32.0),\welch,inf),
-        //orbit: Pwhite(0,3), // untoggle if you have 8 outputs
+        lpf: Pkey(\freq).linlin(10,1600,20000,100,\minmax).trace,
+        room: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
+        size: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
+        dry: Pseg(Pexprand(0.1,1),Pexprand(2.0,32.0),\welch,inf).linlin(0.1,1,1,0,\minmax),
     ]);
 )
 ).play;
 );
 
+// uio example
 (
     Pdef(\0,
-        Pseed(12,
+        Pseed(11,
         Pbind(*[
-            type: \clean,
-            s: \fmx,
-        hr1: Pwhite(0,7),
-        hr2: Pwhite(0,7),
-        hr3: Pwhite(0,7),
-        hr4: Pwhite(0,7),
-        mi2: Pexprand(0.1,1.5),
-        mi3: Pexprand(0.1,1.5),
-        mi4: Pexprand(0.1,1.5),
-        fdb: Pexprand(0.1,100.0),
-        en1: Pwhite(0.5,0.5),
-        en2: Pwhite(0.5,0.5),
-        en3: Pwhite(0.5,0.5),
-        en4: Pwhite(0.5,0.5),
-        hl1: Pwhite(0.0,4.0),
-        hl2: Pwhite(0.0,4.0),
-        hl3: Pwhite(0.0,4.0),
-        hl4: Pwhite(0.0,4.0),
-        cu1: Pwhite(-4.0,4.0),
-        cu2: Pwhite(-4.0,4.0),
-        cu3: Pwhite(-4.0,4.0),
-        cu4: Pwhite(-4.0,4.0),
-        rps: Pwhite(16,128),
-        freq: (Pstutter(Pkey(\rps),Pexprand(20,80))*Pstutter(Pwhite(1,7),Pwhite(1,7))),
-        stretch: Pseg([1.0,0.1,2.0,2.0,1.0],Pwhite(12.0,24.0),\welch,inf),
-        legato: (4.9*Pkey(\stretch)),
-        amp: Pkey(\stretch).linlin(0.0,1.0,0.3,1.7,\minmax),
-        dry: Pkey(\stretch).linlin(0.0,1.0,0.25,1.0,\minmax),
-        room: Pkey(\stretch).linlin(0.0,1.0,1.0,0.7,\minmax),
-        size: Pkey(\stretch).linlin(0.0,1.0,1.0,0.7,\minmax),
-        hpf: Pkey(\stretch).linlin(0.0,1.0,1500,20,\minmax).trace,
-        ]))
-    ).play(quant:1);
-)
-
-// uio example
-
-(
-Pdef(\0,
-    Ppar([
-        Pbind(*[
-            type: \rest,
-            dur: 64,
-            func: Pfunc{~x=rrand(111,118)},
-        ]),
-        Pseq([
-            Pseed(PL(\x),
-            Pbind(*[
             type: \clean,
             s: \uio,
             tempo: 3,
-            rps: 32-Pexprand(1,32),
-            rpf: Pstutter(Pkey(\rps),Pwhite(8,888)),
-            psi: Pstutter(Pkey(\rps),1-Pwhite(0.5,1)),
-            pwi: Pstutter(Pkey(\rps),20000/Pwhite(1000,4999)),
+            rps: Pexprand(1,14),
+            rpf: Pstutter(Pkey(\rps),Pwhite(1,9999)),
+            psi: Pstutter(Pkey(\rps),Psinen(0.1).linlin(0,1,0.25,1.0)),
+            pwi: Pstutter(Pkey(\rps),20000/Pwhite(1,99)),
             freq: Pfunc{|envir|
                 var psi = envir.psi;
                 var pwi = envir.pwi;
                 var rpf = envir.rpf;
-                var x = pwi * rpf.geom(1,190/(189*psi).asInteger);
+                var x = pwi * rpf.geom(1,90/(89*psi).asInteger);
                 //x.postln;
                 x.reject{|i| i > 20000 }
-            } * Pstutter(Pkey(\rps),Pwhite(0.5,2.0)),
-            dur: (1/Pstutter(Pkey(\rps),Pwhite(5,9),inf)*Pstutter(Pkey(\rps),Pexprand(1.0,2.0).explin(1.0,2.0,2.0,1.0))).trace,
-            rel: Pstutter(Pkey(\rps),1-Pexprand(0.002,1)),
-            crv: Pexprand(-10,-6),
-            stereoDetune: Pstutter(Pkey(\rps),1000-Pexprand(100,1000.0)),
-            stretch: Pseg(Pwhite(0.75,3.0),Pwhite(5,19),\lin,inf),
-            gain: Pseg(Pwhite(0.75,1.125),Pwhite(5,19),\welch,inf),
-            bpf: Pstutter(Pkey(\rps),Pexprand(40,400)),
-			hpf: Pseg(Pexprand(20,2000),Pwhite(5,19),\exp,inf),
-                //out: Pfunc{(0..16).scramble[..rrand(0,1)]},
-            ])
-        ).finDur(rrand(2,64))
-    ],8)])).play(quant:1);
+            } * Pstutter(Pkey(\rps),Pwhite(0.9,1.1)),
+            dur: 1/Pstutter(Pkey(\rps),Pwhite(2,11),inf)*Pstutter(Pkey(\rps),Pexprand(1.0,2.0)).trace,
+            attack: Pstutter(Pkey(\rps),Pexprand(0.00001,0.01)),
+            release: Pstutter(Pkey(\rps),Pexprand(0.01,20.0)),
+            curve: -8,
+            stereoDetune: Pstutter(Pkey(\rps),Pwhite(100.0,1000.0)),
+            stretch: Pseg([Pwhite(0.75,2.0),Pwhite(0.75,2.0)],Pwhite(15,90),\lin,inf),
+            gain: Pseg([Pwhite(1.0,2.0),Pwhite(2.0,8.0)],Pwhite(15,90),\welch,inf),
+            hpf: Pseg([20,200,20,20],Pwhite(15,90),\welch,inf),
+            bpf: Pstutter(Pkey(\rps),Pexprand(20,100)),
+            bpq: Pstutter(Pkey(\rps),Pexprand(0.01,1.0)),
+        ]))
+    ).play;
 )
+
 ```
 
 
@@ -302,8 +254,9 @@ Pdef(\0,
 • ~~Add FM synthdef~~  
 • ~~Add Additive synthdef~~   
 • ~~Add `crv` param to env~~  
+• ~~Raise output volume~~  
+• ~~Stereo sample playback~~  
 
-• Raise output volume  
 • Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
 • ReDo rm with feedback  
 • Set audible default values for `fmx`, what are sensible defaults?  
