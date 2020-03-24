@@ -143,7 +143,7 @@ CleanSoundLibrary {
 
 	loadSoundFiles { |paths, appendToExisting = false, namingFunction = (_.basename)| // paths are folderPaths
 		var folderPaths, memory;
-        var defaultSamplePath = Quarks.folder +/+ "SuperClean" +/+ "SuperClean" +/+ "clean-samples" +/+ "mmd";
+        var defaultSamplePath = Quarks.folder +/+ "SuperClean" +/+ "clean-samples" +/+ "mmd";
 
 		paths = paths ?? { defaultSamplePath };
 		folderPaths = if(paths.isString) { paths.pathMatch } { paths.asArray };
