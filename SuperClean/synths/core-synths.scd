@@ -32,7 +32,7 @@ live coding them requires that you have your SuperClean instance in an environme
 
 			// sample phase
 			// BufSampleRate adjusts the rate if the sound file doesn't have the same rate as the soundcard
-			//phase =  Sweep.ar(1, rate * BufSampleRate.ir(bufnum)) + (BufFrames.ir(bufnum) * begin);
+			// phase =  Sweep.ar(1, rate * BufSampleRate.ir(bufnum)) + (BufFrames.ir(bufnum) * begin);
 
 			numFrames = BufFrames.ir(bufnum);
 			sawrate = rate * BufSampleRate.ir(bufnum) / (absdif(begin, end) * numFrames);
@@ -62,7 +62,7 @@ live coding them requires that you have your SuperClean instance in an environme
 	// the monitor does the mixing and zeroing of the busses for each sample grain
 	// so that they can all play in one bus
 
-	SynthDef("clean_gate" ++ numChannels, { |out, in, sustain = 1, fadeInTime = 0.001, fadeTime = 0.001, amp = 1|
+	SynthDef("clean_gate" ++ numChannels, { |out, in, sustain = 1, fadeInTime = 0.0001, fadeTime = 0.0001, amp = 1|
 		var signal = In.ar(in, numChannels);
 		 //  doneAction: 14: free surrounding group and all nodes
 		var env = EnvGen.ar(Env([0, 1, 1, 0], [fadeInTime, sustain, fadeTime], \sin), levelScale: amp, doneAction: 14);
@@ -78,7 +78,7 @@ live coding them requires that you have your SuperClean instance in an environme
 
 	*/
 
-	SynthDef("clean_out" ++ numChannels, { |out, to, sustain = 1, fadeInTime = 0.001, fadeTime = 0.001, amp = 1|
+	SynthDef("clean_out" ++ numChannels, { |out, to, sustain = 1, fadeInTime = 0.0001, fadeTime = 0.0001, amp = 1|
 		var signal = In.ar(out, numChannels);
 		var env = EnvGen.ar(Env([0, 1, 1, 0], [fadeInTime, sustain, fadeTime], \sin), levelScale: amp);
 		Out.ar(to, signal * env);

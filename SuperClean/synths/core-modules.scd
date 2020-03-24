@@ -7,7 +7,7 @@ Core Modules: these are called for each event from tidal,
 and they represent the list of possible (effect) synths on the event level
 
 Usually, they correspond to a SynthDef (here in core-synths), you could call any function in them
-They will be called when the test is fulfilled (e.g. ~vowel.notNil)
+They will be called when the test is fulfilled (e.g. ~amp.notNil)
 
 You can't currently add your own, because Tidal needs to support this extension first.
 
@@ -29,7 +29,7 @@ sustain, speed, endSpeed, begin, end, pan, accelerate, offset, cps
 it ought to use "out" as bus output argument.
 
 the diversion is a hook to add an arbitrary function instead of a synth def.
-this may be refacored later.
+this may be refactored later.
 */
 (
 
@@ -129,7 +129,7 @@ they respond to the existence of a value for one of the tidal parameters
 				out: ~out
 		])
 
-}, { ~bandf.notNil });
+}, { ~bandqf.notNil });
 
 ~clean.addModule('crush',
 	{ |cleanEvent|

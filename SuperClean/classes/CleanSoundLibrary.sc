@@ -133,7 +133,7 @@ CleanSoundLibrary {
 
 
 	loadOnly { |names, path, appendToExisting = false|
-        var defaultSamplePath = Quarks.folder +/+ "SuperClean" +/+ "SuperClean" +/+ "clean-samples";
+        var defaultSamplePath = Quarks.folder +/+ "SuperClean" +/+ "clean-samples";
 		path = path ?? { defaultSamplePath };
 		names.do { |name|
 			this.loadSoundFileFolder(path +/+ name, name, appendToExisting)
