@@ -1,7 +1,0 @@
-(
-	\name: 			"SuperClean",
-	\summary:		"SuperCollider implementation of the Clean sampler for use inside of SuperCollider",
-	\author: 		"Scott Cazan and Daniel M Karlsson. Based on SuperDirt by Alex McLean and Julian Rohrhuber",
-	\since: 		"2019",
-	\dependencies:  []
-)
