@@ -1,0 +1,224 @@
+/*
+
+EVENT - BASED
+CORE SYNTHDEFS FOR DIRT
+(REQUIRED: CORE MODULES)
+
+these synthdefs can be hacked at runtime, but they are absolutely necessary for tidal to work correctly.
+
+Their name and parameter names shouldn't be changed. Parameter names can be added though.
+
+live coding them requires that you have your SuperClean instance in an environment variable called ~clean.
+
+*/
+
+(
+{
+	var numChannels = ~clean.numChannels;
+
+
+
+	// write variants for different sample buffer sizes
+	(1..SuperClean.maxSampleNumChannels).do { |sampleNumChannels|
+
+		var name = format("clean_sample_%_%", sampleNumChannels, numChannels);
+
+		SynthDef(name, { |out, bufnum, sustain = 1, begin = 0, end = 1, speed = 1, endSpeed = 1, freq = 440, pan = 0|
+
+			var sound, rate, phase, sawrate, numFrames;
+
+			// playback speed
+			rate = Line.kr(speed, endSpeed, sustain) * (freq / 60.midicps);
+
+			// sample phase
+			// BufSampleRate adjusts the rate if the sound file doesn't have the same rate as the soundcard
+			// phase =  Sweep.ar(1, rate * BufSampleRate.ir(bufnum)) + (BufFrames.ir(bufnum) * begin);
+
+			numFrames = BufFrames.ir(bufnum);
+			sawrate = rate * BufSampleRate.ir(bufnum) / (absdif(begin, end) * numFrames);
+			phase = (speed.sign * LFSaw.ar(sawrate, 1)).range(begin,end) * numFrames;
+
+			sound = BufRd.ar(
+				numChannels: sampleNumChannels,
+				bufnum: bufnum,
+				phase: phase,
+				loop: 0,
+				interpolation: 4 // cubic interpolation
+			);
+
+			sound = CleanPan.ar(sound, numChannels, pan);
+
+			Out.ar(out, sound)
+		}, [\ir, \ir, \ir, \ir, \ir, \ir, \ir, \ir]).add;
+	};
+
+	/*
+
+	Bus Routing Monitor
+
+	*/
+
+
+	// the monitor does the mixing and zeroing of the busses for each sample grain
+	// so that they can all play in one bus
+
+	SynthDef("clean_gate" ++ numChannels, { |out, in, sustain = 1, fadeInTime = 0.0001, fadeTime = 0.0001, amp = 1|
+		var signal = In.ar(in, numChannels);
+		 //  doneAction: 14: free surrounding group and all nodes
+		var env = EnvGen.ar(Env([0, 1, 1, 0], [fadeInTime, sustain, fadeTime], \sin), levelScale: amp, doneAction: 14);
+		signal = signal * env * CleanGateCutGroup.ar(fadeTime, doneAction: 14);
+		OffsetOut.ar(out, signal);
+		ReplaceOut.ar(in, Silent.ar(numChannels)) // clears bus signal for subsequent synths
+	}, [\ir, \ir, \ir, \ir, \ir, \ir]).add;
+
+
+	/*
+
+	Internal Signal Routing Synths
+
+	*/
+
+	SynthDef("clean_out" ++ numChannels, { |out, to, sustain = 1, fadeInTime = 0.0001, fadeTime = 0.0001, amp = 1|
+		var signal = In.ar(out, numChannels);
+		var env = EnvGen.ar(Env([0, 1, 1, 0], [fadeInTime, sustain, fadeTime], \sin), levelScale: amp);
+		Out.ar(to, signal * env);
+	}, [\ir, \ir]).add;
+
+	/*
+
+	Effect SynthDefs
+	These per-sample-effects are freed after Monitor envelope has ended
+
+	*/
+
+	// would be nice to have some more parameters in some cases
+
+	SynthDef("clean_crush" ++ numChannels, { |out, crush = 4|
+		var signal = In.ar(out, numChannels);
+		signal = signal.round(0.5 ** (crush-1));
+		ReplaceOut.ar(out, signal)
+	}, [\ir, \ir]).add;
+
+
+	SynthDef("clean_coarse" ++ numChannels, { |out, coarse = 0, bandq = 10|
+		var signal = In.ar(out, numChannels);
+		signal = Latch.ar(signal, Impulse.ar(SampleRate.ir / coarse));
+		ReplaceOut.ar(out, signal)
+	}, [\ir, \ir, \ir]).add;
+
+	SynthDef("clean_hpf" ++ numChannels, { |out, hcutoff = 440, hresonance = 0|
+		var signal = In.ar(out, numChannels);
+        var hcutoffClipped = hcutoff.abs.clip(20, 20000);
+		signal = RHPF.ar(signal, hcutoffClipped, hresonance.linexp(0, 1, 1, 0.001));
+		ReplaceOut.ar(out, signal)
+	}, [\ir, \ir, \ir]).add;
+
+	SynthDef("clean_bpf" ++ numChannels, { |out, bandqf = 440, bandq = 10|
+		var signal = In.ar(out, numChannels);
+		bandq = max(1, bandq);
+		bandq = bandq.abs.clip(0.000001, 1); // limit quality, avoid division by zero
+		bandqf = max(20, bandqf); // limit lower end, avoid blow up
+		bandqf = bandqf.abs.clip(20, 20000);
+
+		signal = BPF.ar(signal, bandqf, 1/bandq) * max(bandq, 1.0);
+		ReplaceOut.ar(out, signal)
+	}, [\ir, \ir, \ir]).add;
+
+	SynthDef("clean_shape" ++ numChannels, { |out, shape = 0|
+		var signal = In.ar(out, numChannels), amp = 1;
+		shape = min(shape, 1.0 - 4e-10); // avoid division by zero
+		//amp = 1.0 - (0.15 * shape / (shape + 2.0)) * amp; // optional gain comp
+		shape = (2.0 * shape) / (1.0 - shape);
+
+		signal = (1 + shape) * signal / (1 + (shape * abs(signal)));
+		ReplaceOut.ar(out, signal * amp)
+	}, [\ir, \ir]).add;
+
+	SynthDef("clean_lpf" ++ numChannels, { |out, cutoff = 440, resonance = 0|
+		var signal = In.ar(out, numChannels);
+		var cutoffClipped = cutoff.abs.clip(20, 20000);
+		signal = RLPF.ar(signal, cutoffClipped, resonance.linexp(0, 1, 1, 0.001));
+		ReplaceOut.ar(out, signal)
+	}, [\ir, \ir, \ir]).add;
+
+	SynthDef("clean_envelope" ++ numChannels, { |out, attack = 0, hold = 0, release = inf, crv = 0.3 |
+		var signal = In.ar(out, numChannels);
+		signal = signal * EnvGen.ar(Env.linen(attack, hold, release, 1, crv));
+		ReplaceOut.ar(out, signal);
+	}, [\ir, \ir, \ir, \ir]).add;
+
+	SynthDef("clean_tremolo" ++ numChannels, { |out, tremolorate = 1.0, tremolodepth = 0.5 |
+		var signal, tremolowave;
+
+		tremolodepth = tremolodepth.clip(0, 1) * 0.5;
+		tremolowave = (1 - tremolodepth) + SinOsc.ar(tremolorate, 0.5pi, tremolodepth);
+
+		signal = In.ar(out, numChannels);
+		signal = signal * tremolowave;
+
+		ReplaceOut.ar(out, signal);
+	}, [\ir, \ir, \ir]).add;
+
+	// Phaser audio DSP effect definition. Params: phaserrate (Hz); phaserdepth (amplitude)
+	SynthDef("clean_phaser" ++ numChannels, { |out, phaserrate = 1.0, phaserdepth = 0.5, sustain = 4 |
+		var signal, phaserwave;
+		var phase =  LFPar.kr(phaserrate).range(0.0088, 0.01);
+
+		phaserdepth = phaserdepth.clip(0, 1);
+
+		signal = In.ar(out, numChannels);
+
+		phaserwave = AllpassL.ar(signal, sustain, phase, 0, phaserdepth);
+
+		signal = signal + phaserwave;
+
+		ReplaceOut.ar(out, signal);
+	}, [\ir, \ir, \ir]).add;
+
+	SynthDef(\uio,  {
+	| out, attack = 0.001, release = 1,
+	  amp = 1,
+	  curve = 1,
+	  freq = 200,
+	  dur = 0.25,
+	  stereoDetune = 1 |
+
+	var ee,e,o;
+		ee = Env([0,1,0],[attack,release+0.01],[-20,30]);
+		e = Env.perc(attack,release+0.001,amp,curve);
+		ee = EnvGen.ar(ee);
+		e = EnvGen.ar(e,doneAction:2);
+		o = SinOsc.ar(freq*ee+([-1,1]*stereoDetune));
+		o = o * e * AmpComp.kr(freq,40,0.3);
+		Out.ar(out, o);
+	}, [\ir, \ir, \ir, \ir, \ir, \ir, \ir, \ir]).add;
+
+	SynthDef(\fmx, {
+    |
+    sustain, pan, amp = 0.1, lforate = 0, lfodepth = 0, out = 0,
+    freq=440,
+    fdb,
+    hr4,hr3,hr2,hr1
+    mi4,mi3,mi2,
+    en1,en2,en3,en4,
+    hl1,hl2,hl3,hl4,
+    cu1,cu2,cu3,cu4,
+    det
+    |
+    var env4,env3,env2,env1,sig,modComp;
+    env4 = EnvGen.ar(Env.perc(en4,hl1,curve:cu4),timeScale:sustain);
+    env3 = EnvGen.ar(Env.perc(en3,hl2,curve:cu3),timeScale:sustain);
+    env2 = EnvGen.ar(Env.perc(en2,hl3,curve:cu2),timeScale:sustain);
+    env1 = EnvGen.ar(Env.perc(en1,hl4,curve:cu1),timeScale:sustain,doneAction:2);
+    modComp = freq.explin(20,20000,1,0.01);
+    sig = SinOscFB.ar(freq*hr4,fdb*modComp,mi4*modComp) * env4;
+    sig = SinOsc.ar(freq*hr3,sig+[0,pi/2],mi3*modComp) * env3;
+    sig = SinOsc.ar(freq*hr2,sig,mi2*modComp) * env2;
+    sig = SinOsc.ar(freq*hr1+[det.neg,det],sig) * env1;
+    sig = sig * AmpCompA.kr(freq,17.323914436055);
+    sig = (sig * amp)*LFNoise1.ar(lforate).range(lfodepth,1);
+    Out.ar(out, tanh(LeakDC.ar(sig)));
+}).add;
+
+}.value
+)

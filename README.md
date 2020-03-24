@@ -303,8 +303,7 @@ Pdef(\0,
 • ~~Add Additive synthdef~~   
 • ~~Add `crv` param to env~~  
 
-• Regain capability to play Stereo files  
-• Normalise output volume when gain is not set    
+• Raise output volume  
 • Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
 • ReDo rm with feedback  
 • Set audible default values for `fmx`, what are sensible defaults?  
