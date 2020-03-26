@@ -196,14 +196,14 @@ live coding them requires that you have your SuperClean instance in an environme
 	SynthDef(\fmx, {
     |
     sustain, pan, amp = 0.1, lforate = 0, lfodepth = 0, out = 0,
-    freq=440,
-    fdb,
-    hr4,hr3,hr2,hr1
-    mi4,mi3,mi2,
-    en1,en2,en3,en4,
-    hl1,hl2,hl3,hl4,
-    cu1,cu2,cu3,cu4,
-    det
+    freq = 440,
+    fdb = 0.9,
+    hr4 = 3 ,hr3 = 2, hr2 = 1, hr1= 1,
+    mi4 = 2, mi3 = 3, mi2 = 4,
+    en1 = 0, en2 = 0.001, en3 = 0.01, en4 = 1.1,
+    hl1 = 2.2, hl2 = 3.3, hl3 = 3.3, hl4 = 4.4,
+    cu1 = -9, cu2 = -6, cu3 = -3, cu4 = 0,
+    det = 0
     |
     var env4,env3,env2,env1,sig,modComp;
     env4 = EnvGen.ar(Env.perc(en4,hl1,curve:cu4),timeScale:sustain);
