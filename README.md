@@ -207,35 +207,21 @@ Pdef(\0,
 // uio example
 (
     Pdef(\0,
-        Pseed(11,
         Pbind(*[
             type: \clean,
             s: \uio,
-            tempo: 3,
-            rps: Pexprand(1,14),
-            rpf: Pstutter(Pkey(\rps),Pwhite(1,9999)),
-            psi: Pstutter(Pkey(\rps),Psinen(0.1).linlin(0,1,0.25,1.0)),
-            pwi: Pstutter(Pkey(\rps),20000/Pwhite(1,99)),
-            freq: Pfunc{|envir|
-                var psi = envir.psi;
-                var pwi = envir.pwi;
-                var rpf = envir.rpf;
-                var x = pwi * rpf.geom(1,90/(89*psi).asInteger);
-                //x.postln;
+            gain: Pexprand(1/4,4.0),
+            freq: Pfunc{
+                var x = 160 * rrand(1,500).geom(1,30/29);
                 x.reject{|i| i > 20000 }
-            } * Pstutter(Pkey(\rps),Pwhite(0.9,1.1)),
-            dur: 1/Pstutter(Pkey(\rps),Pwhite(2,11),inf)*Pstutter(Pkey(\rps),Pexprand(1.0,2.0)).trace,
-            attack: Pstutter(Pkey(\rps),Pexprand(0.00001,0.01)),
-            release: Pstutter(Pkey(\rps),Pexprand(0.01,20.0)),
-            curve: -8,
-            stereoDetune: Pstutter(Pkey(\rps),Pwhite(100.0,1000.0)),
-            stretch: Pseg([Pwhite(0.75,2.0),Pwhite(0.75,2.0)],Pwhite(15,90),\lin,inf),
-            gain: Pseg([Pwhite(1.0,2.0),Pwhite(2.0,8.0)],Pwhite(15,90),\welch,inf),
-            hpf: Pseg([20,200,20,20],Pwhite(15,90),\welch,inf),
-            bpf: Pstutter(Pkey(\rps),Pexprand(20,100)),
-            bpq: Pstutter(Pkey(\rps),Pexprand(0.01,1.0)),
-        ]))
-    ).play;
+            },
+            dur: Pstutter(Pexprand(1,5).asInteger,Pexprand(1,3).asInteger/Pexprand(5,29).asInteger),
+            attack: Pexprand(0.0001,1.1),
+            release: Pkey(\dur)-(Pexprand(0.000001,0.1)),
+            hpf: Pexprand(20,10000),
+            curve: Pexprand(-16.0,-4),
+        ])
+    ).play(quant: 1);
 )
 
 ```
