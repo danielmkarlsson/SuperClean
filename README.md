@@ -243,6 +243,7 @@ Pdef(\0,
 • ~~Raise output volume~~  
 • ~~Stereo sample playback~~  
 
+• FadeTime T1 style
 • Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
 • ReDo rm with feedback  
 • Set audible default values for `fmx`, what are sensible defaults?  
