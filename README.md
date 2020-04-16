@@ -243,14 +243,15 @@ Pdef(\0,
 • ~~Raise output volume~~  
 • ~~Stereo sample playback~~  
 
-• Sequence the order of effects
-• FadeTime T1 style
+  
 • Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
 • ReDo rm with feedback  
 • Set audible default values for `fmx`, what are sensible defaults?  
 • Might there be a way to lessen the likeliness of the envelopes in `fmx` clicking?  
 • Pan not working in `fmx`  
-• Pan not working in `uio`  
+• Pan not working in `uio`
+• Sequence the order of effects    
+• FadeTime T1 style    
 • Pros/cons of env keys value range relating to sample length (like `begin` & `end`)  
 • `doneAction:2` , why not? Hopefully solves `loop` edge cases and longer releases never finishing
 
