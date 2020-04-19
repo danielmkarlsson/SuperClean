@@ -242,11 +242,10 @@ Pdef(\0,
 • ~~Add `crv` param to env~~  
 • ~~Raise output volume~~  
 • ~~Stereo sample playback~~  
+• ~~Set audible default values for `fmx`, what are sensible defaults?~~    
 
-  
 • Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
 • ReDo rm with feedback  
-• Set audible default values for `fmx`, what are sensible defaults?  
 • Might there be a way to lessen the likeliness of the envelopes in `fmx` clicking?  
 • Pan not working in `fmx`  
 • Pan not working in `uio`
