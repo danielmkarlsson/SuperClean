@@ -251,8 +251,7 @@ Pdef(\0,
 • Pan not working in `uio`
 • Sequence the order of effects    
 • FadeTime T1 style    
-• Pros/cons of env keys value range relating to sample length (like `begin` & `end`)  
-• `doneAction:2` , why not? Hopefully solves `loop` edge cases and longer releases never finishing
+• NRT render inside SuperClean  
 
 • Include `Pxshuf`  
 • Include `Pbjorklund`  
