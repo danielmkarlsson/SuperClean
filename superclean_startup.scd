@@ -1,3 +1,4 @@
+// make sure you have sc3 plugins installed first
 (
 "killall scsynth".unixCmd;
 s.options.numBuffers = 1024 * 64; // increase if you need to load more samples
