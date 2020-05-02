@@ -11,19 +11,20 @@ It keeps a number of clean orbits (see below).
 
 SuperClean {
 
+    // class vars
 	var <numChannels, <server;
 	var <soundLibrary, <vowels;
 	var <>orbits;
 	var <>modules;
 	var <>audioRoutingBusses;
 
-	var <port, <senderAddr, <replyAddr, netResponders;
+	var <port, <senderAddr, netResponders;
 	var <>receiveAction, <>warnOutOfOrbit = true, <>maxLatency = 42, <>numRoutingBusses = 16;
 
 	classvar <>default, <>maxSampleNumChannels = 2, <>postBadValues = false;
 
 	*new { |numChannels = 2, server|
-		^super.newCopyArgs(numChannels, server ? Server.default).init
+		^super.newCopyArgs(numChannels, server ? Server.default).init;
 	}
 
 	init {
@@ -38,7 +39,7 @@ SuperClean {
 	start { |port = 57120, outBusses, senderAddr = (NetAddr("127.0.0.1"))|
 		if(orbits.notNil) { this.stop };
 		this.makeOrbits(outBusses ? [0]);
-		this.connect(senderAddr, port)
+		// this.connect(senderAddr, port)
 	}
 
 	stop {
@@ -48,8 +49,13 @@ SuperClean {
 	}
 
 	makeOrbits { |outBusses|
-		var new, i0 = if(orbits.isNil) { 0 } { orbits.lastIndex };
-		new = outBusses.asArray.collect { |bus, i| CleanOrbit(this, bus, i + i0) };
+		var new,
+            i0 = if(orbits.isNil) { 0 } { orbits.lastIndex };
+
+		new = outBusses.asArray.collect { |bus, i|
+            CleanOrbit(this, bus, i + i0);
+        };
+
 		orbits = orbits ++ new;
 		^new.unbubble
 	}
@@ -189,7 +195,7 @@ SuperClean {
 			"Please note: SC3.6 listens to any sender.".warn;
 			senderAddr = nil;
 		} {
-			senderAddr = argSenderAddr
+			senderAddr = argSenderAddr;
 		};
 
 		port = argPort;
@@ -198,14 +204,14 @@ SuperClean {
 
 		netResponders.add(
 			// pairs of parameter names and values in arbitrary order
-			OSCFunc({ |msg, time, tidalAddr|
+			OSCFunc({ |msg, time|
 				var latency = time - Main.elapsedTime;
 				var event = (), orbit, index;
 				if(latency > maxLatency) {
 					"The scheduling delay is too long. Your networks clocks may not be in sync".warn;
 					latency = 0.2;
 				};
-				replyAddr = tidalAddr; // collect tidal reply address
+
 				event[\latency] = latency;
 				event.putPairs(msg[1..]);
 				receiveAction.value(event);
@@ -227,14 +233,6 @@ SuperClean {
 	closeNetworkConnection {
 		netResponders.do { |x| x.free };
 		netResponders = List.new;
-	}
-
-	sendToTidal { |args|
-		if(replyAddr.notNil) {
-			replyAddr.sendMsg(*args);
-		} {
-			"Currently no connection back to tidal".warn;
-		}
 	}
 
 	*postTidalParameters { |synthNames, excluding |
