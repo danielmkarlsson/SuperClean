@@ -247,8 +247,8 @@ Pdef(\0,
 • Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
 • ReDo rm with feedback  
 • Might there be a way to lessen the likeliness of the envelopes in `fmx` clicking?  
-• Pan not working in `fmx`  
-• Pan not working in `uio`
+• ~~Pan not working in `fmx`~~  
+• ~~Pan not working in `uio`~~
 • Sequence the order of effects    
 • FadeTime T1 style    
 • NRT render inside SuperClean  
