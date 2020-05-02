@@ -216,10 +216,11 @@ Pdef(\0,
                 x.reject{|i| i > 20000 }
             },
             dur: Pstutter(Pexprand(1,5).asInteger,Pexprand(1,3).asInteger/Pexprand(5,29).asInteger),
-            attack: Pexprand(0.0001,1.1),
-            release: Pkey(\dur)-(Pexprand(0.000001,0.1)),
+            atk: Pexprand(0.0001,1.1),
+            rel: Pkey(\dur)-(Pexprand(0.000001,0.1)),
             hpf: Pexprand(20,10000),
-            curve: Pexprand(-16.0,-4),
+            crv: Pexprand(-16.0,-4),
+            pan: Pwhite(0.0,1.0),
         ])
     ).play(quant: 1);
 )
