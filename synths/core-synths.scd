@@ -175,50 +175,7 @@ live coding them requires that you have your SuperClean instance in an environme
 		ReplaceOut.ar(out, signal);
 	}, [\ir, \ir, \ir]).add;
 
-	SynthDef(\uio,  {
-	| out, attack = 0.001, release = 1,
-	  amp = 1,
-	  curve = 1,
-	  freq = 200,
-	  dur = 0.25,
-	  stereoDetune = 1 |
 
-	var ee,e,o;
-		ee = Env([0,1,0],[attack,release+0.01],[-20,30]);
-		e = Env.perc(attack,release+0.001,amp,curve);
-		ee = EnvGen.ar(ee);
-		e = EnvGen.ar(e,doneAction:2);
-		o = SinOsc.ar(freq*ee+([-1,1]*stereoDetune));
-		o = o * e * AmpComp.kr(freq,40,0.3);
-		Out.ar(out, o);
-	}, [\ir, \ir, \ir, \ir, \ir, \ir, \ir, \ir]).add;
-
-	SynthDef(\fmx, {
-    |
-    sustain, pan, amp = 0.1, lforate = 0, lfodepth = 0, out = 0,
-    freq = 440,
-    fdb = 0.9,
-    hr4 = 3 ,hr3 = 2, hr2 = 1, hr1= 1,
-    mi4 = 2, mi3 = 3, mi2 = 4,
-    en1 = 0, en2 = 0.001, en3 = 0.01, en4 = 1.1,
-    hl1 = 2.2, hl2 = 3.3, hl3 = 3.3, hl4 = 4.4,
-    cu1 = -9, cu2 = -6, cu3 = -3, cu4 = 0,
-    det = 0
-    |
-    var env4,env3,env2,env1,sig,modComp;
-    env4 = EnvGen.ar(Env.perc(en4,hl1,curve:cu4),timeScale:sustain);
-    env3 = EnvGen.ar(Env.perc(en3,hl2,curve:cu3),timeScale:sustain);
-    env2 = EnvGen.ar(Env.perc(en2,hl3,curve:cu2),timeScale:sustain);
-    env1 = EnvGen.ar(Env.perc(en1,hl4,curve:cu1),timeScale:sustain,doneAction:2);
-    modComp = freq.explin(20,20000,1,0.01);
-    sig = SinOscFB.ar(freq*hr4,fdb*modComp,mi4*modComp) * env4;
-    sig = SinOsc.ar(freq*hr3,sig+[0,pi/2],mi3*modComp) * env3;
-    sig = SinOsc.ar(freq*hr2,sig,mi2*modComp) * env2;
-    sig = SinOsc.ar(freq*hr1+[det.neg,det],sig) * env1;
-    sig = sig * AmpCompA.kr(freq,17.323914436055);
-    sig = (sig * amp)*LFNoise1.ar(lforate).range(lfodepth,1);
-    Out.ar(out, tanh(LeakDC.ar(sig)));
-}).add;
 
 }.value
 )

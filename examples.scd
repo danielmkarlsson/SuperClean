@@ -80,6 +80,7 @@ Pdef(\0,
                 var x = 160 * rrand(1,500).geom(1,30/29);
                 x.reject{|i| i > 20000 }
             },
+            pan: 0.5,
             dur: Pstutter(Pexprand(1,5).asInteger,Pexprand(1,3).asInteger/Pexprand(5,29).asInteger),
             attack: Pexprand(0.0001,1.1),
             release: Pkey(\dur)-(Pexprand(0.000001,0.1)),
