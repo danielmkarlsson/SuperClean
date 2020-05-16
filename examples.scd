@@ -65,8 +65,8 @@ Pdef(\0,
         lpf: Pkey(\freq).linlin(10,1600,20000,100,\minmax),
         room: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
         size: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
-        dry: Pseg(Pexprand(0.775,1),Pexprand(4.0,64.0),\welch,inf).trace,
-        pan: Pstutter(Pkey(\rps),Pwhite(0.0,1.0)),
+        dry: Pseg(Pexprand(0.95,1),Pexprand(4.0,64.0),\welch,inf).trace,
+        pan: Pstutter(Pkey(\rps),Pwhite(0.2,0.8)),
     ]);
 )
 ).play;
