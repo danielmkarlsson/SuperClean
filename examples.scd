@@ -30,7 +30,7 @@
 // fmx example
 (
 Pdef(\0,
-    Pseed(399,
+    Pseed(999,
     Pbind(*[
         type: \clean,
         s: \fmx,
