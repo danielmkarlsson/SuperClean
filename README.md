@@ -9,8 +9,10 @@ world. It is, in short, a one-stop-shopping-experience for folks who want:
 • a bunch of effects, and   
 • a couple of synths   
 
-for the low, low asking price of: _free_. Also, hey, this is what I use to make music with every day. I really like making 
-music and, for me, this makes it way funner. Try it! What have you got to loose?
+for the low, low asking price of: _free_.  
+Also, on a persona note here, hey, this is what I use to make music with every day.  
+I really like making music and, for me, this makes it way funner.  
+Try it! What have you got to loose?
 
 ## Installation
 
