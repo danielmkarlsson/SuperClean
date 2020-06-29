@@ -1,113 +1,37 @@
-/*
+This may not be a complete list of parameter names.
 
-a list of parameters with special use
-
-*** These parameter names can change in the future. ***
-
-You can use those parameters in your SynthDefs, but it’s good to know what they do. There is no documentation, but the information is in:
-
-effects: `synths/core-modules.scd` and `synths/core-synths.scd`,
-global effects: CleanOrbit
-core: CleanEvent
-
-
-Like in sclang in general, sustain parameter is the total duration of a sound (not just a sustain portion of an envelope)
-
-*/
-
-
-// core, sent from tidal
-// they have specific meaning
-// you can use these in your synthdefs directly if necessary
-s
-n
-sound
-begin
-end
-length
-accelerate
-cps
-unit
-loop
-delta
-legato
-sustain
-amp
-gain
-channel
-pan
-note
-freq
-midinote
-octave
-latency
-lag
-offset
-cut
-orbit
-cycle
-
-// core, clean public
-// you should use this in your synthdefs
-out
-
-// core, clean internal
-// they have specific meaning
-// you shouldn't use these in your synthdefs
-instrument
-unitDuration
-buffer
-fadeTime
-fadeInTime
-endSpeed
-synthGroup
-dryBus
-effectBus
-numChannels
-server
-cleanOut
-i_out
-
-
-// used in effect modules
-// you can use these in your synthdefs directly if necessary,
-// but remember they are also triggering effect synths
-
-shape
-hcutoff
-hresonance
-bandf
-bandq
-crush
-coarse
-cutoff
-attack
-release
-hold
-tremolorate
-tremolodepth
-phaserrate
-phaserdepth
-
-// used in effect modules (private, don't use)
-//vowel
-
-
-// used in global effects
-// they have specific meaning
-// you can use these in your synthdefs directly if necessary,
-// but remember they are also triggering effect synths
-delaytime
-delayfeedback
-delayAmp
-delaySend
-lock
-cps
-size
-room
-dry
-leslie
-lrate
-lsize
-
-
+s           sample or sound or synth
+n           number, which sample in a folder or which note if you are using a synth
+pan         Pans the sound, 0.0 to 1.0.
+shp         This is like a distortion, goes to 0.999999, does not accept 1 (I need to fix that)
+gain        Make it louder! Can go above one to lean into the compressor
+speed       The speed at which to play back the sample
+atk         The attack time of the envelope
+hld         The hold time of the envelope
+rel         The release time of the envelope
+crv         The curvature of the envelope, swings both ways. That is to say it uses both positive and negative values
+lpf         Low pass filter
+hpf         High pass filter
+bpf         Band pass filter
+lpq         Low pass filter resonance
+hpq         High pass filter resonance
+bpq         Band pass filter resonance
+dla         Delay amplitude
+dlf         Delay feedback
+dlt         Delay time
+room        Room is one of three reverb parameters
+size        This is the other reverb parameter
+dry         Decrease the amplitude of the reverb
+freeze      FFT Freeze
+enhance     FFT
+smear       FFT
+begin       Where in the file to begin playing back the file, the value range is 0.0 to 1.0
+end         Where in the file to end playing back the file, the value range is 0.0 to 1.0
+accelerate  Change the playback speed of the file while it's running, accepts positive and negative values
+loop        How many times to loop the file, takes integers, work in consort with the envelope parameters
+legato      Like a variablöe soft cut dependent on dur where 1 is dur
+cut         Cut groups, cuts itself as well as other things in the same cut group. rougher edges than leagato in terms of sound
+orbit       Should really be called aux (I need to fix that)
+trr         Tremolo Rate
+trd         Tremeolo depth
+freq        When working with a synth we might sometimes want to work with frequencies instead of midi note numbers as above, accepts integers 20 to 20000.
