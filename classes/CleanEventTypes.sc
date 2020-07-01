@@ -14,11 +14,29 @@ CleanEventTypes {
 		Event.addEventType(\clean, {
 			var keys, values;
 			var clean = ~clean ? SuperClean.default;
+			var midiout, ccn, ccv, chan;
 			if(clean.isNil) {
 				Error("clean event: no clean instance found.\n\n// You could try:\nSuperClean.default = ~clean;").throw;
 			};
 			~delta = ~delta ?? { ~stretch.value * ~dur.value };
 			~latency = ~latency ?? { clean.server.latency };
+
+            midiout = ~midiout;
+            if (midiout.notNil) {
+                if (~ccn.notNil and:{~ccv.notNil}) {
+                    ccn = ~ccn;
+                    ccv = ~ccv;
+                    chan = ~chan ? 0;
+                    if (~latency == 0.0) {
+                        midiout.control(chan, ccn, ccv)
+                    } {
+                        thisThread.clock.sched(~latency, {
+                            midiout.control(chan, ccn, ccv)
+                        });
+                    }
+                }
+            };
+
 			if(~n.isArray) {
 				keys = currentEnvironment.keys.asArray;
 				values = keys.collect(_.envirGet).flop;
