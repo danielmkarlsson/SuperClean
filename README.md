@@ -21,7 +21,8 @@ Copy this line and evaluate it in SuperCollider:
 `Quarks.install("https://github.com/danielmkarlsson/SuperClean.git");`
 
 If you don't have git, then go ahead and get git, when you hopefully get asked to get git, as a consequence of running that
-line. Git is good to have. It let's us have version control and install all kinds of neat stuff.
+line. Git is good to have. It let's us have version control and install all kinds of neat stuff. If you are on a mac then 
+it won't be that huge whole Xcode thing, it'll just be something called Xcode Select which is quite small.
 
 ## Origins and acknowledgements
 
