@@ -8,8 +8,18 @@ CleanEventTypes {
 	classvar <midiEvent;
 
 	*initClass {
+	    var ccKeys = (0..127).collect {|i| ("cc" ++ i).asSymbol };
+	    var sendCC = {|midiout, latency=0, chan, ccNum, ccVal|
+            if (latency == 0.0) {
+                midiout.control(chan, ccNum, ccVal)
+            } {
+                thisThread.clock.sched(latency, {
+                    midiout.control(chan, ccNum, ccVal)
+                });
+            }
+        };
 
-		// allows to play events in superclean from sclang
+        // allows to play events in superclean from sclang
 
 		Event.addEventType(\clean, {
 			var keys, values;
@@ -23,18 +33,18 @@ CleanEventTypes {
 
             midiout = ~midiout;
             if (midiout.notNil) {
+                chan = ~chan ? 0;
                 if (~ccn.notNil and:{~ccv.notNil}) {
                     ccn = ~ccn;
                     ccv = ~ccv;
-                    chan = ~chan ? 0;
-                    if (~latency == 0.0) {
-                        midiout.control(chan, ccn, ccv)
-                    } {
-                        thisThread.clock.sched(~latency, {
-                            midiout.control(chan, ccn, ccv)
-                        });
-                    }
-                }
+                    sendCC.(midiout, ~latency, chan, ccn, ccv);
+                };
+                ccKeys.do {|key, i|
+                    var value = currentEnvironment.at(key);
+                    if (value.notNil) {
+                        sendCC.(midiout, ~latency, chan, i, value);
+                    };
+                };
             };
 
 			if(~n.isArray) {
