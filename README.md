@@ -24,6 +24,18 @@ If you don't have git, then go ahead and get git, when you hopefully get asked t
 line. Git is good to have. It let's us have version control and install all kinds of neat stuff. If you are on a mac then 
 it won't be that huge whole Xcode thing, it'll just be something called Xcode Select which is quite small.
 
+## Updating
+
+I have found that in order to update consistently across different operting systems I need to first uninstall:
+
+`Quarks.uninstall("SuperClean");`
+
+I then manually delete the old SuperClean folder, recompile the class library and finally reinstall:
+
+`Quarks.install("https://github.com/danielmkarlsson/SuperClean.git");`
+
+That's how I do it. I'd love to find a simpler solution so let me know if you have one.
+
 ## Origins and acknowledgements
 
 Alex McLean and Julian Rohrhuber built this thing initially, then I changed a few little things here and there.  
