@@ -270,7 +270,7 @@ Pdef(\0,
 • ReDo rm with feedback  
 • Might there be a way to lessen the likeliness of the envelopes in `fmx` clicking?       
 • Sequence the order of effects     
-• FadeTime T1 style     
+• FadeTime T1 style (requires `amp` key, so `gain` needs to go away somehow).       
 • NRT render inside SuperClean   
 
 • Include `Pxshuf`  
