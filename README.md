@@ -246,6 +246,20 @@ Pdef(\0,
 
 ```
 
+In the \fmx synth definition the envelope segments are expressed in
+percentages. e4 through to e1 tell you how far into the note value that the
+envelope should have reached its maximum level after the attack time, after
+which the release time begins immediately. So an e1 value of 0.01 will yield a
+1% duration for the attack and a 99% duration for the release. c4 through to c1
+denote the curvature of the envelope segments. hr is the harmonicity ratio of
+the operator. mi means modulation index, which is the modulation amount by
+which that oscillator will modulate the next. The last oscillator (e1) doesn’t
+have a modulation index value because it isn’t modulating anything else.
+SuperCollider has an uncanny knack for delivering such clean synthesis, owing
+to negligible round off errors in the calculation of waveforms at the lowest
+level. This becomes especially important for me where modulation indexes are
+concerned. Without this level of detail, FM can otherwise become a very round
+about way for me to make white noise.
 
 ## TODO  
 <details>
@@ -265,8 +279,8 @@ Pdef(\0,
 • ~~Set audible default values for `fmx`, what are sensible defaults?~~    
 • ~~Pan not working in `fmx`~~      
 • ~~Pan not working in `uio`~~
+• ~~Investigate possible bug where long samples (try an hour) will play back at lower sample rate (turns out around 3 minutes is max before fitror sets in)~~  
 
-• Investigate possible bug where long samples (try an hour) will play back at lower sample rate  
 • ReDo rm with feedback  
 • Might there be a way to lessen the likeliness of the envelopes in `fmx` clicking?       
 • Sequence the order of effects     
