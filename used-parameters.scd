@@ -49,5 +49,5 @@ have a modulation index value because it isn’t modulating anything else.
 SuperCollider has an uncanny knack for delivering such clean synthesis, owing
 to negligible round off errors in the calculation of waveforms at the lowest
 level. This becomes especially important for me where modulation indexes are
-concerned. Without this level of detail, FM can otherwise become a very round
-about way for me to make white noise.
+concerned. Without this level of detail, FM can otherwise easily become a very 
+round about way for me to make white noise.
