@@ -28,7 +28,7 @@ enhance     FFT
 smear       FFT
 begin       Where in the file to begin playing back the file, the value range is 0.0 to 1.0
 end         Where in the file to end playing back the file, the value range is 0.0 to 1.0
-accelerate  Change the playback speed of the file while it's running, accepts positive and negative values
+accelerate  Change the playback speed of the file while its running, accepts positive and negative values
 loop        How many times to loop the file, takes integers, work in consort with the envelope parameters
 legato      Like a variablöe soft cut dependent on dur where 1 is dur
 cut         Cut groups, cuts itself as well as other things in the same cut group. rougher edges than leagato in terms of sound
