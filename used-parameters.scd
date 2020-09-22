@@ -36,3 +36,18 @@ orbit       Should really be called aux (I need to fix that)
 trr         Tremolo Rate
 trd         Tremeolo depth
 freq        When working with a synth we might sometimes want to work with frequencies instead of midi note numbers as above, accepts integers 20 to 20000.
+
+In the \fmx synth definition the envelope segments are expressed in
+percentages. e4 through to e1 tell you how far into the note value that the
+envelope should have reached it’s maximum level after the attack time, after
+which the release time begins immediately. So an e1 value of 0.01 will yield a
+1% duration for the attack and a 99% duration for the release. c4 through to c1
+denote the curvature of the envelope segments. hr is the harmonicity ratio of
+the operator. mi means modulation index, which is the modulation amount by
+which that oscillator will modulate the next. The last oscillator (e1) doesn’t
+have a modulation index value because it isn’t modulating anything else.
+SuperCollider has an uncanny knack for delivering such clean synthesis, owing
+to negligible round off errors in the calculation of waveforms at the lowest
+level. This becomes especially important for me where modulation indexes are
+concerned. Without this level of detail, FM can otherwise become a very round
+about way for me to make white noise.
