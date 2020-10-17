@@ -198,10 +198,10 @@ SynthDef(\debug, { |begin = -1, end = -1, delta = -1, sustain = -1, unitDuration
     |
     var env4,env3,env2,env1,sig,modComp;
     
-    env4 = EnvGen.ar(Env.perc(ep4,1-ep4,curve:cu4),timeScale:sustain);
-    env3 = EnvGen.ar(Env.perc(ep3,1-ep3,curve:cu3),timeScale:sustain);
-    env2 = EnvGen.ar(Env.perc(ep2,1-ep2,curve:cu2),timeScale:sustain);
-    env1 = EnvGen.ar(Env.perc(ep1,1-ep1,curve:cu1),timeScale:sustain,doneAction:2);
+    env4 = EnvGen.ar(Env.perc(en4,1-en4,curve:cu4),timeScale:sustain);
+    env3 = EnvGen.ar(Env.perc(en3,1-en3,curve:cu3),timeScale:sustain);
+    env2 = EnvGen.ar(Env.perc(en2,1-en2,curve:cu2),timeScale:sustain);
+    env1 = EnvGen.ar(Env.perc(en1,1-en1,curve:cu1),timeScale:sustain,doneAction:2);
     
     modComp = freq.explin(20,20000,1,0.01);
     
