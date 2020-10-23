@@ -1,18 +1,18 @@
 CleanEvent {
 
-	var <orbit, <modules, <event;
+	var <aux, <modules, <event;
 	var server;
 
-	*new { |orbit, modules, event|
-		^super.newCopyArgs(orbit, modules, event)
+	*new { |aux, modules, event|
+		^super.newCopyArgs(aux, modules, event)
 	}
 
 	play {
-		event.parent = orbit.defaultParentEvent;
+		event.parent = aux.defaultParentEvent;
 		event.use {
 			// s and n stand for synth/sample and note/number
 			~s ?? { this.splitName };
-			// unless orbit wide diversion returns something, we proceed
+			// unless aux wide diversion returns something, we proceed
 			~diversion.(this) ?? {
 				this.mergeSoundEvent;
 				server = ~server.value; // as server is used a lot, make lookup more efficient
@@ -21,7 +21,7 @@ CleanEvent {
 				this.finaliseParameters;
 				// unless event diversion returns something, we proceed
 				~play.(this) ?? {
-					if(~sustain >= orbit.minSustain) { this.playSynths }; // otherwise drop it.
+					if(~sustain >= aux.minSustain) { this.playSynths }; // otherwise drop it.
 				}
 			}
 		}
@@ -35,7 +35,7 @@ CleanEvent {
 	}
 
 	mergeSoundEvent {
-		var soundEvent = orbit.clean.soundLibrary.getEvent(~s, ~n);
+		var soundEvent = aux.clean.soundLibrary.getEvent(~s, ~n);
 		if(soundEvent.isNil) {
 			// only call ~notFound if no ~diversion is given that anyhow redirects control
 			if(~diversion.isNil) { ~notFound.value }
@@ -159,8 +159,8 @@ CleanEvent {
 			1, // add action: addToTail
 			~synthGroup, // send to group
 			*[
-				in: orbit.synthBus.index, // read from synth bus, which is reused
-				out: orbit.dryBus.index, // write to orbital dry bus
+				in: aux.synthBus.index, // read from synth bus, which is reused
+				out: aux.dryBus.index, // write to aux dry bus
 				amp: ~amp,
 				sample: ~hash, // required for the cutgroup mechanism
 				sustain: ~sustain, // after sustain, free all synths and group
@@ -172,20 +172,20 @@ CleanEvent {
 
 	prepareSynthGroup { |outerGroup|
 		~synthGroup = server.nextNodeID;
-		server.sendMsg(\g_new, ~synthGroup, 1, outerGroup ? orbit.group);
+		server.sendMsg(\g_new, ~synthGroup, 1, outerGroup ? aux.group);
 	}
 
 	playSynths {
 		var cutGroup;
 		~cut = ~cut.value;
 		if(~cut != 0) {
-			cutGroup = orbit.getCutGroup(~cut);
+			cutGroup = aux.getCutGroup(~cut);
 			~hash ?? { ~hash = ~sound.identityHash }; // just to be safe
 		};
 
 		server.makeBundle(~latency, { // use this to build a bundle
 
-			orbit.globalEffects.do { |x| x.set(currentEnvironment) };
+			aux.globalEffects.do { |x| x.set(currentEnvironment) };
 
 			if(cutGroup.notNil) {
 				server.sendMsg(\n_set, cutGroup, \gateSample, ~hash, \cutAll, if(~cut > 0) { 1 } { 0 });

@@ -53,10 +53,10 @@ CleanEventTypes {
 				values.do { |each|
 					var e = Event(parent: currentEnvironment);
 					keys.do { |key, i| e.put(key, each.at(i)) };
-					clean.orbits.wrapAt(e[\orbit] ? 0).value(e)
+					clean.auxs.wrapAt(e[\aux] ? 0).value(e)
 				}
 			} {
-				clean.orbits.wrapAt(~orbit ? 0).value(currentEnvironment)
+				clean.auxs.wrapAt(~aux ? 0).value(currentEnvironment)
 			}
 		});
 

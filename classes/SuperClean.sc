@@ -4,7 +4,7 @@ SuperCollider implementation of Clean
 
 This object handles OSC communication and local effects.
 These are relative to a server and a number of output channels
-It keeps a number of clean orbits (see below).
+It keeps a number of clean auxs (see below).
 
 
 */
@@ -14,12 +14,12 @@ SuperClean {
     // class vars
 	var <numChannels, <server;
 	var <soundLibrary, <vowels;
-	var <>orbits;
+	var <>auxs;
 	var <>modules;
 	var <>audioRoutingBusses;
 
 	var <port, <senderAddr, netResponders;
-	var <>receiveAction, <>warnOutOfOrbit = true, <>maxLatency = 42, <>numRoutingBusses = 16;
+	var <>receiveAction, <>warnOutOfAux = true, <>maxLatency = 42, <>numRoutingBusses = 16;
 
 	classvar <>default, <>maxSampleNumChannels = 2, <>postBadValues = false;
 
@@ -37,26 +37,26 @@ SuperClean {
 
 
 	start { |port = 57120, outBusses, senderAddr = (NetAddr("127.0.0.1"))|
-		if(orbits.notNil) { this.stop };
-		this.makeOrbits(outBusses ? [0]);
+		if(auxs.notNil) { this.stop };
+		this.makeAuxs(outBusses ? [0]);
 		// this.connect(senderAddr, port)
 	}
 
 	stop {
-		orbits.do(_.free);
-		orbits = nil;
+		auxs.do(_.free);
+		auxs = nil;
 		this.closeNetworkConnection;
 	}
 
-	makeOrbits { |outBusses|
+	makeAuxs { |outBusses|
 		var new,
-            i0 = if(orbits.isNil) { 0 } { orbits.lastIndex };
+            i0 = if(auxs.isNil) { 0 } { auxs.lastIndex };
 
 		new = outBusses.asArray.collect { |bus, i|
-            CleanOrbit(this, bus, i + i0);
+            CleanAux(this, bus, i + i0);
         };
 
-		orbits = orbits ++ new;
+		auxs = auxs ++ new;
 		^new.unbubble
 	}
 
@@ -65,7 +65,7 @@ SuperClean {
 	}
 
 	set { |...pairs|
-		orbits.do(_.set(*pairs))
+		auxs.do(_.set(*pairs))
 	}
 
 	free {
@@ -77,11 +77,11 @@ SuperClean {
 	/* analysis */
 
 	startSendRMS { |rmsReplyRate = 20, rmsPeakLag = 3|
-		orbits.do(_.startSendRMS(rmsReplyRate, rmsPeakLag))
+		auxs.do(_.startSendRMS(rmsReplyRate, rmsPeakLag))
 	}
 
 	stopSendRMS {
-		orbits.do(_.stopSendRMS)
+		auxs.do(_.stopSendRMS)
 	}
 
 	/* sound library */
@@ -206,7 +206,7 @@ SuperClean {
 			// pairs of parameter names and values in arbitrary order
 			OSCFunc({ |msg, time|
 				var latency = time - Main.elapsedTime;
-				var event = (), orbit, index;
+				var event = (), aux, index;
 				if(latency > maxLatency) {
 					"The scheduling delay is too long. Your networks clocks may not be in sync".warn;
 					latency = 0.2;
@@ -215,13 +215,13 @@ SuperClean {
 				event[\latency] = latency;
 				event.putPairs(msg[1..]);
 				receiveAction.value(event);
-				index = event[\orbit] ? 0;
+				index = event[\aux] ? 0;
 
-				if(warnOutOfOrbit and: { index >= orbits.size } or: { index < 0 }) {
-						"SuperClean: event falls out of existing orbits, index (%)".format(index).warn
+				if(warnOutOfAux and: { index >= auxs.size } or: { index < 0 }) {
+						"SuperClean: event falls out of existing auxs, index (%)".format(index).warn
 				};
 
-				CleanEvent(orbits @@ index, modules, event).play
+				CleanEvent(auxs @@ index, modules, event).play
 
 			}, '/play2', senderAddr, recvPort: port).fix
 		);

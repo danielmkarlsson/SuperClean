@@ -14,8 +14,8 @@ CleanModule {
 		^super.newCopyArgs(name, func, test ? true)
 	}
 
-	value { |orbit|
-		if(test.value, { func.value(orbit) })
+	value { |aux|
+		if(test.value, { func.value(aux) })
 	}
 
 	== { arg that;

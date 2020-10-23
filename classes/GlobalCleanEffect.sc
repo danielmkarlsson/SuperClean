@@ -1,12 +1,12 @@
 
 /*
-this keeps state of running synths that have a livespan of the CleanOrbit
-sends only OSC when an update is necessary
+this keeps state of running synths that have a lifespan of the CleanAux
+sends OSC only when an update is necessary
 
 "name" is the name of the SynthDef
 (for each possible number of channels appended by a number, see: core-synths)
 "paramNames" is an array of keys (symbols) which to look up as arguments
-"numChannels" is the number of synth channels (no need to specify if you use it in a CleanOrbit)
+"numChannels" is the number of synth channels (no need to specify if you use it in a CleanAux)
 */
 
 
@@ -21,10 +21,10 @@ GlobalCleanEffect {
 		^super.newCopyArgs(name, paramNames, numChannels, ())
 	}
 
-	play { |group, outBus, dryBus, effectBus, orbitIndex|
+	play { |group, outBus, dryBus, effectBus, auxIndex|
 		this.release;
 		synth = Synth.after(group, name.asString ++ numChannels,
-			[\outBus, outBus, \dryBus, dryBus, \effectBus, effectBus, \orbitIndex, orbitIndex] ++ state.asPairs
+			[\outBus, outBus, \dryBus, dryBus, \effectBus, effectBus, \auxIndex, auxIndex] ++ state.asPairs
 		)
 	}
 
