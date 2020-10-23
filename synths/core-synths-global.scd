@@ -1,10 +1,10 @@
 /*
 
-ORBIT BASED (GLOBAL)
+AUX BASED (GLOBAL)
 CORE SYNTHDEFS FOR DIRT
 (REQUIRED: GlobalCleanEffects)
 
-	Global synth defs: these synths run in each CleanOrbit and are only released when it is stopped
+	Global synth defs: these synths run in each CleanAux and are only released when it is stopped
 	when you change them, to update them, hit cmd-period (i.e. stop the synths on the server) once.
 	they'll come back automatically
 
@@ -47,7 +47,7 @@ CORE SYNTHDEFS FOR DIRT
 
 
 	// RMS measurement, sending back to editor
-	SynthDef("clean_rms" ++ numChannels, { |gate = 1, dryBus, effectBus, rmsReplyRate, rmsPeakLag, orbitIndex|
+	SynthDef("clean_rms" ++ numChannels, { |gate = 1, dryBus, effectBus, rmsReplyRate, rmsPeakLag, auxIndex|
 		var drySignal = In.ar(dryBus, numChannels);
 		var wetSignal = In.ar(effectBus, numChannels);
 		var signal = wetSignal + drySignal;
@@ -55,7 +55,7 @@ CORE SYNTHDEFS FOR DIRT
 		CleanPause.ar(signal, graceTime:4);
 		EnvGen.kr(Env.asr, gate, doneAction:2);
 
-		SendPeakRMS.kr(signal, replyRate: rmsReplyRate, peakLag: rmsPeakLag, cmdName:"/rms", replyID: orbitIndex)
+		SendPeakRMS.kr(signal, replyRate: rmsReplyRate, peakLag: rmsPeakLag, cmdName:"/rms", replyID: auxIndex)
 
 	}, [\kr, \ir, \ir, \kr, \kr, \kr]).add;
 

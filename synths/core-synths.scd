@@ -1,7 +1,7 @@
 /*
 
 EVENT - BASED
-CORE SYNTHDEFS FOR DIRT
+CORE SYNTHDEFS FOR CLEAN
 (REQUIRED: CORE MODULES)
 
 these synthdefs can be hacked at runtime, but they are absolutely necessary for tidal to work correctly.
