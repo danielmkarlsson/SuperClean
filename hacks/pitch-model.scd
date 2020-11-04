@@ -1,12 +1,12 @@
 /*
 
-adding new pitch models to a clean orbit
+adding new pitch models to a clean aux
 
 */
 
 
 
-// to test it you could use this synth, and run in tidal
+// to test it you could use this synth, and run it in SuperCollider
 
 (
 SynthDef(\testnote, { |out, sustain = 0.2, freq = 0, amp = 1, pan = 0, width = 0.3|
@@ -20,36 +20,33 @@ SynthDef(\testnote, { |out, sustain = 0.2, freq = 0, amp = 1, pan = 0, width = 0
 );
 
 
-d1 $ slow 2 $ sound "testnote*16" # n (run 16)
-
-
 // the default function is kept here
 // it takes ~n as one of its variables
-~clean.orbits[0].defaultParentEvent[\freq].cs
+~clean.auxs[0].defaultParentEvent[\freq].cs
 
 
 // we modify it step by step
 
 // post what we have
 
-~clean.orbits[0].set(\freq, #{ (~n.postln + 60).midicps.postln });
+~clean.auxs[0].set(\freq, #{ (~n.postln + 60).midicps.postln });
 
 // play half note higher
 
-~clean.orbits[0].set(\freq, #{ (~n + 61).midicps });
+~clean.auxs[0].set(\freq, #{ (~n + 61).midicps });
 
 // detune by a random frequency between -10 and 10 Hz
 
-~clean.orbits[0].set(\freq, #{ (~n + 60).midicps + 10.0.rand2 });
+~clean.auxs[0].set(\freq, #{ (~n + 60).midicps + 10.0.rand2 });
 
 
 // use an extended ocatve and an 11 TET scale
 
-~clean.orbits[0].set(\freq, #{ 440 * (2.1 ** (~n / 11)) });
+~clean.auxs[0].set(\freq, #{ 440 * (2.1 ** (~n / 11)) });
 
 // interpret ~n as an overtone
 
-~clean.orbits[0].set(\freq, #{ 220 * (~n + 1) });
+~clean.auxs[0].set(\freq, #{ 220 * (~n + 1) });
 
 
 // use the supercollider event pitch model, as explained in Event.help (last diagram on the page)
@@ -57,7 +54,7 @@ d1 $ slow 2 $ sound "testnote*16" # n (run 16)
 // defining other parameters in tidal you can send them from there on a note by note basis.
 
 (
-~clean.orbits[0].set(\freq, #{
+~clean.auxs[0].set(\freq, #{
 	var degree = ~n;
 	Event.default.use {
 		~degree = degree;
@@ -69,7 +66,7 @@ d1 $ slow 2 $ sound "testnote*16" # n (run 16)
 
 // modal transposition
 (
-~clean.orbits[0].set(\freq, #{
+~clean.auxs[0].set(\freq, #{
 	var degree = ~n;
 	Event.default.use {
 		~degree = degree;
@@ -84,7 +81,7 @@ d1 $ slow 2 $ sound "testnote*16" # n (run 16)
 
 // you can set parameters like scale, steps per octave etc.
 (
-~clean.orbits[0].set(\freq, #{
+~clean.auxs[0].set(\freq, #{
 	var degree = ~n;
 	Event.default.use {
 		~degree = degree;
@@ -98,7 +95,7 @@ d1 $ slow 2 $ sound "testnote*16" # n (run 16)
 
 
 // back to default.
-~clean.orbits[0].set(\freq, #{ (~n + 60).midicps });
+~clean.auxs[0].set(\freq, #{ (~n + 60).midicps });
 
 
 
