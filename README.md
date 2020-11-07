@@ -163,7 +163,7 @@ SuperCollider is so vast that the scope needs to be narrowed somewhat in order t
                     amp: Pexprand(1.0,4.0),
                     pan: Pstutter(Pwhite(0,28),Pwrand([Pwhite(0.0,0.333),Pwhite(0.666,1.0)],[1,1.5].normalizeSum,inf)),
                     lpf: Pwrand([625,1250,2500,5000,10000,20000],(1..6).normalizeSum,inf),
-                    speed: Pwrand([1/64,1/32,1/16,1/8,1/4,1/2,1,2,4,8,16,32,64],[1,2,4,8,16,32,64,32,16,8,4,2,1].normalizeSum,inf),
+                    spd: Pwrand([1/64,1/32,1/16,1/8,1/4,1/2,1,2,4,8,16,32,64],[1,2,4,8,16,32,64,32,16,8,4,2,1].normalizeSum,inf),
                     shp: Pwhite(0.0,0.999).trace,
                     dla: 0.01,
                     dlf: 0.94,
@@ -281,6 +281,7 @@ round about way for me to make white noise.
 • ~~Pan not working in `uio`~~
 • ~~Investigate possible bug where long samples (try an hour) will play back at lower sample rate (turns out around 3 minutes is max before fitror sets in)~~  
 • ~~`gain` to  `amp` ~~
+• ~~`speed` to  `spd` ~~
 
 • ReDo rm with feedback  
 • Might there be a way to lessen the likeliness of the envelopes in `fmx` clicking?       
