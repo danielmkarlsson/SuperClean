@@ -127,7 +127,7 @@ live coding them requires that you have your SuperClean instance in an environme
 	SynthDef("clean_shape" ++ numChannels, { |out, shape = 0|
 		var signal = In.ar(out, numChannels), amp = 1;
 		shape = min(shape, 1.0 - 4e-10); // avoid division by zero
-		//amp = 1.0 - (0.15 * shape / (shape + 2.0)) * amp; // optional gain comp
+		//amp = 1.0 - (0.15 * shape / (shape + 2.0)) * amp; // optional amp comp
 		shape = (2.0 * shape) / (1.0 - shape);
 
 		signal = (1 + shape) * signal / (1 + (shape * abs(signal)));
