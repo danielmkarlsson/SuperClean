@@ -12,7 +12,7 @@
                     amp: Pexprand(1.0,8.0),
                     pan: Pstutter(Pwhite(0,28),Pwrand([Pwhite(0.0,0.333),Pwhite(0.666,1.0)],[1,1.5].normalizeSum,inf)),
                     lpf: Pwrand([625,1250,2500,5000,10000,20000],(1..6).normalizeSum,inf),
-                    speed: Pwrand([1/64,1/32,1/16,1/8,1/4,1/2,1,2,4,8,16,32,64],[1,2,4,8,16,32,64,32,16,8,4,2,1].normalizeSum,inf),
+                    spd: Pwrand([1/64,1/32,1/16,1/8,1/4,1/2,1,2,4,8,16,32,64],[1,2,4,8,16,32,64,32,16,8,4,2,1].normalizeSum,inf),
                     shp: Pwhite(0.0,0.999).trace,
                     dla: 0.001,
                     dlf: 0.94,
