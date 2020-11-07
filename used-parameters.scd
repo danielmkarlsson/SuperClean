@@ -5,7 +5,7 @@ s           sample or sound or synth
 n           number, which sample in a folder or which note if you are using a synth
 pan         Pans the sound, 0.0 to 1.0.
 shp         This is like a distortion, goes to 0.999999, does not accept 1 (I need to fix that)
-gain        Make it louder! Can go above one to lean into the compressor
+amp        Make it louder! Can go above one to lean into the compressor
 speed       The speed at which to play back the sample
 atk         The attack time of the envelope
 hld         The hold time of the envelope
