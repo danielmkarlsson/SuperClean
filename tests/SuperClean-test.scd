@@ -137,23 +137,11 @@ TEST EFFECTS
 ~d1.((sound: '808cy:10', speed: 1, hcutoff: 1000, hresonance: 20, coarse: 0.10));
 
 
-// test vowels
-// ~d1.((sound: '808cy:10', speed: 1, vowel: \a));
-// ~d1.((sound: '808cy:10', speed: 1, vowel: \i, resonance: 1, cutoff: 200, gain: 2));
-// ~d1.((sound: '808cy:10', speed: 1, vowel: \a, resonance: 0.1));
-// ~d1.((sound: '808cy:10', speed: 1, vowel: \o, resonance: 0.1));
-// ~d1.((sound: '808cy:10', speed: 1, vowel: \o, resonance: 0.1, coarse: 30));
-//
-//
-// ~d1.((sound: '808cy:10', speed: 1, vowel: \a, resonance: 0.1, pan: 0));
-// ~d1.((sound: '808cy:10', speed: 1, vowel: \a, resonance: 0.1, pan: 1));
-
-
 
 // (
 // Tdef(\x, {
 // 	loop {
-// 		~d1.((sound: 'sd:8', begin: 0, end: 1, speed: 1, vowel: "aeiou".choose.asSymbol, resonance: 0.6, cutoff: 540, gain: 1));
+// 		~d1.((sound: 'sd:8', begin: 0, end: 1, speed: 1, vowel: "aeiou".choose.asSymbol, resonance: 0.6, cutoff: 540, amp: 1));
 // 		1.wait;
 // 		//(0.3 * [1, 2, 1/3]).choose.wait;
 // 	}
