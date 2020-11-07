@@ -153,7 +153,7 @@
 );
 
 
-// The next four synths respond to the following parameters in addition to gain, pan, n, and all the "effect" parameters
+// The next four synths respond to the following parameters in addition to amp, pan, n, and all the "effect" parameters
 // (including attack, hold, and release).  Default values in parentheses.
 //
 // sustain - scales overall duration
