@@ -79,7 +79,7 @@
 
 
 // A vaguely 808-ish kick drum
-// "n" controls the chirp frequency, "sustain" the overall timescale, "rate" the filter sweep speed,
+// "n" controls the chirp frequency, "sustain" the overall timescale, "rate" the filter sweep spd,
 // and "voice" the sinewave feedback
 (
 	SynthDef(\super808, {|out, rate=1, sustain=1, pan, voice=0, n |
