@@ -23,12 +23,12 @@ live coding them requires that you have your SuperClean instance in an environme
 
 		var name = format("clean_sample_%_%", sampleNumChannels, numChannels);
 
-		SynthDef(name, { |out, bufnum, sustain = 1, begin = 0, end = 1, speed = 1, endSpeed = 1, freq = 440, pan = 0|
+		SynthDef(name, { |out, bufnum, sustain = 1, begin = 0, end = 1, spd = 1, endspd = 1, freq = 440, pan = 0|
 
 			var sound, rate, phase, sawrate, numFrames;
 
-			// playback speed
-			rate = Line.kr(speed, endSpeed, sustain) * (freq / 60.midicps);
+			// playback spd
+			rate = Line.kr(spd, endspd, sustain) * (freq / 60.midicps);
 
 			// sample phase
 			// BufSampleRate adjusts the rate if the sound file doesn't have the same rate as the soundcard
@@ -36,7 +36,7 @@ live coding them requires that you have your SuperClean instance in an environme
 
 			numFrames = BufFrames.ir(bufnum);
 			sawrate = rate * BufSampleRate.ir(bufnum) / (absdif(begin, end) * numFrames);
-			phase = (speed.sign * LFSaw.ar(sawrate, 1)).range(begin,end) * numFrames;
+			phase = (spd.sign * LFSaw.ar(sawrate, 1)).range(begin,end) * numFrames;
 
 			sound = BufRd.ar(
 				numChannels: sampleNumChannels,
