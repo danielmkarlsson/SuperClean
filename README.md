@@ -267,19 +267,10 @@ round about way for me to make white noise.
 
 • ~~Single line installation~~  
 • ~~.clip value ranges for all filters~~  
-• ~~All Clean to Clean~~  
 • ~~Add samples and change path _inside_ SuperClean~~  
-• ~~Fix aliases in core-synths.scd (bpf stuck at default value)~~  
-• ~~Fix aliases in core-synths-global.scd, seems to inherit keys from Synthdef args, dla,dlf,dlt is goal~~   
 • ~~Add FM synthdef~~  
 • ~~Add Additive synthdef~~   
 • ~~Add `crv` param to env~~  
-• ~~Raise output volume~~  
-• ~~Stereo sample playback~~  
-• ~~Set audible default values for `fmx`, what are sensible defaults?~~    
-• ~~Pan not working in `fmx`~~        
-• ~~Pan not working in `uio`~~  
-• ~~Investigate possible bug where long samples (an hour) will play back at lower sample rate (around 3 minutes is max before bitrot sets in)~~  
 • ~~`gain` to  `amp`~~  
 • ~~`speed` to  `spd`~~    
 
@@ -288,12 +279,7 @@ round about way for me to make white noise.
 • Sequence the order of effects     
 • FadeTime T1 style (still does not work even tho the `gain` key is now `amp`, so  needs more work).       
 • NRT render inside SuperClean   
-
-• Include `Pxshuf`  
-• Include `Pbjorklund`  
-
 • Swap out the reverb (how to make it sound better while still at low cpu?)  
-• Maybe delete some synths    
 
 </details>
 
