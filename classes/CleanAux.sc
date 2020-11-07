@@ -179,7 +179,7 @@ CleanAux {
 			~offset = 0.0;
 			~begin = 0.0;
 			~end = 1.0;
-			~speed = 1.0;
+			~spd = 1.0;
 			~pan = 0.5;
 			~amp = 1.0;
 			~cut = 0.0;

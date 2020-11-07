@@ -48,10 +48,10 @@ CleanEvent {
 	orderTimeSpan {
 		var temp;
 		if(~end >= ~begin) {
-			if(~speed < 0) { temp = ~end; ~end = ~begin; ~begin = temp };
+			if(~spd < 0) { temp = ~end; ~end = ~begin; ~begin = temp };
 		} {
 			// backwards
-			~speed = ~speed.neg;
+			~spd = ~spd.neg;
 		};
 		~length = absdif(~end, ~begin);
 	}
@@ -59,10 +59,10 @@ CleanEvent {
 	calcTimeSpan {
 
 		var sustain, unitDuration;
-		var speed = ~speed.value;
+		var spd = ~spd.value;
 		var loop = ~loop.value;
 		var accelerate = ~accelerate.value;
-		var avgSpeed, endSpeed;
+		var avgspd, endspd;
 		var useUnit;
 
 		~freq = ~freq.value;
@@ -71,25 +71,25 @@ CleanEvent {
 
 
 		if (~unit == \c) {
-			speed = speed * ~cps * if(useUnit) { unitDuration  } { 1.0 }
+			spd = spd * ~cps * if(useUnit) { unitDuration  } { 1.0 }
 		};
 
 		if(accelerate.isNil) {
-			endSpeed = speed;
-			avgSpeed = speed.abs;
+			endspd = spd;
+			avgspd = spd.abs;
 		} {
-			endSpeed = speed * (1.0 + accelerate);
-			avgSpeed = speed.abs + endSpeed.abs * 0.5;
+			endspd = spd * (1.0 + accelerate);
+			avgspd = spd.abs + endspd.abs * 0.5;
 		};
 
 		if(useUnit) {
 			if(~unit == \rate) { ~unit = \r }; // API adaption to tidal output
 			switch(~unit,
 				\r, {
-					unitDuration = unitDuration * ~length / avgSpeed;
+					unitDuration = unitDuration * ~length / avgspd;
 				},
 				\c, {
-					unitDuration = unitDuration * ~length / avgSpeed;
+					unitDuration = unitDuration * ~length / avgspd;
 				},
 				\s, {
 					unitDuration = ~length;
@@ -114,8 +114,8 @@ CleanEvent {
 		~fadeTime = min(~fadeTime.value, sustain * 0.19098);
 		~fadeInTime = if(~begin != 0) { ~fadeTime } { 0.0 };
 		~sustain = sustain - (~fadeTime + ~fadeInTime);
-		~speed = speed;
-		~endSpeed = endSpeed;
+		~spd = spd;
+		~endspd = endspd;
 
 	}
 
@@ -130,7 +130,7 @@ CleanEvent {
 		~bandq = ~bpq ? 0.0;
 
 
-		~latency = ~latency + ~lag.value + (~offset.value * ~speed.value); // don't accidentally change this tho
+		~latency = ~latency + ~lag.value + (~offset.value * ~spd.value); // don't accidentally change this tho
 	}
 
 	getMsgFunc { |instrument|
