@@ -87,7 +87,7 @@ var diversions = ();  // make a dictionary of functions
 
 
 
-// take them out again.
+// take them out aamp.
 ~diversions[\tlalak]  = nil;
 ~diversions[\patatl]  = nil;
 
