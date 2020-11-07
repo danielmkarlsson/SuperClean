@@ -169,7 +169,7 @@ CleanPause {
 	*ar { | signal, graceTime = 1 |
 		// immediately pause when started
 		PauseSelf.kr(Impulse.kr(0));
-		// when resumed and no sound is coming in, wait a while before ending again
+		// when resumed and no sound is coming in, wait a while before ending aamp
 		signal = signal.abs + Trig1.ar(\resumed.tr(0), graceTime);
 		DetectSilence.ar(signal, time:graceTime, doneAction:1);
 	}

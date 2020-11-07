@@ -8,7 +8,7 @@ You can add and remove effects at runtime.
 Settable parameters are also:
 
 - fadeTime (fade in and out of each sample grain)
-- amp (gain)
+- amp (amp)
 - minSustain (samples shorter than that are dropped).
 - outBus (channel offset for the audio output)
 
@@ -181,7 +181,7 @@ CleanAux {
 			~end = 1.0;
 			~speed = 1.0;
 			~pan = 0.5;
-			~gain = 1.0;
+			~amp = 1.0;
 			~cut = 0.0;
 			~unit = \r;
 			~n = 0; // sample number or note
