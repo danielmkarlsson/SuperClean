@@ -72,7 +72,7 @@ to load in to ram all the time when you need to start over quickly because reaso
 I asked Scott to make sure that the filters are only able to accept values in the range of human hearing, 20 to 20000 hz. 
 This way the filters won't blow up. Also there is a nifty compressor that saves our ears ~~if~~ when things get unexpectedly
 loud. This compressor can also be leaned in to on purpose yielding all manner of hawt sound. Be sure to not miss out on the 
-fun of sending values greater than one to `gain`.
+fun of sending values greater than one to `amp`.
 
 ## Start yer engines!
 
@@ -160,7 +160,7 @@ SuperCollider is so vast that the scope needs to be narrowed somewhat in order t
                     n: Pwhite(0,23),
                     dur: Pwrand([1/12,1/3],[9,1].normalizeSum,inf),
                     rel: Pstutter(Pwhite(1,8),Pseq([1/16,1/17,1/18,1/19,1/20,1/21,1/22,1/8,2],inf))*Pexprand(0.1,10.0),
-                    gain: Pexprand(1.0,4.0),
+                    amp: Pexprand(1.0,4.0),
                     pan: Pstutter(Pwhite(0,28),Pwrand([Pwhite(0.0,0.333),Pwhite(0.666,1.0)],[1,1.5].normalizeSum,inf)),
                     lpf: Pwrand([625,1250,2500,5000,10000,20000],(1..6).normalizeSum,inf),
                     speed: Pwrand([1/64,1/32,1/16,1/8,1/4,1/2,1,2,4,8,16,32,64],[1,2,4,8,16,32,64,32,16,8,4,2,1].normalizeSum,inf),
@@ -229,7 +229,7 @@ Pdef(\0,
         Pbind(*[
             type: \clean,
             s: \uio,
-            gain: Pexprand(1/2,8.0),
+            amp: Pexprand(1/2,8.0),
             freq: Pfunc{
                 var x = 160 * rrand(1,500).geom(1,30/29);
                 x.reject{|i| i > 20000 }
@@ -280,19 +280,19 @@ round about way for me to make white noise.
 • ~~Pan not working in `fmx`~~      
 • ~~Pan not working in `uio`~~
 • ~~Investigate possible bug where long samples (try an hour) will play back at lower sample rate (turns out around 3 minutes is max before fitror sets in)~~  
+• ~~`gain` to  `amp` ~~
 
 • ReDo rm with feedback  
 • Might there be a way to lessen the likeliness of the envelopes in `fmx` clicking?       
 • Sequence the order of effects     
-• FadeTime T1 style (requires `amp` key, so `gain` needs to go away somehow).       
+• FadeTime T1 style (still does not work even tho the `gain` key is now `amp`, so  needs more work).       
 • NRT render inside SuperClean   
 
 • Include `Pxshuf`  
 • Include `Pbjorklund`  
 
 • Swap out the reverb (how to make it sound better while still at low cpu?)  
-• Maybe add that tape effect  
-• Maybe delete some effects    
+• Maybe delete some synths    
 
 </details>
 
