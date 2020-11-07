@@ -6,47 +6,90 @@ This assumes you have stored clean in a variable ~clean
 */
 
 /*
-use with a tidal pattern that uses |+| bandqf or|+| bandq
-e.g.
-d1 $ sound "[sn bd sn*2 bd, cy drum:1, drum:2]" |+| bandf "1500 1332 881" |+| bandq "80"
+
+Change the way the samples are played back
+
+e.g. Scratching through samples:
+
 */
 
-// start modulating the bandpass filter
 (
-SynthDef("clean_bpf" ++ ~clean.numChannels, { |out, bandqf = 440, bandq = 10|
-	var signal = In.ar(out, ~clean.numChannels);
-	bandqf = bandqf * SinOsc.kr(XLine.kr(1, 30, Rand(0.2, 0.3)), Rand(0, 2pi), 0.1, 1);
-	bandq = max(bandq, 1.0);
-	signal = BPF.ar(signal, bandqf, 1/bandq) * bandq;
-	ReplaceOut.ar(out, signal)
-}, [\ir, \ir, \ir]).add;
+// write variants for different sample buffer sizes
+(1..SuperClean.maxSampleNumChannels).do { |sampleNumChannels|
+
+	var name = format("clean_sample_%_%", sampleNumChannels, ~clean.numChannels);
+
+	SynthDef(name, { |out, bufnum, sustain = 1, begin = 0, pan = 0, spd = 1, endspd = 1|
+
+		var sound, rate, phase, scratch;
+
+		// playback spd
+		rate = Line.kr(spd, endspd, sustain);
+
+		// sample phase
+		// BufSampleRate adjusts the rate if the sound file doesn't have the same rate as the soundcard
+		phase =  Sweep.ar(1, rate * BufSampleRate.ir(bufnum)) + (begin * BufFrames.ir(bufnum));
+
+		scratch = LFNoise2.ar(12, 0.02 * BufSampleRate.ir(bufnum));
+		phase = phase + scratch;
+		phase = phase.clip(0, BufFrames.ir(bufnum));
+
+		sound = BufRd.ar(
+			numChannels: sampleNumChannels,
+			bufnum: bufnum,
+			phase: phase,
+			loop: 0,
+			interpolation: 4 // cubic interpolation
+		);
+
+		sound = CleanPan.ar(sound,  ~clean.numChannels, pan);
+
+		OffsetOut.ar(out, sound)
+	}, [\ir, \ir, \ir, \ir, \ir, \ir, \ir, \ir]).add;
+};
 )
 
-// make it a chord and cursor position dependent
+
+// other cleany things:
+
 (
-SynthDef("clean_bpf" ++ ~clean.numChannels, { |out, bandqf = 440, bandq = 10|
-	var signal = In.ar(out, ~clean.numChannels);
-	var freq = bandqf * SinOsc.kr(XLine.kr(1, 30, Rand(0.2, 0.3)), Rand(0, 2pi), 0.1, 1);
-	freq = freq * MouseY.kr(0.5, (1, 1.1 ..1.5), 1) ** MouseX.kr(0.5, 1.2);
-	freq = max(freq, 1.0);
-	signal = BPF.ar(signal, freq, 1/bandq).sum * bandq;
-	ReplaceOut.ar(out, signal)
-}, [\ir, \ir, \ir]).add;
+// write variants for different sample buffer sizes
+(1..SuperClean.maxSampleNumChannels).do { |sampleNumChannels|
+
+	var name = format("clean_sample_%_%", sampleNumChannels, ~clean.numChannels);
+
+	SynthDef(name, { |out, bufnum, sustain = 1, begin = 0, pan = 0, spd = 1, endspd = 1|
+
+		var sound, rate, phase, scratch;
+
+		// playback spd
+		rate = Line.kr(spd, endspd, sustain);
+
+		// sample phase
+		// BufSampleRate adjusts the rate if the sound file doesn't have the same rate as the soundcard
+		phase =  Sweep.ar(1, rate * BufSampleRate.ir(bufnum)) + (begin * BufFrames.ir(bufnum));
+
+		scratch = LFNoise2.ar(XLine.ar(12, 1000, sustain), 0.02 * BufSampleRate.ir(bufnum));
+		phase = phase + scratch;
+		phase = phase.clip(0, BufFrames.ir(bufnum));
+
+		sound = BufRd.ar(
+			numChannels: sampleNumChannels,
+			bufnum: bufnum,
+			phase: phase,
+			loop: 0,
+			interpolation: 4 // cubic interpolation
+		);
+
+		// ring mod
+		sound = sound * SinOsc.ar(XLine.kr(40, 80, sustain));
+
+		sound = CleanPan.ar(sound,  ~clean.numChannels, pan);
+
+		OffsetOut.ar(out, sound)
+	}, [\ir, \ir, \ir, \ir, \ir, \ir, \ir, \ir]).add;
+};
 )
 
-// depend on a continuous node proxy
-(
-Ndef(\mod, {
-	var x;
-	x = SinOsc.kr(0.4, 0, 0.1, 1);
-	x = x * SinOsc.kr(0.34 * (1..3)).range(0.5, (1, 1.1 ..1.5)) ** SinOsc.kr(0.32).range(0.5, 1.2);
-});
 
-SynthDef("clean_bpf" ++ ~clean.numChannels, { |out, bandqf = 440, bandq = 10|
-	var signal = In.ar(out, ~clean.numChannels);
-	var freq = bandqf * Ndef.ar(\mod);
-	freq = max(freq, 1.0);
-	signal = BPF.ar(signal, freq, 1/bandq).sum * bandq;
-	ReplaceOut.ar(out, signal)
-}, [\ir, \ir, \ir]).add;
-)
+

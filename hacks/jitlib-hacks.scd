@@ -168,7 +168,7 @@ Pdef(\x,
 	Pbind(
 		\type, \clean,
 		\s, Pfunc { keys.choose },
-		\speed, Pfunc { rrand(1.0, 2) * [1, 1, 1, -1].choose },
+		\spd, Pfunc { rrand(1.0, 2) * [1, 1, 1, -1].choose },
 		\dur, Pseq([1, 1/2, 1/2, 1, 1/3, 2/3, 1/2, 1/8], inf)
 	)
 ).play;
