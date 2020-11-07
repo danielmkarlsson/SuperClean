@@ -41,7 +41,7 @@ Pdef(\x,
 
 
 (
-(type: \clean, s: \cr, pan: 1.0.rand2, speed: 0.8, to: 0, psst:1).play;
+(type: \clean, s: \cr, pan: 1.0.rand2, spd: 0.8, to: 0, psst:1).play;
 (type: \clean, s: \impin, from: 0, toArg: \input, freq: exprand(3, 1000.0)).play;
 )
 
