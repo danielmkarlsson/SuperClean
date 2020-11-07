@@ -277,11 +277,11 @@ round about way for me to make white noise.
 • ~~Raise output volume~~  
 • ~~Stereo sample playback~~  
 • ~~Set audible default values for `fmx`, what are sensible defaults?~~    
-• ~~Pan not working in `fmx`~~      
-• ~~Pan not working in `uio`~~
+• ~~Pan not working in `fmx`~~        
+• ~~Pan not working in `uio`~~  
 • ~~Investigate possible bug where long samples (try an hour) will play back at lower sample rate (turns out around 3 minutes is max before fitror sets in)~~  
-• ~~`gain` to  `amp` ~~
-• ~~`speed` to  `spd` ~~
+• ~~`gain` to  `amp`~~  
+• ~~`speed` to  `spd`~~    
 
 • ReDo rm with feedback  
 • Might there be a way to lessen the likeliness of the envelopes in `fmx` clicking?       
