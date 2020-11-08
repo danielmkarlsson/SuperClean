@@ -18,7 +18,7 @@ Try it! What have you got to loose?
 <p align="center">
   <img width="75%" height="75%" src="https://github.com/danielmkarlsson/SuperClean/blob/master/Dilla-Smithsonian-mpc1.jpg">
 </p>
-<sub><sup> J Dilla's mother, Maureen “Ma Dukes” Yancey, smiling with open hands, gesturing to J Dilla's custom Moog synthesizer and Akai MPC 3000 sampler </sup><sub>
+Image: J Dilla's mother, Maureen “Ma Dukes” Yancey, smiling with open hands, gesturing to J Dilla's custom Moog synthesizer and Akai MPC 3000 sampler.
 
 ## Installation
 
