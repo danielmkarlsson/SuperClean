@@ -1,3 +1,5 @@
+![J Dilla's mother, Maureen “Ma Dukes” Yancey smiling with open hands gesturing to J Dilla's custom Moog synthesizer and Akai MPC 3000 sampler](https://github.com/danielmkarlsson/SuperClean/blob/master/Dilla-Smithsonian-mpc1.jpg?raw=true)
+
 # SuperClean
 
 A SuperCollider implementation of the SuperClean sampler for use _inside_ of SuperCollider itself.  
@@ -5,8 +7,6 @@ Not only can you play back all of your samples without needless hassle in an env
 SuperClean now also contains an FM synth whose four justly tuneable operators deliver unparalleled cleanliness, even at  
 extreme modulation indexes. SuperClean even includes a remarkably efficient additive synth which literally sounds out of this
 world. SuperClean is, in short, a one-stop-shopping-experience for folks who want: 
-
-![J Dilla's mother, Maureen “Ma Dukes” Yancey smiling with open hands gesturing to J Dilla's custom Moog synthesizer and Akai MPC 3000 sampler](https://github.com/danielmkarlsson/SuperClean/blob/master/Dilla-Smithsonian-mpc1.jpg?raw=true)
 
 • An MPC,  
 • a bunch of effects, and   
