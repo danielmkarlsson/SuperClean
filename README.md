@@ -14,6 +14,8 @@ Also, on a personal note here, hey, this is what I use to make music with every 
 I really like making music and, for me, this makes it way funner.  
 Try it! What have you got to loose?
 
+![J Dilla's mother, Maureen “Ma Dukes” Yancey smiling with open hands gesturing to J Dilla's custom Moog synthesizer and Akai MPC 3000 sampler](https://github.com/danielmkarlsson/SuperClean/blob/master/Dilla-Smithsonian-mpc1.jpg?raw=true)
+
 ## Installation
 
 Copy this line and evaluate it in SuperCollider:
