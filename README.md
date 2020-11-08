@@ -16,7 +16,7 @@ I really like making music and, for me, this makes it way funner.
 Try it! What have you got to loose?
 
 <p align="center">
-  <img width="100%" height="100%" src="https://github.com/danielmkarlsson/SuperClean/blob/master/Dilla-Smithsonian-mpc1.jpg">
+  <img width="75%" height="75%" src="https://github.com/danielmkarlsson/SuperClean/blob/master/Dilla-Smithsonian-mpc1.jpg">
 </p>
 <sub><sup> J Dilla's mother, Maureen “Ma Dukes” Yancey, smiling with open hands, gesturing to J Dilla's custom Moog synthesizer and Akai MPC 3000 sampler</sup><sub>
 
