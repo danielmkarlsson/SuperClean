@@ -17,6 +17,10 @@ Try it! What have you got to loose?
 
  ![J Dilla's mother, Maureen “Ma Dukes” Yancey smiling with open hands gesturing to J Dilla's custom Moog synthesizer and Akai MPC 3000 sampler](https://github.com/danielmkarlsson/SuperClean/blob/master/Dilla-Smithsonian-mpc1.jpg?raw=true) 
 
+<p align="center">
+  <img width="460" height="300" src="http://www.fillmurray.com/460/300">
+</p>
+
 ## Installation
 
 Copy this line and evaluate it in SuperCollider:
