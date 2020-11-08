@@ -12,7 +12,7 @@
 )
 
 
-// now play with different variants while you listen to it:
+// now play with different variants while you listen to tidal:
 
 
 // a cleany hyperbolic tangens

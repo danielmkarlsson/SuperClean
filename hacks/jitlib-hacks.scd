@@ -72,7 +72,7 @@ Pdef(\x,
 	Pbind(
 		\type, \clean,
 		\s, Pn(Pshuf([\bd, \hh, \cp, \imp], 5)),
-		\begin, Pn(Pseries(0, 0.002, 20)),
+		\bgn, Pn(Pseries(0, 0.002, 20)),
 		\dur, 0.1,
 		\legato, Pwhite(0.01, 0.4)
 	)
@@ -85,7 +85,7 @@ Pdef(\x,
 	Pbind(
 		\type, \clean,
 		\s, Pn(Pshuf([\bd, \hh, \cp, \imp], 5)),
-		\begin, Pn(Pseries(0, 0.002, 20)),
+		\bgn, Pn(Pseries(0, 0.002, 20)),
 		\bandf, Pfunc { exprand(130, 10000) },
 		\dur, 0.1,
 		\legato, Pwhite(0.01, 0.4)
@@ -102,7 +102,7 @@ Pdef(\x).set(\type, \clean);
 Pdef(\x,
 	Pbind(
 		\instrument, Pn(Pshuf([\bd, \hh, \cp, \imp], 5)),
-		\begin, Pn(Pseries(0, 0.002, 20)),
+		\bgn, Pn(Pseries(0, 0.002, 20)),
 		\dur, 0.1,
 		\legato, Pwhite(0.01, 0.4)
 	)
@@ -114,7 +114,7 @@ Pdef(\x,
 Pdef(\x,
 	Pbind(
 		\instrument, Pn(Plazy { var keys = ~clean.buffers.keys; Pshuf({ keys.choose } ! 16, 5) }),
-		\begin, Pn(Pseries(0, 0.002, 16 * 5)),
+		\bgn, Pn(Pseries(0, 0.002, 16 * 5)),
 		\dur, 0.11,
 		\room, Pseq([0, 0, 0.5, 0, 0], inf),
 		\pan, Pseq([0, 1], inf),
@@ -128,7 +128,7 @@ var keys = ~clean.buffers.keys.asArray;
 Pdef(\x,
 	Pbind(
 		\instrument, Pn(Plazy { var k = keys.scramble.keep(16); Pshuf({ keys.choose } ! 16, 16) }),
-		\begin, Pn(Pseries(0, 0.002, 16 * 16)),
+		\bgn, Pn(Pseries(0, 0.002, 16 * 16)),
 		\dur, Prand((3..5).collect{ |x| Pn(2 ** neg(x), x) }, inf),
 		\room, Pseq([0, 0, 0.5, 0, 0], inf),
 		\pan, Pseq([0, 1], inf),
@@ -149,7 +149,7 @@ Pdef(\x,
 	Pbind(
 		\type, \clean,
 		\s, Prand([\bd, \hh, \cp, ], inf),
-		\begin, Pn(Pseries(0, 0.002, 20)),
+		\bgn, Pn(Pseries(0, 0.002, 20)),
 		\bandf,b.asMap,
 		\bandq, Pfunc { exprand(1, 100) },
 		\dur, 0.2,

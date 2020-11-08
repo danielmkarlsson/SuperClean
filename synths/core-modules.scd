@@ -24,7 +24,7 @@ This could be:
 - a generic synth, which allows us to embed a SynthDef name in a tidal pattern next to sample names
 
 A SynthDef could receive any number of the parameters in the event, e.g.
-sustain, spd, endspd, begin, end, pan, accelerate, offset, cps
+sustain, spd, endspd, bgn, end, pan, accelerate, offset, cps
 
 it ought to use "out" as bus output argument.
 
@@ -44,7 +44,7 @@ this may be refactored later.
 					spd: ~spd,
 					freq: ~freq,
 					endspd: ~endspd,
-					begin: ~begin,
+					bgn: ~bgn,
 					end: ~end,
 					loop: ~loop,
 					pan: ~pan,

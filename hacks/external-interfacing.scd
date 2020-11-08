@@ -14,6 +14,9 @@ SynthDef(\gendy, { |out, sustain = 1, freq = 440, pan, fratio = 0|
 }).add
 );
 
+// play it in tidal:
+// d1 $ s "gendy" # legato "1.2"
+
 
 ~clean.set(\fratio, Ndef(\ctrl1));
 

@@ -124,17 +124,17 @@ CleanSplayAz : UGen {
 
 
 CleanEnvGen : UGen {
-	*ar { |env, begin, end, spd, sustain, endspd|
+	*ar { |env, bgn, end, spd, sustain, endspd|
 		var stretch = env.times.sum * if(endspd.isNil) { spd } { spd + endspd * 0.5 };
-		var phase = CleanPhase.ar(begin, end, spd, sustain, endspd) * stretch;
+		var phase = CleanPhase.ar(bgn, end, spd, sustain, endspd) * stretch;
 		^IEnvGen.ar(env, phase)
 	}
 }
 
 CleanPhase : UGen {
-	*ar { |begin = 0, end = 1, spd = 1, sustain = 1, endspd|
+	*ar { |bgn = 0, end = 1, spd = 1, sustain = 1, endspd|
 		var rate = CleanRateScale.ar(spd, sustain, endspd ? spd);
-		^LFSaw.ar(rate.reciprocal, 1, spd.sign).range(begin, end)
+		^LFSaw.ar(rate.reciprocal, 1, spd.sign).range(bgn, end)
 	}
 }
 

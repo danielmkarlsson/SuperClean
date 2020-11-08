@@ -177,7 +177,7 @@ CleanAux {
 
 			~cps = 1.0;
 			~offset = 0.0;
-			~begin = 0.0;
+			~bgn = 0.0;
 			~end = 1.0;
 			~spd = 1.0;
 			~pan = 0.5;

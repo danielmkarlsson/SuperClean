@@ -47,13 +47,13 @@ CleanEvent {
 
 	orderTimeSpan {
 		var temp;
-		if(~end >= ~begin) {
-			if(~spd < 0) { temp = ~end; ~end = ~begin; ~begin = temp };
+		if(~end >= ~bgn) {
+			if(~spd < 0) { temp = ~end; ~end = ~bgn; ~bgn = temp };
 		} {
 			// backwards
 			~spd = ~spd.neg;
 		};
-		~length = absdif(~end, ~begin);
+		~length = absdif(~end, ~bgn);
 	}
 
 	calcTimeSpan {
@@ -112,7 +112,7 @@ CleanEvent {
 		~buffer !? { sustain = min(unitDuration, sustain) };
 
 		~fadeTime = min(~fadeTime.value, sustain * 0.19098);
-		~fadeInTime = if(~begin != 0) { ~fadeTime } { 0.0 };
+		~fadeInTime = if(~bgn != 0) { ~fadeTime } { 0.0 };
 		~sustain = sustain - (~fadeTime + ~fadeInTime);
 		~spd = spd;
 		~endspd = endspd;

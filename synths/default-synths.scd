@@ -3,7 +3,7 @@
 Add your own instruments here.
 
 // supported parameters are e.g.
-// sustain, spd, endspd, begin, end, pan, accelerate, offset, cps
+// sustain, spd, endspd, bgn, end, pan, accelerate, offset, cps
 // all instruments ought to use: out
 
 If your SuperClean instance is assigned to the variable ~clean, you can livecode these synths.
@@ -16,11 +16,11 @@ If your SuperClean instance is assigned to the variable ~clean, you can livecode
 
 // modulated band limited impulse
 (
-SynthDef(\imp, { |out, sustain = 1, freq = 440, spd = 1, begin=0, end=1, pan, accelerate, offset|
+SynthDef(\imp, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, accelerate, offset|
 	var env, sound, rate, phase;
 	env = EnvGen.ar(Env.perc(0.01, 0.99, 1, -1), timeScale:sustain, doneAction:2);
-	phase = Line.kr(begin, end, sustain);
-	rate = (begin + 1) * (spd + Sweep.kr(1, accelerate));
+	phase = Line.kr(bgn, end, sustain);
+	rate = (bgn + 1) * (spd + Sweep.kr(1, accelerate));
 	sound = Blip.ar(rate.linexp(0, 1, 1, freq) * [1, 1.25, 1.51, 1.42], ExpRand(80, 118) * phase).sum;
 	OffsetOut.ar(out,
 		CleanPan.ar(sound, ~clean.numChannels, pan, env)
@@ -31,11 +31,11 @@ SynthDef(\imp, { |out, sustain = 1, freq = 440, spd = 1, begin=0, end=1, pan, ac
 
 // modulated phase mod sines
 (
-SynthDef(\psin, { |out, sustain = 1, freq = 440, spd = 1, begin=0, end=1, pan, accelerate, offset, modfreq = 40|
+SynthDef(\psin, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, accelerate, offset, modfreq = 40|
 	var env, sound, rate, phase, amp;
 	amp = AmpCompA.kr(freq);
 	env = EnvGen.ar(Env.perc(0.002, sustain, 1, -1), doneAction:2);
-	phase = Line.ar(begin, end, sustain);
+	phase = Line.ar(bgn, end, sustain);
 	rate = spd + Sweep.kr(1, accelerate);
 	sound = SinOsc.ar(freq, SinOsc.ar(modfreq * (1..5), 0, 1 - phase * 10 * env / (1..5), 0.5pi)).sum;
 	OffsetOut.ar(out,
@@ -46,13 +46,13 @@ SynthDef(\psin, { |out, sustain = 1, freq = 440, spd = 1, begin=0, end=1, pan, a
 
 // cursor modulated phase mod sines
 (
-SynthDef(\pmsin, { |out, sustain = 1, freq = 440, spd = 1, begin=0, end=1, pan, accelerate, offset|
+SynthDef(\pmsin, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, accelerate, offset|
 	var env, sound, rate, phase, modfreq, amp;
 	freq = (MouseX.kr(30, 80).round + freq);
 	modfreq = MouseY.kr(1, 200, 1);
 	amp = AmpCompA.kr(freq);
 	env = EnvGen.ar(Env.perc(0.002, sustain, 1, -1), doneAction:2);
-	phase = Line.ar(begin, end, sustain);
+	phase = Line.ar(bgn, end, sustain);
 	rate = spd + Sweep.kr(1, accelerate);
 	sound = SinOsc.ar(freq, SinOsc.ar(modfreq * (1..5), 0, 1 - phase * 10 * env / (1..5), 0.5pi)).sum;
 	OffsetOut.ar(out,
@@ -63,10 +63,10 @@ SynthDef(\pmsin, { |out, sustain = 1, freq = 440, spd = 1, begin=0, end=1, pan, 
 
 // live audio input
 (
-SynthDef(\in, { |out, sustain = 1, spd = 1, begin = 0, end = 1, pan, accelerate, offset|
+SynthDef(\in, { |out, sustain = 1, spd = 1, bgn = 0, end = 1, pan, accelerate, offset|
 	var env, sound, rate, phase;
-	phase = Line.ar(begin, end, sustain);
-	rate = (begin + 1) * (spd + Sweep.kr(1, accelerate));
+	phase = Line.ar(bgn, end, sustain);
+	rate = (bgn + 1) * (spd + Sweep.kr(1, accelerate));
 	sound = SoundIn.ar([0, 1]); // stereo in
 	OffsetOut.ar(out,
 		CleanPan.ar(sound, ~clean.numChannels, pan)
@@ -99,10 +99,10 @@ SynthDef(\clean_from, { |out, sustain = 1, in, pan|
 
 // pitch shifted live audio input
 (
-SynthDef(\inr, { |out, sustain = 1, freq = 440, spd = 1, begin=0, end=1, pan, accelerate, offset|
+SynthDef(\inr, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, accelerate, offset|
 	var env, sound, rate, phase;
-	phase = Line.ar(begin, end, sustain);
-	rate = (begin + 1) * (spd + Sweep.kr(1, accelerate)) * freq / 440;
+	phase = Line.ar(bgn, end, sustain);
+	rate = (bgn + 1) * (spd + Sweep.kr(1, accelerate)) * freq / 440;
 	sound = SoundIn.ar([0, 1]); // stereo in
 	sound = PitchShift.ar(sound, 0.1, rate, 0.02, 0.01);
 	OffsetOut.ar(out,
@@ -134,12 +134,12 @@ SynthDef(\dirac, { |out, sustain = 0.03, pan = 0|
 
 // shepard on a cycle
 (
-SynthDef(\cyclo, { |out, freq, sustain = 1, spd = 1, begin = 0, end = 1, pan, accelerate, cycle, ratio = 1|
+SynthDef(\cyclo, { |out, freq, sustain = 1, spd = 1, bgn = 0, end = 1, pan, accelerate, cycle, ratio = 1|
 	var env, sound, rate, phase;
 
 	env = EnvGen.ar(Env.perc(0.01, 0.99, 1, -1), timeScale:sustain, doneAction:2);
-	phase = Line.kr(begin, 1 - end, sustain);
-	rate = (begin + 1) * (spd + Sweep.kr(1, accelerate));
+	phase = Line.kr(bgn, 1 - end, sustain);
+	rate = (bgn + 1) * (spd + Sweep.kr(1, accelerate));
 
 	freq = (cycle * spd) % ((1..16) * ratio + phase) + 1 * freq * rate;
 
@@ -152,9 +152,9 @@ SynthDef(\cyclo, { |out, freq, sustain = 1, spd = 1, begin = 0, end = 1, pan, ac
 
 // debug a few time related values
 (
-SynthDef(\debug, { |begin = -1, end = -1, delta = -1, sustain = -1, unitDuration = -1, cycle = -1|
+SynthDef(\debug, { |bgn = -1, end = -1, delta = -1, sustain = -1, unitDuration = -1, cycle = -1|
 	cycle.poll(Impulse.kr(0), label: "cycle");
-	begin.poll(Impulse.kr(0), label: "begin");
+	bgn.poll(Impulse.kr(0), label: "bgn");
 	end.poll(Impulse.kr(0), label: "end");
 	delta.poll(Impulse.kr(0), label: "delta");
 	sustain.poll(Impulse.kr(0), label: "sustain");
