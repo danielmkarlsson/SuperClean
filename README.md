@@ -16,7 +16,7 @@ I really like making music and, for me, this makes it way funner.
 Try it! What have you got to loose?
 
 <p align="center">
-  <img width="75%" height="75%" src="https://github.com/danielmkarlsson/SuperClean/blob/master/Dilla-Smithsonian-mpc1.jpg">
+  <img width="85%" height="85%" src="https://github.com/danielmkarlsson/SuperClean/blob/master/Dilla-Smithsonian-mpc1.jpg">
 </p>
 
 ## Installation
