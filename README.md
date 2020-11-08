@@ -18,7 +18,6 @@ Try it! What have you got to loose?
 <p align="center">
   <img width="75%" height="75%" src="https://github.com/danielmkarlsson/SuperClean/blob/master/Dilla-Smithsonian-mpc1.jpg">
 </p>
-Image: J Dilla's mother, Maureen “Ma Dukes” Yancey, smiling with open hands, gesturing to J Dilla's custom Moog synthesizer and Akai MPC 3000 sampler.
 
 ## Installation
 
@@ -307,3 +306,14 @@ round about way for me to make white noise.
 Now I might not be the bestest gunSlinger there is round these here parts, but I was able to get this thing corralled, albeit
 awkwardly, so just goes to show, you can too!
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+Image description: J Dilla's mother, Maureen “Ma Dukes” Yancey, smiling with open hands, gesturing to J Dilla's custom Moog synthesizer and Akai MPC 3000 sampler.
