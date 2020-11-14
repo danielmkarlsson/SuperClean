@@ -29,7 +29,7 @@ smear       FFT
 bgn       Where in the file to begin playing back the file, the value range is 0.0 to 1.0
 end         Where in the file to end playing back the file, the value range is 0.0 to 1.0
 accelerate  Change the playback speed of the file while its running, accepts positive and negative values
-loop        How many times to loop the file, takes integers, work in consort with the envelope parameters
+lop        How many times to loop the file, takes integers, work in consort with the envelope parameters
 cut         Cut groups, cuts itself as well as other things in the same cut group. rougher edges than leagato in terms of sound
 aux         An auxiliary output
 trr         Tremolo Rate
@@ -38,7 +38,6 @@ freq        When working with synths and we want to work with frequencies instea
 legato      Like a variable soft cut dependent on dur where 1 is dur
 
 The last two are actually not part of SuperClean but very useful and because SUperClean is running inside SuperClean we get to use them.
-
 
 In the \fmx synth definition the envelope segments are expressed in
 percentages. e4 through to e1 tell you how far into the note value that the

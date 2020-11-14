@@ -38,7 +38,7 @@ e.g. Scratching through samples:
 			numChannels: sampleNumChannels,
 			bufnum: bufnum,
 			phase: phase,
-			loop: 0,
+			lop: 0,
 			interpolation: 4 // cubic interpolation
 		);
 
@@ -77,7 +77,7 @@ e.g. Scratching through samples:
 			numChannels: sampleNumChannels,
 			bufnum: bufnum,
 			phase: phase,
-			loop: 0,
+			lop: 0,
 			interpolation: 4 // cubic interpolation
 		);
 

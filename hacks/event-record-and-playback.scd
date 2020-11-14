@@ -47,7 +47,7 @@ SuperClean.default = ~clean;
 
 // play it back
 Pdef(\x, Pseq(~recording)).play;
-Pdef(\x, Pseq(~recording, inf)).play; // looped
+Pdef(\x, Pseq(~recording, inf)).play; // loped
 
 
 // mess with it

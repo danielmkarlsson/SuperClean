@@ -19,7 +19,7 @@ if(pathMatch(path +/+ "*").isEmpty) { unixCmd("mkdir" + path) };
 
 SynthDef(\record, { |bufnum|
 	var in = InFeedback.ar(whichOrbit.outBus, ~clean.numChannels);
-	RecordBuf.ar(in, bufnum, loop:0, doneAction:2);
+	RecordBuf.ar(in, bufnum, lop:0, doneAction:2);
 }).add;
 
 

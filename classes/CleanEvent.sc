@@ -60,7 +60,7 @@ CleanEvent {
 
 		var sustain, unitDuration;
 		var spd = ~spd.value;
-		var loop = ~loop.value;
+		var lop = ~lop.value;
 		var accelerate = ~accelerate.value;
 		var avgspd, endspd;
 		var useUnit;
@@ -103,7 +103,7 @@ CleanEvent {
 				~delta * ~legato.value
 			} {
 				unitDuration = unitDuration ? ~delta;
-				loop !? { unitDuration = unitDuration * loop.abs };
+				lop !? { unitDuration = unitDuration * lop.abs };
 			}
 		};
 

@@ -83,9 +83,9 @@ Ndef(\x, {
 		var d = { 0.01.rand } ! x.size;
 		DelayN.ar(x, d, d)
 	};
-	var loop = LocalIn.ar(~clean.numChannels);
-	5.do { loop = AllpassL.ar(loop, 0.15, { ExpRand(0.03, 0.15) } ! 2, 3) };
-	mix = loop * reverbFeedback + mix;
+	var lop = LocalIn.ar(~clean.numChannels);
+	5.do { lop = AllpassL.ar(lop, 0.15, { ExpRand(0.03, 0.15) } ! 2, 3) };
+	mix = lop * reverbFeedback + mix;
 	mix = LeakDC.ar(mix);
 	LocalOut.ar(mix);
 	mix = Compander.ar(mix, mix, 0.3, slopeBelow:1, slopeAbove:0.5, clampTime:0.01, relaxTime:0.01);

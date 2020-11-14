@@ -1,5 +1,4 @@
 # SuperClean
-
 A SuperCollider implementation of the SuperClean sampler for use _inside_ of SuperCollider itself.  
 Not only can you play back all of your samples without needless hassle in an environment that can grow with you.  
 SuperClean now also contains an FM synth whose four justly tuneable operators deliver unparalleled cleanliness, even at  
@@ -14,10 +13,6 @@ for the low, low asking price of: _free_.
 Also, on a personal note here, hey, this is what I use to make music with every day.  
 I really like making music and, for me, this makes it way funner.  
 Try it! What have you got to loose?
-
-<p align="center">
-  <img width="85%" height="85%" src="https://github.com/danielmkarlsson/SuperClean/blob/master/Dilla-Smithsonian-mpc1.jpg">
-</p>
 
 ## Installation
 
@@ -306,14 +301,3 @@ round about way for me to make white noise.
 Now I might not be the bestest gunSlinger there is round these here parts, but I was able to get this thing corralled, albeit
 awkwardly, so just goes to show, you can too!
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-Image description: J Dilla's mother, Maureen “Ma Dukes” Yancey, smiling with open hands, gesturing to J Dilla's custom Moog synthesizer and Akai MPC 3000 sampler.

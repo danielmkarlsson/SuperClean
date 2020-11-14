@@ -116,7 +116,7 @@ SynthDef(\inr, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, acce
 SynthDef(\gabor, { |out, sustain = 0.03, freq = 440, pan = 0, width = 0.3|
 	var env, sound;
 	sound = SinOsc.ar(freq, 0.5pi);
-	env = LFGauss.ar(sustain, width, loop: 0).range(0, 1);
+	env = LFGauss.ar(sustain, width, lop: 0).range(0, 1);
 	OffsetOut.ar(out,
 		CleanPan.ar(env * sound, ~clean.numChannels, pan)
 	)

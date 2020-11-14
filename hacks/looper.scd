@@ -1,6 +1,6 @@
 /*
-fooloop is inspired by chunk-recorder.scd
-This looper records from SoundIn and writes/replaces buffers directly to the SuperClean soundLibrary.
+foolop is inspired by chunk-recorder.scd
+This loper records from SoundIn and writes/replaces buffers directly to the SuperClean soundLibrary.
 
 Copyright (C) 2019  Michael Hauck (f00b455)
 
@@ -20,16 +20,16 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 How to use in Tidal:
 
 -- record and replace round robin
-d1 $ sound "fooloopRec"
+d1 $ sound "foolopRec"
 
 -- stop recording and replacing
 d1 $ silence
 
--- play recorded loop 3 (bufnamePrefix++counter)
-d5 $ sound "fooloop3" # gain "0.7"
+-- play recorded lop 3 (bufnamePrefix++counter)
+d5 $ sound "foolop3" # gain "0.7"
 
 -- reset buffers.
-once $ sound "fooloopReset"
+once $ sound "foolopReset"
 
 */
 (
@@ -39,7 +39,7 @@ var whichOrbit = ~clean.orbits[0];
 var maxTime = 24; // allow a maximum of four seconds, adjust to your needs
 var lat = s.latency + 0.02; // finetune
 var numBuffers = 8; // number of buffers
-var bufnamePrefix = "fooloop"; // soundname prefix
+var bufnamePrefix = "foolop"; // soundname prefix
 var soundIn = Array.with(0);
 
 ~recBufs.do(_.free); // free them if they are left over (this is why we keep it in the environment variable)
@@ -48,12 +48,12 @@ var soundIn = Array.with(0);
 // recorder writes audio from SoundIn to a bufnum
 SynthDef(\fooRecord, { |bufnum|
     var in = SoundIn.ar(soundIn) * EnvGen.ar(Env.linen(0.003, 23, 0.003, 1, \sine), doneAction: 0);
-    RecordBuf.ar(in, bufnum, loop:0, doneAction:2);
+    RecordBuf.ar(in, bufnum, lop:0, doneAction:2);
 }).add;
 
 // start recording round robin to buffers
-functions[\fooloopRec] = {
-    if(recording) { functions[\fooloopAdd].value };
+functions[\foolopRec] = {
+    if(recording) { functions[\foolopAdd].value };
     counter = counter + 1;
     if(counter > recBufs.lastIndex, {counter = 0});
     ~server.makeBundle(lat, {
@@ -62,7 +62,7 @@ functions[\fooloopRec] = {
     })
 };
 // add new buffer and free synth
-functions[\fooloopAdd] = {
+functions[\foolopAdd] = {
     var name = bufnamePrefix ++ counter.asString;
     if(recording) {
     ~server.makeBundle(lat, {
@@ -73,7 +73,7 @@ functions[\fooloopAdd] = {
     }
 };
 // reset all buffers
-functions[\fooloopReset] = {
+functions[\foolopReset] = {
     "reset".postln;
     ~recBufs.do(_.free);
     ~recBufs = recBufs = { Buffer.alloc(~clean.server, ~clean.server.sampleRate * maxTime, soundIn.size) } ! numBuffers;
