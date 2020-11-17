@@ -1,7 +1,7 @@
 /*
 This may not be a complete list of parameter names.
 
-s           sample or sound or synth
+snd           sample or sound or synth
 num         number, which sample in a folder or which note if you are using a synth
 pan         Pans the sound, 0.0 to 1.0.
 shp         This is like a distortion, goes to 0.999999, does not accept 1 (I need to fix that)

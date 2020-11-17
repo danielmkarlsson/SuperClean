@@ -177,12 +177,12 @@ GLOBAL EFFECTS
 
 // test delay:
 
-~d1.((sound: '808cy:10', spd: 1, delaytime: 0.8, delay: 1));
-~d1.((sound: '808cy:10', spd: 1, delaytime: 0.8, delay: 1, delayfeedback: 0.4));
-~d1.((sound: '808cy:10', spd: 1, delaytime: 0.8, delay: 0));
-~d1.((sound: '808cy:10', spd: 1, delaytime: 0.2, delay: 1));
+~d1.((sound: '808cy:10', spd: 1, dlt: 0.8, dla: 1));
+~d1.((sound: '808cy:10', spd: 1, dlt: 0.8, dla: 1, dlf: 0.4));
+~d1.((sound: '808cy:10', spd: 1, dlt: 0.8, dla: 0));
+~d1.((sound: '808cy:10', spd: 1, dlt: 0.2, dla: 1));
 
-fork { (0, 0.1 ..1).do { |a| ~d1.((sound: '808cy:10', spd: 1, delaytime: 0.33, delay: a)); 1.wait } };
+fork { (0, 0.1 ..1).do { |a| ~d1.((sound: '808cy:10', spd: 1, dlt: 0.33, dla: a)); 1.wait } };
 
 
 /*

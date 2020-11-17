@@ -5,7 +5,7 @@
             Psync(
                 Pbind(*[
                     type: \clean,
-                    s: \mmd,
+                    snd: \mmd,
                     num: Pwhite(0,23),
                     dur: Pwrand([1/12,1/3],[9,1].normalizeSum,inf),
                     rel: Pstutter(Pwhite(1,8),Pseq([1/16,1/17,1/18,1/19,1/20,1/21,1/22,1/8,2],inf))*Pexprand(0.1,10.0),
@@ -33,7 +33,7 @@ Pdef(\0,
     Pseed(999,
     Pbind(*[
         type: \clean,
-        s: \fmx,
+        snd: \fmx,
         rps: Pexprand(1,999),
         hr1: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
         hr2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
@@ -65,8 +65,10 @@ Pdef(\0,
         lpf: Pkey(\freq).linlin(10,1600,20000,100,\minmax),
         room: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
         size: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
-        dry: Pseg(Pexprand(0.95,1),Pexprand(4.0,64.0),\welch,inf).trace,
+        dry: Pseg(Pexprand(0.01,1),Pexprand(4.0,64.0),\welch,inf).trace,
         pan: Pstutter(Pkey(\rps),Pwhite(0.2,0.8)),
+		sustain: 4,
+		atk: 8,
     ]);
 )
 ).play;
@@ -77,7 +79,7 @@ Pdef(\0,
     Pdef(\0,
         Pbind(*[
             type: \clean,
-            s: \uio,
+            snd: \uio,
             amp: Pexprand(1/2,8.0),
             freq: Pfunc{
                 var x = 160 * rrand(1,500).geom(1,30/29);

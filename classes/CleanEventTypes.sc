@@ -26,7 +26,7 @@ CleanEventTypes {
 			var clean = ~clean ? SuperClean.default;
 			var midiout, ccn, ccv, chan;
 			if(clean.isNil) {
-				Error("clean event: no clean instance found.\num\num// You could try:\nSuperClean.default = ~clean;").throw;
+				Error("clean event: no clean instance found.\n\num// You could try:\nSuperClean.default = ~clean;").throw;
 			};
 			~delta = ~delta ?? { ~stretch.value * ~dur.value };
 			~latency = ~latency ?? { clean.server.latency };
@@ -86,7 +86,7 @@ CleanEventTypes {
 				~midinote = (freq.cpsmidi).round(1).asInteger;
 				lag = ~lag + (~latency ? 0);
 				sustain = ~sustain = ~sustain.value;
-				midiout = ~midiout.value;
+				midiout = ~m.value;
 				if(~uid.notNil and: { midiout.notNil }) {
 					~uid = midiout.uid    // mainly for sysex cmd
 				};

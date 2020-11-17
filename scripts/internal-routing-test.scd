@@ -1,8 +1,3 @@
-
-
-
-
-
 // modulated band limited impulse
 (
 SynthDef(\impin, { |out, freq = 440, pan|
@@ -23,14 +18,14 @@ Pdef(\x,
 	Ppar([
 		Pbind(
 			\type, \clean,
-			\s, \cr,
+			\snd, \cr,
 			\to, 0,
 			\psst, 1,
 			\pan, Pseq([0, 1], inf)
 		),
 		Pbind(
 			\type, \clean,
-			\s, \impin,
+			\snd, \impin,
 			\from, 0,
 			\toArg, \input,
 			\freq, Pseq([2, Prand([3, 7], 1), 153, 78], inf)
@@ -41,7 +36,7 @@ Pdef(\x,
 
 
 (
-(type: \clean, s: \cr, pan: 1.0.rand2, spd: 0.8, to: 0, psst:1).play;
-(type: \clean, s: \impin, from: 0, toArg: \input, freq: exprand(3, 1000.0)).play;
+(type: \clean, snd: \cr, pan: 1.0.rand2, spd: 0.8, to: 0, psst:1).play;
+(type: \clean, snd: \impin, from: 0, toArg: \input, freq: exprand(3, 1000.0)).play;
 )
 

@@ -152,7 +152,7 @@ CleanSoundLibrary {
 			"no folders found in paths: '%'".format(paths).warn; ^this
 		};
 		memory = this.memoryFootprint;
-		"\nloading % sample bank%:\n".postf(folderPaths.size, if(folderPaths.size > 1) { "s" } { "" });
+		"\nloading % sample bank%:\n".postf(folderPaths.size, if(folderPaths.size > 1) { "snd" } { "" });
 		folderPaths.do { |folderPath|
 			this.loadSoundFileFolder(folderPath, namingFunction.(folderPath), appendToExisting)
 		};
@@ -222,13 +222,13 @@ CleanSoundLibrary {
 		^nil
 	}
 
-    // ~s = name, ~num = index
+    // ~snd = name, ~num = index
 	getEvent { |name, index|
 		// first look up buffers, then synths
 		var allEvents = this.at(name);
 		^if(allEvents.isNil) {
 			if(SynthDescLib.at(name).notNil) {
-				// use tidal's "n" as note, only for synths that have no event defined
+				// use tidal's "num" as note, only for synths that have no event defined
 				(instrument: name, hash: name.identityHash)
 			} {
 				if(defaultEvent.notNil) {

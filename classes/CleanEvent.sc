@@ -10,8 +10,8 @@ CleanEvent {
 	play {
 		event.parent = aux.defaultParentEvent;
 		event.use {
-			// s and n stand for synth/sample and note/number
-			~s ?? { this.splitName };
+			// snd and num stand for synth/sample and note/number
+			~snd ?? { this.splitName };
 			// unless aux wide diversion returns something, we proceed
 			~diversion.(this) ?? {
 				this.mergeSoundEvent;
@@ -28,14 +28,14 @@ CleanEvent {
 	}
 
 	splitName {
-		var s, num;
-		#s, num = ~sound.asString.split($:);
-		~s = s.asSymbol;
+		var snd, num;
+		#snd, num = ~sound.asString.split($:);
+		~snd = snd.asSymbol;
 		~num = if(num.notNil) { num.asFloat } { 0.0 };
 	}
 
 	mergeSoundEvent {
-		var soundEvent = aux.clean.soundLibrary.getEvent(~s, ~num);
+		var soundEvent = aux.clean.soundLibrary.getEvent(~snd, ~num);
 		if(soundEvent.isNil) {
 			// only call ~notFound if no ~diversion is given that anyhow redirects control
 			if(~diversion.isNil) { ~notFound.value }
@@ -83,7 +83,7 @@ CleanEvent {
 		};
 
 		if(useUnit) {
-			if(~unit == \rate) { ~unit = \r }; // API adaption to tidal output
+			if(~unit == \rate) { ~unit = \r };
 			switch(~unit,
 				\r, {
 					unitDuration = unitDuration * ~length / avgspd;
@@ -91,7 +91,7 @@ CleanEvent {
 				\c, {
 					unitDuration = unitDuration * ~length / avgspd;
 				},
-				\s, {
+				\snd, {
 					unitDuration = ~length;
 				},
 				{ Error("this unit ('%') is not defined".format(~unit)).throw };
@@ -188,7 +188,7 @@ CleanEvent {
 			aux.globalEffects.do { |x| x.set(currentEnvironment) };
 
 			if(cutGroup.notNil) {
-				server.sendMsg(\n_set, cutGroup, \gateSample, ~hash, \cutAll, if(~cut > 0) { 1 } { 0 });
+				server.sendMsg(\num_set, cutGroup, \gateSample, ~hash, \cutAll, if(~cut > 0) { 1 } { 0 });
 			};
 
 			this.prepareSynthGroup(cutGroup);

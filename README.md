@@ -302,4 +302,3 @@ round about way for me to make white noise.
 
 Now I might not be the bestest gunSlinger there is round these here parts, but I was able to get this thing corralled, albeit
 awkwardly, so just goes to show, you can too!
-

@@ -14,10 +14,6 @@ which can be modified before starting a SuperClean instance. This is still a bit
 Generally, these pseudo ugens below expect a bipolar pan range [-1..1]
 CleanEvent converts the input: ~pan = ~pan * 2 - 1;
 
-Where we write -1 for pan in uhm, something else, we get -3, which should be equivalent to 1.
-In multichannel panning this is not an issue, because it is cyclic in the range [-1..1], or [0..2]
-In stereo panning, we need to .fold(-1, 1)
-
 */
 
 
