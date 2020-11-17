@@ -3,13 +3,13 @@
 CORE MODULES
 (REQUIRE: CORE SYNTHS)
 
-Core Modules: these are called for each event from tidal,
+Core Modules: these are called for each event,
 and they represent the list of possible (effect) synths on the event level
 
 Usually, they correspond to a SynthDef (here in core-synths), you could call any function in them
 They will be called when the test is fulfilled (e.g. ~amp.notNil)
 
-You can't currently add your own, because Tidal needs to support this extension first.
+You can't currently add your own.
 
 */
 
@@ -21,7 +21,7 @@ The sound source to be filtered by later stages (modules)
 This could be:
 
 - a sample that is played
-- a generic synth, which allows us to embed a SynthDef name in a tidal pattern next to sample names
+- a generic synth, which allows us to embed a SynthDef name in a pattern next to sample names
 
 A SynthDef could receive any number of the parameters in the event, e.g.
 sustain, spd, endspd, bgn, end, pan, accelerate, offset, cps
@@ -29,7 +29,6 @@ sustain, spd, endspd, bgn, end, pan, accelerate, offset, cps
 it ought to use "out" as bus output argument.
 
 the diversion is a hook to add an arbitrary function instead of a synth def.
-this may be refactored later.
 */
 (
 
@@ -46,7 +45,7 @@ this may be refactored later.
 					endspd: ~endspd,
 					bgn: ~bgn,
 					end: ~end,
-					loop: ~loop,
+					lop: ~lop,
 					pan: ~pan,
 					out: ~out
 				])
