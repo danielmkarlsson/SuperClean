@@ -14,6 +14,8 @@ Also, on a personal note here, hey, this is what I use to make music with every 
 I really like making music and, for me, this makes it way funner.  
 Try it! What have you got to loose?
 
+![Maureen "Ma Dukes" Yancey smiling with her son J Dilla's MPC 3000](Dilla-Smithsonian-mpc1.jpg)
+
 ## Installation
 
 Copy this line and evaluate it in SuperCollider:
