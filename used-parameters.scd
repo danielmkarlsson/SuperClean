@@ -2,7 +2,7 @@
 This may not be a complete list of parameter names.
 
 s           sample or sound or synth
-n           number, which sample in a folder or which note if you are using a synth
+num         number, which sample in a folder or which note if you are using a synth
 pan         Pans the sound, 0.0 to 1.0.
 shp         This is like a distortion, goes to 0.999999, does not accept 1 (I need to fix that)
 amp         Make it louder! Can go above one to lean into the compressor
@@ -26,10 +26,10 @@ dry         Decrease the amplitude of the reverb
 freeze      FFT Freeze
 enhance     FFT
 smear       FFT
-bgn       Where in the file to begin playing back the file, the value range is 0.0 to 1.0
+bgn         Where in the file to begin playing back the file, the value range is 0.0 to 1.0
 end         Where in the file to end playing back the file, the value range is 0.0 to 1.0
 accelerate  Change the playback speed of the file while its running, accepts positive and negative values
-lop        How many times to loop the file, takes integers, work in consort with the envelope parameters
+lop         How many times to loop the file, takes integers, work in consort with the envelope parameters
 cut         Cut groups, cuts itself as well as other things in the same cut group. rougher edges than leagato in terms of sound
 aux         An auxiliary output
 trr         Tremolo Rate

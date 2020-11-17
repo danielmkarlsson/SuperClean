@@ -26,7 +26,7 @@ CleanEventTypes {
 			var clean = ~clean ? SuperClean.default;
 			var midiout, ccn, ccv, chan;
 			if(clean.isNil) {
-				Error("clean event: no clean instance found.\n\n// You could try:\nSuperClean.default = ~clean;").throw;
+				Error("clean event: no clean instance found.\num\num// You could try:\nSuperClean.default = ~clean;").throw;
 			};
 			~delta = ~delta ?? { ~stretch.value * ~dur.value };
 			~latency = ~latency ?? { clean.server.latency };
@@ -47,7 +47,7 @@ CleanEventTypes {
                 };
             };
 
-			if(~n.isArray) {
+			if(~num.isArray) {
 				keys = currentEnvironment.keys.asArray;
 				values = keys.collect(_.envirGet).flop;
 				values.do { |each|

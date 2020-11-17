@@ -6,7 +6,7 @@
                 Pbind(*[
                     type: \clean,
                     s: \mmd,
-                    n: Pwhite(0,23),
+                    num: Pwhite(0,23),
                     dur: Pwrand([1/12,1/3],[9,1].normalizeSum,inf),
                     rel: Pstutter(Pwhite(1,8),Pseq([1/16,1/17,1/18,1/19,1/20,1/21,1/22,1/8,2],inf))*Pexprand(0.1,10.0),
                     amp: Pexprand(1.0,8.0),

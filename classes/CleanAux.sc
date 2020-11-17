@@ -184,9 +184,9 @@ CleanAux {
 			~amp = 1.0;
 			~cut = 0.0;
 			~unit = \r;
-			~n = 0; // sample number or note
+			~num = 0; // sample number or note
 			~octave = 5;
-			~midinote = #{ ~note ? ~n + (~octave * 12) };
+			~midinote = #{ ~note ? ~num + (~octave * 12) };
 			~freq = #{ ~midinote.value.midicps };
 			~delta = 1.0;
 

@@ -28,14 +28,14 @@ CleanEvent {
 	}
 
 	splitName {
-		var s, n;
-		#s, n = ~sound.asString.split($:);
+		var s, num;
+		#s, num = ~sound.asString.split($:);
 		~s = s.asSymbol;
-		~n = if(n.notNil) { n.asFloat } { 0.0 };
+		~num = if(num.notNil) { num.asFloat } { 0.0 };
 	}
 
 	mergeSoundEvent {
-		var soundEvent = aux.clean.soundLibrary.getEvent(~s, ~n);
+		var soundEvent = aux.clean.soundLibrary.getEvent(~s, ~num);
 		if(soundEvent.isNil) {
 			// only call ~notFound if no ~diversion is given that anyhow redirects control
 			if(~diversion.isNil) { ~notFound.value }

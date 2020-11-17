@@ -222,7 +222,7 @@ CleanSoundLibrary {
 		^nil
 	}
 
-    // ~s = name, ~n = index
+    // ~s = name, ~num = index
 	getEvent { |name, index|
 		// first look up buffers, then synths
 		var allEvents = this.at(name);
