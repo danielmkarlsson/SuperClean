@@ -1,25 +1,22 @@
 /*
 
-An aux encapsulates a continuous state that affects all sounds played in it.
-It has default parameters for all sounds, which can be set, e.g. pan, and which can be overridden from tidal.
-Its globalEffects are e.g. delay, reverb, and also the monitor which handles the audio output routing.
-You can add and remove effects at runtime.
+An aux can be used as a separate audio output for when you want to do multichannel output,
+or when you want to apply delay and or reverb to something. It is possible to have a part
+of what you are hearing dry, and another part of what you are hearing wet. You can set up
+auxs in the startup.scd file. Look for this line:
 
-Settable parameters are also:
+~clean.start(57120, [0,2,4,6]);
 
-- fadeTime (fade in and out of each sample grain)
-- amp (amp)
-- minSustain (samples shorter than that are dropped).
-- outBus (channel offset for the audio output)
+The above line gives you 8 outputs.
+Another way to set your auxs would be to use them as sends to different effects:
 
-Via the defaultParentEvent, you can also set parameters (use the set message):
+~clean.start(57120, [0,0,0]);
 
-- lag (offset all events)
-- lock (if set to 1, syncs delay times with cps)
-
+The above line sets up three auxs and routes all of them to the first two audio outputs.
+This way you could have one aux dry, one with reverb on it and the last on with dealy on it.
+It is also possible to use both delay and reverb on the same aux.
 
 */
-
 
 CleanAux {
 
@@ -171,20 +168,19 @@ CleanAux {
 		^cutGroup
 	}
 
-
 	makeDefaultParentEvent {
 		defaultParentEvent = Event.make {
 
 			~cps = 1.0;
-			~offset = 0.0;
 			~bgn = 0.0;
 			~end = 1.0;
 			~spd = 1.0;
 			~pan = 0.5;
 			~amp = 1.0;
 			~cut = 0.0;
-			~unit = \r;
 			~num = 0; // sample number or note
+			~unit = \r;
+			~offset = 0.0;
 			~octave = 5;
 			~midinote = #{ ~note ? ~num + (~octave * 12) };
 			~freq = #{ ~midinote.value.midicps };
@@ -211,7 +207,7 @@ CleanAux {
 			~server = server;
 
 			~notFound = {
-				"no synth or sample named '%' could be found.".format(~s).postln;
+				"no synth or sample named '%' could be found.".format(~snd).postln;
 			};
 
 		}
