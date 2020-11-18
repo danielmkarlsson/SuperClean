@@ -67,8 +67,8 @@ Pdef(\0,
         size: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
         dry: Pseg(Pexprand(0.01,1),Pexprand(4.0,64.0),\welch,inf).trace,
         pan: Pstutter(Pkey(\rps),Pwhite(0.2,0.8)),
-		sustain: 4,
-		atk: 8,
+	sustain: 4,
+	atk: 8,
     ]);
 )
 ).play;
