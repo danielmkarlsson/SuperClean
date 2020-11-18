@@ -158,14 +158,14 @@ SuperCollider is so vast that the scope needs to be narrowed somewhat in order t
             Psync(
                 Pbind(*[
                     type: \clean,
-                    s: \mmd,
-                    n: Pwhite(0,23),
+                    snd: \mmd,
+                    num: Pwhite(0,23),
                     dur: Pwrand([1/12,1/3],[9,1].normalizeSum,inf),
                     rel: Pstutter(Pwhite(1,8),Pseq([1/16,1/17,1/18,1/19,1/20,1/21,1/22,1/8,2],inf))*Pexprand(0.1,10.0),
-                    gain: Pexprand(1.0,4.0),
+                    amp: Pexprand(1.0,4.0),
                     pan: Pstutter(Pwhite(0,28),Pwrand([Pwhite(0.0,0.333),Pwhite(0.666,1.0)],[1,1.5].normalizeSum,inf)),
                     lpf: Pwrand([625,1250,2500,5000,10000,20000],(1..6).normalizeSum,inf),
-                    speed: Pwrand([1/64,1/32,1/16,1/8,1/4,1/2,1,2,4,8,16,32,64],[1,2,4,8,16,32,64,32,16,8,4,2,1].normalizeSum,inf),
+                    spd: Pwrand([1/64,1/32,1/16,1/8,1/4,1/2,1,2,4,8,16,32,64],[1,2,4,8,16,32,64,32,16,8,4,2,1].normalizeSum,inf),
                     shp: Pwhite(0.0,0.999).trace,
                     dla: 0.01,
                     dlf: 0.94,
@@ -186,7 +186,7 @@ Pdef(\0,
     Pseed(399,
     Pbind(*[
         type: \clean,
-        s: \fmx,
+        snd: \fmx,
         rps: Pexprand(1,999),
         hr1: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
         hr2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
@@ -230,8 +230,8 @@ Pdef(\0,
     Pdef(\0,
         Pbind(*[
             type: \clean,
-            s: \uio,
-            gain: Pexprand(1/2,8.0),
+            snd: \uio,
+            amp: Pexprand(1/2,8.0),
             freq: Pfunc{
                 var x = 160 * rrand(1,500).geom(1,30/29);
                 x.reject{|i| i > 20000 }
