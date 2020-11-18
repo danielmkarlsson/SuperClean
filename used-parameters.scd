@@ -24,12 +24,9 @@ dlt         Delay time, value range is a very low float to 4.0
 rin         Set the amplitude of the input to the reverb
 rev         Reverb time (or room size, if we can imagine that)
 dry         Decrease the amplitude of the reverb
-freeze      FFT Freeze
-enhance     FFT
-smear       FFT
 bgn         Where in the file to begin playing back the file
 end         Where in the file to end playing back the file
-accelerate  Change the playback speed of the file while its running, accepts positive and negative values
+bnd         Change the playback speed of the file while its running, accepts positive and negative values
 lop         How many times to loop the file, takes integers, work in consort with the envelope parameters
 cut         Cut groups, cuts itself as well as other things in the same cut group. Rougher edges than leagato in terms of sound
 aux         An auxiliary output
