@@ -263,6 +263,18 @@ level. This becomes especially important for me where modulation indexes are
 concerned. Without this level of detail, FM can otherwise easily become a very
 round about way for me to make white noise.
 
+## Refurbishers welcome
+
+SuperClean will work well with lower spec computers. If you'd like to add  
+and remove sample folders as you go, maybe because you have a slightly older  
+computer that you found in the tech trash, then this is for you:
+
+```
+~clean.postSampleInfo; // check which samples are loaded into ram
+~clean.freeSoundFiles([\rnb]); // this presupposes that you first add a sample folder called rnb
+~clean.postSampleInfo; // now, the rnb samples should be gone.
+```
+
 ## TODO
 <details>
 <summary>(reOrdered to reflect relevance)</summary>
