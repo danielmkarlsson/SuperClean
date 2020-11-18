@@ -265,7 +265,7 @@ SuperClean {
 
 	*predefinedSynthParameters {
 		// not complete, but avoids obvious collisions
-		^#[\pan, \amp, \out, \i_out, \sustain, \gate, \accelerate, \amp, \unit, \cut, \octave, \offset, \atk];
+		^#[\pan, \amp, \out, \i_out, \sustain, \gate, \bnd, \amp, \unit, \cut, \octave, \offset, \atk];
 	}
 
 

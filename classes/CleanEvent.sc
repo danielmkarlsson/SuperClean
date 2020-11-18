@@ -61,7 +61,7 @@ CleanEvent {
 		var sustain, unitDuration;
 		var spd = ~spd.value;
 		var lop = ~lop.value;
-		var accelerate = ~accelerate.value;
+		var bnd = ~bnd.value;
 		var avgspd, endspd;
 		var useUnit;
 
@@ -74,11 +74,11 @@ CleanEvent {
 			spd = spd * ~cps * if(useUnit) { unitDuration  } { 1.0 }
 		};
 
-		if(accelerate.isNil) {
+		if(bnd.isNil) {
 			endspd = spd;
 			avgspd = spd.abs;
 		} {
-			endspd = spd * (1.0 + accelerate);
+			endspd = spd * (1.0 + bnd);
 			avgspd = spd.abs + endspd.abs * 0.5;
 		};
 
