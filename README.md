@@ -59,7 +59,7 @@ dependencies means less things that can go sideways with the install procedure.
 
 ## Be free to be you
 
-There's a way to hot swap in samples as needed:
+Here's a way to hot swap in samples as needed:
 
 ```
 ~clean.loadSoundFiles("~/Downloads/rnb");
