@@ -1,8 +1,8 @@
 CLASS::CleanEvent
 summary::A representation of a sound event in SuperClean
-categories::Live Coding
+categories::Algorithmic Composition
 
-related::Classes/CleanOrbit, Classes/SuperClean
+related::Classes/CleanAux, Classes/SuperClean
 
-DESCRIPTION::
+DESCRIPTION::This is a clean event
 
