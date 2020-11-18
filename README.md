@@ -1,17 +1,17 @@
 # SuperClean
-A SuperCollider implementation of the SuperClean sampler for use _inside_ of SuperCollider itself.  
-Not only can you play back all of your samples without needless hassle in an environment that can grow with you.  
-SuperClean now also contains an FM synth whose four justly tuneable operators deliver unparalleled cleanliness, even at 
+A SuperCollider implementation of the SuperClean sampler for use _inside_ of SuperCollider itself.
+Not only can you play back all of your samples without needless hassle in an environment that can grow with you.
+SuperClean now also contains an FM synth whose four justly tuneable operators deliver unparalleled cleanliness, even at
 extreme modulation indexes. SuperClean even includes a remarkably efficient additive synth which literally sounds out of this
-world. SuperClean is, in short, a one-stop-shopping-experience for folks who want: 
+world. SuperClean is, in short, a one-stop-shopping-experience for folks who want:
 
-• An MPC,  
-• a bunch of effects, and   
-• a couple of synths   
+• An MPC,
+• a bunch of effects, and
+• a couple of synths
 
-for the low, low asking price of: _free_.  
-Also, on a personal note here, hey, this is what I use to make music with every day.  
-I really like making music and, for me, this makes it way funner.  
+for the low, low asking price of: _free_.
+Also, on a personal note here, hey, this is what I use to make music with every day.
+I really like making music and, for me, this makes it way funner.
 Try it! What have you got to loose?
 
 ![Maureen "Ma Dukes" Yancey smiling with her son J Dilla's MPC 3000](Dilla-Smithsonian-mpc1.jpg)
@@ -23,7 +23,7 @@ Copy this line and evaluate it in SuperCollider:
 `Quarks.install("https://github.com/danielmkarlsson/SuperClean.git");`
 
 If you don't have git, then go ahead and get git, when you hopefully get asked to get git, as a consequence of running that
-line. Git is good to have. It let's us have version control and install all kinds of neat stuff. If you are on a mac then 
+line. Git is good to have. It let's us have version control and install all kinds of neat stuff. If you are on a mac then
 it won't be that huge whole Xcode thing, it'll just be something called Xcode Select which is quite small.
 
 ## Updating
@@ -40,7 +40,7 @@ That's how I do it. I'd love to find a simpler solution so let me know if you ha
 
 ## Origins and acknowledgements
 
-Julian Rohrhuber and Alex McLean built this thing initially, then I changed a few little things here and there.  
+Julian Rohrhuber and Alex McLean built this thing initially, then I changed a few little things here and there.
 Scott Cazan then gave me some much needed assistance in my little remodeling efforts. What you have here is essentially a
 shameless ripOff / fork of / homage to SuperDirt. Marcus Pal created the FM synth and the additive synth.
 
@@ -52,9 +52,9 @@ shameless ripOff / fork of / homage to SuperDirt. Marcus Pal created the FM synt
 
 ## Lean is good
 
-I only included a tiny amount of samples inside the clean-samples folder. I also trimmed the fat a lil bit with regards to the 
-effects and synths that are included. That's the main thing. I did that because that's a lot of data to have to download if 
-you're sharing a very slow wifi connection with 20 other kids who are also trying to get sat up at the same time. Also fewer 
+I only included a tiny amount of samples inside the clean-samples folder. I also trimmed the fat a lil bit with regards to the
+effects and synths that are included. That's the main thing. I did that because that's a lot of data to have to download if
+you're sharing a very slow wifi connection with 20 other kids who are also trying to get sat up at the same time. Also fewer
 dependencies means less things that can go sideways with the install procedure.
 
 ## Be free to be you
@@ -65,15 +65,15 @@ There's a way to hot swap in samples as needed:
 ~clean.loadSoundFiles("~/Downloads/rnb");
 ```
 
-Get your own samples in there! That's what I think everyone should do. That way you'll make this thing your own, and in no 
+Get your own samples in there! That's what I think everyone should do. That way you'll make this thing your own, and in no
 time you'll be making your own kind of weird music. This also means you don't have to wait around for a bunch of samples
 to load in to ram all the time when you need to start over quickly because reasons.
 
 ## Safe is necessary
- 
-I asked Scott to make sure that the filters are only able to accept values in the range of human hearing, 20 to 20000 hz. 
+
+I asked Scott to make sure that the filters are only able to accept values in the range of human hearing, 20 to 20000 hz.
 This way the filters won't blow up. Also there is a nifty compressor that saves our ears ~~if~~ when things get unexpectedly
-loud. This compressor can also be leaned in to on purpose yielding all manner of hawt sound. Be sure to not miss out on the 
+loud. This compressor can also be leaned in to on purpose yielding all manner of hawt sound. Be sure to not miss out on the
 fun of sending values greater than one to `gain`.
 
 ## Start yer engines!
@@ -135,19 +135,19 @@ If you _do_ have something in your Startup.scd, then you get to pick and choose 
 If, and only if, you are in that latter category, then proly the only part you for sure want to add in your Startup.scd (or
 evaluate every time you want to run some SuperClean) in order for the below code to work on your machine is:
 
-`SuperClean.default = ~clean;` 
+`SuperClean.default = ~clean;`
 
 which is what makes clean sequenceable from _within_ SuperCollider.
 
 ## Whatsit look like?
 
-Here are some examples of using the Pattern paradigm within SuperCollider to control SuperClean. First there's an example of 
-sequencing samples I made with my Micro Modular. Halfway down is an example of using the `fmx` synth which ships with 
+Here are some examples of using the Pattern paradigm within SuperCollider to control SuperClean. First there's an example of
+sequencing samples I made with my Micro Modular. Halfway down is an example of using the `fmx` synth which ships with
 SuperClean. Finally at the end there you'll find an example of working with `uio` which is the additive synth. That example
-uses a `Pfunc` to generate not just one pitch but a whole _bunch_ of pitches at the same time. Now, I know that looks a little 
+uses a `Pfunc` to generate not just one pitch but a whole _bunch_ of pitches at the same time. Now, I know that looks a little
 different. It is bringing another paradigm, functions, into Patterns. In SuperCollider there are many ways of doing the same
 thing. Different strokes for different folks is all. Additive is such a wildly different way of making sound that it warranted
-a different approach to control. I would have prefered to stay within the Pattern paradigm as it has been my experience that 
+a different approach to control. I would have prefered to stay within the Pattern paradigm as it has been my experience that
 SuperCollider is so vast that the scope needs to be narrowed somewhat in order to be approachable.
 
 ```text
@@ -170,8 +170,8 @@ SuperCollider is so vast that the scope needs to be narrowed somewhat in order t
                     dla: 0.01,
                     dlf: 0.94,
                     dlt: 1/2 / Pstutter(Pwrand([1,2,3],[256,16,1].normalizeSum,inf),Pbrown(1,199,Prand((1..19),inf),inf)),
-                    room: Pwrand([0,0.05],[9,1].normalizeSum,inf),
-                    size: 0.97,
+                    rin: Pwrand([0,0.05],[9,1].normalizeSum,inf),
+                    rev: 0.97,
                     dry: Pstutter(Pwhite(1,9),Pwrand([0.25,1],[3,1].normalizeSum,inf)),
                     hpf: 40,
                 ]),1,9,
@@ -216,8 +216,8 @@ Pdef(\0,
             *Pstutter(Pkey(\rps),Pexprand(1,9).asInteger),
         hpf: Pexprand(20,20000),
         lpf: Pkey(\freq).linlin(10,1600,20000,100,\minmax),
-        room: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
-        size: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
+        rin: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
+        rev: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
         dry: Pseg(Pexprand(0.775,1),Pexprand(4.0,64.0),\welch,inf).trace,
         pan: Pstutter(Pkey(\rps),Pwhite(0.0,1.0)),
     ]);
@@ -260,41 +260,41 @@ have a modulation index value because it isn’t modulating anything else.
 SuperCollider has an uncanny knack for delivering such clean synthesis, owing
 to negligible round off errors in the calculation of waveforms at the lowest
 level. This becomes especially important for me where modulation indexes are
-concerned. Without this level of detail, FM can otherwise easily become a very 
+concerned. Without this level of detail, FM can otherwise easily become a very
 round about way for me to make white noise.
 
-## TODO  
+## TODO
 <details>
 <summary>(reOrdered to reflect relevance)</summary>
 
-• ~~Single line installation~~  
-• ~~.clip value ranges for all filters~~  
-• ~~All Clean to Clean~~  
-• ~~Add samples and change path _inside_ SuperClean~~  
-• ~~Fix aliases in core-synths.scd (bpf stuck at default value)~~  
-• ~~Fix aliases in core-synths-global.scd, seems to inherit keys from Synthdef args, dla,dlf,dlt is goal~~   
-• ~~Add FM synthdef~~  
-• ~~Add Additive synthdef~~   
-• ~~Add `crv` param to env~~  
-• ~~Raise output volume~~  
-• ~~Stereo sample playback~~  
-• ~~Set audible default values for `fmx`, what are sensible defaults?~~    
-• ~~Pan not working in `fmx`~~      
+• ~~Single line installation~~
+• ~~.clip value ranges for all filters~~
+• ~~All Clean to Clean~~
+• ~~Add samples and change path _inside_ SuperClean~~
+• ~~Fix aliases in core-synths.scd (bpf stuck at default value)~~
+• ~~Fix aliases in core-synths-global.scd, seems to inherit keys from Synthdef args, dla,dlf,dlt is goal~~
+• ~~Add FM synthdef~~
+• ~~Add Additive synthdef~~
+• ~~Add `crv` param to env~~
+• ~~Raise output volume~~
+• ~~Stereo sample playback~~
+• ~~Set audible default values for `fmx`, what are sensible defaults?~~
+• ~~Pan not working in `fmx`~~
 • ~~Pan not working in `uio`~~
-• ~~Investigate possible bug where long samples (try an hour) will play back at lower sample rate (turns out around 3 minutes is max before fitror sets in)~~  
+• ~~Investigate possible bug where long samples (try an hour) will play back at lower sample rate (turns out around 3 minutes is max before fitror sets in)~~
 
-• ReDo rm with feedback  
-• Might there be a way to lessen the likeliness of the envelopes in `fmx` clicking?       
-• Sequence the order of effects     
-• FadeTime T1 style (requires `amp` key, so `gain` needs to go away somehow).       
-• NRT render inside SuperClean   
+• ReDo rm with feedback
+• Might there be a way to lessen the likeliness of the envelopes in `fmx` clicking?
+• Sequence the order of effects
+• FadeTime T1 style (requires `amp` key, so `gain` needs to go away somehow).
+• NRT render inside SuperClean
 
-• Include `Pxshuf`  
-• Include `Pbjorklund`  
+• Include `Pxshuf`
+• Include `Pbjorklund`
 
-• Swap out the reverb (how to make it sound better while still at low cpu?)  
-• Maybe add that tape effect  
-• Maybe delete some effects    
+• Swap out the reverb (how to make it sound better while still at low cpu?)
+• Maybe add that tape effect
+• Maybe delete some effects
 
 </details>
 

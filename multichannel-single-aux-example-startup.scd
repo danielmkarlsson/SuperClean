@@ -39,13 +39,13 @@ s.waitForBoot {
 	~clean.loadSoundFiles;   // load samples (path containing a wildcard can be passed in)
 	// for example: ~clean.loadSoundFiles("/Users/myUserName/Clean/samples/*");
 	// s.sync; // optionally: wait for samples to be read
-	~clean.start(57120, [0, 0]);   // start listening on port 57120, create two busses each sending audio to channel 0
+	~clean.start(57120, [0, 0]);   // start listening on port 57120, create two auxs each sending audio to channel 0
 
 	// optional, needed for the sclang tests only:
 	(
 
-		~d1 = ~clean.orbits[0]; // one orbit
-		~d2 = ~clean.orbits[1];
+		~d1 = ~clean.auxs[0]; // one orbit
+		~d2 = ~clean.auxs[1];
 
 	);
 };

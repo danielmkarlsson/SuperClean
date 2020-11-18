@@ -126,19 +126,19 @@ CORE SYNTHDEFS FOR DIRT
 	};
 
 
-	// thanks to Jost Muxfeld and James McCartney
-	// note that "size" is not room size, just the feed level into the room
+	// I think this reverb was created by Jost Muxfeld and James McCartney
+	//
 
-	SynthDef("clean_reverb" ++ numChannels, { |dryBus, effectBus, gate = 1, room = 0, size = 0.1, dry = 0|
+	SynthDef("clean_reverb" ++ numChannels, { |dryBus, effectBus, gate = 1, rin = 0, rev = 0.1, dry = 0|
 		var in, snd, loop, depth;
 
 		in = In.ar(dryBus, numChannels).asArray.sum;
 
-		in = in * room.lag(LFNoise1.kr(1).range(0.01, 0.02)); // regulate input
+		in = in * rin.lag(LFNoise1.kr(1).range(0.01, 0.02)); // regulate input
 
 		4.do { in = AllpassN.ar(in, 0.03, { Rand(0.005, 0.02) }.dup(numChannels), 1) };
 
-		depth = size.lag(0.02).linexp(0, 1, 0.01, 0.98); // change depth between 0.1 and 0.98
+		depth = rev.lag(0.02).linexp(0, 1, 0.01, 0.98); // change depth between 0.1 and 0.98
 		loop = LocalIn.ar(numChannels) * { depth + Rand(0, 0.05) }.dup(numChannels);
 		loop = OnePole.ar(loop, 0.5);  // 0-1
 

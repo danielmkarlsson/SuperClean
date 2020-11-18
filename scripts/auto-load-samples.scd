@@ -23,11 +23,11 @@ var autoLoad = { |sound|
 };
 
 // use the "\notFound" hook in clean.
-~clean.set(\notFound, { autoLoad.(~s) });
+~clean.set(\notFound, { autoLoad.(~snd) });
 )
 
 
-// try it out: while playing any tidal pattern, now remove all samples:
+// try it out: while playing any pattern, now remove all samples:
 
 ~clean.freeSoundFiles
 

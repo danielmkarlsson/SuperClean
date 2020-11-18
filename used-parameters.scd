@@ -1,7 +1,8 @@
 /*
 This may not be a complete list of parameter names.
+The value range for the below parameters is 0.0 to 1.0 unless otherwise indicated
 
-snd           sample or sound or synth
+snd         sample or synth
 num         number, which sample in a folder or which note if you are using a synth
 pan         Pans the sound, 0.0 to 1.0.
 shp         This is like a distortion, goes to 0.999999, does not accept 1 (I need to fix that)
@@ -10,27 +11,27 @@ spd         The speed at which to play back the sample
 atk         The attack time of the envelope
 hld         The hold time of the envelope
 rel         The release time of the envelope
-crv         The curvature of the envelope, swings both ways. That is to say it uses both positive and negative values
-lpf         Low pass filter
-hpf         High pass filter
-bpf         Band pass filter
+crv         The curvature of the envelope, swings both ways. That is to say it uses both positive and negative values, try values between -8 to 8
+lpf         Low pass filter, value range is 20 to 20000
+hpf         High pass filter, value range is 20 to 20000
+bpf         Band pass filter, value range is 20 to 20000
 lpq         Low pass filter resonance
 hpq         High pass filter resonance
 bpq         Band pass filter resonance
 dla         Delay amplitude
 dlf         Delay feedback
-dlt         Delay time
-room        Room is one of three reverb parameters
-size        This is the other reverb parameter
+dlt         Delay time, value range is a very low float to 4.0
+rin         Set the amplitude of the input to the reverb
+rev         Reverb time (or room size, if we can imagine that)
 dry         Decrease the amplitude of the reverb
 freeze      FFT Freeze
 enhance     FFT
 smear       FFT
-bgn         Where in the file to begin playing back the file, the value range is 0.0 to 1.0
-end         Where in the file to end playing back the file, the value range is 0.0 to 1.0
+bgn         Where in the file to begin playing back the file
+end         Where in the file to end playing back the file
 accelerate  Change the playback speed of the file while its running, accepts positive and negative values
 lop         How many times to loop the file, takes integers, work in consort with the envelope parameters
-cut         Cut groups, cuts itself as well as other things in the same cut group. rougher edges than leagato in terms of sound
+cut         Cut groups, cuts itself as well as other things in the same cut group. Rougher edges than leagato in terms of sound
 aux         An auxiliary output
 trr         Tremolo Rate
 trd         Tremeolo depth

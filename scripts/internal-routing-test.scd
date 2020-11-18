@@ -18,7 +18,7 @@ Pdef(\x,
 	Ppar([
 		Pbind(
 			\type, \clean,
-			\snd, \cr,
+			\snd, \mmd,
 			\to, 0,
 			\psst, 1,
 			\pan, Pseq([0, 1], inf)
@@ -36,7 +36,7 @@ Pdef(\x,
 
 
 (
-(type: \clean, snd: \cr, pan: 1.0.rand2, spd: 0.8, to: 0, psst:1).play;
+(type: \clean, snd: \mmd, pan: 1.0.rand2, spd: 0.8, to: 0, psst:1).play;
 (type: \clean, snd: \impin, from: 0, toArg: \input, freq: exprand(3, 1000.0)).play;
 )
 
