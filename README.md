@@ -297,10 +297,9 @@ computer that you found in the tech trash, then this is for you:
 • ~~Set audible default values for `fmx`, what are sensible defaults?~~  
 • ~~Pan not working in `fmx`~~  
 • ~~Pan not working in `uio`~~  
-• ~~Investigate possible bug where long samples (try an hour) will play back at lower sample rate (turns out around 3 minutes is max before fitror sets in)~~
 
+• Reevaluate cubic interpolation (want longer file playback)  
 • ReDo rm with feedback  
-• Might there be a way to lessen the likeliness of the envelopes in `fmx` clicking?  
 • Sequence the order of effects  
 • FadeTime T1 style  
 • NRT render inside SuperClean  
