@@ -283,34 +283,34 @@ computer that you found in the tech trash, then this is for you:
 <details>
 <summary>(reOrdered to reflect relevance)</summary>
 
-• ~~Single line installation~~
-• ~~.clip value ranges for all filters~~
-• ~~All Clean to Clean~~
-• ~~Add samples and change path _inside_ SuperClean~~
-• ~~Fix aliases in core-synths.scd (bpf stuck at default value)~~
-• ~~Fix aliases in core-synths-global.scd, seems to inherit keys from Synthdef args, dla,dlf,dlt is goal~~
-• ~~Add FM synthdef~~
-• ~~Add Additive synthdef~~
-• ~~Add `crv` param to env~~
-• ~~Raise output volume~~
-• ~~Stereo sample playback~~
-• ~~Set audible default values for `fmx`, what are sensible defaults?~~
-• ~~Pan not working in `fmx`~~
-• ~~Pan not working in `uio`~~
+• ~~Single line installation~~  
+• ~~.clip value ranges for all filters~~  
+• ~~All Clean to Clean~~  
+• ~~Add samples and change path _inside_ SuperClean~~  
+• ~~Fix aliases in core-synths.scd (bpf stuck at default value)~~  
+• ~~Fix aliases in core-synths-global.scd, seems to inherit keys from Synthdef args, dla,dlf,dlt is goal~~  
+• ~~Add FM synthdef~~  
+• ~~Add Additive synthdef~~  
+• ~~Add `crv` param to env~~  
+• ~~Raise output volume~~  
+• ~~Stereo sample playback~~  
+• ~~Set audible default values for `fmx`, what are sensible defaults?~~  
+• ~~Pan not working in `fmx`~~  
+• ~~Pan not working in `uio`~~  
 • ~~Investigate possible bug where long samples (try an hour) will play back at lower sample rate (turns out around 3 minutes is max before fitror sets in)~~
 
-• ReDo rm with feedback
-• Might there be a way to lessen the likeliness of the envelopes in `fmx` clicking?
-• Sequence the order of effects
-• FadeTime T1 style (requires `amp` key, so `gain` needs to go away somehow).
-• NRT render inside SuperClean
+• ReDo rm with feedback  
+• Might there be a way to lessen the likeliness of the envelopes in `fmx` clicking?  
+• Sequence the order of effects  
+• FadeTime T1 style  
+• NRT render inside SuperClean  
 
-• Include `Pxshuf`
-• Include `Pbjorklund`
+• Include `Pxshuf`  
+• Include `Pbjorklund`  
 
-• Swap out the reverb (how to make it sound better while still at low cpu?)
-• Maybe add that tape effect
-• Maybe delete some effects
+• Swap out the reverb (how to make it sound better while still at low cpu?)  
+• Maybe add that tape effect  
+• Maybe delete some effects  
 
 </details>
 
