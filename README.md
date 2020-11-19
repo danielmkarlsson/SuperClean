@@ -157,7 +157,7 @@ Pdef(\0,
 	Pseed(Pn(999,1),
 		Psync(
 			Pbind(*[
-				type: \clean,
+				type: \cln,
 				snd: \mmd,
 				num: Pwhite(0,23),
 				dur: Pwrand([1/12,1/3],[9,1].normalizeSum,inf),
@@ -185,7 +185,7 @@ Pdef(\0,
 Pdef(\0,
 	Pseed(999,
 		Pbind(*[
-			type: \clean,
+			type: \cln,
 			snd: \fmx,
 			rps: Pexprand(1,99),
 			hr1: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
@@ -233,14 +233,14 @@ Pdef(\0,
 (
 Pdef(\0,
 	Pbind(*[
-		type: \clean,
+		type: \cln,
 		snd: \uio,
 		amp: Pexprand(1/2,8.0),
 		freq: Pfunc{
 			var x = 160 * rrand(1,500).geom(1,30/29);
 			x.reject{|i| i > 20000 }
 		},
-		dur: Pstutter(Pexprand(1,11).round,Pexprand(1,3).round/Pexprand(5,29).round).trace,
+		dur: Pstutter(Pexprand(1,11).asInteger,Pexprand(1,3).round/Pexprand(5,29).round).trace,
 		atk: Pexprand(0.0001,1.1),
 		rel: Pkey(\dur)-(Pexprand(0.000001,0.01)),
 		hpf: Pexprand(20,20000),
