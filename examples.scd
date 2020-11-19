@@ -4,7 +4,7 @@ Pdef(\0,
 	Pseed(Pn(999,1),
 		Psync(
 			Pbind(*[
-				type: \clean,
+				type: \cln,
 				snd: \mmd,
 				num: Pwhite(0,23),
 				dur: Pwrand([1/12,1/3],[9,1].normalizeSum,inf),
@@ -32,7 +32,7 @@ Pdef(\0,
 Pdef(\0,
 	Pseed(999,
 		Pbind(*[
-			type: \clean,
+			type: \cln,
 			snd: \fmx,
 			rps: Pexprand(1,99),
 			hr1: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
@@ -80,7 +80,7 @@ Pdef(\0,
 (
 Pdef(\0,
 	Pbind(*[
-		type: \clean,
+		type: \cln,
 		snd: \uio,
 		amp: Pexprand(1/2,8.0),
 		freq: Pfunc{
