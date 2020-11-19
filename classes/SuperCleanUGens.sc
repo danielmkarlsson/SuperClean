@@ -47,7 +47,7 @@ CleanPan {
 	}
 
 	*defaultMixingFunction_ {
-		"CleanPan can be completely configured, so please just make your own defaultPanningFunction".postln;
+		"CleanPan can be completely configured, make your own defaultPanningFunction if you want".postln;
 		^this.deprecated(thisMethod)
 	}
 }
