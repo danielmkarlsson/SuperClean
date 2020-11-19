@@ -6,7 +6,7 @@ Add your own instruments here.
 // sustain, spd, endspd, bgn, end, pan, accelerate, offset, cps
 // all instruments ought to use: out
 
-If your SuperClean instance is assigned to the variable ~clean, you can livecode these synths.
+If your SuperClean instance is assigned to the variable ~cln, you can livecode these synths.
 */
 
 (
@@ -23,7 +23,7 @@ SynthDef(\imp, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, acce
 	rate = (bgn + 1) * (spd + Sweep.kr(1, accelerate));
 	sound = Blip.ar(rate.linexp(0, 1, 1, freq) * [1, 1.25, 1.51, 1.42], ExpRand(80, 118) * phase).sum;
 	OffsetOut.ar(out,
-		CleanPan.ar(sound, ~clean.numChannels, pan, env)
+		CleanPan.ar(sound, ~cln.numChannels, pan, env)
 	)
 }).add
 );
@@ -39,7 +39,7 @@ SynthDef(\psin, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, acc
 	rate = spd + Sweep.kr(1, accelerate);
 	sound = SinOsc.ar(freq, SinOsc.ar(modfreq * (1..5), 0, 1 - phase * 10 * env / (1..5), 0.5pi)).sum;
 	OffsetOut.ar(out,
-		CleanPan.ar(sound, ~clean.numChannels, pan, env)
+		CleanPan.ar(sound, ~cln.numChannels, pan, env)
 	)
 }).add
 );
@@ -56,7 +56,7 @@ SynthDef(\pmsin, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, ac
 	rate = spd + Sweep.kr(1, accelerate);
 	sound = SinOsc.ar(freq, SinOsc.ar(modfreq * (1..5), 0, 1 - phase * 10 * env / (1..5), 0.5pi)).sum;
 	OffsetOut.ar(out,
-		CleanPan.ar(sound, ~clean.numChannels, pan, env)
+		CleanPan.ar(sound, ~cln.numChannels, pan, env)
 	)
 }).add
 );
@@ -69,7 +69,7 @@ SynthDef(\in, { |out, sustain = 1, spd = 1, bgn = 0, end = 1, pan, accelerate, o
 	rate = (bgn + 1) * (spd + Sweep.kr(1, accelerate));
 	sound = SoundIn.ar([0, 1]); // stereo in
 	OffsetOut.ar(out,
-		CleanPan.ar(sound, ~clean.numChannels, pan)
+		CleanPan.ar(sound, ~cln.numChannels, pan)
 	)
 }).add
 );
@@ -79,17 +79,17 @@ SynthDef(\in, { |out, sustain = 1, spd = 1, bgn = 0, end = 1, pan, accelerate, o
 (
 SynthDef(\clean_from, { |out, sustain = 1, in, pan|
 	var sound;
-	sound = InFeedback.ar(in, ~clean.numChannels).poll;
+	sound = InFeedback.ar(in, ~cln.numChannels).poll;
 	Out.ar(out,
-		CleanPan.ar(sound, ~clean.numChannels, pan)
+		CleanPan.ar(sound, ~cln.numChannels, pan)
 	)
 }).add;
 
-~clean.soundLibrary.addSynth(\from,
+~cln.soundLibrary.addSynth(\from,
 	(
 		instrument: \clean_from,
 		in: {
-			~clean.audioRoutingBusses.wrapAt(~from ? 0).index
+			~cln.audioRoutingBusses.wrapAt(~from ? 0).index
 		}
 	)
 )
@@ -106,7 +106,7 @@ SynthDef(\inr, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, acce
 	sound = SoundIn.ar([0, 1]); // stereo in
 	sound = PitchShift.ar(sound, 0.1, rate, 0.02, 0.01);
 	OffsetOut.ar(out,
-		CleanPan.ar(sound, ~clean.numChannels, pan)
+		CleanPan.ar(sound, ~cln.numChannels, pan)
 	)
 }).add
 );
@@ -118,7 +118,7 @@ SynthDef(\gabor, { |out, sustain = 0.03, freq = 440, pan = 0, width = 0.3|
 	sound = SinOsc.ar(freq, 0.5pi);
 	env = LFGauss.ar(sustain, width, loop: 0).range(0, 1);
 	OffsetOut.ar(out,
-		CleanPan.ar(env * sound, ~clean.numChannels, pan)
+		CleanPan.ar(env * sound, ~cln.numChannels, pan)
 	)
 }).add;
 );
@@ -127,7 +127,7 @@ SynthDef(\gabor, { |out, sustain = 0.03, freq = 440, pan = 0, width = 0.3|
 (
 SynthDef(\dirac, { |out, sustain = 0.03, pan = 0|
 	OffsetOut.ar(out,
-		CleanPan.ar(Impulse.ar(0), ~clean.numChannels, pan)
+		CleanPan.ar(Impulse.ar(0), ~cln.numChannels, pan)
 	)
 }).add;
 );
@@ -145,7 +145,7 @@ SynthDef(\cyclo, { |out, freq, sustain = 1, spd = 1, bgn = 0, end = 1, pan, acce
 
 	sound = SinOsc.ar(freq).mean;
 	OffsetOut.ar(out,
-		CleanPan.ar(sound, ~clean.numChannels, pan, env)
+		CleanPan.ar(sound, ~cln.numChannels, pan, env)
 	)
 }).add
 );
@@ -181,7 +181,7 @@ SynthDef(\debug, { |bgn = -1, end = -1, delta = -1, sustain = -1, unitDuration =
 		o = SinOsc.ar(freq*ee);
 		o = o * e * AmpComp.kr(freq,40,0.3);
 
-		o = CleanPan.ar(o, ~clean.numChannels, pan);
+		o = CleanPan.ar(o, ~cln.numChannels, pan);
 		Out.ar(out, o);
 	}, [\ir, \ir, \ir, \ir, \ir, \ir, \ir, \ir]).add;
 
@@ -212,7 +212,7 @@ SynthDef(\debug, { |bgn = -1, end = -1, delta = -1, sustain = -1, unitDuration =
 
     sig = sig * AmpCompA.kr(freq,17.323914436055);
     sig = (sig * amp)*LFNoise1.ar(lforate).range(lfodepth,1);
-    sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+    sig = CleanPan.ar(sig, ~cln.numChannels, pan);
     Out.ar(out, tanh(LeakDC.ar(sig)));
   }).add;
 

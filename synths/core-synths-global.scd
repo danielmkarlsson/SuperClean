@@ -14,7 +14,7 @@ CORE SYNTHDEFS FOR DIRT
 
 (
 {
-	var numChannels = ~clean.numChannels;
+	var numChannels = ~cln.numChannels;
 
 
 	/*

@@ -33,7 +33,7 @@ this may be refactored later.
 */
 (
 
-~clean.addModule('sound',
+~cln.addModule('sound',
 	{ |cleanEvent|
 		if(~diversion.value.isNil) {
 			if(~buffer.notNil) {
@@ -68,9 +68,9 @@ they respond to the existence of a value for one of the tidal parameters
 */
 
 
-~clean.addModule('out_to',
+~cln.addModule('out_to',
 	{ |cleanEvent|
-		var busses = ~clean.audioRoutingBusses;
+		var busses = ~cln.audioRoutingBusses;
 		var bus = busses.wrapAt(~to.asInteger);
 		cleanEvent.sendSynth("clean_out" ++ ~numChannels,
 			[
@@ -86,20 +86,20 @@ they respond to the existence of a value for one of the tidal parameters
 // synth needs to have an audio rate control.
 // it would be nice to be able to map several arguments
 
-~clean.addModule('map_from',
+~cln.addModule('map_from',
 	{ |cleanEvent|
-		var busses = ~clean.audioRoutingBusses;
+		var busses = ~cln.audioRoutingBusses;
 		var bus = if(~from.isNil) { busses.at(0) } { busses.wrapAt(~from.asInteger) };
 		~server.sendMsg(
 			"/n_mapan",
 			~synthGroup,
 			~toArg,
 			bus.index,
-			~clean.numChannels
+			~cln.numChannels
 		)
 }, { ~toArg.notNil });
 
-~clean.addModule('shape',
+~cln.addModule('shape',
 	{ |cleanEvent|
 		cleanEvent.sendSynth("clean_shape" ++ ~numChannels,
 			[
@@ -109,7 +109,7 @@ they respond to the existence of a value for one of the tidal parameters
 
 }, { ~shp.notNil });
 
-~clean.addModule('hpf',
+~cln.addModule('hpf',
 	{ |cleanEvent|
 		cleanEvent.sendSynth("clean_hpf" ++ ~numChannels,
 			[
@@ -120,7 +120,7 @@ they respond to the existence of a value for one of the tidal parameters
 
 }, { ~hpf.notNil });
 
-~clean.addModule('bpf',
+~cln.addModule('bpf',
 	{ |cleanEvent|
 		cleanEvent.sendSynth("clean_bpf" ++ ~numChannels,
 			[
@@ -131,7 +131,7 @@ they respond to the existence of a value for one of the tidal parameters
 
 }, { ~bandqf.notNil });
 
-~clean.addModule('crush',
+~cln.addModule('crush',
 	{ |cleanEvent|
 		cleanEvent.sendSynth("clean_crush" ++ ~numChannels,
 			[
@@ -142,7 +142,7 @@ they respond to the existence of a value for one of the tidal parameters
 }, { ~cru.notNil });
 
 
-~clean.addModule('coarse',
+~cln.addModule('coarse',
 	{ |cleanEvent|
 		cleanEvent.sendSynth("clean_coarse" ++ ~numChannels,
 			[
@@ -152,7 +152,7 @@ they respond to the existence of a value for one of the tidal parameters
 
 }, { ~crs.notNil and: { ~crs > 1 } }); // coarse == 1 => full rate
 
-~clean.addModule('lpf',
+~cln.addModule('lpf',
 	{ |cleanEvent|
 		cleanEvent.sendSynth("clean_lpf" ++ ~numChannels,
 			[
@@ -163,7 +163,7 @@ they respond to the existence of a value for one of the tidal parameters
 
 }, { ~lpf.notNil });
 
-~clean.addModule('envelope',
+~cln.addModule('envelope',
 	{ |cleanEvent|
 		cleanEvent.sendSynth('clean_envelope' ++ ~numChannels,
 			[
@@ -176,7 +176,7 @@ they respond to the existence of a value for one of the tidal parameters
 }, { ~atk.notNil or: { ~rel.notNil }});
 
 
-~clean.addModule('tremolo',
+~cln.addModule('tremolo',
 	{ |cleanEvent|
 		cleanEvent.sendSynth('clean_tremolo' ++ ~numChannels,
 			[
@@ -187,7 +187,7 @@ they respond to the existence of a value for one of the tidal parameters
 }, { ~trr.notNil });
 
 // Phaser audio DSP effect declaration
-~clean.addModule('phaser',
+~cln.addModule('phaser',
 	{ |cleanEvent|
 		cleanEvent.sendSynth('clean_phaser' ++ ~numChannels,
 			[

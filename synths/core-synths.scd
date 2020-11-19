@@ -8,13 +8,13 @@ these synthdefs can be hacked at runtime, but they are absolutely necessary for 
 
 Their name and parameter names shouldn't be changed. Parameter names can be added though.
 
-live coding them requires that you have your SuperClean instance in an environment variable called ~clean.
+live coding them requires that you have your SuperClean instance in an environment variable called ~cln.
 
 */
 
 (
 {
-	var numChannels = ~clean.numChannels;
+	var numChannels = ~cln.numChannels;
 
 
 

@@ -8,8 +8,8 @@ DEFAULT EFFECTS EXTRA
 	// Divides an audio stream into tiny segments, using the signal's
 	// zero-crossings as segment boundaries, and discards a fraction of them.
 
-	~clean.addModule('waveloss', { |cleanEvent|
-		cleanEvent.sendSynth('waveloss' ++ ~clean.numChannels,
+	~cln.addModule('waveloss', { |cleanEvent|
+		cleanEvent.sendSynth('waveloss' ++ ~cln.numChannels,
 			[
 				drop: ~waveloss,
 				out: ~out
@@ -17,8 +17,8 @@ DEFAULT EFFECTS EXTRA
 		)
 	}, { ~waveloss.notNil });
 
-	SynthDef("waveloss" ++ ~clean.numChannels, { |out, drop = 1|
-		var sig = In.ar(out, ~clean.numChannels);
+	SynthDef("waveloss" ++ ~cln.numChannels, { |out, drop = 1|
+		var sig = In.ar(out, ~cln.numChannels);
 		sig = WaveLoss.ar(sig, drop, outof: 100, mode: 2);
 		ReplaceOut.ar(out, sig)
 	},[\ir, \ir]).add;
@@ -26,8 +26,8 @@ DEFAULT EFFECTS EXTRA
 	// Squiz
 	// "reminiscent of some weird mixture of filter, ring-modulator
 	// and pitch-shifter"
-	~clean.addModule('squiz', { |cleanEvent|
-		cleanEvent.sendSynth('squiz' ++ ~clean.numChannels,
+	~cln.addModule('squiz', { |cleanEvent|
+		cleanEvent.sendSynth('squiz' ++ ~cln.numChannels,
 			[
 				pitchratio: ~squiz,
 				out: ~out
@@ -35,8 +35,8 @@ DEFAULT EFFECTS EXTRA
 		)
 	}, { ~squiz.notNil });
 
-	SynthDef("squiz" ++ ~clean.numChannels, { |out, pitchratio = 1|
-		var sig = In.ar(out, ~clean.numChannels);
+	SynthDef("squiz" ++ ~cln.numChannels, { |out, pitchratio = 1|
+		var sig = In.ar(out, ~cln.numChannels);
 		sig = Squiz.ar(sig, pitchratio);
 		ReplaceOut.ar(out, sig)
 	}, [\ir, \ir]).add;
@@ -44,8 +44,8 @@ DEFAULT EFFECTS EXTRA
 	// Frequency shifter
 	// Total shift is sum of `fshift` (in Hz) and `fshiftnote` times the current note frequency.
 	// `fshiftphase` allows control over the phase
-	~clean.addModule('fshift', { |cleanEvent|
-		cleanEvent.sendSynth("clean_fshift" ++ ~clean.numChannels,
+	~cln.addModule('fshift', { |cleanEvent|
+		cleanEvent.sendSynth("clean_fshift" ++ ~cln.numChannels,
 			[
 				fshift: ~fshift,
 				fshiftphase: ~fshiftphase,
@@ -56,16 +56,16 @@ DEFAULT EFFECTS EXTRA
 		)
 	}, { ~fshift.notNil });
 
-	SynthDef("clean_fshift" ++ ~clean.numChannels, { |out, fshift, fshiftphase, fshiftnote, freq|
-		var sig = In.ar(out, ~clean.numChannels);
+	SynthDef("clean_fshift" ++ ~cln.numChannels, { |out, fshift, fshiftphase, fshiftnote, freq|
+		var sig = In.ar(out, ~cln.numChannels);
 		var shift = freq * fshiftnote + fshift;
 		sig = FreqShift.ar(sig, shift, fshiftphase);
 		ReplaceOut.ar(out, sig);
 	}, [\ir, \ir, \ir, \ir, \ir]).add;
 
 	// Triode-like distortion, uses only the `triode` parameter
-	~clean.addModule('triode', { |cleanEvent|
-		cleanEvent.sendSynth("clean_triode" ++ ~clean.numChannels,
+	~cln.addModule('triode', { |cleanEvent|
+		cleanEvent.sendSynth("clean_triode" ++ ~cln.numChannels,
 			[
 				triode: ~triode,
 				out: ~out
@@ -73,9 +73,9 @@ DEFAULT EFFECTS EXTRA
 		)
 	}, { ~triode.notNil });
 
-	SynthDef("clean_triode" ++ ~clean.numChannels, { |out, triode|
+	SynthDef("clean_triode" ++ ~cln.numChannels, { |out, triode|
 		var sig, sc;
-		sig = In.ar(out, ~clean.numChannels);
+		sig = In.ar(out, ~cln.numChannels);
 		sc = triode * 10 + 1e-3;
 		sig = (sig * (sig > 0)) + (tanh(sig * sc) / sc * (sig < 0));
 		ReplaceOut.ar(out, LeakDC.ar(sig));
@@ -84,8 +84,8 @@ DEFAULT EFFECTS EXTRA
 	// Sonic Pi's krush
 	// modified a bit so krush "0" is the same as dry signal
 	// uses `krush` and `kcutoff` as paramters
-	~clean.addModule('krush', { |cleanEvent|
-		cleanEvent.sendSynth("clean_krush" ++ ~clean.numChannels,
+	~cln.addModule('krush', { |cleanEvent|
+		cleanEvent.sendSynth("clean_krush" ++ ~cln.numChannels,
 			[
 				krush: ~krush,
 				kcutoff: ~kcutoff,
@@ -94,10 +94,10 @@ DEFAULT EFFECTS EXTRA
 		)
 	}, { ~krush.notNil });
 
-	SynthDef("clean_krush" ++ ~clean.numChannels, { |out, krush, kcutoff|
+	SynthDef("clean_krush" ++ ~cln.numChannels, { |out, krush, kcutoff|
 		var orig, signal, freq;
 		freq = Select.kr(kcutoff > 0, [DC.kr(4000), kcutoff]);
-		orig = In.ar(out, ~clean.numChannels);
+		orig = In.ar(out, ~cln.numChannels);
 		signal = (orig.squared + (krush * orig)) / (orig.squared + (orig.abs * (krush-1.0)) + 1.0);
 		signal = RLPF.ar(signal, clip(freq, 20, 10000), 1);
 		signal = SelectX.ar(krush * 2.0, [orig, signal]);
@@ -107,8 +107,8 @@ DEFAULT EFFECTS EXTRA
 	// Sonic Pi's octaver
 	// uses `octer` for octave harmonics, `octersub` for half-frequency harmonics, and `octersubsub` for
 	// quarter-frequency harmonics
-	~clean.addModule('octer', { |cleanEvent|
-		cleanEvent.sendSynth("clean_octer" ++ ~clean.numChannels,
+	~cln.addModule('octer', { |cleanEvent|
+		cleanEvent.sendSynth("clean_octer" ++ ~cln.numChannels,
 			[
 				octer: ~octer,
 				octersub: ~octersub,
@@ -118,9 +118,9 @@ DEFAULT EFFECTS EXTRA
 		)
 	}, { ~octer.notNil or: { ~octersub.notNil } or: { ~octersubsub.notNil }});
 
-	SynthDef("clean_octer" ++ ~clean.numChannels, { |out, octer, octersub, octersubsub|
+	SynthDef("clean_octer" ++ ~cln.numChannels, { |out, octer, octersub, octersubsub|
 		var signal, oct1, oct2, oct3, sub;
-		signal = In.ar(out, ~clean.numChannels);
+		signal = In.ar(out, ~cln.numChannels);
 		oct1 = 2.0 * LeakDC.ar( abs(signal) );
 		sub = LPF.ar(signal, 440);
 		oct2 = ToggleFF.ar(sub);
@@ -132,7 +132,7 @@ DEFAULT EFFECTS EXTRA
 
 	// Ring modulation with `ring` (modulation amount), `ringf` (modulation frequency), and `ringdf` (slide
 	// in modulation frequency)
-	~clean.addModule('ring', { |cleanEvent|
+	~cln.addModule('ring', { |cleanEvent|
 		cleanEvent.sendSynth("clean_ring" ++ ~clean.numChannels,
 			[
 				ring: ~ring,
@@ -143,17 +143,17 @@ DEFAULT EFFECTS EXTRA
 		)
 	}, { ~ring.notNil });
 
-	SynthDef("clean_ring" ++ ~clean.numChannels, { |out, ring = 0, ringf = 0, ringdf|
+	SynthDef("clean_ring" ++ ~cln.numChannels, { |out, ring = 0, ringf = 0, ringdf|
 		var signal, mod;
-		signal = In.ar(out, ~clean.numChannels);
+		signal = In.ar(out, ~cln.numChannels);
 		mod = ring * SinOsc.ar(Clip.kr(XLine.kr(ringf, ringf + ringdf), 20, 20000));
 		signal = ring1(signal, mod);
 		ReplaceOut.ar(out, signal);
 	}, [\ir, \ir, \ir, \ir]).add;
 
 	// A crunchy distortion with a lot of high harmonics, the only parameter is `distort`
-	~clean.addModule('distort', { |cleanEvent|
-		cleanEvent.sendSynth("clean_distort" ++ ~clean.numChannels,
+	~cln.addModule('distort', { |cleanEvent|
+		cleanEvent.sendSynth("clean_distort" ++ ~cln.numChannels,
 			[
 				distort: ~distort,
 				out: ~out
@@ -161,9 +161,9 @@ DEFAULT EFFECTS EXTRA
 		)
 	}, { ~distort.notNil });
 
-	SynthDef("clean_distort" ++ ~clean.numChannels, { |out, distort = 0|
+	SynthDef("clean_distort" ++ ~cln.numChannels, { |out, distort = 0|
 		var signal, mod;
-		signal = In.ar(out, ~clean.numChannels);
+		signal = In.ar(out, ~cln.numChannels);
 		mod = CrossoverDistortion.ar(signal, amp: 0.2, smooth: 0.01);
 		mod = mod + (0.1 * distort * DynKlank.ar(`[[60,61,240,3000 + SinOsc.ar(62,mul: 100)],nil,[0.1, 0.1, 0.05, 0.01]], signal));
 		mod = (mod.cubed * 8).softclip * 0.5;
@@ -172,8 +172,8 @@ DEFAULT EFFECTS EXTRA
 	}, [\ir, \ir]).add;
 
 	// Spectral delay
-	~clean.addModule('spectral-delay', { |cleanEvent|
-		cleanEvent.sendSynth('spectral-delay' ++ ~clean.numChannels,
+	~cln.addModule('spectral-delay', { |cleanEvent|
+		cleanEvent.sendSynth('spectral-delay' ++ ~cln.numChannels,
 			// OPTIONAL
 			// passing this array of parameters could be left out,
 			// but it makes it clear what happens and it is also more
@@ -186,12 +186,12 @@ DEFAULT EFFECTS EXTRA
 		)
 	}, { ~tsdelay.notNil or: { ~xsdelay.notNil }});
 
-	SynthDef("spectral-delay" ++ ~clean.numChannels, { |out, tsdelay = 0.5, xsdelay = 0.5|
+	SynthDef("spectral-delay" ++ ~cln.numChannels, { |out, tsdelay = 0.5, xsdelay = 0.5|
 
 		var signal, delayTime, delays, freqs, filtered;
 		var size = 16;
 		var maxDelayTime = 0.2;
-		signal = In.ar(out, ~clean.numChannels);
+		signal = In.ar(out, ~cln.numChannels);
 		delayTime = tsdelay * maxDelayTime;
 		filtered = (1..size).sum { |i|
 			var filterFreq = i.linexp(1, size, 40, 17000);
@@ -204,8 +204,8 @@ DEFAULT EFFECTS EXTRA
 	}, [\ir, \ir, \ir]).add;
 
 	// Spectral freeze
-	~clean.addModule('spectral-freeze', { |cleanEvent|
-		cleanEvent.sendSynth('spectral-freeze' ++ ~clean.numChannels,
+	~cln.addModule('spectral-freeze', { |cleanEvent|
+		cleanEvent.sendSynth('spectral-freeze' ++ ~cln.numChannels,
 			[
 				freeze: ~freeze,
 				out: ~out
@@ -214,17 +214,17 @@ DEFAULT EFFECTS EXTRA
 	}, { ~freeze.notNil } );
 
 
-	SynthDef("spectral-freeze" ++ ~clean.numChannels, { |out, freeze|
+	SynthDef("spectral-freeze" ++ ~cln.numChannels, { |out, freeze|
 		var signal, chain, in;
-		signal = In.ar(out, ~clean.numChannels);
+		signal = In.ar(out, ~cln.numChannels);
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_Freeze(chain, freeze));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
 	// Spectral comb
-	~clean.addModule('spectral-comb', { |cleanEvent|
-		cleanEvent.sendSynth('spectral-comb' ++ ~clean.numChannels,
+	~cln.addModule('spectral-comb', { |cleanEvent|
+		cleanEvent.sendSynth('spectral-comb' ++ ~cln.numChannels,
 			[
 				comb: ~comb,
 				out: ~out
@@ -232,17 +232,17 @@ DEFAULT EFFECTS EXTRA
 		)
 	}, { ~comb.notNil });
 
-	SynthDef("spectral-comb" ++ ~clean.numChannels, { |out, comb|
+	SynthDef("spectral-comb" ++ ~cln.numChannels, { |out, comb|
 		var signal, chain, in, clean, teeth = 256;
-		signal = In.ar(out, ~clean.numChannels);
+		signal = In.ar(out, ~cln.numChannels);
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_RectComb(chain, numTeeth: teeth * comb, width: 1-comb));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
 	// Spectral smear
-	~clean.addModule('spectral-smear', { |cleanEvent|
-		cleanEvent.sendSynth('spectral-smear' ++ ~clean.numChannels,
+	~cln.addModule('spectral-smear', { |cleanEvent|
+		cleanEvent.sendSynth('spectral-smear' ++ ~cln.numChannels,
 			[
 				smear: ~smear,
 				out: ~out
@@ -250,17 +250,17 @@ DEFAULT EFFECTS EXTRA
 		)
 	}, { ~smear.notNil });
 
-	SynthDef("spectral-smear" ++ ~clean.numChannels, { |out, smear|
+	SynthDef("spectral-smear" ++ ~cln.numChannels, { |out, smear|
 		var signal, chain, in;
-		signal = In.ar(out, ~clean.numChannels);
+		signal = In.ar(out, ~cln.numChannels);
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_MagSmear(chain, bins: smear.linexp(0.0,1.0,1,64)));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
 	// Spectral scramble
-	~clean.addModule('spectral-scram', { |cleanEvent|
-		cleanEvent.sendSynth('spectral-scram' ++ ~clean.numChannels,
+	~cln.addModule('spectral-scram', { |cleanEvent|
+		cleanEvent.sendSynth('spectral-scram' ++ ~cln.numChannels,
 			[
 				scram: ~scram,
 				out: ~out
@@ -268,9 +268,9 @@ DEFAULT EFFECTS EXTRA
 		)
 	}, { ~scram.notNil });
 
-	SynthDef("spectral-scram" ++ ~clean.numChannels, { |out, scram|
+	SynthDef("spectral-scram" ++ ~cln.numChannels, { |out, scram|
 		var signal, chain, in, clean, teeth = 256;
-		signal = In.ar(out, ~clean.numChannels);
+		signal = In.ar(out, ~cln.numChannels);
 		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_BinScramble(chain, wipe: scram, width: scram));
@@ -278,8 +278,8 @@ DEFAULT EFFECTS EXTRA
 	}, [\ir, \ir]).add;
 
 	// Spectral binshift
-	~clean.addModule('spectral-binshift', { |cleanEvent|
-		cleanEvent.sendSynth('spectral-binshift' ++ ~clean.numChannels,
+	~cln.addModule('spectral-binshift', { |cleanEvent|
+		cleanEvent.sendSynth('spectral-binshift' ++ ~cln.numChannels,
 			[
 				binshift: ~binshift,
 				out: ~out
@@ -287,9 +287,9 @@ DEFAULT EFFECTS EXTRA
 		)
 	}, { ~binshift.notNil });
 
-	SynthDef("spectral-binshift" ++ ~clean.numChannels, { |out, binshift|
+	SynthDef("spectral-binshift" ++ ~cln.numChannels, { |out, binshift|
 		var signal, chain, in, clean, teeth = 256;
-		signal = In.ar(out, ~clean.numChannels);
+		signal = In.ar(out, ~cln.numChannels);
 		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_BinShift(chain, stretch: binshift.linlin(0.0,1.0,0.01,4.0),
@@ -298,8 +298,8 @@ DEFAULT EFFECTS EXTRA
 	}, [\ir, \ir]).add;
 
 	// Spectral high pass filter
-	~clean.addModule('spectral-hbrick', { |cleanEvent|
-		cleanEvent.sendSynth('spectral-hbrick' ++ ~clean.numChannels,
+	~cln.addModule('spectral-hbrick', { |cleanEvent|
+		cleanEvent.sendSynth('spectral-hbrick' ++ ~cln.numChannels,
 			[
 				hbrick: ~hbrick,
 				out: ~out
@@ -308,9 +308,9 @@ DEFAULT EFFECTS EXTRA
 	}, { ~hbrick.notNil });
 
 
-	SynthDef("spectral-hbrick" ++ ~clean.numChannels, { |out, hbrick|
+	SynthDef("spectral-hbrick" ++ ~cln.numChannels, { |out, hbrick|
 		var signal, chain, in, clean, teeth = 256;
-		signal = In.ar(out, ~clean.numChannels);
+		signal = In.ar(out, ~cln.numChannels);
 		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_BrickWall(chain, wipe: hbrick * 0.6)); // Signal almost disappears around 0.5 therefore it's scaled a bit
@@ -318,8 +318,8 @@ DEFAULT EFFECTS EXTRA
 	}, [\ir, \ir]).add;
 
 	// Spectral low pass filter
-	~clean.addModule('spectral-lbrick', { |cleanEvent|
-		cleanEvent.sendSynth('spectral-lbrick' ++ ~clean.numChannels,
+	~cln.addModule('spectral-lbrick', { |cleanEvent|
+		cleanEvent.sendSynth('spectral-lbrick' ++ ~cln.numChannels,
 			[
 				lbrick: ~lbrick,
 				out: ~out
@@ -327,9 +327,9 @@ DEFAULT EFFECTS EXTRA
 		)
 	}, { ~lbrick.notNil });
 
-	SynthDef("spectral-lbrick" ++ ~clean.numChannels, { |out, lbrick|
+	SynthDef("spectral-lbrick" ++ ~cln.numChannels, { |out, lbrick|
 		var signal, chain, in, clean, teeth = 256;
-		signal = In.ar(out, ~clean.numChannels);
+		signal = In.ar(out, ~cln.numChannels);
 		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		// lbrick parameter scaled to negative range to activate lopass filter (see ugen help file)
@@ -338,8 +338,8 @@ DEFAULT EFFECTS EXTRA
 	}, [\ir, \ir]).add;
 
 	// Conformer
-	~clean.addModule('spectral-conformer', { |cleanEvent|
-		cleanEvent.sendSynth('spectral-conformer' ++ ~clean.numChannels,
+	~cln.addModule('spectral-conformer', { |cleanEvent|
+		cleanEvent.sendSynth('spectral-conformer' ++ ~cln.numChannels,
 			[
 				real: ~real,
 				imag: ~imag,
@@ -348,9 +348,9 @@ DEFAULT EFFECTS EXTRA
 		)
 	}, { ~real.notNil or: ~imag.notNil });
 
-	SynthDef("spectral-conformer" ++ ~clean.numChannels, { |out, real = 0.5, imag = 0.5|
+	SynthDef("spectral-conformer" ++ ~cln.numChannels, { |out, real = 0.5, imag = 0.5|
 		var signal, chain, in, clean, teeth = 256;
-		signal = In.ar(out, ~clean.numChannels);
+		signal = In.ar(out, ~cln.numChannels);
 		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(
@@ -360,8 +360,8 @@ DEFAULT EFFECTS EXTRA
 	}, [\ir, \ir, \ir]).add;
 
 	// Enhance
-	~clean.addModule('spectral-enhance', { |cleanEvent|
-		cleanEvent.sendSynth('spectral-enhance' ++ ~clean.numChannels,
+	~cln.addModule('spectral-enhance', { |cleanEvent|
+		cleanEvent.sendSynth('spectral-enhance' ++ ~cln.numChannels,
 			[
 				enhance: ~enhance,
 				out: ~out
@@ -369,9 +369,9 @@ DEFAULT EFFECTS EXTRA
 		)
 	}, { ~enhance.notNil });
 
-	SynthDef("spectral-enhance" ++ ~clean.numChannels, { |out, enhance = 0.5|
+	SynthDef("spectral-enhance" ++ ~cln.numChannels, { |out, enhance = 0.5|
 		var signal, chain, in, clean, teeth = 256;
-		signal = In.ar(out, ~clean.numChannels);
+		signal = In.ar(out, ~cln.numChannels);
 		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(
@@ -386,8 +386,8 @@ DEFAULT EFFECTS EXTRA
 
 
 	// DJ filter, a low pass filter for the first half of the range, and a high pass for the rest.
-	~clean.addModule('dj-filter', { |cleanEvent|
-		cleanEvent.sendSynth('dj-filter' ++ ~clean.numChannels,
+	~cln.addModule('dj-filter', { |cleanEvent|
+		cleanEvent.sendSynth('dj-filter' ++ ~cln.numChannels,
 		// OPTIONAL
 		// passing this array of parameters could be left out,
 		// but it makes it clear what happens
@@ -397,12 +397,12 @@ DEFAULT EFFECTS EXTRA
 		]
 	)}, { ~djf.notNil});
 
-	SynthDef("dj-filter" ++ ~clean.numChannels, { |out, djf|
+	SynthDef("dj-filter" ++ ~cln.numChannels, { |out, djf|
 		var signal;
 		var lpfCutoffFreq = djf.linexp(0, 0.5, 20, 10000);
 		var hpfCutoffFreq = djf.linexp(0.5, 1, 20, 10000);
 
-		signal = In.ar(out, ~clean.numChannels);
+		signal = In.ar(out, ~cln.numChannels);
 
 		signal = RHPF.ar(
 			RLPF.ar(
