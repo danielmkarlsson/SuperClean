@@ -21,15 +21,15 @@ CleanEventTypes {
 
         // allows to play events in superclean from sclang
 
-		Event.addEventType(\clean, {
+		Event.addEventType(\cln, {
 			var keys, values;
-			var clean = ~clean ? SuperClean.default;
+			var cln = ~cln ? SuperClean.default;
 			var midiout, ccn, ccv, chan;
-			if(clean.isNil) {
-				Error("clean event: no clean instance found.\n\num// You could try:\nSuperClean.default = ~clean;").throw;
+			if(cln.isNil) {
+				Error("clean event: no clean instance found.\n\num// You could try:\nSuperClean.default = ~cln;").throw;
 			};
 			~delta = ~delta ?? { ~stretch.value * ~dur.value };
-			~latency = ~latency ?? { clean.server.latency };
+			~latency = ~latency ?? { cln.server.latency };
 
             midiout = ~midiout;
             if (midiout.notNil) {
@@ -53,10 +53,10 @@ CleanEventTypes {
 				values.do { |each|
 					var e = Event(parent: currentEnvironment);
 					keys.do { |key, i| e.put(key, each.at(i)) };
-					clean.auxs.wrapAt(e[\aux] ? 0).value(e)
+					cln.auxs.wrapAt(e[\aux] ? 0).value(e)
 				}
 			} {
-				clean.auxs.wrapAt(~aux ? 0).value(currentEnvironment)
+				cln.auxs.wrapAt(~aux ? 0).value(currentEnvironment)
 			}
 		});
 

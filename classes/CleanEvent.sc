@@ -35,7 +35,7 @@ CleanEvent {
 	}
 
 	mergeSoundEvent {
-		var soundEvent = aux.clean.soundLibrary.getEvent(~snd, ~num);
+		var soundEvent = aux.cln.soundLibrary.getEvent(~snd, ~num);
 		if(soundEvent.isNil) {
 			// only call ~notFound if no ~diversion is given that anyhow redirects control
 			if(~diversion.isNil) { ~notFound.value }
