@@ -58,7 +58,7 @@ CleanAux {
 			// all global effects sleep when the input is quiet for long enough and no parameters are set.
 			GlobalCleanEffect(\clean_delay, [\delaytime, \delayfeedback, \delaySend, \delayAmp, \lock, \cps]),
 			GlobalCleanEffect(\clean_reverb, [\rev, \rin, \dry]),
-			//GlobalCleanEffect(\clean_gve, [\roomsize, \revtime, \damping, \inputbw, \spread, \drylevel, \earlyreflevel, \taillevel, \darken]),
+			GlobalCleanEffect(\clean_dark, [\dark]),
 			GlobalCleanEffect(\clean_leslie, [\leslie, \lrate, \lsize]),
 			GlobalCleanEffect(\clean_rms, [\rmsReplyRate, \rmsPeakLag]).alwaysRun_(true),
 			GlobalCleanEffect(\clean_monitor).alwaysRun_(true),
