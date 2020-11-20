@@ -126,7 +126,7 @@ CORE SYNTHDEFS FOR DIRT
 	};
 
 
-	// I think this reverb was created by Jost Muxfeld and James McCartney
+	// I think this reverb was created by Jost Muxfeld and James McCartney, I don't like it
 	//
 
 	SynthDef("clean_reverb" ++ numChannels, { |dryBus, effectBus, gate = 1, rin = 0, rev = 0.1, dry = 0|
@@ -163,13 +163,14 @@ CORE SYNTHDEFS FOR DIRT
 
 	}, [\ir, \ir]).add;
 
-	// Here is the Gverb Synthdef I am trying to get working
-	SynthDef("gve" ++ numChannels, {
-	|dryBus, effectBus, gate = 1, in, out, roomsize=10, revtime=3, damping=0.5, inputbw=0.5, spread=15, drylevel=1, earlyreflevel=0.7, taillevel=0.5, darken=20000|
+	// GVerb with LPF actually, but dark sounds _way_ better so, there you have it
+	SynthDef("clean_dark" ++ numChannels, {
+	|dryBus, effectBus, gate = 1, in, out, roomsize=200, revtime=25, damping=0.5, inputbw=0.5, spread=15, drylevel=1, earlyreflevel=0.7, taillevel=0.5, darken=1000, dark=1|
     var sig;
-    sig = In.ar(dryBus, numChannels);
+    sig = In.ar(dryBus, numChannels).asArray.sum;
 	sig = GVerb.ar(sig, roomsize, revtime, damping, inputbw, spread, drylevel, earlyreflevel, taillevel);
     sig = LPF.ar(sig, darken.clip(20, 20000));
+	sig = sig * (1 - dark - 1);
 	CleanPause.ar(sig, graceTime:4);
     Out.ar(effectBus, sig);
 }, [\ir, \ir]).add;
