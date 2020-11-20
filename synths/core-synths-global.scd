@@ -102,7 +102,7 @@ CORE SYNTHDEFS FOR DIRT
 		}, [\ir, \ir]).add;
 	} {
 		"\n\n ---- SC3-Plugins not found. This is a problem."
-		"Note that we are using a comb delay, which will not sound the same as SwitchDelay from the sc3 plugins".postln;
+		"Note that without the sc3plugins we'll be using a comb delay, which will not sound the same as SwitchDelay from the sc3 plugins".postln;
 
 		SynthDef("clean_delay" ++ numChannels, { |dryBus, effectBus, gate = 1, delaytime, delayfeedback, delayAmp = 1, lock = 0, cps = 1|
 			var signal = In.ar(dryBus, numChannels);
@@ -163,6 +163,16 @@ CORE SYNTHDEFS FOR DIRT
 
 	}, [\ir, \ir]).add;
 
+	// Here is the Gverb Synthdef I am trying to get working
+	SynthDef("gve" ++ numChannels, {
+	|dryBus, effectBus, gate = 1, in, out, roomsize=10, revtime=3, damping=0.5, inputbw=0.5, spread=15, drylevel=1, earlyreflevel=0.7, taillevel=0.5, darken=20000|
+    var sig;
+    sig = In.ar(dryBus, numChannels);
+	sig = GVerb.ar(sig, roomsize, revtime, damping, inputbw, spread, drylevel, earlyreflevel, taillevel);
+    sig = LPF.ar(sig, darken.clip(20, 20000));
+	CleanPause.ar(sig, graceTime:4);
+    Out.ar(effectBus, sig);
+}, [\ir, \ir]).add;
 
 	// "leslie" controls dry/wet
 	// "lrate" is the modulation rate (typical vintage rates would be 6.7 for "fast", 0.7 for "slow")
@@ -172,7 +182,7 @@ CORE SYNTHDEFS FOR DIRT
 		var in, distance, throb, sound1, sound2, bal1, bal2, snd;
 
 		in = In.ar(dryBus, numChannels);
-		ReplaceOut.ar(dryBus, in * (1 - leslie));
+		Out.ar(dryBus, in * (1 - leslie));
 
 		in = if(numChannels > 2) { in.clump(2).sum } { in.dup };
 		distance = SinOsc.ar(Lag.kr(lrate,10), 0).range(0, lsize);
@@ -208,7 +218,7 @@ CORE SYNTHDEFS FOR DIRT
 
 	}, [\ir, \ir]).add;
 
-	"---- core synth defs loaded ----".postln;
+	//"---- core synth defs loaded ----".postln;
 
 }.value
 );
