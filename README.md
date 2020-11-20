@@ -133,7 +133,7 @@ s.waitForBoot {
 If you _do_ have something in your Startup.scd, then you get to pick and choose which parts of mine you want to add to yours.
 
 If, and only if, you are in that latter category, then proly the only part you for sure want to add in your Startup.scd (or
-evaluate every time you want to run some SuperClean) in order for the below code to work on your machine is:
+evaluate before every time you want to run some SuperClean code) in order for the below code to work on your machine is:
 
 `SuperClean.default = ~clean;`
 
