@@ -1,7 +1,7 @@
 /*
 
 AUX BASED (GLOBAL)
-CORE SYNTHDEFS FOR DIRT
+CORE SYNTHDEFS FOR CLEAN
 (REQUIRED: GlobalCleanEffects)
 
 	Global synth defs: these synths run in each CleanAux and are only released when it is stopped
@@ -165,7 +165,7 @@ CORE SYNTHDEFS FOR DIRT
 
 	// GVerb with LPF actually, but dark sounds _way_ better so, there you have it
 	SynthDef("clean_dark" ++ numChannels, {
-	|dryBus, effectBus, gate = 1, in, out, roomsize=200, revtime=25, damping=0.5, inputbw=0.5, spread=15, drylevel=1, earlyreflevel=0.7, taillevel=0.5, darken=1000, dark=1|
+	|dryBus, effectBus, gate = 1, in, out, roomsize=250, revtime=30, damping=0.5, inputbw=0.5, spread=15, drylevel=1, earlyreflevel=0.7, taillevel=0.5, darken=1000, dark=1|
     var sig;
     sig = In.ar(dryBus, numChannels).asArray.sum;
 	sig = GVerb.ar(sig, roomsize, revtime, damping, inputbw, spread, drylevel, earlyreflevel, taillevel);
