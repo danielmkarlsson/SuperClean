@@ -69,23 +69,50 @@ Pdef(\0,
 ).play(quant:1);
 );
 
-// an example using uio which is the built in additive synthesizer
+// an example using add which is the built in additive synthesizer
 (
 Pdef(\0,
 	Pbind(*[
 		type: \cln,
-		snd: \uio,
-		amp: Pexprand(1/2,8.0),
+		snd: \add,
+		amp: Pseg(Pexprand(0.4,0.7),Pexprand(0.4,4.0),\exp, inf),
 		freq: Pfunc{
-			var x = 160 * rrand(1,500).geom(1,30/29);
+			var x = 40 * (1..7).choose * rrand(1,250).geom(1,30/29);
 			x.reject{|i| i > 20000 }
 		},
-		dur: Pstutter(Pexprand(1,11).asInteger,Pexprand(1,3).round/Pexprand(5,29).round).trace,
-		atk: Pexprand(0.0001,1.1),
-		rel: Pkey(\dur)-(Pexprand(0.000001,0.01)),
-		hpf: Pexprand(20,20000),
-		crv: Pexprand(-116.0,-4),
-		pan: Pstutter(Pexprand(1,19),Pwhite(0.0,1.0)),
+		dur: Pstutter(Pexprand(5,11),Pexprand(1,3).round/Pexprand(5,15).round),
+		ada: Pexprand(0.00000000000000000000000000000000000000000000001,10.1),
+		adr: Pkey(\dur)+(Pexprand(0.000001,10.0)),
+		hpf: Pseg(Pexprand(40,4000),Pexprand(0.001,10.0),\exp, inf),
+		adc: Pexprand(-8.0,-0.0001),
+		slw: Pexprand(0.00001,10.0),
+		pan: Pseg(Pwhite(0.1,0.9),Pwhite(1.0,10.0),\exp,inf),
+		legato: Pexprand(0.25,1.25),
+		sustain: Pexprand(0.25,1.25),
+		stretch: Pseg(Pexprand(0.75,1.25),Pexprand(0.5,8.0),\exp, inf),
 	])
+).play(quant: 1);
+)
+
+// an example using sin, saw and sqr which are the built in basic waveform synthesizers
+(
+Pdef(\0,
+	Pbind(*[
+		type: \cln,
+		snd: Pxshuf([\sin,\saw,\sqr,\rest],inf),
+		dur: 1/Pstutter(Pwhite(5,11),Pwhite(5,11),inf),
+		sustain: Pstutter(Pwhite(5,11),Pwhite(3.0,9.0),inf),
+		atk: Pstutter(Pwhite(5,11),Pexprand(0.001,1.0),inf),
+		hld: Pstutter(Pwhite(5,11),Pwhite(3.0,5.0),inf),
+		rel: Pstutter(Pwhite(5,11),Pwhite(5.0,11.0),inf),
+		crv: -8,
+		num: Pstutter(Pwhite(5,11),Pxshuf((-24,Pstutter(Pwhite(1,100),Prand([-9,-10],inf))..24),inf)),
+		amp: Pseg(Pexprand(0.4,0.8),Pexprand(0.25,4.0),\exp,inf),
+		pan: Pwhite(0.0,1.0),
+		wid: Pwhite(0.0,1.0),
+		iph: Pexprand(0.0001,1.0),
+		lpf: Pexprand(20,20000),
+		stretch: Pseg([7,1/6,7],16,\exp,inf).trace,
+		])
 ).play(quant: 1);
 )
