@@ -6,7 +6,7 @@ extreme modulation indexes. SuperClean even includes a remarkably efficient addi
 world. Also there are basic waveform oscillators. SuperClean is, in short, a one-stop-shopping-experience for folks who want:
 
 • An MPC,  
-• a bunch of effects, and.   
+• a bunch of effects and,   
 • some synths. 
 
 for the low, low asking price of: _free_.
