@@ -175,49 +175,17 @@ CORE SYNTHDEFS FOR CLEAN
     Out.ar(effectBus, sig);
 }, [\ir, \ir]).add;
 
-	// "leslie" controls dry/wet
-	// "lrate" is the modulation rate (typical vintage rates would be 6.7 for "fast", 0.7 for "slow")
-	// "lsize" is the physical size of the cabinet in meters, this mostly affects the Doppler amount (pitch warble)
 
-	SynthDef("clean_leslie" ++ numChannels, { |dryBus, effectBus, gate = 1, leslie=0.5, lrate=6.7, lsize=0.3|
-		var in, distance, throb, sound1, sound2, bal1, bal2, snd;
-
-		in = In.ar(dryBus, numChannels);
-		Out.ar(dryBus, in * (1 - leslie));
-
-		in = if(numChannels > 2) { in.clump(2).sum } { in.dup };
-		distance = SinOsc.ar(Lag.kr(lrate,10), 0).range(0, lsize);
-		throb = SinOsc.ar(Lag.kr(lrate*0.8, 20), 0).range(0,lsize*1.3);
-		bal1 = SinOsc.kr(Lag.kr(lrate*0.8, 4), pi/2).range(-0.2,0.2);
-		bal2 = SinOsc.kr(Lag.kr(lrate,2), pi/2).range(-0.4, 0.4);
-		sound2 = HPF.ar(in, 800);
-		sound1 = in - sound2;
-		sound1 = leslie * (1.0 - throb) * sound1;
-		sound1 = Balance2.ar(sound1[0], sound1[1], bal1);
-		sound2 = DelayC.ar(sound2, 1, distance / 343);
-		sound2 = leslie * (1.0 - distance) * sound2;
-		sound2 = Balance2.ar(sound2[0], sound2[1], bal2);
-
-		snd = 1.2 * (sound1 + sound2);
-
-		CleanPause.ar(snd, graceTime:4);
-		snd = snd * EnvGen.kr(Env.asr, gate, doneAction:2);
-
-		case(
-			{ numChannels == 1 }, { snd = snd.sum },
-			{ numChannels > 2 }, {
-				snd = [
-					// wild interpretation
-					PanAz.ar(numChannels, snd[0], LFSaw.kr(lrate)),
-					PanAz.ar(numChannels, snd[1], LFSaw.kr(lrate) + 1)
-				].sum
-			}
-		);
-
-
-		Out.ar(effectBus, snd);
-
-	}, [\ir, \ir]).add;
+	/*// The NHHall reverb
+	SynthDef("clean_nhh" ++ numChannels, {
+	|dryBus, effectBus, gate = 1, in, out, rt60=1, stereo=0.5, lowFreq=200, lowRatio=0.5, hiFreq=4000, hiRatio=0.5, earlyDiffusion=0.5, lateDiffusion=0.5, modRate=0.2, modDepth=0.3, nhh=1|
+    var sig;
+    sig = In.ar(dryBus, numChannels).asArray.sum;
+	sig = NHHall.ar(in, rt60, stereo, lowFreq, lowRatio, hiFreq, hiRatio, earlyDiffusion, lateDiffusion, modRate, modDepth);
+	sig = sig * (1 - nhh - 1);
+	CleanPause.ar(sig, graceTime:4);
+    Out.ar(effectBus, sig);
+}, [\ir, \ir]).add;*/
 
 	//"---- core synth defs loaded ----".postln;
 
