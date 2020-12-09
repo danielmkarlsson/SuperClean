@@ -10,9 +10,9 @@ world. Also there are basic waveform oscillators. SuperClean is, in short, a one
 • some synths. 
 
 for the low, low asking price of: _free_.
-Also, on a personal note here, hey, this is what I use to make music with every day.
-I really like making music and, for me, this makes it way funner.
-Try it! What have you got to loose?
+Also, on a personal note here, hey, this is what I use to make music with every day.  
+I really like making music and, for me, this makes it way funner.  
+Try it! What have you got to loose?  
 
 ![Maureen "Ma Dukes" Yancey smiling with her son J Dilla's MPC 3000](Dilla-Smithsonian-mpc1.jpg)
 
