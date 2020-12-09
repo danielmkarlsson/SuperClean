@@ -280,16 +280,15 @@ computer that you found in the tech trash, then this is for you:
 • ~~.clip value ranges for all filters~~  
 • ~~All Clean to Clean~~  
 • ~~Add samples and change path _inside_ SuperClean~~  
-• ~~Fix aliases in core-synths.scd (bpf stuck at default value)~~  
-• ~~Fix aliases in core-synths-global.scd, seems to inherit keys from Synthdef args, dla,dlf,dlt is goal~~  
 • ~~Add FM synthdef~~  
 • ~~Add Additive synthdef~~  
 • ~~Add `crv` param to env~~  
 • ~~Raise output volume~~  
 • ~~Stereo sample playback~~  
-• ~~Set audible default values for `fmx`, what are sensible defaults?~~  
+• ~~Set audible default values for `fmx`~~  
 • ~~Pan not working in `fmx`~~  
 • ~~Pan not working in `uio`~~  
+• ~~Provide `dark` alternative for the reverb~~  
 
 • Reevaluate cubic interpolation (want longer file playback)  
 • ReDo rm with feedback  
@@ -300,9 +299,8 @@ computer that you found in the tech trash, then this is for you:
 • Include `Pxshuf`  
 • Include `Pbjorklund`  
 
-• Swap out the reverb (how to make it sound better while still at low cpu?)  
-• Maybe add that tape effect  
-• Maybe delete some effects  
+    
+• Maybe add that tape effect    
 
 </details>
 
