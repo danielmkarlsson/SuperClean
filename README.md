@@ -71,10 +71,10 @@ to load in to ram all the time when you need to start over quickly because reaso
 
 ## Safe is necessary
 
-With Scott's I was able to make sure that the filters are only able to accept values in the range of human hearing, 20 to 20000 hz.
-This way the filters won't blow up. Also there is a nifty compressor that saves our ears ~~if~~ when things get unexpectedly
-loud. This compressor can also be leaned in to on purpose yielding all manner of hawt sound. Be sure to not miss out on the
-fun of sending values greater than one to `gain`.
+With Scott's help I was able to make sure that the filters are only able to accept values in the range of human hearing, 20 to 20000 hz.
+This way the filters won't blow up. Also there is a nifty limiter that saves our ears ~~if~~ when things get unexpectedly
+loud. This limiter can also be leaned in to on purpose, yielding all manner of hawt sound. Be sure to not miss out on the
+fun of sending values greater than one to `amp`.
 
 ## Start yer engines!
 
@@ -82,6 +82,7 @@ If you don't have anything in your Startup.scd, then how about you put what I us
 
 ```
 (
+//var serverOptions = Server.default.options; serverOptions.outDevice = "Soundflower (64ch)"; serverOptions.inDevice = "Soundflower (64ch)";//force devices
 "killall scsynth".unixCmd;
 s.options.numBuffers = 1024 * 64; // increase if you need to load more samples
 s.options.memSize = 8192 * 256; // increase if you get "alloc failed" messages
