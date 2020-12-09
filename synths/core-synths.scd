@@ -4,7 +4,7 @@ EVENT - BASED
 CORE SYNTHDEFS FOR CLEAN
 (REQUIRED: CORE MODULES)
 
-these synthdefs can be hacked at runtime, but they are absolutely necessary for tidal to work correctly.
+these synthdefs can be hacked at runtime, but they are absolutely necessary for everything to work correctly.
 
 Their name and parameter names shouldn't be changed. Parameter names can be added though.
 
@@ -43,7 +43,7 @@ live coding them requires that you have your SuperClean instance in an environme
 				bufnum: bufnum,
 				phase: phase,
 				loop: 0,
-				interpolation: 4 // cubic interpolation
+				interpolation: 4 // cubic interpolation, do we need that? Really tho? Seems to just make playing long samples sound bad.
 			);
 
 			sound = CleanPan.ar(sound, numChannels, pan);
@@ -99,7 +99,6 @@ live coding them requires that you have your SuperClean instance in an environme
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
-
 	SynthDef("clean_coarse" ++ numChannels, { |out, coarse = 0, bandq = 10|
 		var signal = In.ar(out, numChannels);
 		signal = Latch.ar(signal, Impulse.ar(SampleRate.ir / coarse));
@@ -124,6 +123,13 @@ live coding them requires that you have your SuperClean instance in an environme
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
 
+	SynthDef("clean_lpf" ++ numChannels, { |out, cutoff = 440, resonance = 0|
+		var signal = In.ar(out, numChannels);
+		var cutoffClipped = cutoff.abs.clip(20, 20000);
+		signal = RLPF.ar(signal, cutoffClipped, resonance.linexp(0, 1, 1, 0.001));
+		ReplaceOut.ar(out, signal)
+	}, [\ir, \ir, \ir]).add;
+
 	SynthDef("clean_shape" ++ numChannels, { |out, shape = 0|
 		var signal = In.ar(out, numChannels), amp = 1;
 		shape = min(shape, 1.0 - 4e-10); // avoid division by zero
@@ -133,13 +139,6 @@ live coding them requires that you have your SuperClean instance in an environme
 		signal = (1 + shape) * signal / (1 + (shape * abs(signal)));
 		ReplaceOut.ar(out, signal * amp)
 	}, [\ir, \ir]).add;
-
-	SynthDef("clean_lpf" ++ numChannels, { |out, cutoff = 440, resonance = 0|
-		var signal = In.ar(out, numChannels);
-		var cutoffClipped = cutoff.abs.clip(20, 20000);
-		signal = RLPF.ar(signal, cutoffClipped, resonance.linexp(0, 1, 1, 0.001));
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir, \ir]).add;
 
 	SynthDef("clean_envelope" ++ numChannels, { |out, attack = 0, hold = 0, release = inf, crv = 0.3 |
 		var signal = In.ar(out, numChannels);
