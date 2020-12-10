@@ -132,22 +132,23 @@ DEFAULT EFFECTS EXTRA
 
 	// Ring modulation with `ring` (modulation amount), `ringf` (modulation frequency), and `ringdf` (slide
 	// in modulation frequency)
-	~cln.addModule('ring', { |cleanEvent|
-		cleanEvent.sendSynth("clean_ring" ++ ~clean.numChannels,
+	~cln.addModule('rma', { |cleanEvent|
+		cleanEvent.sendSynth("clean_rma" ++ ~cln.numChannels,
 			[
-				ring: ~ring,
-				ringf: ~ringf,
-				ringdf: ~ringdf,
+				rma: ~rma,
+				rmf: ~rmf,
+				rdf: ~rdf,
+			    rdt: ~rdt,
 				out: ~out
 			]
 		)
-	}, { ~ring.notNil });
+	}, { ~rma.notNil });
 
-	SynthDef("clean_ring" ++ ~cln.numChannels, { |out, ring = 0, ringf = 0, ringdf|
+	SynthDef("clean_rma" ++ ~cln.numChannels, { |out, rma = 0, rmf = 0, rdf, rdt = 0.5|
 		var signal, mod;
 		signal = In.ar(out, ~cln.numChannels);
-		mod = ring * SinOsc.ar(Clip.kr(XLine.kr(ringf, ringf + ringdf), 20, 20000));
-		signal = ring1(signal, mod);
+		mod = rma * SinOsc.ar(Clip.kr(XLine.kr(rmf, rdf, rdt), 20, 20000));
+		signal = ring1(signal, mod); // Looks confusing huh? Well ring1 as it turns out is an operator, check the docs, and has nothing to do with the args
 		ReplaceOut.ar(out, signal);
 	}, [\ir, \ir, \ir, \ir]).add;
 
