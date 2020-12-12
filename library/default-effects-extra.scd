@@ -11,11 +11,11 @@ DEFAULT EFFECTS EXTRA
 	~cln.addModule('waveloss', { |cleanEvent|
 		cleanEvent.sendSynth('waveloss' ++ ~cln.numChannels,
 			[
-				drop: ~waveloss,
+				drop: ~wls,
 				out: ~out
 			]
 		)
-	}, { ~waveloss.notNil });
+	}, { ~wls.notNil });
 
 	SynthDef("waveloss" ++ ~cln.numChannels, { |out, drop = 1|
 		var sig = In.ar(out, ~cln.numChannels);
@@ -29,11 +29,11 @@ DEFAULT EFFECTS EXTRA
 	~cln.addModule('squiz', { |cleanEvent|
 		cleanEvent.sendSynth('squiz' ++ ~cln.numChannels,
 			[
-				pitchratio: ~squiz,
+				pitchratio: ~sqz,
 				out: ~out
 			]
 		)
-	}, { ~squiz.notNil });
+	}, { ~sqz.notNil });
 
 	SynthDef("squiz" ++ ~cln.numChannels, { |out, pitchratio = 1|
 		var sig = In.ar(out, ~cln.numChannels);
@@ -44,79 +44,55 @@ DEFAULT EFFECTS EXTRA
 	// Frequency shifter
 	// Total shift is sum of `fshift` (in Hz) and `fshiftnote` times the current note frequency.
 	// `fshiftphase` allows control over the phase
-	~cln.addModule('fshift', { |cleanEvent|
-		cleanEvent.sendSynth("clean_fshift" ++ ~cln.numChannels,
+	~cln.addModule('frequencyshifter', { |cleanEvent|
+		cleanEvent.sendSynth("frequencyshifter" ++ ~cln.numChannels,
 			[
-				fshift: ~fshift,
-				fshiftphase: ~fshiftphase,
-				fshiftnote: ~fshiftnote,
+				fsh: ~fsh,
+				fsp: ~fsp,
+				fsm: ~fsm,
 				freq: ~freq,
 				out: ~out
 			]
 		)
-	}, { ~fshift.notNil });
+	}, { ~fsh.notNil });
 
-	SynthDef("clean_fshift" ++ ~cln.numChannels, { |out, fshift, fshiftphase, fshiftnote, freq|
+	SynthDef("frequencyshifter" ++ ~cln.numChannels, { |out, fsh, fsp, fsm, freq|
 		var sig = In.ar(out, ~cln.numChannels);
-		var shift = freq * fshiftnote + fshift;
-		sig = FreqShift.ar(sig, shift, fshiftphase);
+		var shift = freq * fsm + fsh;
+		sig = FreqShift.ar(sig, shift, fsp);
 		ReplaceOut.ar(out, sig);
 	}, [\ir, \ir, \ir, \ir, \ir]).add;
 
-	// Triode-like distortion, uses only the `triode` parameter
+	// Triode-like distortion, uses only the `tri` parameter
 	~cln.addModule('triode', { |cleanEvent|
-		cleanEvent.sendSynth("clean_triode" ++ ~cln.numChannels,
+		cleanEvent.sendSynth("triode" ++ ~cln.numChannels,
 			[
-				triode: ~triode,
+				tri: ~tri,
 				out: ~out
 			]
 		)
-	}, { ~triode.notNil });
+	}, { ~tri.notNil });
 
-	SynthDef("clean_triode" ++ ~cln.numChannels, { |out, triode|
+	SynthDef("triode" ++ ~cln.numChannels, { |out, tri|
 		var sig, sc;
 		sig = In.ar(out, ~cln.numChannels);
-		sc = triode * 10 + 1e-3;
+		sc = tri * 10 + 0.001;
 		sig = (sig * (sig > 0)) + (tanh(sig * sc) / sc * (sig < 0));
 		ReplaceOut.ar(out, LeakDC.ar(sig));
 	}, [\ir, \ir]).add;
 
-	// Sonic Pi's krush
-	// modified a bit so krush "0" is the same as dry signal
-	// uses `krush` and `kcutoff` as paramters
-	~cln.addModule('krush', { |cleanEvent|
-		cleanEvent.sendSynth("clean_krush" ++ ~cln.numChannels,
-			[
-				krush: ~krush,
-				kcutoff: ~kcutoff,
-				out: ~out
-			]
-		)
-	}, { ~krush.notNil });
-
-	SynthDef("clean_krush" ++ ~cln.numChannels, { |out, krush, kcutoff|
-		var orig, signal, freq;
-		freq = Select.kr(kcutoff > 0, [DC.kr(4000), kcutoff]);
-		orig = In.ar(out, ~cln.numChannels);
-		signal = (orig.squared + (krush * orig)) / (orig.squared + (orig.abs * (krush-1.0)) + 1.0);
-		signal = RLPF.ar(signal, clip(freq, 20, 10000), 1);
-		signal = SelectX.ar(krush * 2.0, [orig, signal]);
-		ReplaceOut.ar(out, signal);
-	}, [\ir, \ir, \ir]).add;
-
-	// Sonic Pi's octaver
-	// uses `octer` for octave harmonics, `octersub` for half-frequency harmonics, and `octersubsub` for
-	// quarter-frequency harmonics
+	// This is apparantly the octaver from Sonic Pi
+	// uses `oc1` for octave harmonics, `oc2` for half-frequency harmonics, and `oc3` for quarter-frequency harmonics
 	~cln.addModule('octer', { |cleanEvent|
 		cleanEvent.sendSynth("clean_octer" ++ ~cln.numChannels,
 			[
-				octer: ~octer,
-				octersub: ~octersub,
-				octersubsub: ~octersubsub,
+				octer: ~oc1,
+				octersub: ~oc2,
+				octersubsub: ~oc3,
 				out: ~out
 			]
 		)
-	}, { ~octer.notNil or: { ~octersub.notNil } or: { ~octersubsub.notNil }});
+	}, { ~oc1.notNil or: { ~oc2.notNil } or: { ~oc3.notNil }});
 
 	SynthDef("clean_octer" ++ ~cln.numChannels, { |out, octer, octersub, octersubsub|
 		var signal, oct1, oct2, oct3, sub;
@@ -125,13 +101,12 @@ DEFAULT EFFECTS EXTRA
 		sub = LPF.ar(signal, 440);
 		oct2 = ToggleFF.ar(sub);
 		oct3 = ToggleFF.ar(oct2);
-		signal = SelectX.ar(octer, [signal, octer * oct1, DC.ar(0)]);
+		signal = SelectX.ar(octer.abs.clip(0.0, 1.0), [signal, octer.abs.clip(0.0, 1.0) * oct1, DC.ar(0)]);
 		signal = signal + (octersub * oct2 * sub) + (octersubsub * oct3 * sub);
 		ReplaceOut.ar(out, signal);
 	}, [\ir, \ir, \ir, \ir]).add;
 
-	// Ring modulation with `ring` (modulation amount), `ringf` (modulation frequency), and `ringdf` (slide
-	// in modulation frequency)
+// Ring modulation with `rma` (modulation wet), `rmf` (modulation frequency), `rdf` (the frequency to glissando in from) and `rdt` (the glissando time)
 	~cln.addModule('rma', { |cleanEvent|
 		cleanEvent.sendSynth("clean_rma" ++ ~cln.numChannels,
 			[
@@ -147,47 +122,46 @@ DEFAULT EFFECTS EXTRA
 	SynthDef("clean_rma" ++ ~cln.numChannels, { |out, rma = 0, rmf = 0, rdf, rdt = 0.5|
 		var signal, mod;
 		signal = In.ar(out, ~cln.numChannels);
-		mod = rma * SinOsc.ar(Clip.kr(XLine.kr(rmf, rdf, rdt), 20, 20000));
-		signal = ring1(signal, mod); // Looks confusing huh? Well ring1 as it turns out is an operator, check the docs, and has nothing to do with the args
+		mod = rma * SinOsc.ar(Clip.kr(XLine.kr(rdf, rmf, rdt), 20, 20000));
+		signal = ring1(signal, mod); // Looks confusing huh? Well ring1, as it turns out, is an operator, search for it in the docs
 		ReplaceOut.ar(out, signal);
 	}, [\ir, \ir, \ir, \ir]).add;
 
-	// A crunchy distortion with a lot of high harmonics, the only parameter is `distort`
-	~cln.addModule('distort', { |cleanEvent|
-		cleanEvent.sendSynth("clean_distort" ++ ~cln.numChannels,
+	// A crunchy distortion with a lot of high harmonics, the only parameter is `dst`
+	~cln.addModule('dst', { |cleanEvent|
+		cleanEvent.sendSynth("clean_distortion" ++ ~cln.numChannels,
 			[
-				distort: ~distort,
+				dst: ~dst,
 				out: ~out
 			]
 		)
-	}, { ~distort.notNil });
+	}, { ~dst.notNil });
 
-	SynthDef("clean_distort" ++ ~cln.numChannels, { |out, distort = 0|
+	SynthDef("clean_distortion" ++ ~cln.numChannels, { |out, dst = 0|
 		var signal, mod;
 		signal = In.ar(out, ~cln.numChannels);
 		mod = CrossoverDistortion.ar(signal, amp: 0.2, smooth: 0.01);
-		mod = mod + (0.1 * distort * DynKlank.ar(`[[60,61,240,3000 + SinOsc.ar(62,mul: 100)],nil,[0.1, 0.1, 0.05, 0.01]], signal));
+		mod = mod + (0.1 * dst * DynKlank.ar(`[[60,61,240,3000 + SinOsc.ar(62,mul: 100)],nil,[0.1, 0.1, 0.05, 0.01]], signal));
 		mod = (mod.cubed * 8).softclip * 0.5;
-		mod = SelectX.ar(distort, [signal, mod]);
-		ReplaceOut.ar(out, mod);
+		mod = SelectX.ar(dst, [signal, mod]);
+		Out.ar(out, mod);
 	}, [\ir, \ir]).add;
 
+//These spectral effects below are Mads Kjeldgaard's handywork
 	// Spectral delay
 	~cln.addModule('spectral-delay', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-delay' ++ ~cln.numChannels,
-			// OPTIONAL
-			// passing this array of parameters could be left out,
-			// but it makes it clear what happens and it is also more
-			// effecient to explicitly specify the arguments
 			[
-				xsdelay: ~xsdelay,
-				tsdelay: ~tsdelay,
+				xsdelay: ~sdx,
+				tsdelay: ~sdt,
+			    sda: ~sda,
+			    sdq: ~sdq,
 				out: ~out
 			]
 		)
-	}, { ~tsdelay.notNil or: { ~xsdelay.notNil }});
+	}, { ~sda.notNil });
 
-	SynthDef("spectral-delay" ++ ~cln.numChannels, { |out, tsdelay = 0.5, xsdelay = 0.5|
+	SynthDef("spectral-delay" ++ ~cln.numChannels, { |out, tsdelay = 0.5, xsdelay = 0.5, sda = 0, sdq = 0.005|
 
 		var signal, delayTime, delays, freqs, filtered;
 		var size = 16;
@@ -196,11 +170,11 @@ DEFAULT EFFECTS EXTRA
 		delayTime = tsdelay * maxDelayTime;
 		filtered = (1..size).sum { |i|
 			var filterFreq = i.linexp(1, size, 40, 17000);
-			var sig = BPF.ar(signal, filterFreq, 0.005);
+			var sig = BPF.ar(signal, filterFreq, sdq);
 			// the delay pattern is determined from xsdelay by bitwise-and:
 			DelayN.ar(sig, maxDelayTime, i & xsdelay * (1 / size) * delayTime )
 		};
-		signal = signal * 0.2 + (filtered * 4); // this controls wet / dry
+	signal = signal * 0.2 + ((filtered * 4) * sda); // this controls wet / dry
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
 
@@ -208,14 +182,14 @@ DEFAULT EFFECTS EXTRA
 	~cln.addModule('spectral-freeze', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-freeze' ++ ~cln.numChannels,
 			[
-				freeze: ~freeze,
+				freeze: ~frz,
 				out: ~out
 			]
 		)
-	}, { ~freeze.notNil } );
+	}, { ~frz.notNil } );
 
 
-	SynthDef("spectral-freeze" ++ ~cln.numChannels, { |out, freeze|
+	/*SynthDef("spectral-freeze" ++ ~cln.numChannels, { |out, freeze| // broken, I dunno, untoggle and use at own risk, values seem to be 0 for off and 1 for on
 		var signal, chain, in;
 		signal = In.ar(out, ~cln.numChannels);
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
@@ -227,17 +201,17 @@ DEFAULT EFFECTS EXTRA
 	~cln.addModule('spectral-comb', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-comb' ++ ~cln.numChannels,
 			[
-				comb: ~comb,
+				comb: ~cmb,
 				out: ~out
 			]
 		)
-	}, { ~comb.notNil });
+	}, { ~cmb.notNil });*/
 
 	SynthDef("spectral-comb" ++ ~cln.numChannels, { |out, comb|
 		var signal, chain, in, clean, teeth = 256;
 		signal = In.ar(out, ~cln.numChannels);
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
-		signal = IFFT(PV_RectComb(chain, numTeeth: teeth * comb, width: 1-comb));
+	signal = IFFT(PV_RectComb(chain, numTeeth: teeth * comb.abs.clip(0.0, 1.0), width: 1-comb.abs.clip(0.0, 1.0)));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
@@ -245,11 +219,11 @@ DEFAULT EFFECTS EXTRA
 	~cln.addModule('spectral-smear', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-smear' ++ ~cln.numChannels,
 			[
-				smear: ~smear,
+				smear: ~smr,
 				out: ~out
 			]
 		)
-	}, { ~smear.notNil });
+	}, { ~smr.notNil });
 
 	SynthDef("spectral-smear" ++ ~cln.numChannels, { |out, smear|
 		var signal, chain, in;
@@ -263,11 +237,11 @@ DEFAULT EFFECTS EXTRA
 	~cln.addModule('spectral-scram', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-scram' ++ ~cln.numChannels,
 			[
-				scram: ~scram,
+				scram: ~scm,
 				out: ~out
 			]
 		)
-	}, { ~scram.notNil });
+	}, { ~scm.notNil });
 
 	SynthDef("spectral-scram" ++ ~cln.numChannels, { |out, scram|
 		var signal, chain, in, clean, teeth = 256;
@@ -282,11 +256,11 @@ DEFAULT EFFECTS EXTRA
 	~cln.addModule('spectral-binshift', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-binshift' ++ ~cln.numChannels,
 			[
-				binshift: ~binshift,
+				binshift: ~sbs,
 				out: ~out
 			]
 		)
-	}, { ~binshift.notNil });
+	}, { ~sbs.notNil });
 
 	SynthDef("spectral-binshift" ++ ~cln.numChannels, { |out, binshift|
 		var signal, chain, in, clean, teeth = 256;
@@ -342,12 +316,12 @@ DEFAULT EFFECTS EXTRA
 	~cln.addModule('spectral-conformer', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-conformer' ++ ~cln.numChannels,
 			[
-				real: ~real,
-				imag: ~imag,
+				real: ~ral,
+				imag: ~img,
 				out: ~out
 			]
 		)
-	}, { ~real.notNil or: ~imag.notNil });
+	}, { ~ral.notNil or: ~img.notNil });
 
 	SynthDef("spectral-conformer" ++ ~cln.numChannels, { |out, real = 0.5, imag = 0.5|
 		var signal, chain, in, clean, teeth = 256;
@@ -364,11 +338,11 @@ DEFAULT EFFECTS EXTRA
 	~cln.addModule('spectral-enhance', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-enhance' ++ ~cln.numChannels,
 			[
-				enhance: ~enhance,
+				enhance: ~enh,
 				out: ~out
 			]
 		)
-	}, { ~enhance.notNil });
+	}, { ~enh.notNil });
 
 	SynthDef("spectral-enhance" ++ ~cln.numChannels, { |out, enhance = 0.5|
 		var signal, chain, in, clean, teeth = 256;

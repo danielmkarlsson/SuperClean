@@ -46,6 +46,5 @@ s.waitForBoot {
  s.sync; // optionally: wait for samples to be read
     ~cln.start(57120, [0]); // first 8 out looks like [0,2,4,6]
  SuperClean.default = ~clean; // make the clean key sequenceable inside of SUperCollider
- "[ SuperClean up + running ]".postln;
 };
 )

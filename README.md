@@ -3,16 +3,16 @@ A SuperCollider implementation of the SuperClean sampler for use _inside_ of Sup
 Not only can you play back all of your samples without needless hassle in an environment that can grow with you.
 SuperClean now also contains an FM synth, whose four justly tuneable operators deliver unparalleled cleanliness, even at
 extreme modulation indexes. SuperClean even includes a remarkably efficient additive synth which literally sounds out of this
-world. Also there are basic waveform oscillators. SuperClean is, in short, a one-stop-shopping-experience for folks who want:
+world. SuperClean is, in short, a one-stop-shopping-experience for folks who want:
 
 • An MPC,  
-• a bunch of effects and,   
-• some synths. 
+• a bunch of effects, and.   
+• a couple of synths. 
 
 for the low, low asking price of: _free_.
-Also, on a personal note here, hey, this is what I use to make music with every day.  
-I really like making music and, for me, this makes it way funner.  
-Try it! What have you got to loose?  
+Also, on a personal note here, hey, this is what I use to make music with every day.
+I really like making music and, for me, this makes it way funner.
+Try it! What have you got to loose?
 
 ![Maureen "Ma Dukes" Yancey smiling with her son J Dilla's MPC 3000](Dilla-Smithsonian-mpc1.jpg)
 
@@ -71,10 +71,10 @@ to load in to ram all the time when you need to start over quickly because reaso
 
 ## Safe is necessary
 
-With Scott's help I was able to make sure that the filters are only able to accept values in the range of human hearing, 20 to 20000 hz.
-This way the filters won't blow up. Also there is a nifty limiter that saves our ears ~~if~~ when things get unexpectedly
-loud. This limiter can also be leaned in to on purpose, yielding all manner of hawt sound. Be sure to not miss out on the
-fun of sending values greater than one to `amp`.
+I asked Scott to make sure that the filters are only able to accept values in the range of human hearing, 20 to 20000 hz.
+This way the filters won't blow up. Also there is a nifty compressor that saves our ears ~~if~~ when things get unexpectedly
+loud. This compressor can also be leaned in to on purpose yielding all manner of hawt sound. Be sure to not miss out on the
+fun of sending values greater than one to `gain`.
 
 ## Start yer engines!
 
@@ -82,7 +82,6 @@ If you don't have anything in your Startup.scd, then how about you put what I us
 
 ```
 (
-//var serverOptions = Server.default.options; serverOptions.outDevice = "Soundflower (64ch)"; serverOptions.inDevice = "Soundflower (64ch)";//force devices
 "killall scsynth".unixCmd;
 s.options.numBuffers = 1024 * 64; // increase if you need to load more samples
 s.options.memSize = 8192 * 256; // increase if you get "alloc failed" messages
@@ -134,7 +133,7 @@ s.waitForBoot {
 If you _do_ have something in your Startup.scd, then you get to pick and choose which parts of mine you want to add to yours.
 
 If, and only if, you are in that latter category, then proly the only part you for sure want to add in your Startup.scd (or
-evaluate before every time you want to run some SuperClean code) in order for the below code to work on your machine is:
+evaluate every time you want to run some SuperClean) in order for the below code to work on your machine is:
 
 `SuperClean.default = ~clean;`
 
@@ -184,93 +183,72 @@ Pdef(\0,
 // an example using fmx which is the built in four operator FM synthesizer
 (
 Pdef(\0,
-	Pseed(4,
+	Pseed(999,
 		Pbind(*[
 			type: \cln,
 			snd: \fmx,
-			rps: Pexprand(9,99),
-			hr1: Pstutter(Pkey(\rps)-Pwhite(0,7),Pshuf((1..4),inf)),
+			rps: Pexprand(1,99),
+			hr1: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
 			hr2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
-			hr3: Pstutter(Pkey(\rps)-Pwhite(0,7),Pshuf((1..4),inf)),
+			hr3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
 			hr4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
 			fdb: Pexprand(0.0001,100.0),
-			mi2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((0.0001..4.0),inf)),
-			mi3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((0.0001..4.0),inf)),
-			mi4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((0.0001..4.0),inf)),
-			amp: Pexprand(0.25,0.75),
+			mi2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1.0..4.0),inf)),
+			mi3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1.0..4.0),inf)),
+			mi4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1.0..4.0),inf)),
+			amp: Pexprand(0.2,0.8),
 			en1: Pstutter(Pkey(\rps)+Pwhite(0,7),Pexprand(0.0001,0.555)),
 			en2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pkey(\en1)*Pexprand(0.2,0.666)),
 			en3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pkey(\en1)*Pkey(\en2)/Pexprand(0.3,0.777)),
 			en4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pkey(\en1)*Pkey(\en2)/Pkey(\en3)*Pexprand(0.4,0.888)),
+			hl1: Pexprand(0.025,1.125),
+			hl2: Pexprand(0.025,1.125),
+			hl3: Pexprand(0.025,1.125),
+			hl4: Pexprand(0.025,1.125),
 			cu1: Pstutter(Pkey(\rps)+Pwhite(0,7),Pwhite(0.25,1.0)),
 			cu2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pwhite(0.25,1.0)),
 			cu3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pwhite(0.25,1.0)),
 			cu4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pwhite(0.25,1.0)),
 			dur: Pstutter(Pkey(\rps)+Pwhite(2,9),2/Pbrown(5,19,Pwhite(1,3),inf)),
 			legato: Pkey(\dur)*Pexprand(16,64),
-			freq: (Pstutter(Pexprand(4,32),10*Pexprand(1,5).round)
+			freq: (Pstutter(Pexprand(1,32),10*Pexprand(1,5).round)
 				*Pstutter(Pexprand(1,64),Pexprand(1,5)).round
-				*Pstutter(Pkey(\rps),Pexprand(1,7).round)),
-			dark: Pseg(Pexprand(0.25,1.0),Pexprand(8.0,64.0),\welch,inf),
-			pan: Pbrown(0.0,1.0,Pstutter(Pwhite(1,3),Pwhite(0.01,0.1))).trace,
-			atk: Pexprand(0.01,4.0),
-			hld: Pkey(\dur)*2,
-			rel: Pkey(\dur)*2,
+				*Pstutter(Pkey(\rps),Pexprand(1,7).round)).trace,
+			hpf: Pexprand(20,4000),
+			lpf: Pkey(\freq).linlin(5,1600,20000,50),
+			rin: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
+			rev: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
+			dry: Pseg(Pexprand(0.01,1),Pexprand(4.0,64.0),\welch,inf),
+			pan: Pstutter(Pkey(\rps),Pwhite(0.2,0.8)),
+			atk: Pexprand(0.01,8.0),
+			rel: Pexprand(1.0,8.0),
 			crv: 5,
-			sustain: Pexprand(2.5,5.0),
-		])
+			sustain: Pexprand(2.0,4.0),
+		]);
 	)
-).play(quant:1);
+).play;
 );
 
-// an example using add which is the built in additive synthesizer
+// an example using uio which is the built in additive synthesizer
 (
 Pdef(\0,
 	Pbind(*[
 		type: \cln,
-		snd: \add,
-		amp: Pseg(Pexprand(0.4,0.7),Pexprand(0.4,4.0),\exp, inf),
+		snd: \uio,
+		amp: Pexprand(1/2,8.0),
 		freq: Pfunc{
-			var x = 40 * (1..7).choose * rrand(1,250).geom(1,30/29);
+			var x = 160 * rrand(1,500).geom(1,30/29);
 			x.reject{|i| i > 20000 }
 		},
-		dur: Pstutter(Pexprand(5,11),Pexprand(1,3).round/Pexprand(5,15).round),
-		ada: Pexprand(0.00000000000000000000000000000000000000000000001,10.1),
-		adr: Pkey(\dur)+(Pexprand(0.000001,10.0)),
-		hpf: Pseg(Pexprand(40,4000),Pexprand(0.001,10.0),\exp, inf),
-		adc: Pexprand(-8.0,-0.0001),
-		slw: Pexprand(0.00001,10.0),
-		pan: Pseg(Pwhite(0.1,0.9),Pwhite(1.0,10.0),\exp,inf),
-		legato: Pexprand(0.25,1.25),
-		sustain: Pexprand(0.25,1.25),
-		stretch: Pseg(Pexprand(0.75,1.25),Pexprand(0.5,8.0),\exp, inf),
+		dur: Pstutter(Pexprand(1,11).round,Pexprand(1,3).round/Pexprand(5,29).round).trace,
+		atk: Pexprand(0.0001,1.1),
+		rel: Pkey(\dur)-(Pexprand(0.000001,0.01)),
+		hpf: Pexprand(20,20000),
+		crv: Pexprand(-116.0,-4),
+		pan: Pstutter(Pexprand(1,19),Pwhite(0.0,1.0)),
 	])
 ).play(quant: 1);
 )
-
-// an example using sin, saw and sqr which are the built in basic waveform synthesizers
-(
-Pdef(\0,
-	Pbind(*[
-		type: \cln,
-		snd: Pxrand([\sin,\saw,\sqr,\rest],inf),
-		dur: 1/Pstutter(Pwhite(5,11),Pwhite(5,11),inf),
-		sustain: Pstutter(Pwhite(5,11),Pwhite(3.0,9.0),inf),
-		atk: Pstutter(Pwhite(5,11),Pexprand(0.001,1.0),inf),
-		hld: Pstutter(Pwhite(5,11),Pwhite(3.0,5.0),inf),
-		rel: Pstutter(Pwhite(5,11),Pwhite(5.0,11.0),inf),
-		crv: -8,
-		num: Pstutter(Pwhite(5,11),Pxrand((-24,Pstutter(Pwhite(1,100),Prand([-9,-10],inf))..24),inf)),
-		amp: Pseg(Pexprand(0.4,0.8),Pexprand(0.25,4.0),\exp,inf),
-		pan: Pwhite(0.0,1.0),
-		wid: Pwhite(0.0,1.0),
-		iph: Pexprand(0.0001,1.0),
-		lpf: Pexprand(20,20000),
-		stretch: Pseg([7,1/6,7],16,\exp,inf).trace,
-		])
-).play(quant: 1);
-)
-
 
 ```
 
@@ -309,15 +287,16 @@ computer that you found in the tech trash, then this is for you:
 • ~~.clip value ranges for all filters~~  
 • ~~All Clean to Clean~~  
 • ~~Add samples and change path _inside_ SuperClean~~  
+• ~~Fix aliases in core-synths.scd (bpf stuck at default value)~~  
+• ~~Fix aliases in core-synths-global.scd, seems to inherit keys from Synthdef args, dla,dlf,dlt is goal~~  
 • ~~Add FM synthdef~~  
 • ~~Add Additive synthdef~~  
 • ~~Add `crv` param to env~~  
 • ~~Raise output volume~~  
 • ~~Stereo sample playback~~  
-• ~~Set audible default values for `fmx`~~  
+• ~~Set audible default values for `fmx`, what are sensible defaults?~~  
 • ~~Pan not working in `fmx`~~  
 • ~~Pan not working in `uio`~~  
-• ~~Provide `dark` alternative for the reverb~~  
 
 • Reevaluate cubic interpolation (want longer file playback)  
 • ReDo rm with feedback  
@@ -328,8 +307,9 @@ computer that you found in the tech trash, then this is for you:
 • Include `Pxshuf`  
 • Include `Pbjorklund`  
 
-    
-• Maybe add that tape effect    
+• Swap out the reverb (how to make it sound better while still at low cpu?)  
+• Maybe add that tape effect  
+• Maybe delete some effects  
 
 </details>
 

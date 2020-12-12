@@ -10,12 +10,9 @@ CORE SYNTHDEFS FOR CLEAN
 
 */
 
-
-
 (
 {
 	var numChannels = ~cln.numChannels;
-
 
 	/*
 

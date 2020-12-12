@@ -466,7 +466,7 @@ SynthDef(\superprimes, {|out, pan, freq, sustain, accelerate, rate=1, detune=0, 
     	* LPF.ar(Decay.ar(trig, (primes+3)*sustain/10), voice.linexp(0,2,30,18000));
 	sound = GVerb.ar(sound.softclip, 10*voice.linexp(0,5,1,0.01), 10).tanh;
 	sound = SplayAz.ar(primes.size, sound.flat, center:LFNoise2.kr(sustain).range(0,primes.size-1));
-	OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env));
+	OffsetOut.ar(out, CleanPan.ar(sound, ~cln.numChannels, pan, env));
 }).add;
 );
 
@@ -487,7 +487,7 @@ SynthDef(\superwavemechanics, {|out, pan, freq, sustain, accelerate, detune=0, v
 	d = Rand(1.6*i - detune, 1.7*i + detune).round(0.25);
 	sound = Resonz.ar(WhiteNoise.ar(0.5), freq * r * d, 0.01 + voice.linexp(0,1,1e-3,1));
 	sound = HPF.ar(Limiter.ar(55 * GVerb.ar(sound, resonance.linexp(0,1,99,0.1),10) ), 30).sanitize;
-	OffsetOut.ar(out, CleanPan.ar(sound.flat, ~clean.numChannels, pan, env));
+	OffsetOut.ar(out, CleanPan.ar(sound.flat, ~cln.numChannels, pan, env));
 }).add;
 );
 
