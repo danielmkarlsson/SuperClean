@@ -13,7 +13,7 @@ SuperClean {
 
     // class vars
 	var <numChannels, <server;
-	var <soundLibrary, <vowels;
+	var <soundLibrary;
 	var <>auxs;
 	var <>modules;
 	var <>audioRoutingBusses;
@@ -31,7 +31,6 @@ SuperClean {
 		soundLibrary = CleanSoundLibrary(server, numChannels);
 		modules = [];
 		this.loadSynthDefs;
-		//this.initVowels(\counterTenor);
 		this.initRoutingBusses;
 	}
 

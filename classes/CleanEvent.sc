@@ -29,7 +29,7 @@ CleanEvent {
 
 	splitName {
 		var snd, num;
-		#snd, num = ~sound.asString.split($:);
+		#snd, num = ~snd.asString.split($:);
 		~snd = snd.asSymbol;
 		~num = if(num.notNil) { num.asFloat } { 0.0 };
 	}
@@ -180,7 +180,7 @@ CleanEvent {
 		~cut = ~cut.value;
 		if(~cut != 0) {
 			cutGroup = aux.getCutGroup(~cut);
-			~hash ?? { ~hash = ~sound.identityHash }; // just to be safe
+			~hash ?? { ~hash = ~snd.identityHash }; // just to be safe
 		};
 
 		server.makeBundle(~latency, { // use this to build a bundle
