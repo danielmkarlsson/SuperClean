@@ -1,5 +1,6 @@
 CLASS::SuperClean
-summary::A couple of synths and a sampler
+summary::An MPC, a bunch of effects, and a couple of synths.
+
 categories::Algorithmic Composition
 
 related::Classes/CleanAux, Classes/CleanEvent
@@ -35,7 +36,7 @@ argument::server
 link::Classes/Server:: to play on.
 
 argument::numAuxs
-number of orbits to create on startup (see: link::Classes/CleanAux::). You can add or remove them later.
+number of auxs to create on startup (see: link::Classes/CleanAux::). You can add or remove them later.
 
 argument::port
 The port to listen on (default is 57120)
@@ -50,7 +51,7 @@ argument::synthNames
 A symbol or array of symbols of the SynthDef names for which to generate code.
 
 argument::excluding
-The parameter names which should be excluded. Names already defined and used internally by SuperClean will be excluded in additinon to these.
+The parameter names which should be excluded. Names already defined and used internally by SuperClean will be excluded in addition to these.
 
 INSTANCEMETHODS::
 
@@ -61,7 +62,7 @@ code::
 // in the default startup, clean is kept in the ~clean environment variable
 // you can access the aux by index:
 
-~clean.auxs[0].set(\amp, 0.1) // reduce the amplitude of one orbit
+~clean.auxs[0].set(\amp, 0.1) // reduce the amplitude of one aux
 
 // make a mixer for the auxs, using dB scaling
 (
