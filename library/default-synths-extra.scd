@@ -49,11 +49,11 @@
 // using "n" in a weird way to provide some variation on the frequency
 // "sustain" affects the overall envelope rate, "accelerate" sweeps the filter
 (
-	SynthDef(\hat, {|out, sustain=1, pan, accelerate, n |
+	SynthDef(\hat, {|out, sustain=1, pan, bnd, num |
 		var env, sound, accel, freq;
 		env = EnvGen.ar(Env.linen(0.01, 0, 0.3, 1, -3), timeScale:sustain, doneAction:2);
-		accel = Line.kr(1, 1+accelerate, 0.2*sustain);
-		freq = 2000*accel*(n/5 + 1).wrap(0.5,2);
+		accel = Line.kr(1, 1+bnd.clip(-1.0,1.0), 0.2*sustain);
+		freq = 2000*accel*(num/5 + 1).wrap(0.5,2);
 		sound = HPF.ar(LPF.ar(WhiteNoise.ar(1), 3*freq), freq);
 		OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env))
 	}).add
