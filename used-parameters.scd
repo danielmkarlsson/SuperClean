@@ -55,8 +55,19 @@ this level of detail, FM can otherwise easily become a very round about way for
 me to make white noise.
 
 In the \drm synth definition you can change the tuning of the drum with tun.
-This value range maps around when it reaches it's maximum. Try values around 1.
-The fdb parameter controls the amount of feedback inside the oscillator. Value range is 0 to a lot where 0 is a sine and the higher up you go the noisier.
+Strange wrapping and nonlinear range. Start trying values around 1.
+The fdb parameter controls the amount of feedback inside the oscillator.
+Value range is 0 to a lot where 0 is a sine, the higher up you go the noisier.
+The pew parameter controls teh space blaster to metal kickdrum morph.
+Lower values are more space blaster like. Higher values sound tighter.
+
+The \hat synth definition is a noise source through a filter and an envelope.
+You can use num in a weird way to provide some variation on the frequency.
+bnd sweeps the filter.
+
+The \kps synth definition Karplus-Strong physical modeling of a vibrating string,
+using a delay line (CombL) excited by an intial pulse (Impulse)
+num controls the frequency. bnd is used for a pitch glide
 
 
 
