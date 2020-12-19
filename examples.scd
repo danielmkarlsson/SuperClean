@@ -1,6 +1,6 @@
 // an example of using the sampler, looks for samples in a folder called mmd
 (
-Pdef(\0,
+Pdef(0,
 	Pseed(Pn(999,1),
 		Psync(
 			Pbind(*[
@@ -29,7 +29,7 @@ Pdef(\0,
 
 // an example using fmx which is the built in four operator FM synthesizer
 (
-Pdef(\0,
+Pdef(0,
 	Pseed(4,
 		Pbind(*[
 			type: \cln,
@@ -71,7 +71,7 @@ Pdef(\0,
 
 // an example using add which is the built in additive synthesizer
 (
-Pdef(\0,
+Pdef(0,
 	Pbind(*[
 		type: \cln,
 		snd: \add,
@@ -96,7 +96,7 @@ Pdef(\0,
 
 // an example using sin, saw and sqr which are the built in basic waveform synthesizers
 (
-Pdef(\0,
+Pdef(0,
 	Pbind(*[
 		type: \cln,
 		snd: Pxrand([\sin,\saw,\sqr,\rest],inf),
@@ -119,7 +119,7 @@ Pdef(\0,
 
 // an example using drm which is a built in drum synthesizer
 (
-Pdef(\0,
+Pdef(0,
 	Pbind(*[
 		type: Pwrand([\cln,\rest],[6,1].normalizeSum,inf),
 		snd: \drm,
@@ -137,5 +137,44 @@ Pdef(\0,
 		lpf: 20000-Pexprand(2000,20000),
 		legato: Pwrand([Pkey(\dur)*1.5,Pkey(\dur)*16],[1,2].normalizeSum,inf),
 	])
+).play(quant:1);
+)
+
+( // an example using kps which is a Karplus-Strong physical modeling of a vibrating string
+Pdef(0,
+	Pbind(*[
+		type: \cln,
+		snd: \kps,
+		amp: Pexprand(0.5,1.0),
+		freq: 32*Prand([1,2,4,8,16],inf)*(1,3..11),
+		dur: 1/Pstutter(Pwhite(5,11),Pwhite(5,11)),
+		sustain: Pexprand(0.5,4.0),
+		hpf: Pexprand(20,20000),
+		lpf: (20000-Pexprand(20,20000)).trace,
+		pan: Pwhite(0.0,1.0),
+		])
+).play(quant:1);
+)
+
+( // an example using hat which is a tunable noise source and a filter
+Pdef(0,
+	Pbind(*[
+		type: Pwrand([\cln,\rest],[12,1].normalizeSum,inf),
+		snd: \hat,
+        amp: Pwrand([0.75,1.5],[12,1].normalizeSum,inf),
+        sustain: Pwrand([1/11,2],[27,1].normalizeSum,inf),
+        dur: 1/Pwrand([8,4],[12,1].normalizeSum,inf),
+        bnd: (3-Pexprand(1.0,3.0)-1),
+        num: Pwrand([-2,4],[12,1].normalizeSum,inf),
+        dst: Pwrand([0,1],[12,1].normalizeSum,inf),
+        shp: Pseg([0.0,0.8,0.0],Pexprand(4.0,12),\sine,inf),
+		tri: Pseg([0.0,0.0,9.0],Pexprand(4.0,12),\sine,inf),
+        lpf: Pseg([20000,400,20000],Pexprand(4.0,18),\sine,inf),
+        pan: Pseg([0.5,0,1,0.5],Pexprand(4.0,12),\sine,inf),
+        dla: Pseg([0.0,1/20,0.0],Pexprand(8.0,36),\sine,inf),
+        dlf: 0.94,
+        dlt: (2/Pstutter(Pn(Pgeom(1,2,3),inf),Pn(Pgeom(1,2,11),inf))).trace,
+        stretch: 0.7,
+    ])
 ).play(quant:1);
 )
