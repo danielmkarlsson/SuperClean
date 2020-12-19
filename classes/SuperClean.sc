@@ -183,7 +183,7 @@ SuperClean {
 		filePaths = pathMatch(standardizePath(path +/+ "*"));
 		filePaths.do { |filepath|
 			if(filepath.splitext.last == "scd") {
-				(cln:this).use { filepath.load }; "loading synthdefs in %\n".postf(filepath)
+				(clean:this).use { filepath.load }; "loading synthdefs in %\n".postf(filepath)
 			}
 		}
 	}

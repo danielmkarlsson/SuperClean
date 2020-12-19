@@ -23,13 +23,13 @@ CleanEventTypes {
 
 		Event.addEventType(\cln, {
 			var keys, values;
-			var cln = ~cln ? SuperClean.default;
+			var clean = ~clean ? SuperClean.default;
 			var midiout, ccn, ccv, chan;
-			if(cln.isNil) {
-				Error("clean event: no clean instance found.\n\num// You could try:\nSuperClean.default = ~cln;").throw;
+			if(clean.isNil) {
+				Error("clean event: no clean instance found.\n\num// You could try:\nSuperClean.default = ~clean;").throw;
 			};
 			~delta = ~delta ?? { ~stretch.value * ~dur.value };
-			~latency = ~latency ?? { cln.server.latency };
+			~latency = ~latency ?? { clean.server.latency };
 
             midiout = ~midiout;
             if (midiout.notNil) {
@@ -53,10 +53,10 @@ CleanEventTypes {
 				values.do { |each|
 					var e = Event(parent: currentEnvironment);
 					keys.do { |key, i| e.put(key, each.at(i)) };
-					cln.auxs.wrapAt(e[\aux] ? 0).value(e)
+					clean.auxs.wrapAt(e[\aux] ? 0).value(e)
 				}
 			} {
-				cln.auxs.wrapAt(~aux ? 0).value(currentEnvironment)
+				clean.auxs.wrapAt(~aux ? 0).value(currentEnvironment)
 			}
 		});
 

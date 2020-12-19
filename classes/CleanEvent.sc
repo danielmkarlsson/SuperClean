@@ -35,7 +35,7 @@ CleanEvent {
 	}
 
 	mergeSoundEvent {
-		var soundEvent = aux.cln.soundLibrary.getEvent(~snd, ~num);
+		var soundEvent = aux.clean.soundLibrary.getEvent(~snd, ~num);
 		if(soundEvent.isNil) {
 			// only call ~notFound if no ~diversion is given that anyhow redirects control
 			if(~diversion.isNil) { ~notFound.value }
@@ -188,7 +188,7 @@ CleanEvent {
 			aux.globalEffects.do { |x| x.set(currentEnvironment) };
 
 			if(cutGroup.notNil) {
-				server.sendMsg(\num_set, cutGroup, \gateSample, ~hash, \cutAll, if(~cut > 0) { 1 } { 0 });
+				server.sendMsg(\n_set, cutGroup, \gateSample, ~hash, \cutAll, if(~cut > 0) { 1 } { 0 });
 			};
 
 			this.prepareSynthGroup(cutGroup);

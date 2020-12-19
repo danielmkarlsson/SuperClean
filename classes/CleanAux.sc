@@ -5,22 +5,22 @@ or when you want to apply delay and or reverb to something. It is possible to ha
 of what you are hearing dry, and another part of what you are hearing wet. You can set up
 auxs in the startup.scd file. Look for this line:
 
-~cln.start(57120, [0,2,4,6]);
+~clean.start(57120, [0,2,4,6]);
 
 The above line gives you 8 outputs.
 Another way to set your auxs would be to use them as sends to different effects:
 
-~cln.start(57120, [0,0,0]);
+~clean.start(57120, [0,0,0]);
 
 The above line sets up three auxs and routes all of them to the first two audio outputs.
-This way you could have one aux dry, one with reverb on it and the last on with dealy on it.
+This way you could have one aux dry, one with reverb on it and the last on with delay on it.
 It is also possible to use both delay and reverb on the same aux.
 
 */
 
 CleanAux {
 
-	var <cln,  <outBus, <auxIndex;
+	var <clean,  <outBus, <auxIndex;
 	var <server;
 	var <synthBus, <globalEffectBus, <dryBus;
 	var <group, <globalEffects, <cutGroups;
@@ -29,21 +29,21 @@ CleanAux {
 
 	var <>defaultParentEvent;
 
-	*new { |cln, outBus, auxIndex = 0|
-		^super.newCopyArgs(cln, outBus, auxIndex).init
+	*new { |clean, outBus, auxIndex = 0|
+		^super.newCopyArgs(clean, outBus, auxIndex).init
 	}
 
 	init {
-		server = cln.server;
+		server = clean.server;
 		if(server.serverRunning.not) {
 			Error("SuperColldier server '%' not running. Couldn't start CleanAux".format(server.name)).warn;
 			^this
 		};
 		group = server.nextPermNodeID;
 		cutGroups = IdentityDictionary.new;
-		synthBus = Bus.audio(server, cln.numChannels);
-		dryBus = Bus.audio(server, cln.numChannels);
-		globalEffectBus = Bus.audio(server, cln.numChannels);
+		synthBus = Bus.audio(server, clean.numChannels);
+		dryBus = Bus.audio(server, clean.numChannels);
+		globalEffectBus = Bus.audio(server, clean.numChannels);
 		minSustain = 8 / server.sampleRate;
 		this.initDefaultGlobalEffects;
 		this.initNodeTree;
@@ -66,7 +66,7 @@ CleanAux {
 	}
 
 	globalEffects_ { |array|
-		globalEffects = array.collect { |x| x.numChannels = cln.numChannels }
+		globalEffects = array.collect { |x| x.numChannels = clean.numChannels }
 	}
 
 	doOnServerTree {
@@ -88,7 +88,7 @@ CleanAux {
 	}
 
 	value { |event|
-		CleanEvent(this, cln.modules, event).play
+		CleanEvent(this, clean.modules, event).play
 	}
 
 	valuePairs { |pairs|
@@ -149,7 +149,7 @@ CleanAux {
 	}
 
 	free {
-		cln.closeNetworkConnection;
+		clean.closeNetworkConnection;
 		ServerTree.remove(this, server);
 		globalEffects.do(_.release);
 		server.freePermNodeID(group);
@@ -172,15 +172,15 @@ CleanAux {
 		defaultParentEvent = Event.make {
 
 			~cps = 1.0;
+			~offset = 0.0;
 			~bgn = 0.0;
 			~end = 1.0;
 			~spd = 1.0;
 			~pan = 0.5;
 			~amp = 1.0;
 			~cut = 0.0;
-			~num = 0; // sample number or note
 			~unit = \r;
-			~offset = 0.0;
+			~num = 0; // sample number or note
 			~octave = 5;
 			~midinote = #{ ~note ? ~num + (~octave * 12) };
 			~freq = #{ ~midinote.value.midicps };
@@ -199,11 +199,11 @@ CleanAux {
 
 			// values from the clean bus
 			~aux = this;
-			~cln = cln;
+			~clean = clean;
 			~out = synthBus;
 			~dryBus = dryBus;
 			~effectBus = globalEffectBus;
-			~numChannels = cln.numChannels;
+			~numChannels = clean.numChannels;
 			~server = server;
 
 			~notFound = {
