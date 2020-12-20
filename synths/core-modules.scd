@@ -124,12 +124,12 @@ they respond to the existence of a value for one of the tidal parameters
 	{ |cleanEvent|
 		cleanEvent.sendSynth("clean_bpf" ++ ~numChannels,
 			[
-				bandqf: ~bandf,
-				bandq: ~bandq,
+				bandqf: ~bpf,
+				bandq: ~bpq,
 				out: ~out
 		])
 
-}, { ~bandqf.notNil });
+}, { ~bpf.notNil });
 
 ~clean.addModule('crush',
 	{ |cleanEvent|

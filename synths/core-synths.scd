@@ -114,8 +114,8 @@ live coding them requires that you have your SuperClean instance in an environme
 
 	SynthDef("clean_bpf" ++ numChannels, { |out, bandqf = 440, bandq = 10|
 		var signal = In.ar(out, numChannels);
-		bandq = max(1, bandq);
-		bandq = bandq.abs.clip(0.000001, 1); // limit quality, avoid division by zero
+		//bandq = max(1, bandq); // limit quality, avoid division by zero
+		bandq = bandq.clip(0, 1).linlin(0, 1, 1, 10000);
 		bandqf = max(20, bandqf); // limit lower end, avoid blow up
 		bandqf = bandqf.abs.clip(20, 20000);
 

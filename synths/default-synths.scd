@@ -88,9 +88,6 @@ SynthDef("sqr", {|out = 0, freq = 440, amp = 0.5, pan = 0, att = 0.0, rel = 1.0,
 ).add;
 
 
-
-
-
 // live audio input, (does this really work tho?)
 (
 SynthDef(\in, { |out, sustain = 1, spd = 1, bgn = 0, end = 1, pan, accelerate, offset|
