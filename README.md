@@ -28,7 +28,7 @@ it won't be that huge whole Xcode thing, it'll just be something called Xcode Se
 
 ## Updating
 
-I have found that in order to be able to update consistently across different operating systems I need to first uninstall:
+I have found that in order to be able to update consistently across different operting systems I need to first uninstall:
 
 `Quarks.uninstall("SuperClean");`
 

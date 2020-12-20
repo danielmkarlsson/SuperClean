@@ -6,7 +6,7 @@ Add your own instruments here.
 // sustain, spd, endspd, bgn, end, pan, acc
 // all instruments should use: out
 
-If your SuperClean instance is assigned to the variable ~cln, you can livecode these synths.
+If your SuperClean instance is assigned to the variable ~clean, you can livecode these synths.
 */
 
 (
@@ -26,7 +26,7 @@ If your SuperClean instance is assigned to the variable ~cln, you can livecode t
 		o = SinOsc.ar(freq*ee);
 		o = o * e * AmpComp.kr(freq,40,0.3);
 
-		o = CleanPan.ar(o, ~cln.numChannels, pan);
+		o = CleanPan.ar(o, ~clean.numChannels, pan);
 		Out.ar(out, o);
 	}).add;
 
@@ -51,7 +51,7 @@ If your SuperClean instance is assigned to the variable ~cln, you can livecode t
 
     sig = sig * AmpCompA.kr(freq,17.323914436055);
     sig = (sig * amp)*LFNoise1.ar(lforate).range(lfodepth,1);
-    sig = CleanPan.ar(sig, ~cln.numChannels, pan);
+    sig = CleanPan.ar(sig, ~clean.numChannels, pan);
     Out.ar(out, tanh(LeakDC.ar(sig)));
   }).add;
 
@@ -61,7 +61,7 @@ SynthDef("sin", {|out = 0, freq = 440, iph = 0, amp = 1.0, pan = 0, att = 0.0, r
 	env = Env.perc(att, rel, amp, crv).kr(doneAction: 2);
 	sig = FSinOsc.ar(freq, iph, 0.75);
 	sig = sig * env;
-    sig = CleanPan.ar(sig, ~cln.numChannels, pan);
+    sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, sig);
 }).add;
 
@@ -71,7 +71,7 @@ SynthDef("saw", {|out = 0, freq = 440, iph = 0.0, wid = 0.25, amp = 0.5, pan = 0
 	env = Env.perc(att, rel, amp, crv).kr(doneAction: 2);
 	sig = VarSaw.ar(freq, iph, wid, 0.75);
 	sig = sig * env;
-	sig = CleanPan.ar(sig, ~cln.numChannels, pan);
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, Pan2.ar(sig, pan));
 }).add;
 
@@ -82,7 +82,7 @@ SynthDef("sqr", {|out = 0, freq = 440, amp = 0.5, pan = 0, att = 0.0, rel = 1.0,
 	env = Env.perc(att, rel, amp, crv).kr(doneAction: 2);
 	sig = Pulse.ar(freq, wid, 0.75);
 	sig = sig * env;
-	sig = CleanPan.ar(sig, ~cln.numChannels, pan);
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, Pan2.ar(sig, pan));
 },
 ).add;
@@ -99,7 +99,7 @@ SynthDef(\in, { |out, sustain = 1, spd = 1, bgn = 0, end = 1, pan, accelerate, o
 	rate = (bgn + 1) * (spd + Sweep.kr(1, accelerate));
 	sound = SoundIn.ar([0, 1]); // stereo in
 	OffsetOut.ar(out,
-		CleanPan.ar(sound, ~cln.numChannels, pan)
+		CleanPan.ar(sound, ~clean.numChannels, pan)
 	)
 }).add
 );
@@ -109,17 +109,17 @@ SynthDef(\in, { |out, sustain = 1, spd = 1, bgn = 0, end = 1, pan, accelerate, o
 (
 SynthDef(\clean_from, { |out, sustain = 1, in, pan|
 	var sound;
-	sound = InFeedback.ar(in, ~cln.numChannels).poll;
+	sound = InFeedback.ar(in, ~clean.numChannels).poll;
 	Out.ar(out,
-		CleanPan.ar(sound, ~cln.numChannels, pan)
+		CleanPan.ar(sound, ~clean.numChannels, pan)
 	)
 }).add;
 
-~cln.soundLibrary.addSynth(\from,
+~clean.soundLibrary.addSynth(\from,
 	(
 		instrument: \clean_from,
 		in: {
-			~cln.audioRoutingBusses.wrapAt(~from ? 0).index
+			~clean.audioRoutingBusses.wrapAt(~from ? 0).index
 		}
 	)
 )
@@ -134,7 +134,7 @@ SynthDef(\inr, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, acce
 	sound = SoundIn.ar([0, 1]); // stereo in
 	sound = PitchShift.ar(sound, 0.1, rate, 0.02, 0.01);
 	OffsetOut.ar(out,
-		CleanPan.ar(sound, ~cln.numChannels, pan)
+		CleanPan.ar(sound, ~clean.numChannels, pan)
 	)
 }).add
 );
