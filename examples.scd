@@ -79,7 +79,7 @@ Pdef(0,
 		freq: Pfunc{
 			var x = 40 * (1..7).choose * rrand(1,250).geom(1,30/29);
 			x.reject{|i| i > 20000 }
-		},
+		}.trace,
 		dur: Pstutter(Pexprand(5,11),Pexprand(1,3).round/Pexprand(5,15).round),
 		ada: Pexprand(0.00000000000000000000000000000000000000000000001,10.1),
 		adr: Pkey(\dur)+(Pexprand(0.000001,10.0)),
@@ -124,7 +124,7 @@ Pdef(0,
 		type: Pwrand([\cln,\rest],[6,1].normalizeSum,inf),
 		snd: \drm,
 		dur: 1/Pwrand([4.75,9.5],[3,8].normalizeSum,inf),
-		tun: Pstutter(Pexprand(1,8),Pexprand(0.0001,0.25)),
+		tun: Pstutter(Pexprand(1,8),Pexprand(0.0001,0.25)).trace,
 		fdb: Pexprand(0.00001,2000.0),
 		dst: Pwhite(0.0,1.0),
 		shp: Pwhite(0.0,0.999),
