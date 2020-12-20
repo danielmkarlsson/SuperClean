@@ -18,33 +18,34 @@ s.latency = 0.3;
 
 // scnvim
 if (\SCNvim.asClass.notNil) {
- Server.default.doWhenBooted {
-  \SCNvim.asClass.updateStatusLine(1, 9670);
- }
+	Server.default.doWhenBooted {
+		\SCNvim.asClass.updateStatusLine(1, 9670);
+	}
 };
 
 // A simple triangle wave synth in stereo with panning and a simple low pass filter
 // This synthDef was written by Mads Kjeldgaard and requires the sc3 plugins
 s.doWhenBooted{
- SynthDef.new(\default, {
-  arg dur, attack=0.01, release=1.0,
-  t_gate=1, out, freq=442, cutoff=5500,
-  rq=1, pan=0.0, amp=0.5;
+	SynthDef.new(\default, {
+		arg dur, attack=0.01, release=1.0,
+		t_gate=1, out, freq=442, cutoff=5500,
+		rq=1, pan=0.0, amp=0.5;
 
-  var env = EnvGen.kr(Env.perc(attack, release), t_gate, timeScale: dur, doneAction: 2);
-  var sig = DPW3Tri.ar(freq: freq, mul: env);
-  sig = RLPF.ar(sig, cutoff.clip(20.0, 20000.0), rq.clip(0.0,1.0));
-  sig = Pan2.ar(sig, pan);
-  Out.ar(out, sig * amp);
- }).add;
+		var env = EnvGen.kr(Env.perc(attack, release), t_gate, timeScale: dur, doneAction: 2);
+		var sig = DPW3Tri.ar(freq: freq, mul: env);
+		sig = RLPF.ar(sig, cutoff.clip(20.0, 20000.0), rq.clip(0.0,1.0));
+		sig = Pan2.ar(sig, pan);
+		Out.ar(out, sig * amp);
+	}).add;
 };
 
 s.waitForBoot {
- ~cln = SuperClean(2, s); // two output channels, increase if you want to pan across more channels
- ~cln.loadSoundFiles; // hot swap in samples from anywhere!
- // for example: ~clean.loadSoundFiles("~/Downloads/rnb");
- s.sync; // optionally: wait for samples to be read
-    ~cln.start(57120, [0]); // first 8 out looks like [0,2,4,6]
- SuperClean.default = ~clean; // make the clean key sequenceable inside of SUperCollider
+	~clean = SuperClean(2, s); // two output channels, increase if you want to pan across more channels
+	~clean.loadSoundFiles; // hot swap in samples from anywhere!
+	// for example: ~clean.loadSoundFiles("~/Downloads/rnb");
+	s.sync; // optionally: wait for samples to be read
+	~clean.start(57120, [0]); // first 8 out looks like [0,2,4,6]
+	SuperClean.default = ~clean; // make the clean key sequenceable inside of SUperCollider
+	"[ SuperClean up + running ]".postln;
 };
 )
