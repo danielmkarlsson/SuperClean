@@ -1,11 +1,3 @@
-
-// list of new SynthDefs, and in parentheses the special parameters they accept
-// most of these SynthDefs use sustain to scale the overall envelope, and many use accelerate to provide a pitch glide
-//
-// tutorial1, tutorial2, tutorial3, tutorial4, tutorial5(f!),
-// supermandolin(detune), supergong(voice,decay), superpiano(velocity,detune,muffle!,stereo!), superhex,
-// superkick(pitch1,decay), superhat, supersnare(decay), superclap(delay,pitch1), super808(voice), supersiren
-
 // a very basic starting point, just a 440Hz sine wave
 (
 SynthDef(\tutorial1, {|out|
@@ -26,12 +18,12 @@ SynthDef(\tutorial2, {|out, sustain=1, pan |
 
 
 // it's also nice to control the pitch
-// the "n" parameter will be used as note number and converted to "freq" by SuperClean
-// also, "accelerate" will cause the pitch to drift
+// the "num" parameter will be used as note number and converted to "freq" by SuperClean
+// also, "bnd" will cause the pitch to drift
 (
-SynthDef(\tutorial3, {|out, sustain=1, pan, accelerate, freq |
+SynthDef(\tutorial3, {|out, sustain=1, pan, bnd, freq |
 	var env = EnvGen.ar(Env.linen(0.01, 0.98, 0.01, 1, -3), timeScale:sustain, doneAction:2);
-	var sound = SinOsc.ar(freq * Line.kr(1,1+accelerate, sustain));
+	var sound = SinOsc.ar(freq * Line.kr(1,1+bnd, sustain));
 	OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env));
 }).add
 );
@@ -39,18 +31,18 @@ SynthDef(\tutorial3, {|out, sustain=1, pan, accelerate, freq |
 
 // we can also make the envelope a more interesting percussive shape
 (
-SynthDef(\tutorial4, {|out, sustain=1, pan, accelerate, freq |
+SynthDef(\tutorial4, {|out, sustain=1, pan, bnd, freq |
 	var env = EnvGen.ar(Env.perc(0.001, 0.999, 1, -4), timeScale:sustain, doneAction:2);
-	var sound = SinOsc.ar(freq * Line.kr(1,1+accelerate, sustain));
+	var sound = SinOsc.ar(freq * Line.kr(1,1+bnd, sustain));
 	OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env));
 }).add
 );
 
-// this one uses f fro frequency, there is also the \freq key so why would you want that?
+// this one uses f from frequency, there is also the \freq key so why would you want that?
 (
-SynthDef(\tutorial5, {|out, sustain=1, pan, accelerate, f |
+SynthDef(\tutorial5, {|out, sustain=1, pan, bnd, f |
 	var env = EnvGen.ar(Env.perc(0.001, 0.999, 1, -4), timeScale:sustain, doneAction:2);
-	var sound = SinOsc.ar(f * Line.kr(1,1+accelerate, sustain));
+	var sound = SinOsc.ar(f * Line.kr(1,1+bnd, sustain));
 	OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env));
 }).add
 );
