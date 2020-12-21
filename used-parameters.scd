@@ -7,7 +7,9 @@ num         Number, which sample in a folder or which note if you are using a sy
 pan         Pans the sound, 0.0 to 1.0.
 shp         A kind of distortion, vaguely translates to wrapping
 tri         Another kind of distortion, vaguely translates to a triode
-dst         Yet another kind of distortion, pretty extreme
+dst         Yet another kind of distortion, it's pretty extreme
+bit         Bitrate, accepts floats, range from very low float up to the bit rate you specified (set to 24 in the suggested SuperClean Startup)
+sam         Divides the samplerate by this number, range is 0 to a lot (set to 44100 in the suggested SuperClean Startup)
 amp         Make it louder! Can go above one to lean into the limiter
 spd         The speed at which to play back the sample, default is 1.0, negative numbers play the sample backwards, slower playback rates closer to 0
 atk         The attack time of the envelope, the envelope parameters expressed in seconds, 1.0 here means a one second fade in time
