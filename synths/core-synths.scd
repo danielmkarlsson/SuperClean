@@ -130,15 +130,29 @@ live coding them requires that you have your SuperClean instance in an environme
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
 
-	SynthDef("clean_shape" ++ numChannels, { |out, shape = 0|
-		var signal = In.ar(out, numChannels), amp = 1;
-		shape = min(shape, 1.0 - 4e-10); // avoid division by zero
-		//amp = 1.0 - (0.15 * shape / (shape + 2.0)) * amp; // optional amp comp
+	SynthDef("clean_shape" ++ numChannels, { |out, shape = 0, amp = 1.0,  amp_compensation_amount = 0.99|
+		var signal = In.ar(out, numChannels);
+		shape = min(shape, 1.0 - 4e-10).explin(0.001, 1, 0.0, 0.999999); // avoid division by zero
+		amp_compensation_amount = amp_compensation_amount.linlin(0.0,1.0,0.0001,1.0);
+		amp = 1.0 - (amp_compensation_amount * shape / (shape +amp_compensation_amount )) * amp; // optional amp comp
 		shape = (2.0 * shape) / (1.0 - shape);
 
 		signal = (1 + shape) * signal / (1 + (shape * abs(signal)));
 		ReplaceOut.ar(out, signal * amp)
 	}, [\ir, \ir]).add;
+
+/*
+	SynthDef("clean_shape" ++ numChannels, { |out, shape = 0|
+		var signal = In.ar(out, numChannels), amp = 1;
+		shape = min(shape, 1.0 - 4e-10).linlin(0, 1, 0.0, 0.999999); // avoid division by zero
+		//amp = 1.0 - (0.15 * shape / (shape + 2.0)) * amp; // optional amp comp
+		amp = 1.0 - (0.99 * shape / (shape + 0.99)) * amp;
+		shape = (2.0 * shape) / (1.0 - shape);
+
+		signal = (1 + shape) * signal / (1 + (shape * abs(signal)));
+		ReplaceOut.ar(out, signal * amp)
+	}, [\ir, \ir]).add;
+*/
 
 	SynthDef("clean_envelope" ++ numChannels, { |out, attack = 0, hold = 0, release = inf, crv = 0.3 |
 		var signal = In.ar(out, numChannels);
