@@ -5,7 +5,9 @@ The value range for the below parameters is 0.0 to 1.0 unless otherwise indicate
 snd         Sample folder or synth name
 num         Number, which sample in a folder or which note if you are using a synth, 0 is midinote 60
 pan         Pans the sound, 0.0 to 1.0.
-shp         This is like a distortion, goes to 0.999999, does not accept 1 (I need to fix that)
+shp         A kind of distortion, vaguely translates to wrapping
+tri         Another kind of distortion, vaguely translates to a triode
+dst         Yet another kind of distortion, pretty extreme
 amp         Make it louder! Can go above one to lean into the limiter
 spd         The speed at which to play back the sample, default is 1.0, negative numbers play the sample backwards, slower playback rates closer to 0
 atk         The attack time of the envelope, the envelope parameters expressed in seconds, 1.0 here means a one second fade in time
@@ -36,7 +38,7 @@ freq        When working with synths and we want to work with frequencies instea
 legato      Like a variable soft cut dependent on dur where 1 is dur
 sustain     Adds sustain to synths by changing the timescale of the envelope. Can turn a drum into a drone. Value range is a very small value above 0 to infinity
 
-The last two are actually not part of SuperClean but very useful and because SuperClean is running inside SuperClean we get to use them.
+The last three are actually not part of SuperClean but very useful and because SuperClean is running inside SuperClean we get to use them.
 
 In the \fmx synth definition the envelope segments are expressed in
 percentages. e4 through to e1 tell you how far into the note value that the
