@@ -141,19 +141,6 @@ live coding them requires that you have your SuperClean instance in an environme
 		ReplaceOut.ar(out, signal * amp)
 	}, [\ir, \ir]).add;
 
-/*
-	SynthDef("clean_shape" ++ numChannels, { |out, shape = 0|
-		var signal = In.ar(out, numChannels), amp = 1;
-		shape = min(shape, 1.0 - 4e-10).linlin(0, 1, 0.0, 0.999999); // avoid division by zero
-		//amp = 1.0 - (0.15 * shape / (shape + 2.0)) * amp; // optional amp comp
-		amp = 1.0 - (0.99 * shape / (shape + 0.99)) * amp;
-		shape = (2.0 * shape) / (1.0 - shape);
-
-		signal = (1 + shape) * signal / (1 + (shape * abs(signal)));
-		ReplaceOut.ar(out, signal * amp)
-	}, [\ir, \ir]).add;
-*/
-
 	SynthDef("clean_envelope" ++ numChannels, { |out, attack = 0, hold = 0, release = inf, crv = 0.3 |
 		var signal = In.ar(out, numChannels);
 		signal = signal * EnvGen.ar(Env.linen(attack, hold, release, 1, crv));
