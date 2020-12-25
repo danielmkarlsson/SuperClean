@@ -182,74 +182,70 @@ Pdef(\0,
 
 // an example using fmx which is the built in four operator FM synthesizer
 (
-Pdef(\0,
-	Pseed(999,
+Pdef(0,
+	Pseed(4,
 		Pbind(*[
 			type: \cln,
 			snd: \fmx,
-			rps: Pexprand(1,99),
-			hr1: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
+			rps: Pexprand(9,99),
+			hr1: Pstutter(Pkey(\rps)-Pwhite(0,7),Pshuf((1..4),inf)),
 			hr2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
-			hr3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
+			hr3: Pstutter(Pkey(\rps)-Pwhite(0,7),Pshuf((1..4),inf)),
 			hr4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1..4),inf)),
 			fdb: Pexprand(0.0001,100.0),
-			mi2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1.0..4.0),inf)),
-			mi3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1.0..4.0),inf)),
-			mi4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((1.0..4.0),inf)),
-			amp: Pexprand(0.2,0.8),
+			mi2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((0.0001..4.0),inf)),
+			mi3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((0.0001..4.0),inf)),
+			mi4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pshuf((0.0001..4.0),inf)),
+			amp: Pexprand(0.25,0.75),
 			en1: Pstutter(Pkey(\rps)+Pwhite(0,7),Pexprand(0.0001,0.555)),
 			en2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pkey(\en1)*Pexprand(0.2,0.666)),
 			en3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pkey(\en1)*Pkey(\en2)/Pexprand(0.3,0.777)),
 			en4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pkey(\en1)*Pkey(\en2)/Pkey(\en3)*Pexprand(0.4,0.888)),
-			hl1: Pexprand(0.025,1.125),
-			hl2: Pexprand(0.025,1.125),
-			hl3: Pexprand(0.025,1.125),
-			hl4: Pexprand(0.025,1.125),
 			cu1: Pstutter(Pkey(\rps)+Pwhite(0,7),Pwhite(0.25,1.0)),
 			cu2: Pstutter(Pkey(\rps)+Pwhite(0,7),Pwhite(0.25,1.0)),
 			cu3: Pstutter(Pkey(\rps)+Pwhite(0,7),Pwhite(0.25,1.0)),
 			cu4: Pstutter(Pkey(\rps)+Pwhite(0,7),Pwhite(0.25,1.0)),
 			dur: Pstutter(Pkey(\rps)+Pwhite(2,9),2/Pbrown(5,19,Pwhite(1,3),inf)),
 			legato: Pkey(\dur)*Pexprand(16,64),
-			freq: (Pstutter(Pexprand(1,32),10*Pexprand(1,5).round)
+			freq: (Pstutter(Pexprand(4,32),10*Pexprand(1,5).round)
 				*Pstutter(Pexprand(1,64),Pexprand(1,5)).round
-				*Pstutter(Pkey(\rps),Pexprand(1,7).round)).trace,
-			hpf: Pexprand(20,4000),
-			lpf: Pkey(\freq).linlin(5,1600,20000,50),
-			rin: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
-			rev: Pseg(Pexprand(0.9,1),Pexprand(2.0,16.0),\welch,inf),
-			dry: Pseg(Pexprand(0.01,1),Pexprand(4.0,64.0),\welch,inf),
-			pan: Pstutter(Pkey(\rps),Pwhite(0.2,0.8)),
-			atk: Pexprand(0.01,8.0),
-			rel: Pexprand(1.0,8.0),
+				*Pstutter(Pkey(\rps),Pexprand(1,7).round)),
+			dark: Pseg(Pexprand(0.25,1.0),Pexprand(8.0,64.0),\welch,inf),
+			pan: Pbrown(0.0,1.0,Pstutter(Pwhite(1,3),Pwhite(0.01,0.1))).trace,
+			atk: Pexprand(0.01,4.0),
+			hld: Pkey(\dur)*2,
+			rel: Pkey(\dur)*2,
 			crv: 5,
-			sustain: Pexprand(2.0,4.0),
-		]);
+			sustain: Pexprand(2.5,5.0),
+		])
 	)
-).play;
+).play(quant:1);
 );
 
-// an example using uio which is the built in additive synthesizer
+/ an example using add which is the built in additive synthesizer
 (
-Pdef(\0,
+Pdef(0,
 	Pbind(*[
 		type: \cln,
-		snd: \uio,
-		amp: Pexprand(1/2,8.0),
+		snd: \add,
+		amp: Pseg(Pexprand(0.4,0.7),Pexprand(0.4,4.0),\exp, inf),
 		freq: Pfunc{
-			var x = 160 * rrand(1,500).geom(1,30/29);
+			var x = 40 * (1..7).choose * rrand(1,250).geom(1,30/29);
 			x.reject{|i| i > 20000 }
 		},
-		dur: Pstutter(Pexprand(1,11).round,Pexprand(1,3).round/Pexprand(5,29).round).trace,
-		atk: Pexprand(0.0001,1.1),
-		rel: Pkey(\dur)-(Pexprand(0.000001,0.01)),
-		hpf: Pexprand(20,20000),
-		crv: Pexprand(-116.0,-4),
-		pan: Pstutter(Pexprand(1,19),Pwhite(0.0,1.0)),
+		dur: Pstutter(Pexprand(5,11),Pexprand(1,3).round/Pexprand(5,15).round),
+		ada: Pexprand(0.00000000000000000000000000000000000000000000001,10.1),
+		adr: Pkey(\dur)+(Pexprand(0.000001,10.0)),
+		hpf: Pseg(Pexprand(40,4000),Pexprand(0.001,10.0),\exp, inf),
+		adc: Pexprand(-8.0,-0.0001),
+		slw: Pexprand(0.00001,10.0),
+		pan: Pseg(Pwhite(0.1,0.9),Pwhite(1.0,10.0),\exp,inf),
+		legato: Pexprand(0.25,1.25),
+		sustain: Pexprand(0.25,1.25),
+		stretch: Pseg(Pexprand(0.75,1.25),Pexprand(0.5,8.0),\exp, inf),
 	])
 ).play(quant: 1);
 )
-
 ```
 
 In the \fmx synth definition the envelope segments are expressed in
