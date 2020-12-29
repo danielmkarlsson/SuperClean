@@ -40,7 +40,7 @@ freq        When working with synths and we want to work with frequencies instea
 legato      Like a variable soft cut dependent on dur where 1 is dur
 sustain     Adds sustain to synths by changing the timescale of the envelope. Can turn a drum into a drone. Value range is a very small value above 0 to infinity
 
-The last three are actually not part of SuperClean but very useful and because SuperClean is running via SuperCollider Patterns we get to use them.
+The last three are actually not part of SuperClean but very useful and because SuperClean is being controlled by Patterns inside SuperCollider, we get to use them.
 
 In the \fmx synth definition the envelope segments are expressed in
 percentages. e4 through to e1 tell you how far into the note value that the
