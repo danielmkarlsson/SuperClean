@@ -34,6 +34,17 @@ SuperClean {
 		this.initRoutingBusses;
 	}
 
+	start { |outBusses|
+		if(auxs.notNil) { this.stop };
+		this.makeAuxs(outBusses ? [0]);
+	}
+
+	stop {
+		auxs.do(_.free);
+		auxs = nil;
+	}
+
+/* untouched
 
 	start { |port = 57120, outBusses, senderAddr = (NetAddr("127.0.0.1"))|
 		if(auxs.notNil) { this.stop };
@@ -46,6 +57,8 @@ SuperClean {
 		auxs = nil;
 		this.closeNetworkConnection;
 	}
+
+*/
 
 	makeAuxs { |outBusses|
 		var new,
