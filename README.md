@@ -32,7 +32,7 @@ I have found that in order to be able to update consistently across different op
 
 `Quarks.uninstall("SuperClean");`
 
-I then manually delete the old SuperClean folder, recompile the class library and finally reinstall:
+I then manually delete the old SuperClean folder, reinstall with the below line then recompile the class library:
 
 `Quarks.install("https://github.com/danielmkarlsson/SuperClean.git");`
 
