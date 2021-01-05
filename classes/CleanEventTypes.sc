@@ -57,8 +57,6 @@ CleanEventTypes {
 				}
 			} {
 				clean.auxs.wrapAt(~aux ? 0).value(currentEnvironment);
-				~type = \note;
-				currentEnvironment.play;
 			}
 		});
 
