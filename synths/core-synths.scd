@@ -27,7 +27,7 @@ live coding them requires that you have your SuperClean instance in an environme
 
 			var sound, rate, phase, sawrate, numFrames;
 
-			// playback spd
+			// playback speed
 			rate = Line.kr(spd, endspd, sustain) * (freq / 60.midicps);
 
 			// sample phase
@@ -136,10 +136,48 @@ live coding them requires that you have your SuperClean instance in an environme
 		amp_compensation_amount = amp_compensation_amount.linlin(0.0,1.0,0.0001,1.0);
 		amp = 1.0 - (amp_compensation_amount * shape / (shape +amp_compensation_amount )) * amp; // optional amp comp
 		shape = (2.0 * shape) / (1.0 - shape);
-
 		signal = (1 + shape) * signal / (1 + (shape * abs(signal)));
 		ReplaceOut.ar(out, signal * amp)
 	}, [\ir, \ir]).add;
+
+/*
+	SynthDef("clean_shape" ++ numChannels, { |out, shape = 0, amp = 1.0,  amp_compensation_amount = 0.99, lo = 1, hi = 0, offset = 0, lo_thresh = -1, hi_thresh = -1|
+		var abs, diff;
+		var signal = In.ar(out, numChannels);
+		shape = min(shape, 1.0 - 4e-10).explin(0.001, 1, 0.0, 0.999999);
+		amp_compensation_amount = amp_compensation_amount.linlin(0.0,1.0,0.0001,1.0);
+		amp = 1.0 - (amp_compensation_amount * shape / (shape +amp_compensation_amount )) * amp;
+		shape = (1.0 * shape) / (1.0 - shape);
+		signal = (1 + shape) * signal / (1 + (shape * abs(signal)));
+		offset = offset.linlin(0.0,1.0,1.0,5.0);
+		hi = hi * offset; lo = lo * offset;
+		abs = hi - lo;
+		lo = lo + (abs * lo_thresh);
+		hi = hi - (abs * hi_thresh);
+		signal = Fold.ar(signal, lo, hi);
+		diff = 1 - (lo - hi + (hi * lo));
+		ReplaceOut.ar(out, Limiter.ar(LeakDC.ar(signal * (amp+diff))));
+	}, [\ir, \ir]).add;
+
+
+	Ndef('clean_shape', { |shape = 0, amp = 1.0,  amp_compensation_amount = 0.99, lo = -1, hi = 1, offset = 0, lo_thresh = 1, hi_thresh = 1|
+    var abs, diff;
+    //var signal = SinOsc.ar([123,234]);
+    var signal = LFSaw.ar([123,234]);
+    shape = min(shape, 1.0 - 4e-10).explin(0.001, 1, 0.0, 0.999999);
+    amp_compensation_amount = amp_compensation_amount.linlin(0.0,1.0,0.0001,1.0);
+    amp = 1.0 - (amp_compensation_amount * shape / (shape +amp_compensation_amount )) * amp;
+    shape = (1.0 * shape) / (1.0 - shape);
+    signal = (1 + shape) * signal / (1 + (shape * abs(signal)));
+    offset = offset.linlin(0.0,1.0,1.0,5.0);
+    hi=hi*offset; lo=lo*offset;
+    abs = hi - lo;
+    lo = lo + (abs * lo_thresh);
+    hi = hi - (abs * hi_thresh);
+    signal = Fold.ar(signal, lo, hi);
+    diff = 1 - (lo - hi + (hi * lo));
+    Limiter.ar(LeakDC.ar(signal * (amp+diff)));
+*/
 
 	SynthDef("clean_envelope" ++ numChannels, { |out, attack = 0, hold = 0, release = inf, crv = 0.3 |
 		var signal = In.ar(out, numChannels);
@@ -176,6 +214,36 @@ live coding them requires that you have your SuperClean instance in an environme
 	}, [\ir, \ir, \ir]).add;
 
 
+	SynthDef("grainfb" ++ numChannels, { |in, out, fbgrainsize = 0.25, fbgrainrand = 0.8, fbGain = 0.1|
+		var signal = In.ar(out, numChannels);
+		var bufLength = 1.0;
+		var localBuf = LocalBuf(
+			bufLength * SampleRate.ir,
+			numChannels
+		).clear;
+
+		var warp = Warp1.ar(
+			numChannels,
+			localBuf,
+			LFSaw.ar(1/bufLength).linlin(-1.0,1.0,0.0, 1.0),
+			Drand([ 2, - 2 ], inf),
+			fbgrainsize.linlin(0.0, 1.0, 0.0, 2.0),
+			-1,
+			2,
+			fbgrainrand.linlin(0.0, 1.0, 0.2, 1.0),
+			4
+		);
+
+		// record w/ feedback
+		RecordBuf.ar(tanh(in + HPF.ar(tanh(warp * fbGain), 30)), localBuf);
+
+		warp = warp.tanh;
+		warp = HPF.ar(warp * 0.5, 150);
+		warp.sanitize;
+
+
+	ReplaceOut.ar(out, warp);
+}, [\ir, \ir, \ir]).add;
 
 }.value
 )
