@@ -180,10 +180,55 @@ CleanAux {
 			~amp = 1.0;
 			~cut = 0.0;
 			~unit = \r;
-			~num = 0; // sample number or note
-			~octave = 5;
 			~midinote = #{ ~note ? ~num + (~octave * 12) };
-			~freq = #{ ~midinote.value.midicps };
+			~freq = #{
+                var degree = ~degree;
+                var scale = ~scale;
+				var octave = ~octave;
+				var harmonic = ~harmonic;
+				var tuning = ~tuning;
+				var mtranspose = ~mtranspose;
+                var gtranspose = ~gtranspose;
+				var ctranspose = ~ctranspose;
+				var root = ~root;
+				var stepsPerOctave = ~stepsPerOctave;
+				var detuneFreq = ~detuneFreq;
+				var octaveRatio = ~octaveRatio;
+				var num = ~num;
+				var midinote = ~midinote;
+				Event.default.use {
+                    ~degree = degree;
+                    ~scale = scale;
+					~octave = octave;
+					~harmonic = harmonic;
+					~tuning = tuning;
+                    ~mtranspose = mtranspose;
+					~gtranspose = gtranspose;
+					~ctranspose = ctranspose;
+					~root = root;
+					~stepsPerOctave = stepsPerOctave;
+					~detuneFreq = detuneFreq;
+					~octaveRatio = octaveRatio;
+					~num = num;
+					~midinote = midinote;
+					~freq.value
+                }
+            };
+
+			~mtranspose = 0.0;
+			~gtranspose = 0.0;
+			~ctranspose = 0.0;
+			~octave = 5.0;
+			~root = 0.0;     // root of the scale
+			~degree = 0;
+			~scale = #[0, 2, 4, 5, 7, 9, 11];  // diatonic major scale
+			~stepsPerOctave = 12.0;
+			~detuneFreq = 0.0;     // detune in Hertz
+			~harmonic = 1.0;    // harmonic ratio
+			~octaveRatio = 2.0;
+			~num = 0; // sample number or note
+
+			//~freq = #{ ~midinote.value.midicps };
 			~delta = 1.0;
 
 			~latency = 0.0;

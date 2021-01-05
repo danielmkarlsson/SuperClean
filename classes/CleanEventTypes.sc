@@ -26,12 +26,12 @@ CleanEventTypes {
 			var clean = ~clean ? SuperClean.default;
 			var midiout, ccn, ccv, chan;
 			if(clean.isNil) {
-				Error("clean event: no clean instance found.\n\num// You could try:\nSuperClean.default = ~clean;").throw;
+				Error("clean event: no clean instance found.\n\n// You could try:\nSuperClean.default = ~clean;").throw;
 			};
 			~delta = ~delta ?? { ~stretch.value * ~dur.value };
 			~latency = ~latency ?? { clean.server.latency };
 
-            midiout = ~midiout;
+            midiout = ~mid;
             if (midiout.notNil) {
                 chan = ~chan ? 0;
                 if (~ccn.notNil and:{~ccv.notNil}) {
@@ -56,7 +56,9 @@ CleanEventTypes {
 					clean.auxs.wrapAt(e[\aux] ? 0).value(e)
 				}
 			} {
-				clean.auxs.wrapAt(~aux ? 0).value(currentEnvironment)
+				clean.auxs.wrapAt(~aux ? 0).value(currentEnvironment);
+				~type = \note;
+				currentEnvironment.play;
 			}
 		});
 
@@ -123,7 +125,10 @@ CleanEventTypes {
 				true // always return something != nil to end processing in CleanEvent
 
 			}
+
 		)
 	}
 
 }
+
+

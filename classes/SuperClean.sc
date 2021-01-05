@@ -2,10 +2,9 @@
 
 SuperCollider implementation of Clean
 
-This object handles OSC communication and local effects.
+This object handles local effects.
 These are relative to a server and a number of output channels
 It keeps a number of clean auxs (see below).
-
 
 */
 
@@ -18,7 +17,7 @@ SuperClean {
 	var <>modules;
 	var <>audioRoutingBusses;
 
-	var <port, <senderAddr, netResponders;
+	//var <port, <senderAddr, netResponders;
 	var <>receiveAction, <>warnOutOfAux = true, <>maxLatency = 42, <>numRoutingBusses = 16;
 
 	classvar <>default, <>maxSampleNumChannels = 2, <>postBadValues = false;
@@ -145,7 +144,6 @@ SuperClean {
 	fileExtensions { ^soundLibrary.fileExtensions }
 	fileExtensions_ { |list| ^soundLibrary.fileExtensions_(list) }
 
-
 	/* modules */
 
 	addModule { |name, func, test|
@@ -186,7 +184,6 @@ SuperClean {
 		modules = names.collect { |x| this.getModule(x) }.reject { |x| x.isNil }
 	}
 
-
 	// SynthDefs are signal processing graph definitions
 	// this is also where the modules are added
 
@@ -201,6 +198,7 @@ SuperClean {
 		}
 	}
 
+/*
 	connect { |argSenderAddr, argPort|
 
 		if(Main.scVersionMajor == 3 and: { Main.scVersionMinor == 6 }) {
@@ -239,7 +237,7 @@ SuperClean {
 		);
 
 
-		"SuperClean: listening on port %".format(port).postln;
+	//	"SuperClean: listening on port %".format(port).postln;
 	}
 
 	closeNetworkConnection {
@@ -271,15 +269,17 @@ SuperClean {
 
 	}
 
+/*
 	*tidalParameterString { |keys|
 		^keys.collect { |x| format("(%, %_p) = pF \"%\" (Nothing)", x, x, x) }.join("\n    ");
 	}
+*/
 
 	*predefinedSynthParameters {
 		// not complete, but avoids obvious collisions
 		^#[\pan, \amp, \out, \i_out, \sustain, \gate, \bnd, \amp, \unit, \cut, \octave, \offset, \atk];
 	}
-
+*/
 
 }
 
