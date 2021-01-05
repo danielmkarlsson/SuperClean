@@ -3,7 +3,7 @@ This may not be a complete list of parameter names.
 The value range for the below parameters is 0.0 to 1.0 unless otherwise indicated
 
 snd         Sample folder or synth name
-num         Number, which sample in a folder or which note if you are using a synth, 0 is midinote 60
+num         Number, which sample in a folder
 pan         Pans the sound, 0.0 to 1.0.
 shp         A kind of distortion, vaguely translates to wrapping
 tri         Another kind of distortion, vaguely translates to a triode
