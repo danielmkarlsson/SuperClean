@@ -5,11 +5,7 @@ The value range for the below parameters is 0.0 to 1.0 unless otherwise indicate
 snd         Sample folder or synth name
 num         Number, which sample in a folder
 pan         Pans the sound, 0.0 to 1.0.
-shp         A kind of distortion, vaguely translates to wrapping
-tri         Another kind of distortion, vaguely translates to a triode
-dst         Yet another kind of distortion, it's pretty extreme
-bit         Bitrate, accepts floats, range from very low float up to the bit rate you specified (set to 24 in the suggested SuperClean Startup)
-sam         Divides the samplerate by this number, range is 0 to a lot (set to 44100 in the suggested SuperClean Startup)
+shp         This is like a distortion, goes to 0.999999, does not accept 1 (I need to fix that)
 amp         Make it louder! Can go above one to lean into the limiter
 spd         The speed at which to play back the sample, default is 1.0, negative numbers play the sample backwards, slower playback rates closer to 0
 atk         The attack time of the envelope, the envelope parameters expressed in seconds, 1.0 here means a one second fade in time
@@ -36,11 +32,13 @@ cut         Cut groups, cuts itself as well as other things in the same cut grou
 aux         An auxiliary output, you can use these for different outputs or same output with different effects depending on your startup file
 trr         Tremolo rate
 trd         Tremeolo depth
+rma         Ringmodulation amplitude
+rmf         Ringmodulation frequency
 freq        When working with synths and we want to work with frequencies instead of midi note numbers as above, accepts integers 20 to 20000.
 legato      Like a variable soft cut dependent on dur where 1 is dur
 sustain     Adds sustain to synths by changing the timescale of the envelope. Can turn a drum into a drone. Value range is a very small value above 0 to infinity
 
-The last three are actually not part of SuperClean but very useful and because SuperClean is being controlled by Patterns inside SuperCollider, we get to use them.
+The last two are actually not part of SuperClean but very useful and because SuperClean is running inside SuperClean we get to use them.
 
 In the \fmx synth definition the envelope segments are expressed in
 percentages. e4 through to e1 tell you how far into the note value that the
@@ -66,12 +64,12 @@ The pew parameter controls teh space blaster to metal kickdrum morph.
 Lower values are more space blaster like. Higher values sound tighter.
 
 The \hat synth definition is a noise source through a filter and an envelope.
-You can use num in a weird way to provide some variation on the frequency.
+You can use tun in a weird way to provide some variation on the frequency.
 bnd sweeps the filter.
 
 The \kps synth definition Karplus-Strong physical modeling of a vibrating string,
 using a delay line (CombL) excited by an intial pulse (Impulse)
-num controls the frequency. bnd is used for a pitch glide
+freq or midinote controls the frequency. bnd is used for a pitch glide
 
 
 
