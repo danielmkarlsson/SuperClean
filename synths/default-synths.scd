@@ -31,7 +31,7 @@ If your SuperClean instance is assigned to the variable ~clean, you can livecode
 	}).add;
 
 // A four operator FM synth
- SynthDef(\fmx, {| sustain, pan, amp = 0.1, lforate = 0, lfodepth = 1, out = 0,
+ SynthDef(\fmx, {| sustain, pan, amp = 0.1, out = 0,
     freq = 440, fdb = 0.9, hr4 = 3 ,hr3 = 2, hr2 = 1, hr1= 1, mi4 = 2, mi3 = 3,
 	mi2 = 4, en1 = 0, en2 = 0, en3 = 0, en4 = 0, cu1 = 0, cu2 = 0, cu3 = 0,
 	cu4 = 0, det = 0.2 |
@@ -50,7 +50,7 @@ If your SuperClean instance is assigned to the variable ~clean, you can livecode
     sig = SinOsc.ar(freq*hr1+[det.neg,det], sig ) * env1;
 
     sig = sig * AmpCompA.kr(freq,17.323914436055);
-    sig = (sig * amp)*LFNoise1.ar(lforate).range(lfodepth,1);
+    sig = (sig * amp)*LFNoise1.ar(0).range(1,1);
     sig = CleanPan.ar(sig, ~clean.numChannels, pan);
     Out.ar(out, tanh(LeakDC.ar(sig)));
   }).add;
