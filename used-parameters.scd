@@ -18,6 +18,7 @@ bpf         Band pass filter, value range is 20 to 20000
 lpq         Low pass filter resonance
 hpq         High pass filter resonance
 bpq         Band pass filter resonance
+lhf         Low & high pass filter combo where 0.5 does nothing, 0.0 sets the lpf to 20hz and 1.0 sets the hpf to 20000
 dla         Delay amplitude
 dlf         Delay feedback, proly best to think of 0.94 as the max sane value
 dlt         Delay time, value range is a very low float to 4.0
@@ -31,9 +32,12 @@ lop         How many times to loop the file, takes integers, work in consort wit
 cut         Cut groups, cuts itself as well as other things in the same cut group. Rougher edges than leagato in terms of sound
 aux         An auxiliary output, you can use these for different outputs or same output with different effects depending on your startup file
 trr         Tremolo rate
-trd         Tremeolo depth
-rma         Ringmodulation amplitude
+trd         Tremelo depth
+rma         Ringmodulation wet
 rmf         Ringmodulation frequency
+rdf         The frequency to glissando in from, the d might be thought of as standing for detune, range is 20 to 20000
+rdt         The time it takes to glissando from the detune frequency which can be above or below rmf, range is 20 to 20000
+
 freq        When working with synths and we want to work with frequencies instead of midi note numbers as above, accepts integers 20 to 20000.
 legato      Like a variable soft cut dependent on dur where 1 is dur
 sustain     Adds sustain to synths by changing the timescale of the envelope. Can turn a drum into a drone. Value range is a very small value above 0 to infinity
