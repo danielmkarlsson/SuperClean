@@ -360,17 +360,17 @@ DEFAULT EFFECTS EXTRA
 
 
 
-	// DJ filter, a low pass filter for the first half of the range, and a high pass for the rest.
+	// A low pass filter for the first half of the range, and a high pass for the rest.
 	~clean.addModule('dj-filter', { |cleanEvent|
 		cleanEvent.sendSynth('dj-filter' ++ ~clean.numChannels,
 		// OPTIONAL
 		// passing this array of parameters could be left out,
 		// but it makes it clear what happens
 		[
-			djf: ~djf,
+			djf: ~lhf,
 			out: ~out
 		]
-	)}, { ~djf.notNil});
+	)}, { ~lhf.notNil});
 
 	SynthDef("dj-filter" ++ ~clean.numChannels, { |out, djf|
 		var signal;
