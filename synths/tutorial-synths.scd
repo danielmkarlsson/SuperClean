@@ -6,7 +6,6 @@ SynthDef(\tutorial1, {|out|
 }).add
 );
 
-
 // now let's add some better duration control, and support for pan
 (
 SynthDef(\tutorial2, {|out, sustain=1, pan |
@@ -15,7 +14,6 @@ SynthDef(\tutorial2, {|out, sustain=1, pan |
 	OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env));
 }).add
 );
-
 
 // it's also nice to control the pitch
 // the "num" parameter will be used as note number and converted to "freq" by SuperClean
@@ -27,7 +25,6 @@ SynthDef(\tutorial3, {|out, sustain=1, pan, bnd, freq |
 	OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env));
 }).add
 );
-
 
 // we can also make the envelope a more interesting percussive shape
 (
