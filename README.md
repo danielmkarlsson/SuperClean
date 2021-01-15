@@ -139,6 +139,20 @@ evaluate every time you want to run some SuperClean) in order for the below code
 
 which is what makes clean sequenceable from _within_ SuperCollider.
 
+Here's a slightly more involved, yet still minimal version:
+
+````
+(
+s.waitForBoot {
+    ~clean = SuperClean(2, s);
+    ~clean.loadSoundFiles;
+    s.sync;
+    ~clean.start([0]);
+    SuperClean.default = ~clean;
+};
+)
+```
+
 ## Whatsit look like?
 
 Here are some examples of using the Pattern paradigm within SuperCollider to control SuperClean. First there's an example of
