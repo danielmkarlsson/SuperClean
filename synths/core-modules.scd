@@ -3,17 +3,13 @@
 CORE MODULES
 (REQUIRE: CORE SYNTHS)
 
-Core Modules: these are called for each event from tidal,
+Core Modules: these are called for each event,
 and they represent the list of possible (effect) synths on the event level
 
 Usually, they correspond to a SynthDef (here in core-synths), you could call any function in them
 They will be called when the test is fulfilled (e.g. ~amp.notNil)
 
-You can't currently add your own, because Tidal needs to support this extension first.
-
 */
-
-
 
 /*
 The sound source to be filtered by later stages (modules)
@@ -21,14 +17,14 @@ The sound source to be filtered by later stages (modules)
 This could be:
 
 - a sample that is played
-- a generic synth, which allows us to embed a SynthDef name in a tidal pattern next to sample names
+- a generic synth, which allows us to embed a SynthDef name in a pattern next to sample names
 
 A SynthDef could receive any number of the parameters in the event, e.g.
-sustain, spd, endspd, bgn, end, pan, accelerate, offset, cps
+sustain, spd, endspd, bgn, end, pan, acc
 
 it ought to use "out" as bus output argument.
 
-the diversion is a hook to add an arbitrary function instead of a synth def.
+the diversion is a hook to add an arbitrary function instead of a synthdef.
 this may be refactored later.
 */
 (
@@ -61,12 +57,10 @@ this may be refactored later.
 		}
 });
 
-
 /*
 these function as effects on the input of the synth or sample (see SynthDefs in core-synths)
-they respond to the existence of a value for one of the tidal parameters
+they respond to the existence of a value for one of the parameters
 */
-
 
 ~clean.addModule('out_to',
 	{ |cleanEvent|
@@ -79,8 +73,6 @@ they respond to the existence of a value for one of the tidal parameters
 			]
 		)
 }, { ~to.notNil });
-
-
 
 // # from 3 # toArg "freq"
 // synth needs to have an audio rate control.
