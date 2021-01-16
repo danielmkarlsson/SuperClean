@@ -1,14 +1,13 @@
 /*
-
 EVENT - BASED
 CORE SYNTHDEFS FOR CLEAN
 (REQUIRED: CORE MODULES)
-
 these synthdefs can be hacked at runtime, but they are absolutely necessary for everything to work correctly.
-
 Their name and parameter names shouldn't be changed. Parameter names can be added though.
-
 live coding them requires that you have your SuperClean instance in an environment variable called ~clean.
+
+A quick note for hackers: You might think that default values for parameters get set in the SynthDefs, but alas
+they do not. Default values for parameters get set in CleanAux.sc
 
 */
 
@@ -53,9 +52,7 @@ live coding them requires that you have your SuperClean instance in an environme
 	};
 
 	/*
-
 	Bus Routing Monitor
-
 	*/
 
 
@@ -64,7 +61,7 @@ live coding them requires that you have your SuperClean instance in an environme
 
 	SynthDef("clean_gate" ++ numChannels, { |out, in, sustain = 1, fadeInTime = 0.0001, fadeTime = 0.0001, amp = 1|
 		var signal = In.ar(in, numChannels);
-		 //  doneAction: 14: free surrounding group and all nodes
+		//  doneAction: 14: free surrounding group and all nodes
 		var env = EnvGen.ar(Env([0, 1, 1, 0], [fadeInTime, sustain, fadeTime], \sin), levelScale: amp, doneAction: 14);
 		signal = signal * env * CleanGateCutGroup.ar(fadeTime, doneAction: 14);
 		OffsetOut.ar(out, signal);
@@ -73,9 +70,7 @@ live coding them requires that you have your SuperClean instance in an environme
 
 
 	/*
-
 	Internal Signal Routing Synths
-
 	*/
 
 	SynthDef("clean_out" ++ numChannels, { |out, to, sustain = 1, fadeInTime = 0.0001, fadeTime = 0.0001, amp = 1|
@@ -85,10 +80,8 @@ live coding them requires that you have your SuperClean instance in an environme
 	}, [\ir, \ir]).add;
 
 	/*
-
 	Effect SynthDefs
 	These per-sample-effects are freed after Monitor envelope has ended
-
 	*/
 
 	// would be nice to have some more parameters in some cases
@@ -107,7 +100,7 @@ live coding them requires that you have your SuperClean instance in an environme
 
 	SynthDef("clean_hpf" ++ numChannels, { |out, hcutoff = 440, hresonance = 0|
 		var signal = In.ar(out, numChannels);
-        var hcutoffClipped = hcutoff.abs.clip(20, 20000);
+		var hcutoffClipped = hcutoff.abs.clip(20, 20000);
 		signal = RHPF.ar(signal, hcutoffClipped, hresonance.linexp(0, 1, 1, 0.001));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
@@ -140,7 +133,24 @@ live coding them requires that you have your SuperClean instance in an environme
 	// 	ReplaceOut.ar(out, signal * amp)
 	// }, [\ir, \ir]).add;
 
-	SynthDef("clean_shape" ++ numChannels, { |out, shape = 0, amp = 1.0,  amp_compensation_amount = 0.99, lo = 1, hi = 0, offset = 0, lo_thresh = -1, hi_thresh = -1|
+	~clean.addModule('shape',
+		{ |cleanEvent|
+			cleanEvent.sendSynth("clean_shape" ++ ~numChannels,
+				[
+					shape: ~shp,
+					amp_compensation_amount: ~sac,
+					lo: ~slo,
+					hi: ~shi,
+					offset: ~sho,
+					lo_thresh: ~lot,
+					hi_thresh: ~hit,
+					out: ~out
+			])
+
+	}, { ~shp.notNil });
+
+	SynthDef("clean_shape" ++ numChannels, {
+		|out, shape = 0, amp = 1.0,  amp_compensation_amount = 0.99, lo = 1, hi = 0, offset = 0, lo_thresh = 0, hi_thresh = 0|
 		var abs, diff;
 		var signal = In.ar(out, numChannels);
 		shape = min(shape, 1.0 - 4e-10).explin(0.001, 1, 0.0, 0.999999);
@@ -151,7 +161,9 @@ live coding them requires that you have your SuperClean instance in an environme
 		offset = offset.linlin(0.0,1.0,1.0,5.0);
 		hi = hi * offset; lo = lo * offset;
 		abs = hi - lo;
+		lo_thresh = lo_thresh.linlin(0.0,1.0,-1.0,1.0);
 		lo = lo + (abs * lo_thresh);
+		hi_thresh = hi_thresh.linlin(0.0,1.0,-1.0,1.0);
 		hi = hi - (abs * hi_thresh);
 		signal = Fold.ar(signal, lo, hi);
 		diff = 1 - (lo - hi + (hi * lo));
@@ -192,7 +204,7 @@ live coding them requires that you have your SuperClean instance in an environme
 		ReplaceOut.ar(out, signal);
 	}, [\ir, \ir, \ir]).add;
 
-// Waveloss
+	// Waveloss
 	// Divides an audio stream into tiny segments, using the signal's
 	// zero-crossings as segment boundaries, and discards a fraction of them.
 
@@ -294,14 +306,14 @@ live coding them requires that you have your SuperClean instance in an environme
 		ReplaceOut.ar(out, signal);
 	}, [\ir, \ir, \ir, \ir]).add;
 
-// Ring modulation with `rma` (modulation wet), `rmf` (modulation frequency), `rdf` (the frequency to glissando in from) and `rdt` (the glissando time)
+	// Ring modulation with `rma` (modulation wet), `rmf` (modulation frequency), `rdf` (the frequency to glissando in from) and `rdt` (the glissando time)
 	~clean.addModule('rma', { |cleanEvent|
 		cleanEvent.sendSynth("clean_rma" ++ ~clean.numChannels,
 			[
 				rma: ~rma,
 				rmf: ~rmf,
 				rdf: ~rdf,
-			    rdt: ~rdt,
+				rdt: ~rdt,
 				out: ~out
 			]
 		)
@@ -335,15 +347,15 @@ live coding them requires that you have your SuperClean instance in an environme
 		Out.ar(out, mod);
 	}, [\ir, \ir]).add;
 
-//These spectral effects below are Mads Kjeldgaard's handywork
+	//These spectral effects below are Mads Kjeldgaard's handywork
 	// Spectral delay
 	~clean.addModule('spectral-delay', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-delay' ++ ~clean.numChannels,
 			[
 				xsdelay: ~sdx,
 				tsdelay: ~sdt,
-			    sda: ~sda,
-			    sdq: ~sdq,
+				sda: ~sda,
+				sdq: ~sdq,
 				out: ~out
 			]
 		)
@@ -362,7 +374,7 @@ live coding them requires that you have your SuperClean instance in an environme
 			// the delay pattern is determined from xsdelay by bitwise-and:
 			DelayN.ar(sig, maxDelayTime, i & xsdelay * (1 / size) * delayTime )
 		};
-	signal = signal * 0.2 + ((filtered * 4) * sda); // this controls wet / dry
+		signal = signal * 0.2 + ((filtered * 4) * sda); // this controls wet / dry
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
 
@@ -378,28 +390,27 @@ live coding them requires that you have your SuperClean instance in an environme
 
 
 	/*SynthDef("spectral-freeze" ++ ~clean.numChannels, { |out, freeze| // broken, I dunno, untoggle and use at own risk, values seem to be 0 for off and 1 for on
-		var signal, chain, in;
-		signal = In.ar(out, ~clean.numChannels);
-		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
-		signal = IFFT(PV_Freeze(chain, freeze));
-		ReplaceOut.ar(out, signal)
+	var signal, chain, in;
+	signal = In.ar(out, ~clean.numChannels);
+	chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
+	signal = IFFT(PV_Freeze(chain, freeze));
+	ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
-
 	// Spectral comb
 	~clean.addModule('spectral-comb', { |cleanEvent|
-		cleanEvent.sendSynth('spectral-comb' ++ ~clean.numChannels,
-			[
-				comb: ~cmb,
-				out: ~out
-			]
-		)
+	cleanEvent.sendSynth('spectral-comb' ++ ~clean.numChannels,
+	[
+	comb: ~cmb,
+	out: ~out
+	]
+	)
 	}, { ~cmb.notNil });*/
 
 	SynthDef("spectral-comb" ++ ~clean.numChannels, { |out, comb|
 		var signal, chain, in, clean, teeth = 256;
 		signal = In.ar(out, ~clean.numChannels);
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
-	signal = IFFT(PV_RectComb(chain, numTeeth: teeth * comb.abs.clip(0.0, 1.0), width: 1-comb.abs.clip(0.0, 1.0)));
+		signal = IFFT(PV_RectComb(chain, numTeeth: teeth * comb.abs.clip(0.0, 1.0), width: 1-comb.abs.clip(0.0, 1.0)));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
@@ -456,7 +467,7 @@ live coding them requires that you have your SuperClean instance in an environme
 		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_BinShift(chain, stretch: binshift.linlin(0.0,1.0,0.01,4.0),
-		shift: binshift * 10, interp: 1));
+			shift: binshift * 10, interp: 1));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
@@ -517,8 +528,8 @@ live coding them requires that you have your SuperClean instance in an environme
 		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(
-				PV_ConformalMap(chain, real.linlin(0.0,1.0,0.01,2.0), imag.linlin(0.00,1.0,0.01,10.0))
-			).tanh;
+			PV_ConformalMap(chain, real.linlin(0.0,1.0,0.01,2.0), imag.linlin(0.00,1.0,0.01,10.0))
+		).tanh;
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
 
@@ -542,20 +553,20 @@ live coding them requires that you have your SuperClean instance in an environme
 				enhance.linlin(0.0,1.0,1,16),
 				enhance.linlin(0.0,1.0,1.0,5.0),
 				enhance.linlin(0.0,1.0,0.0,0.99))
-			).tanh; // .tanh is used as a crude limiter here beacause sometimes this ugen goes crazy
+		).tanh; // .tanh is used as a crude limiter here beacause sometimes this ugen goes crazy
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
 	// A low pass filter for the first half of the range, and a high pass for the rest.
 	~clean.addModule('dj-filter', { |cleanEvent|
 		cleanEvent.sendSynth('dj-filter' ++ ~clean.numChannels,
-		// OPTIONAL
-		// passing this array of parameters could be left out,
-		// but it makes it clear what happens
-		[
-			djf: ~lhf,
-			out: ~out
-		]
+			// OPTIONAL
+			// passing this array of parameters could be left out,
+			// but it makes it clear what happens
+			[
+				djf: ~lhf,
+				out: ~out
+			]
 	)}, { ~lhf.notNil});
 
 	SynthDef("dj-filter" ++ ~clean.numChannels, { |out, djf|
@@ -603,8 +614,8 @@ live coding them requires that you have your SuperClean instance in an environme
 		warp.sanitize;
 
 
-	ReplaceOut.ar(out, warp);
-}, [\ir, \ir, \ir]).add;
+		ReplaceOut.ar(out, warp);
+	}, [\ir, \ir, \ir]).add;
 
 }.value
 )
