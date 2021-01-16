@@ -179,6 +179,12 @@ CleanAux {
 			~pan = 0.5;
 			~amp = 1.0;
 			~cut = 0.0;
+			~sac = 0.99;
+			~slo = 1.0;
+			~shi = 0.0;
+			~sho = 0.0;
+			~lot = 0.0;
+			~hit = 0.0;
 			~unit = \r;
 			~midinote = #{ ~note ? ~num + (~octave * 12) };
 			~freq = #{
