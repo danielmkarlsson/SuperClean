@@ -5,15 +5,15 @@ or when you want to apply delay and or reverb to something. It is possible to ha
 of what you are hearing dry, and another part of what you are hearing wet. You can set up
 auxs in the startup.scd file. Look for this line:
 
-~clean.start(57120, [0,2,4,6]);
+~clean.start([0,2,4,6]);
 
 The above line gives you 8 outputs.
 Another way to set your auxs would be to use them as sends to different effects:
 
-~clean.start(57120, [0,0,0]);
+~clean.start([0,0,0]);
 
 The above line sets up three auxs and routes all of them to the first two audio outputs.
-This way you could have one aux dry, one with reverb on it and the last on with delay on it.
+This way you could have one aux dry, one with reverb on it and the last one with delay on it.
 It is also possible to use both delay and reverb on the same aux.
 
 */
