@@ -307,6 +307,8 @@ computer that you found in the tech trash, then this is for you:
 • ~~Set audible default values for `fmx`, what are sensible defaults?~~  
 • ~~Pan not working in `fmx`~~  
 • ~~Pan not working in `uio`~~  
+• ~~Drag to extensions folder install~~  
+• ~~No need to delete -master in folder name after .zip download~~  
 
 • Reevaluate cubic interpolation (want longer file playback)  
 • ReDo rm with feedback  
@@ -319,7 +321,6 @@ computer that you found in the tech trash, then this is for you:
 
 • Swap out the reverb (how to make it sound better while still at low cpu?)  
 • Maybe add that tape effect  
-• Maybe delete some effects  
 
 </details>
 
