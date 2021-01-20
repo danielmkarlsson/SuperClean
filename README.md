@@ -61,7 +61,7 @@ dependencies means less things that can go sideways with the install procedure.
 
 Here's a way to hot swap in samples as needed:
 
-```
+```text
 ~clean.loadSoundFiles("~/Downloads/rnb");
 ```
 
@@ -80,7 +80,7 @@ fun of sending values greater than one to `gain`.
 
 If you don't have anything in your Startup.scd, then how about you put what I use in there:
 
-```
+```text
 (
 "killall scsynth".unixCmd;
 s.options.numBuffers = 1024 * 64; // increase if you need to load more samples
@@ -141,7 +141,7 @@ which is what makes clean sequenceable from _within_ SuperCollider.
 
 Here's a slightly more involved, yet still minimal version:
 
-````
+```text
 (
 s.waitForBoot {
     ~clean = SuperClean(2, s);
@@ -165,7 +165,6 @@ a different approach to control. I would have prefered to stay within the Patter
 SuperCollider is so vast that the scope needs to be narrowed somewhat in order to be approachable.
 
 ```text
-
 // an example of using the sampler, looks for samples in a folder called mmd
 (
 Pdef(\0,
@@ -261,7 +260,6 @@ Pdef(0,
 	])
 ).play(quant: 1);
 )
-
 ```
 
 In the \fmx synth definition the envelope segments are expressed in
