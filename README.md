@@ -165,6 +165,7 @@ a different approach to control. I would have prefered to stay within the Patter
 SuperCollider is so vast that the scope needs to be narrowed somewhat in order to be approachable.
 
 ```text
+
 // an example of using the sampler, looks for samples in a folder called mmd
 (
 Pdef(\0,
@@ -260,6 +261,7 @@ Pdef(0,
 	])
 ).play(quant: 1);
 )
+
 ```
 
 In the \fmx synth definition the envelope segments are expressed in
