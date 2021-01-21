@@ -124,10 +124,10 @@ SynthDef(\clean_from, { |out, sustain = 1, in, pan|
 
 // pitch shifted live audio input (does this really work tho?)
 (
-SynthDef(\inr, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, accelerate, offset|
+SynthDef(\inr, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, bnd, offset|
 	var env, sound, rate, phase;
 	phase = Line.ar(bgn, end, sustain);
-	rate = (bgn + 1) * (spd + Sweep.kr(1, accelerate)) * freq / 440;
+	rate = (bgn + 1) * (spd + Sweep.kr(1, bnd)) * freq / 440;
 	sound = SoundIn.ar([0, 1]); // stereo in
 	sound = PitchShift.ar(sound, 0.1, rate, 0.02, 0.01);
 	OffsetOut.ar(out,
@@ -178,6 +178,15 @@ SynthDef(\inr, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, acce
 		OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env))
 	}).add
 );
+
+// Transient excited filter
+SynthDef("dfd", {|out = 0, freq = 440, res = 0.9, den = 10, amp = 0.5, pan = 0.5, att = 0.0, rel = 1.0, crv = -8.0, typ = 0.0, noiselevel = 0|
+	var env, sig;
+	env = Env.perc(att, rel, amp, crv).kr(doneAction: 2);
+	sig = DFM1.ar(Dust2.ar(den.dup(~clean.numChannels), amp), freq, res, 1, typ, noiselevel);	sig = sig * env;
+	//sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, sig);
+}).add;
 
 // debug a few time related values
 (
