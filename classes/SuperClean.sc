@@ -43,22 +43,6 @@ SuperClean {
 		auxs = nil;
 	}
 
-/* untouched
-
-	start { |port = 57120, outBusses, senderAddr = (NetAddr("127.0.0.1"))|
-		if(auxs.notNil) { this.stop };
-		this.makeAuxs(outBusses ? [0]);
-		// this.connect(senderAddr, port)
-	}
-
-	stop {
-		auxs.do(_.free);
-		auxs = nil;
-		this.closeNetworkConnection;
-	}
-
-*/
-
 	makeAuxs { |outBusses|
 		var new,
             i0 = if(auxs.isNil) { 0 } { auxs.lastIndex };
@@ -197,89 +181,5 @@ SuperClean {
 			}
 		}
 	}
-
-/*
-	connect { |argSenderAddr, argPort|
-
-		if(Main.scVersionMajor == 3 and: { Main.scVersionMinor == 6 }) {
-			"Please note: SC3.6 listens to any sender.".warn;
-			senderAddr = nil;
-		} {
-			senderAddr = argSenderAddr;
-		};
-
-		port = argPort;
-
-		this.closeNetworkConnection;
-
-		netResponders.add(
-			// pairs of parameter names and values in arbitrary order
-			OSCFunc({ |msg, time|
-				var latency = time - Main.elapsedTime;
-				var event = (), aux, index;
-				if(latency > maxLatency) {
-					"The scheduling delay is too long. Your networks clocks may not be in sync".warn;
-					latency = 0.2;
-				};
-
-				event[\latency] = latency;
-				event.putPairs(msg[1..]);
-				receiveAction.value(event);
-				index = event[\aux] ? 0;
-
-				if(warnOutOfAux and: { index >= auxs.size } or: { index < 0 }) {
-						"SuperClean: event falls out of existing auxs, index (%)".format(index).warn
-				};
-
-				CleanEvent(auxs @@ index, modules, event).play
-
-			}, '/play2', senderAddr, recvPort: port).fix
-		);
-
-
-	//	"SuperClean: listening on port %".format(port).postln;
-	}
-
-	closeNetworkConnection {
-		netResponders.do { |x| x.free };
-		netResponders = List.new;
-	}
-
-	*postTidalParameters { |synthNames, excluding |
-		var descs, paramString, parameterNames;
-
-		excluding = this.predefinedSynthParameters ++ excluding;
-
-		descs = synthNames.asArray.collect { |name| SynthDescLib.at(name) };
-		descs = descs.reject { |x, i|
-			var notFound = x.isNil;
-			if(notFound) { "no Synth Description with this name found: %".format(synthNames[i]).warn; ^this };
-			notFound
-		};
-
-
-
-		parameterNames = descs.collect { |x|
-			x.controls.collect { |y| y.name }
-		};
-		parameterNames = parameterNames.flat.as(Set).as(Array).sort.reject { |x| excluding.includes(x) };
-		paramString = this.tidalParameterString(parameterNames);
-
-		^"\n-- | parameters for the SynthDefs: %\nlet %\n\n".format(synthNames.join(", "), paramString)
-
-	}
-
-/*
-	*tidalParameterString { |keys|
-		^keys.collect { |x| format("(%, %_p) = pF \"%\" (Nothing)", x, x, x) }.join("\n    ");
-	}
-*/
-
-	*predefinedSynthParameters {
-		// not complete, but avoids obvious collisions
-		^#[\pan, \amp, \out, \i_out, \sustain, \gate, \bnd, \amp, \unit, \cut, \octave, \offset, \atk];
-	}
-*/
-
 }
 
