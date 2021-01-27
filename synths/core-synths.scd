@@ -598,35 +598,31 @@ they do not. Default values for parameters get set in CleanAux.sc
 		)
 	}, { ~gra.notNil });
 
-	SynthDef("grainfb" ++ numChannels, { |in, out, fbgrainsize = 0.25, fbgrainrand = 0.8, fbGain = 0.1|
-		var signal = In.ar(out, numChannels);
-		var bufLength = 1.0;
-		var localBuf = LocalBuf(
-			bufLength * SampleRate.ir,
-			numChannels
-		).clear;
-
-		var warp = Warp1.ar(
-			numChannels,
-			localBuf,
-			LFSaw.ar(1/bufLength).linlin(-1.0,1.0,0.0, 1.0),
-			Drand([ 2, - 2 ], inf),
-			fbgrainsize.linlin(0.0, 1.0, 0.0, 2.0),
-			-1,
-			2,
-			fbgrainrand.linlin(0.0, 1.0, 0.2, 1.0),
-			4
-		);
-
-		// record w/ feedback
-		RecordBuf.ar(tanh(in + HPF.ar(tanh(warp * fbGain), 30)), localBuf);
-
-		warp = warp.tanh;
-		warp = HPF.ar(warp * 0.5, 150);
-		warp.sanitize;
-		//warp = CleanPan.ar(sound, numChannels, pan);
-		ReplaceOut.ar(out, warp);
-	}, [\ir, \ir]).add;
+	SynthDef("grainfb" ++ numChannels, {|out, fbgrainsize = 0.25, fbgrainrand = 0.8, fbgain = 0.1|
+    var signal = In.ar(out, numChannels);
+    var bufLength = 1.0;
+    var localBuf = { LocalBuf(bufLength * SampleRate.ir).clear }.dup(numChannels);
+    var warp = localBuf.collect {|buf, index|
+        var grains = Warp1.ar(
+            1,
+            buf,
+            LFSaw.kr(1/bufLength).range(0, 1),
+            Drand([ 2, - 2 ], inf),
+            fbgrainsize.linlin(0.0, 1.0, 0.0, 2.0),
+            -1,
+            2,
+            fbgrainrand.linlin(0.0, 1.0, 0.2, 1.0),
+            4
+        );
+        // edge case for numChannels == 1
+        signal = [signal].flatten;
+        RecordBuf.ar(tanh(signal[index] + HPF.ar(tanh(grains * fbgain), 30)), buf);
+        grains;
+    };
+    warp = warp.tanh;
+    //warp = HPF.ar(warp * 0.5, 150);
+    ReplaceOut.ar(out, warp);
+}, [\ir]).add;
 
 }.value
 )
