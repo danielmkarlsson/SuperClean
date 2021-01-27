@@ -584,7 +584,19 @@ they do not. Default values for parameters get set in CleanAux.sc
 			hpfCutoffFreq
 		);
 		ReplaceOut.ar(out, signal)
-	}).add;
+	}, [\ir, \ir]).add;
+
+	// grainfb
+	~clean.addModule('grainfb', { |cleanEvent|
+		cleanEvent.sendSynth('grainfb' ++ ~clean.numChannels,
+			[
+				fbgrainsize: ~grs,
+				fbgrainrand: ~grr,
+				fbgain: ~gra,
+				out: ~out
+			]
+		)
+	}, { ~gra.notNil });
 
 	SynthDef("grainfb" ++ numChannels, { |in, out, fbgrainsize = 0.25, fbgrainrand = 0.8, fbGain = 0.1|
 		var signal = In.ar(out, numChannels);
@@ -612,10 +624,9 @@ they do not. Default values for parameters get set in CleanAux.sc
 		warp = warp.tanh;
 		warp = HPF.ar(warp * 0.5, 150);
 		warp.sanitize;
-
-
+		//warp = CleanPan.ar(sound, numChannels, pan);
 		ReplaceOut.ar(out, warp);
-	}, [\ir, \ir, \ir]).add;
+	}, [\ir, \ir]).add;
 
 }.value
 )
