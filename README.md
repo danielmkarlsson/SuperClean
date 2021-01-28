@@ -18,6 +18,10 @@ Try it! What have you got to loose?
 
 ## Installation
 
+Download the .zip and drag it into your extensions folder 
+
+or  
+
 Copy this line and evaluate it in SuperCollider:
 
 `Quarks.install("https://github.com/danielmkarlsson/SuperClean.git");`
