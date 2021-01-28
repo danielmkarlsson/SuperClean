@@ -32,7 +32,9 @@ it won't be that huge whole Xcode thing, it'll just be something called Xcode Se
 
 ## Updating
 
-I have found that in order to be able to update consistently across different operating systems I need to first uninstall:
+If you used the drag to Extensions folder option above then replace that folder and you are done.
+If you went with the Quarks option above then I have found that in order to be able to update consistently across 
+different operating systems I need to first uninstall:
 
 `Quarks.uninstall("SuperClean");`
 
