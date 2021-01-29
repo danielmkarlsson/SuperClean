@@ -1,4 +1,4 @@
-// an example of using the sampler, looks for samples in a folder called mmd
+// an example using the sampler, looks for samples in a folder called mmd
 (
 Pdef(0,
 	Pseed(Pn(999,1),
