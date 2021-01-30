@@ -347,7 +347,7 @@ they do not. Default values for parameters get set in CleanAux.sc
 		Out.ar(out, mod);
 	}, [\ir, \ir]).add;
 
-	//These spectral effects below are Mads Kjeldgaard's handywork
+	//These spectral effects below are Mads Kjeldgaard's handywork: https://github.com/madskjeldgaard/SpectralTricks/blob/master/SpectralTricksSCSynths.scd
 	// Spectral delay
 	~clean.addModule('spectral-delay', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-delay' ++ ~clean.numChannels,
@@ -387,7 +387,6 @@ they do not. Default values for parameters get set in CleanAux.sc
 			]
 		)
 	}, { ~frz.notNil } );
-
 
 	/*SynthDef("spectral-freeze" ++ ~clean.numChannels, { |out, freeze| // broken, I dunno, untoggle and use at own risk, values seem to be 0 for off and 1 for on
 	var signal, chain, in;
@@ -586,6 +585,7 @@ they do not. Default values for parameters get set in CleanAux.sc
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
+	// this effect was sourced from David Granström's loudspeaker diffusion engine SuperPrism: https://github.com/davidgranstrom/SuperPrism
 	// grainfb
 	~clean.addModule('grainfb', { |cleanEvent|
 		cleanEvent.sendSynth('grainfb' ++ ~clean.numChannels,
