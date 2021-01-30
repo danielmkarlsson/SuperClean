@@ -592,37 +592,40 @@ they do not. Default values for parameters get set in CleanAux.sc
 			[
 				fbgrainsize: ~grs,
 				fbgrainrand: ~grr,
-				fbgain: ~gra,
+				fbgain: ~grf,
+				drywet: ~gra,
 				out: ~out
 			]
 		)
 	}, { ~gra.notNil });
 
-	SynthDef("grainfb" ++ numChannels, {|out, fbgrainsize = 0.25, fbgrainrand = 0.8, fbgain = 0.1|
-    var signal = In.ar(out, numChannels);
-    var bufLength = 1.0;
-    var localBuf = { LocalBuf(bufLength * SampleRate.ir).clear }.dup(numChannels);
-    var warp = localBuf.collect {|buf, index|
-        var grains = Warp1.ar(
-            1,
-            buf,
-            LFSaw.kr(1/bufLength).range(0, 1),
-            Drand([ 2, - 2 ], inf),
-            fbgrainsize.linlin(0.0, 1.0, 0.0, 2.0),
-            -1,
-            2,
-            fbgrainrand.linlin(0.0, 1.0, 0.2, 1.0),
-            4
-        );
-        // edge case for numChannels == 1
-        signal = [signal].flatten;
-        RecordBuf.ar(tanh(signal[index] + HPF.ar(tanh(grains * fbgain), 30)), buf);
-        grains;
-    };
-    warp = warp.tanh;
-    //warp = HPF.ar(warp * 0.5, 150);
-    ReplaceOut.ar(out, warp);
-}, [\ir]).add;
+	SynthDef("grainfb" ++ numChannels, {|out, fbgrainsize = 0.25, fbgrainrand = 0.8, fbgain = 0.1, drywet = 0.5|
+		var signal = In.ar(out, numChannels);
+		var bufLength = 1.0;
+		var localBuf = { LocalBuf(bufLength * SampleRate.ir).clear }.dup(numChannels);
+		var warp = localBuf.collect {|buf, index|
+			var grains = Warp1.ar(
+				1,
+				buf,
+				LFSaw.kr(1/bufLength).range(0, 1),
+				Drand([ 2, - 2 ], inf),
+				fbgrainsize.linlin(0.0, 1.0, 0.0, 2.0),
+				-1,
+				2,
+				fbgrainrand.linlin(0.0, 1.0, 0.2, 1.0),
+				4
+			);
+			// edge case for numChannels == 1
+			signal = [signal].flatten;
+			RecordBuf.ar(tanh(signal[index] + HPF.ar(tanh(grains * fbgain), 30)), buf);
+			grains;
+		};
+		warp = warp.tanh;
+		//warp = HPF.ar(warp * 0.5, 150);
+		drywet = drywet.clip(0, 1);
+		warp = (signal * sqrt(1 - drywet)) + (warp * sqrt(drywet));
+		ReplaceOut.ar(out, warp);
+	}, [\ir]).add;
 
 }.value
 )
