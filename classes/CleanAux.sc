@@ -1,9 +1,9 @@
 /*
 
 An aux can be used as a separate audio output for when you want to do multichannel output,
-or when you want to apply delay and or reverb to something. It is possible to have a part
-of what you are hearing dry, and another part of what you are hearing wet. You can set up
-auxs in the startup.scd file. Look for this line:
+or when you want to apply delay, reverb or some other effect to something. It is possible to
+have a part of what you are hearing dry, and another part of what you are hearing wet. You can
+set up auxs in the startup.scd file. Look for this line:
 
 ~clean.start([0,2,4,6]);
 
@@ -177,7 +177,7 @@ CleanAux {
 			~end = 1.0;
 			~spd = 1.0;
 			~pan = 0.5;
-			~amp = 1.0;
+			~amp = 0.75;
 			~cut = 0.0;
 			~sac = 0.99;
 			~slo = 1.0;
@@ -198,7 +198,6 @@ CleanAux {
 				var ctranspose = ~ctranspose;
 				var root = ~root;
 				var stepsPerOctave = ~stepsPerOctave;
-				var detuneFreq = ~detuneFreq;
 				var octaveRatio = ~octaveRatio;
 				var num = ~num;
 				var midinote = ~midinote;
@@ -213,14 +212,12 @@ CleanAux {
 					~ctranspose = ctranspose;
 					~root = root;
 					~stepsPerOctave = stepsPerOctave;
-					~detuneFreq = detuneFreq;
 					~octaveRatio = octaveRatio;
 					~num = num;
 					~midinote = midinote;
-					~freq.value
+					~freq.value;
                 }
             };
-
 			~mtranspose = 0.0;
 			~gtranspose = 0.0;
 			~ctranspose = 0.0;
@@ -244,9 +241,8 @@ CleanAux {
 			~dry = 0.0;
 			~lock = 0; // if set to 1, syncs delay times with cps
 
-			~amp = 0.4;
+			~amp = 0.5;
 			~fadeTime = 0.001;
-
 
 			// values from the clean bus
 			~aux = this;
