@@ -123,21 +123,11 @@ they do not. Default values for parameters get set in CleanAux.sc
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
 
-	// SynthDef("clean_shape" ++ numChannels, { |out, shape = 0, amp = 1.0,  amp_compensation_amount = 0.99|
-	// 	var signal = In.ar(out, numChannels);
-	// 	shape = min(shape, 1.0 - 4e-10).explin(0.001, 1, 0.0, 0.999999); // avoid division by zero
-	// 	amp_compensation_amount = amp_compensation_amount.linlin(0.0,1.0,0.0001,1.0);
-	// 	amp = 1.0 - (amp_compensation_amount * shape / (shape +amp_compensation_amount )) * amp; // optional amp comp
-	// 	shape = (2.0 * shape) / (1.0 - shape);
-	// 	signal = (1 + shape) * signal / (1 + (shape * abs(signal)));
-	// 	ReplaceOut.ar(out, signal * amp)
-	// }, [\ir, \ir]).add;
-
-	~clean.addModule('shape',
+	~clean.addModule('shp',
 		{ |cleanEvent|
 			cleanEvent.sendSynth("clean_shape" ++ ~numChannels,
 				[
-					shape: ~shp,
+					shp: ~shp,
 					amp_compensation_amount: ~sac,
 					lo: ~slo,
 					hi: ~shi,
@@ -176,7 +166,7 @@ they do not. Default values for parameters get set in CleanAux.sc
 		ReplaceOut.ar(out, signal);
 	}, [\ir, \ir, \ir, \ir]).add;
 
-	SynthDef("clean_tremolo" ++ numChannels, { |out, tremolorate = 1.0, tremolodepth = 0.5 |
+	/*SynthDef("clean_tremolo" ++ numChannels, { |out, tremolorate = 1.0, tremolodepth = 0.5 |
 		var signal, tremolowave;
 
 		tremolodepth = tremolodepth.clip(0, 1) * 0.5;
@@ -186,9 +176,9 @@ they do not. Default values for parameters get set in CleanAux.sc
 		signal = signal * tremolowave;
 
 		ReplaceOut.ar(out, signal);
-	}, [\ir, \ir, \ir]).add;
+	}, [\ir, \ir, \ir]).add;*/
 
-	// Phaser audio DSP effect definition. Params: phaserrate (Hz); phaserdepth (amplitude)
+	/*// Phaser audio DSP effect definition. Params: phaserrate (Hz); phaserdepth (amplitude)
 	SynthDef("clean_phaser" ++ numChannels, { |out, phaserrate = 1.0, phaserdepth = 0.5, sustain = 4 |
 		var signal, phaserwave;
 		var phase =  LFPar.kr(phaserrate).range(0.0088, 0.01);
@@ -202,31 +192,31 @@ they do not. Default values for parameters get set in CleanAux.sc
 		signal = signal + phaserwave;
 
 		ReplaceOut.ar(out, signal);
-	}, [\ir, \ir, \ir]).add;
+	}, [\ir, \ir, \ir]).add;*/
 
 	// Waveloss
 	// Divides an audio stream into tiny segments, using the signal's
 	// zero-crossings as segment boundaries, and discards a fraction of them.
 
-	~clean.addModule('waveloss', { |cleanEvent|
-		cleanEvent.sendSynth('waveloss' ++ ~clean.numChannels,
+	~clean.addModule('wls', { |cleanEvent|
+		cleanEvent.sendSynth('wls' ++ ~clean.numChannels,
 			[
-				drop: ~wls,
+				wls: ~wls,
 				out: ~out
 			]
 		)
 	}, { ~wls.notNil });
 
-	SynthDef("waveloss" ++ ~clean.numChannels, { |out, drop = 1|
+	SynthDef("wls" ++ ~clean.numChannels, { |out, wls = 1|
 		var sig = In.ar(out, ~clean.numChannels);
-		sig = WaveLoss.ar(sig, drop, outof: 100, mode: 2);
+		sig = WaveLoss.ar(sig, wls, outof: 100, mode: 2);
 		ReplaceOut.ar(out, sig)
 	},[\ir, \ir]).add;
 
 	// Squiz
 	// "reminiscent of some weird mixture of filter, ring-modulator
 	// and pitch-shifter"
-	~clean.addModule('squiz', { |cleanEvent|
+	~clean.addModule('sqz', { |cleanEvent|
 		cleanEvent.sendSynth('squiz' ++ ~clean.numChannels,
 			[
 				pitchratio: ~sqz,
@@ -244,7 +234,7 @@ they do not. Default values for parameters get set in CleanAux.sc
 	// Frequency shifter
 	// Total shift is sum of `fshift` (in Hz) and `fshiftnote` times the current note frequency.
 	// `fshiftphase` allows control over the phase
-	~clean.addModule('frequencyshifter', { |cleanEvent|
+	~clean.addModule('fsh', { |cleanEvent|
 		cleanEvent.sendSynth("frequencyshifter" ++ ~clean.numChannels,
 			[
 				fsh: ~fsh,
@@ -264,7 +254,7 @@ they do not. Default values for parameters get set in CleanAux.sc
 	}, [\ir, \ir, \ir, \ir, \ir]).add;
 
 	// Triode-like distortion, uses only the `tri` parameter
-	~clean.addModule('triode', { |cleanEvent|
+	~clean.addModule('tri', { |cleanEvent|
 		cleanEvent.sendSynth("triode" ++ ~clean.numChannels,
 			[
 				tri: ~tri,
@@ -283,7 +273,7 @@ they do not. Default values for parameters get set in CleanAux.sc
 
 	// This is apparantly the octaver from Sonic Pi
 	// uses `oc1` for octave harmonics, `oc2` for half-frequency harmonics, and `oc3` for quarter-frequency harmonics
-	~clean.addModule('octer', { |cleanEvent|
+	~clean.addModule('oct', { |cleanEvent|
 		cleanEvent.sendSynth("clean_octer" ++ ~clean.numChannels,
 			[
 				octer: ~oc1,
@@ -347,9 +337,9 @@ they do not. Default values for parameters get set in CleanAux.sc
 		Out.ar(out, mod);
 	}, [\ir, \ir]).add;
 
-	//These spectral effects below are Mads Kjeldgaard's handywork: https://github.com/madskjeldgaard/SpectralTricks/blob/master/SpectralTricksSCSynths.scd
+	//These spectral effects below are Mads Kjeldgaard's handywork
 	// Spectral delay
-	~clean.addModule('spectral-delay', { |cleanEvent|
+	~clean.addModule('sda', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-delay' ++ ~clean.numChannels,
 			[
 				xsdelay: ~sdx,
@@ -379,7 +369,7 @@ they do not. Default values for parameters get set in CleanAux.sc
 	}, [\ir, \ir, \ir]).add;
 
 	// Spectral freeze
-	~clean.addModule('spectral-freeze', { |cleanEvent|
+	/*~clean.addModule('spectral-freeze', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-freeze' ++ ~clean.numChannels,
 			[
 				freeze: ~frz,
@@ -388,22 +378,25 @@ they do not. Default values for parameters get set in CleanAux.sc
 		)
 	}, { ~frz.notNil } );
 
-	/*SynthDef("spectral-freeze" ++ ~clean.numChannels, { |out, freeze| // broken, I dunno, untoggle and use at own risk, values seem to be 0 for off and 1 for on
+
+	SynthDef("spectral-freeze" ++ ~clean.numChannels, { |out, freeze| // broken, I dunno, untoggle and use at own risk, values seem to be 0 for off and 1 for on
 	var signal, chain, in;
 	signal = In.ar(out, ~clean.numChannels);
 	chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 	signal = IFFT(PV_Freeze(chain, freeze));
 	ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
+	*/
+
 	// Spectral comb
-	~clean.addModule('spectral-comb', { |cleanEvent|
+	~clean.addModule('cmb', { |cleanEvent|
 	cleanEvent.sendSynth('spectral-comb' ++ ~clean.numChannels,
 	[
 	comb: ~cmb,
 	out: ~out
 	]
 	)
-	}, { ~cmb.notNil });*/
+	}, { ~cmb.notNil });
 
 	SynthDef("spectral-comb" ++ ~clean.numChannels, { |out, comb|
 		var signal, chain, in, clean, teeth = 256;
@@ -414,7 +407,7 @@ they do not. Default values for parameters get set in CleanAux.sc
 	}, [\ir, \ir]).add;
 
 	// Spectral smear
-	~clean.addModule('spectral-smear', { |cleanEvent|
+	~clean.addModule('smr', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-smear' ++ ~clean.numChannels,
 			[
 				smear: ~smr,
@@ -432,7 +425,7 @@ they do not. Default values for parameters get set in CleanAux.sc
 	}, [\ir, \ir]).add;
 
 	// Spectral scramble
-	~clean.addModule('spectral-scram', { |cleanEvent|
+	~clean.addModule('scm', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-scram' ++ ~clean.numChannels,
 			[
 				scram: ~scm,
@@ -451,7 +444,7 @@ they do not. Default values for parameters get set in CleanAux.sc
 	}, [\ir, \ir]).add;
 
 	// Spectral binshift
-	~clean.addModule('spectral-binshift', { |cleanEvent|
+	~clean.addModule('sbs', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-binshift' ++ ~clean.numChannels,
 			[
 				binshift: ~sbs,
@@ -471,17 +464,17 @@ they do not. Default values for parameters get set in CleanAux.sc
 	}, [\ir, \ir]).add;
 
 	// Spectral high pass filter
-	~clean.addModule('spectral-hbrick', { |cleanEvent|
+	~clean.addModule('hbr', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-hbrick' ++ ~clean.numChannels,
 			[
-				hbrick: ~hbrick,
+				hbrick: ~hbr,
 				out: ~out
 			]
 		)
 	}, { ~hbrick.notNil });
 
 
-	SynthDef("spectral-hbrick" ++ ~clean.numChannels, { |out, hbrick|
+	SynthDef("hbr" ++ ~clean.numChannels, { |out, hbrick|
 		var signal, chain, in, clean, teeth = 256;
 		signal = In.ar(out, ~clean.numChannels);
 		clean = signal;
@@ -491,10 +484,10 @@ they do not. Default values for parameters get set in CleanAux.sc
 	}, [\ir, \ir]).add;
 
 	// Spectral low pass filter
-	~clean.addModule('spectral-lbrick', { |cleanEvent|
+	~clean.addModule('lbr', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-lbrick' ++ ~clean.numChannels,
 			[
-				lbrick: ~lbrick,
+				lbrick: ~lbr,
 				out: ~out
 			]
 		)
@@ -511,10 +504,10 @@ they do not. Default values for parameters get set in CleanAux.sc
 	}, [\ir, \ir]).add;
 
 	// Conformer
-	~clean.addModule('spectral-conformer', { |cleanEvent|
+	~clean.addModule('scf', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-conformer' ++ ~clean.numChannels,
 			[
-				real: ~ral,
+				real: ~scf,
 				imag: ~img,
 				out: ~out
 			]
@@ -533,7 +526,7 @@ they do not. Default values for parameters get set in CleanAux.sc
 	}, [\ir, \ir, \ir]).add;
 
 	// Enhance
-	~clean.addModule('spectral-enhance', { |cleanEvent|
+	~clean.addModule('enh', { |cleanEvent|
 		cleanEvent.sendSynth('spectral-enhance' ++ ~clean.numChannels,
 			[
 				enhance: ~enh,
@@ -556,38 +549,8 @@ they do not. Default values for parameters get set in CleanAux.sc
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
-	// A low pass filter for the first half of the range, and a high pass for the rest.
-	~clean.addModule('dj-filter', { |cleanEvent|
-		cleanEvent.sendSynth('dj-filter' ++ ~clean.numChannels,
-			// OPTIONAL
-			// passing this array of parameters could be left out,
-			// but it makes it clear what happens
-			[
-				djf: ~lhf,
-				out: ~out
-			]
-	)}, { ~lhf.notNil});
-
-	SynthDef("dj-filter" ++ ~clean.numChannels, { |out, djf|
-		var signal;
-		var lpfCutoffFreq = djf.linexp(0, 0.5, 20, 10000);
-		var hpfCutoffFreq = djf.linexp(0.5, 1, 20, 10000);
-
-		signal = In.ar(out, ~clean.numChannels);
-
-		signal = RHPF.ar(
-			RLPF.ar(
-				signal,
-				lpfCutoffFreq
-			),
-			hpfCutoffFreq
-		);
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir]).add;
-
-	// this effect was sourced from David Granström's loudspeaker diffusion engine SuperPrism: https://github.com/davidgranstrom/SuperPrism
 	// grainfb
-	~clean.addModule('grainfb', { |cleanEvent|
+	~clean.addModule('gra', { |cleanEvent|
 		cleanEvent.sendSynth('grainfb' ++ ~clean.numChannels,
 			[
 				fbgrainsize: ~grs,
@@ -626,6 +589,35 @@ they do not. Default values for parameters get set in CleanAux.sc
 		warp = (signal * sqrt(1 - drywet)) + (warp * sqrt(drywet));
 		ReplaceOut.ar(out, warp);
 	}, [\ir]).add;
+
+	// A low pass filter for the first half of the range, and a high pass for the rest.
+	~clean.addModule('lhf', { |cleanEvent|
+		cleanEvent.sendSynth('lhf-filter' ++ ~clean.numChannels,
+			// OPTIONAL
+			// passing this array of parameters could be left out,
+			// but it makes it clear what happens
+			[
+				lhf: ~lhf,
+				out: ~out
+			]
+	)}, { ~lhf.notNil});
+
+	SynthDef("lhf-filter" ++ ~clean.numChannels, { |out, lhf|
+		var signal;
+		var lpfCutoffFreq = lhf.linexp(0, 0.5, 20, 10000);
+		var hpfCutoffFreq = lhf.linexp(0.5, 1, 20, 10000);
+
+		signal = In.ar(out, ~clean.numChannels);
+
+		signal = RHPF.ar(
+			RLPF.ar(
+				signal,
+				lpfCutoffFreq
+			),
+			hpfCutoffFreq
+		);
+		ReplaceOut.ar(out, signal)
+	}, [\ir, \ir]).add;
 
 }.value
 )

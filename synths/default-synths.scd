@@ -31,10 +31,10 @@ If your SuperClean instance is assigned to the variable ~clean, you can livecode
 	}).add;
 
 // A four operator FM synth
- SynthDef(\fmx, {| sustain, pan, amp = 0.1, out = 0,
-    freq = 440, fdb = 0.9, hr4 = 3 ,hr3 = 2, hr2 = 1, hr1= 1, mi4 = 2, mi3 = 3,
+ SynthDef(\fmx, {| sustain = 1, pan, amp = 0.1, out = 0,
+    freq = 440, fdb = 0.8, hr4 = 1 ,hr3 = 2, hr2 = 1, hr1= 0, mi4 = 1, mi3 = 0.5,
 	mi2 = 4, en1 = 0, en2 = 0, en3 = 0, en4 = 0, cu1 = 0, cu2 = 0, cu3 = 0,
-	cu4 = 0, det = 0.2 |
+	cu4 = 0, det = 0.0 |
     var env4,env3,env2,env1,sig,modComp;
 
     env4 = EnvGen.ar(Env.perc(en4,1-en4,curve:cu4),timeScale:sustain);
@@ -140,26 +140,26 @@ SynthDef(\inr, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, bnd,
 // There are two delay lines
 // "bnd" is used for a pitch glide, and "sustain" changes the envelope timescale
 (
-	SynthDef(\kps, {|out, sustain=1, pan, bnd, freq, det=0.0 |
+	SynthDef(\kps, {|out, sustain=1, pan, bnd, freq, detune=0.0 |
 		var env = EnvGen.ar(Env.linen(0.002, 0.996, 0.002, 1,-3), timeScale:sustain, doneAction:2);
-	var sig = Decay.ar(Impulse.ar(0,0,0.1), 0.1*(freq.clip(20,20000).cpsmidi)/69) * WhiteNoise.ar;
-		var pitch = freq.clip(20,20000) * Line.kr(1, 1+bnd.clip(-1,1), sustain);
-		sig = CombL.ar(sig, 0.05, pitch.reciprocal*(1-(det.clip(0,100)/100)), sustain)
-		+ CombL.ar(sig, 0.05, pitch.reciprocal*(1+(det.clip(0,100)/100)), sustain);
-		OffsetOut.ar(out, CleanPan.ar(sig, ~clean.numChannels, pan, env))
+		var sound = Decay.ar(Impulse.ar(0,0,0.1), 0.1*(freq.cpsmidi)/69) * WhiteNoise.ar;
+		var pitch = freq * Line.kr(1, 1+bnd, sustain);
+		sound = CombC.ar(sound, 0.05, pitch.reciprocal*(1-(detune/100)), sustain) // remove detune because safety resons
+		+ CombL.ar(sound, 0.05, pitch.reciprocal*(1+(detune/100)), sustain);
+		OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env)) // move pan up before the two delay lines are introduced, hard pan them
 	}).add
 );
 
 //  drum synthesis
 // "sustain" controls the overall timescale, "pew" controls the filter sweep speed,
-// and "fdb" controls the sinewave feedback
+// and "fed" controls the sinewave feedback
 (
-	SynthDef(\drm, {|out, pew=1, sustain=1, pan, fdb=0, tun |
+	SynthDef(\drm, {|out, pew=1, sustain=1, pan, fed=0, tun |
 		var env, sound, freq;
 		tun = ((tun>0)*tun) + ((tun<1)*3);
 		freq = (tun*10).midicps;
 		env = EnvGen.ar(Env.linen(0.01, 0, 1, 1, -3), timeScale:sustain, doneAction:2);
-		sound = LPF.ar(SinOscFB.ar(XLine.ar(freq.expexp(10, 2000, 1000, 8000), freq, 0.025/pew), fdb), 9000);
+		sound = LPF.ar(SinOscFB.ar(XLine.ar(freq.expexp(10, 2000, 1000, 8000), freq, 0.025/pew), fed), 9000);
 		OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env))
 	}).add
 );
@@ -180,7 +180,7 @@ SynthDef(\inr, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, bnd,
 );
 
 // Transient excited filter
-SynthDef("dfd", {|out = 0, freq = 440, res = 0.9, den = 10, amp = 0.5, pan = 0.5, att = 0.0, rel = 1.0, crv = -8.0, typ = 0.0, noiselevel = 0|
+SynthDef("dfd", {|out = 0, freq = 440, res = 0.999, den = 100, amp = 2, pan = 0.5, att = 0.0, rel = 1.0, crv = -8.0, typ = 0.0, noiselevel = 0|
 	var env, sig;
 	env = Env.perc(att, rel, amp, crv).kr(doneAction: 2);
 	sig = DFM1.ar(Dust2.ar(den.dup(~clean.numChannels), amp), freq, res, 1, typ, noiselevel);	sig = sig * env;
