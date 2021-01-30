@@ -15,6 +15,7 @@ s.latency = 0.3;
 // MIDIClient.init; // Untoggle this when you want to do MIDI
 // m = MIDIOut.new(0); // Maybe yours is different?
 // m.latency = 0; // Faster is better so fastest is bestest right?
+// thisProcess.platform.recordingsDir = "/your/path/here/"; // choose where supercollider recordings end up
 
 // scnvim
 if (\SCNvim.asClass.notNil) {
@@ -44,7 +45,7 @@ s.waitForBoot {
 	~clean.loadSoundFiles; // hot swap in samples from anywhere!
 	// for example: ~clean.loadSoundFiles("~/Downloads/rnb");
 	s.sync; // optionally: wait for samples to be read
-	~clean.start([0]); // first 8 out looks like [0,2,4,6]
+	~clean.start([0,0,0]); // first 8 out looks like [0,2,4,6]
 	SuperClean.default = ~clean; // make the clean key sequenceable inside of SUperCollider
 	"[ SuperClean up + running ]".postln;
 };
