@@ -1,7 +1,7 @@
 // make sure you have sc3 plugins installed first
 (
 //var serverOptions = Server.default.options;serverOptions.outDevice = "Soundflower (2ch)";serverOptions.inDevice = "Soundflower (2ch)";//force devices
-"killall scsynth".unixCmd;
+//"killall scsynth".unixCmd; // you might enjoy this if you are on a unix system
 s.options.numBuffers = 1024 * 64; // increase if you need to load more samples
 s.options.numWireBufs = 128; // increase if you get "exception in GraphDef_Recv: exceeded number of interconnect buffers." message
 s.options.memSize = 8192 * 256; // increase if you get "alloc failed" messages
