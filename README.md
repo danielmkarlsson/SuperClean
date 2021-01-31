@@ -20,7 +20,7 @@ Try it! What have you got to loose?
 
 Download the .zip and drag it into your extensions folder 
 
-or  
+or use the old way of installing:
 
 Copy this line and evaluate it in SuperCollider:
 
@@ -28,11 +28,12 @@ Copy this line and evaluate it in SuperCollider:
 
 If you don't have git, then go ahead and get git, when you hopefully get asked to get git, as a consequence of running that
 line. Git is good to have. It let's us have version control and install all kinds of neat stuff. If you are on a mac then
-it won't be that huge whole Xcode thing, it'll just be something called Xcode Select which is quite small.
+it won't be that huge whole Xcode thing, it'll just be something called Xcode Select which is quite small. This old way of installing
+is clunky and error prone.
 
 ## Updating
 
-If you used the drag to Extensions folder option above then replace that folder and you are done.
+If you used the drag to Extensions folder option above then replace that folder and you are done. 
 If you went with the Quarks option above then I have found that in order to be able to update consistently across 
 different operating systems I need to first uninstall:
 
@@ -42,7 +43,8 @@ I then manually delete the old SuperClean folder, reinstall with the below line 
 
 `Quarks.install("https://github.com/danielmkarlsson/SuperClean.git");`
 
-That's how I do it. I'd love to find a simpler solution so let me know if you have one.
+If you have used the old quarks method in the past then take care to delete that old quarks SuperClean folder as you 
+are updating because otherwise you might run into some double trouble there with your new SuperClean folder in Extensions.
 
 ## Origins and acknowledgements
 
