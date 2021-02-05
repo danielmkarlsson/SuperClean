@@ -201,6 +201,7 @@ CleanAux {
 				var octaveRatio = ~octaveRatio;
 				var num = ~num;
 				var midinote = ~midinote;
+				var note = ~note;
 				Event.default.use {
                     ~degree = degree;
                     ~scale = scale;
@@ -215,6 +216,7 @@ CleanAux {
 					~octaveRatio = octaveRatio;
 					~num = num;
 					~midinote = midinote;
+					~note = note;
 					~freq.value;
                 }
             };
