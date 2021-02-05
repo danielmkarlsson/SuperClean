@@ -6,6 +6,7 @@ snd         Sample folder or synth name
 num         Which sample in a folder, from zero up to the amount of files in that folder and then wraps back around
 pan         Pans the sound
 shp         Waveshaper
+sho         Waveshaping offset
 dst         A crunchy distortion with a lot of high harmonics
 tri         A triode-like distortion
 amp         Make it louder! Can go above one to lean into the limiter
