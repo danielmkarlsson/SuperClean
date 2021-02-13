@@ -5,8 +5,13 @@ The value range for the below parameters is 0.0 to 1.0 unless otherwise indicate
 snd         Sample folder or synth name
 num         Which sample in a folder, from zero up to the amount of files in that folder and then wraps back around
 pan         Pans the sound
-shp         Waveshaper
+shp         Waveshaping amount
+sac         Shaping amplitude compensation
+slo         Waveshaping low
+shi         Waveshaping high
 sho         Waveshaping offset
+lot         Waveshaping low threshold
+hit         Waveshaping high threshold
 dst         A crunchy distortion with a lot of high harmonics
 tri         A triode-like distortion
 amp         Make it louder! Can go above one to lean into the limiter
@@ -49,7 +54,9 @@ degree      Choose degrees. Zero to infinity really but proly there will be seve
 legato      Like a variable soft cut dependent on dur where 1 is equal to dur. This is unlike cut in that it only affects itself
 sustain     Adds sustain to synths by changing the timescale of the envelope. Can turn a drum into a drone. Value range is a very small value above 0 to infinity
 
-This last group of parameters aren't actually part of SuperClean, but are very useful and because SuperClean is running inside SuperCollider, we can use them
+This last group of parameters aren't actually part of SuperClean,
+but are very useful and because SuperClean is running inside SuperCollider,
+we can use them.
 
 In the \fmx synth definition the envelope segments are expressed in
 percentages. e4 through to e1 tell you how far into the note value that the
@@ -67,6 +74,24 @@ especially important for me where modulation indexes are concerned. Without
 this level of detail, FM can otherwise easily become a very round about way for
 me to make white noise.
 
+freq
+hr1
+hr2
+hr3
+hr4
+fdb
+mi2
+mi3
+mi4
+en1
+en2
+en3
+en4
+cu1
+cu2
+cu3
+cu4
+
 In the \drm synth definition you can change the tuning of the drum with tun.
 Strange wrapping and nonlinear range. Start trying values around 1.
 The fdb parameter controls the amount of feedback inside the oscillator.
@@ -74,28 +99,47 @@ Value range is 0 to a lot where 0 is a sine, the higher up you go the noisier.
 The pew parameter controls teh space blaster to metal kickdrum morph.
 Lower values are more space blaster like. Higher values sound tighter.
 
+tun
+fed
+pew
+
 The \hat synth definition is a noise source through a filter and an envelope.
 You can use tun in a weird way to provide some variation on the frequency.
 bnd sweeps the filter.
 
+tun
+bnd
+
 The \kps synth definition Karplus-Strong physical modeling of a vibrating string,
 using a delay line (CombL) excited by an intial pulse (Impulse)
 freq or midinote controls the frequency. bnd is used for a pitch glide
+
+freq
+bnd
 
 The \sin synth definition is a sine wave oscillator. It accepts freq and midinote
 and parameters like those. It can also let you control the initial phase with the
 iph parameter. This might not be very exciting since it is a sine wave and frequency
 is either 100% phase cancelled out or not at all.
 
+freq
+iph
+
 The \saw synth definition is a saw wave oscillator. It accepts freq and midinote
 and parameters like those. It can also let you control the initial phase with the
 iph parameter. This might  potentially be very cool because you can then partially
-phase out out another saw wave. You can also control the width of the saw wave with
+phase out  another saw wave. You can also control the width of the saw wave with
 the wid parameter.
+
+freq
+iph
+wid
 
 The \sqr synth definition is a square wave oscillator. Same thing as above for the
 parameters.
 
-
+freq
+iph
+wid
 
 
