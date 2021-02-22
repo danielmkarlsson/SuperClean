@@ -42,7 +42,7 @@ aux         An auxiliary output, you can use these for different outputs or same
 rma         Ringmodulation wet  
 rmf         Ringmodulation frequency  
 rdf         The frequency to glissando in from, the d might be thought of as standing for detune, range is 20 to 20000  
-rdt         The time it takes to glissando from the detune frequency which can be above or below rmf, range is 20 to 20000  
+rdt         The time it takes to glissando from the detune frequency which can be above or below rmf, range is 0 to infinity seconds 
 smr         spectral smear  
 scm         spectral scramble  
 enh         spectral enhance  
