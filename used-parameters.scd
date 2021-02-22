@@ -46,6 +46,7 @@ rdt         The time it takes to glissando from the detune frequency which can b
 smr         spectral smear
 smr         spectral scramble
 enh         spectral enhance
+dark        controls the wet mix of a dark reverb
 
 midinote    0 to 127. 60 is default. Interestingly accepts floats which allows for microtonality
 freq        When working with synths and we want to work with frequencies instead of midi note numbers as above, accepts integers 20 to 20000
