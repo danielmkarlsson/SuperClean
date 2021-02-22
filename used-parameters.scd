@@ -53,7 +53,8 @@ freq        When working with synths and we want to work with frequencies instea
 scale       Choose scale, for example: Scale.harmonicMinor, can also let you tag on a tuning there like this: Scale.harmonicMinor.tuning_(Tuning.sept1)  
 degree      Choose degrees. Zero to infinity really but proly there will be seven degrees in scale  
 legato      Like a variable soft cut dependent on dur where 1 is equal to dur. This is unlike cut in that it only affects itself  
-sustain     Adds sustain to synths by changing the timescale of the envelope. Can turn a drum into a drone. Value range is a very small value above 0 to infinity  
+sustain     Adds sustain to synths by changing the timescale of the envelope. Can turn a drum into a drone. Value range is a very small value above 0 to infinity 
+stretch     Scales durations, 1 is default, 2 is half speed, can not handle 0 because it is infinitely fast  
 
 /rest        A silent event. For example `type: Pseq([\cln, \rest],inf)` Every other event is a rest. You can also use `\r` for rest. Less typing is nice.  
 
