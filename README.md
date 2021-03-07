@@ -318,6 +318,7 @@ computer that you found in the tech trash, then this is for you:
 • ~~Drag to extensions folder install~~  
 • ~~No need to delete -master in folder name after .zip download~~  
 
+• Look into increasing `dlt` max to 16
 • Reevaluate cubic interpolation (want longer file playback)  
 • ReDo rm with feedback  
 • Sequence the order of effects  
