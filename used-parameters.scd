@@ -56,8 +56,10 @@ legato      Like a variable soft cut dependent on dur where 1 is equal to dur. T
 sustain     Adds sustain to synths by changing the timescale of the envelope. Can turn a drum into a drone. Value range is a very small value above 0 to infinity 
 stretch     Scales durations, 1 is default, 2 is half speed, can not handle 0 because it is infinitely fast  
 
-/rest        A silent event. For example `type: Pseq([\cln, \rest],inf)` Every other event is a rest. You can also use `\r` for rest. Less typing is nice.  
-
+/rest        A silent event. For example  
+             `type: Pseq([\cln, \rest],inf)`  
+             Every other event is a rest in the baove example.  
+             You can also use `\r` for rest. Less typing is nice.   
 
 This last group of parameters aren't actually part of SuperClean,
 but are very useful and because SuperClean is running inside SuperCollider,
