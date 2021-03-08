@@ -103,7 +103,7 @@ CORE SYNTHDEFS FOR CLEAN
 
 		SynthDef("clean_delay" ++ numChannels, { |dryBus, effectBus, gate = 1, delaytime, delayfeedback, delayAmp = 1, lock = 0, cps = 1|
 			var signal = In.ar(dryBus, numChannels);
-			var maxdelaytime = 4;
+			var maxdelaytime = 16; // I never had an Electro-Harmonix 16 Second Digital Delay, I'd take one if they were giving them away tho
 			var decayTime;
 
 			delayfeedback = delayfeedback.clip(0, 0.99);
