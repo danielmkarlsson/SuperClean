@@ -270,13 +270,14 @@ Pdef(3,
                 50 * Pseq((lo..hi), 1);
             }).trace,
             dur: 1/Pstutter(Pwhite(5,11),Pwhite(5,11)),
-            sustain: Pstutter(Pwhite(16,64),Pexprand(1/32,1)),
+            sustain: Pstutter(Pwhite(16,32),Pexprand(1/32,1)),
             crv: 8,
             amp: Pexprand(0.5,1.5),
             lhf: Pseg([0.0,0.5,0.0],Pexprand(1,40),\lin,inf),
-            stretch: Pseg(Pseq([1,Pexprand(1/8,16),1],inf),Pexprand(1,20),\lin,inf),
-            legato: 8,
+            stretch: Pseg(Pseq([1,Pexprand(1/4,16),1],inf),Pexprand(1,20),\lin,inf),
+            legato: 4,
         ])
     )
 ).play(quant:1);
 )
+
