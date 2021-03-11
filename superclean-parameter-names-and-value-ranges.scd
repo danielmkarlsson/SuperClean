@@ -15,7 +15,7 @@ dst         A crunchy distortion with a lot of high harmonics
 tri         A triode-like distortion
 amp         Make it louder! Can go above one to lean into the limiter
 spd         Sample playback speed, default is 1.0, negative numbers play the sample backwards, slower playback rates closer to 0
-atk         The attack time of the envelope, the envelope parameters expressed in seconds, 1.0 here means a one second fade in time
+atk         The attack time of the envelope, the envelope parameters are expressed in seconds, 1.0 here means a one second fade in time
 hld         The hold time of the envelope
 rel         The release time of the envelope
 crv         Envelope curvature, swings both ways. That is to say it uses both positive and negative values, try values between -8 to 8
