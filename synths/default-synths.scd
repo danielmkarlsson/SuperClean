@@ -180,10 +180,10 @@ SynthDef(\inr, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, bnd,
 );
 
 // Transient excited filter
-SynthDef("dfd", {|out = 0, freq = 440, res = 0.999, den = 100, amp = 2, pan = 0.5, att = 0.0, rel = 1.0, crv = -8.0, typ = 0.0, noiselevel = 0|
+SynthDef("dfd", {|out = 0, freq = 440, res = 1, den = 0, amp = 2, pan = 0.5, att = 0.0, rel = 1.0, crv = -8.0, typ = 0.0, nsl = 0|
 	var env, sig;
 	env = Env.perc(att, rel, amp, crv).kr(doneAction: 2);
-	sig = DFM1.ar(Dust2.ar(den.dup(~clean.numChannels), amp), freq, res, 1, typ, noiselevel);	sig = sig * env;
+	sig = DFM1.ar(Dust2.ar(den.dup(~clean.numChannels), amp), freq, res, 1, typ, nsl);	sig = sig * env;
 	//sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, sig);
 }).add;
