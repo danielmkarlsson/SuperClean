@@ -128,7 +128,7 @@ iph
 The \saw synth definition is a saw wave oscillator. It accepts freq and midinote
 and parameters like those. It can also let you control the initial phase with the
 iph parameter. This might  potentially be very cool because you can then partially
-phase out  another saw wave. You can also control the width of the saw wave with
+phase out another saw wave. You can also control the width of the saw wave with
 the wid parameter.
 
 freq
@@ -141,6 +141,18 @@ parameters.
 freq
 iph
 wid
+
+The \dfd synth definition is a transient excited filter, the filter itself is noisy and can selfoscillate
+den: the density of transients. 
+res: the resonance of the filter. 1 is a tremendous sweetspot. Range is 0 to infinity, values above 1 will wreak havoc.
+typ: the type of filter where 0 is low pass and 1 is high pass.
+nsl: the noise level. Range is 0 to infinity.
+
+freq
+den
+res
+typ
+nsl
 
 // Here's an example using most of the parameters from above all together in one wild mess
 (
