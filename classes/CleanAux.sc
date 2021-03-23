@@ -203,6 +203,7 @@ CleanAux {
 				var midinote = ~midinote;
 				//var note = ~note;
 				Event.default.use {
+					~root = root;
                     ~degree = degree;
                     ~scale = scale;
 					~octave = octave;
@@ -211,7 +212,6 @@ CleanAux {
                     ~mtranspose = mtranspose;
 					~gtranspose = gtranspose;
 					~ctranspose = ctranspose;
-					~root = root;
 					~stepsPerOctave = stepsPerOctave;
 					~octaveRatio = octaveRatio;
 					~num = num;
@@ -220,13 +220,14 @@ CleanAux {
 					~freq.value;
                 }
             };
+			~root = 0.0;     // root of the scale
 			~mtranspose = 0.0;
 			~gtranspose = 0.0;
 			~ctranspose = 0.0;
 			~octave = 5.0;
-			~root = 0.0;     // root of the scale
 			~degree = 0;
 			~scale = #[0, 2, 4, 5, 7, 9, 11];  // diatonic major scale
+
 			~stepsPerOctave = 12.0;
 			~detuneFreq = 0.0;     // detune in Hertz
 			~harmonic = 1.0;    // harmonic ratio
