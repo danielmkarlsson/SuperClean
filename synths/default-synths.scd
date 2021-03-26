@@ -140,12 +140,12 @@ SynthDef(\inr, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, bnd,
 // There are two delay lines
 // "bnd" is used for a pitch glide, and "sustain" changes the envelope timescale
 (
-	SynthDef(\kps, {|out, sustain=1, pan, bnd, freq, detune=0.0 |
+	SynthDef(\kps, {|out, sustain=1, pan, bnd = 0, freq, detune=0.0 |
 		var env = EnvGen.ar(Env.linen(0.002, 0.996, 0.002, 1,-3), timeScale:sustain, doneAction:2);
 		var sound = Decay.ar(Impulse.ar(0,0,0.1), 0.1*(freq.cpsmidi)/69) * WhiteNoise.ar;
-		var pitch = freq * Line.kr(1, 1+bnd, sustain);
-		sound = CombC.ar(sound, 0.05, pitch.reciprocal*(1-(detune/100)), sustain) // remove detune because safety resons
-		+ CombL.ar(sound, 0.05, pitch.reciprocal*(1+(detune/100)), sustain);
+		var pitch = freq * Line.kr(1, 1+0, sustain);
+		sound = CombC.ar(sound, 0.05, pitch.reciprocal*(1-(0/100)), sustain) // remove detune because safety resons
+		+ CombL.ar(sound, 0.05, pitch.reciprocal*(1+(0/100)), sustain);
 		OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env)) // move pan up before the two delay lines are introduced, hard pan them
 	}).add
 );
