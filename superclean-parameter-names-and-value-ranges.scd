@@ -34,7 +34,7 @@ rev         Reverb time (or room size, if we can imagine that)
 dry         Decrease the amplitude of the reverb
 bgn         Where in the file to begin playing back the file
 end         Where in the file to end playing back the file
-bnd         Change playback speed while running, accepts positive and negative values. Also does detune or bends of some synths
+bnd         Change playback speed of samples while running, accepts positive and negative values
 lop         How many times to loop the file, takes integers, works in consort with the envelope parameters
 cut         Cut groups, cuts itself as well as other things in the same cut group. Rougher edges than leagato in terms of sound
 aux         An auxiliary output, you can use these for different outputs or same output with different effects depending on your startup file
