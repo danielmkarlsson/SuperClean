@@ -40,8 +40,8 @@ cut         Cut groups, cuts itself as well as other things in the same cut grou
 aux         An auxiliary output, you can use these for different outputs or same output with different effects depending on your startup file
 rma         Ringmodulation wet
 rmf         Ringmodulation frequency
-rdf         The frequency to glissando in from, the d might be thought of as standing for detune, range is 20 to 20000
-rdt         The time it takes to glissando from the detune frequency which can be above or below rmf, range is 20 to 20000
+rdf         The frequency to glissando in from, which can be above or below rmf, range is 20 to 20000
+rdt         The time in seconds it takes to glissando from the detune frequency
 smr         spectral smear
 smr         spectral scramble
 enh         spectral enhance
