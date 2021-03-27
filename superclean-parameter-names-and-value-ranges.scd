@@ -43,7 +43,7 @@ rmf         Ringmodulation frequency
 rdf         The frequency to glissando in from, which can be above or below rmf, range is 20 to 20000
 rdt         The time in seconds it takes to glissando from the detune frequency
 smr         spectral smear
-smr         spectral scramble
+scm         spectral scramble
 enh         spectral enhance
 
 dur         The duration between events, range is a float above zero to infity, zero is infinitely fast, so, you mos def never want to do that
