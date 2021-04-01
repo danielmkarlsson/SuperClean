@@ -154,6 +154,16 @@ res
 typ
 nsl
 
+The \bow synth definition is a digital wave guide physical model of a bowed instrument.
+frc: Force. 
+pos: Position.
+bpr: Bow pressure.
+
+freq
+frc
+pos
+bpr
+
 // Here's an example using most of the parameters from above all together in one wild mess
 (
 Pdef(0,
