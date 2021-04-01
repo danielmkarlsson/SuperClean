@@ -188,6 +188,22 @@ SynthDef("dfd", {|out = 0, freq = 440, res = 1, den = 0, amp = 2, pan = 0.5, att
 	Out.ar(out, sig);
 }).add;
 
+// bow physical model
+SynthDef("bow", { |out=0, freq=440, amp=1.0,frc=1, gate=1,pos=0.07,c1=0.25,c3=31,pan=0,att = 0.0, rel = 1.0, crv = -8.0|
+    var env, vib, sig;
+	env = Env.perc(att, rel, amp, crv).kr(doneAction: 2);
+    //vib = Gendy1.kr(1,1,1,1,0.1, 4,mul:0.003,add:1);
+    sig = DWGBowed.ar(freq, amp,frc, gate,pos,0.1,c1,c3);
+    sig = DWGSoundBoard.ar(sig);
+	sig = BPF.ar(sig,118,1)+sig;
+    sig = BPF.ar(sig,430,1)+sig;
+    sig = BPF.ar(sig,490,1)+sig;
+    sig = LPF.ar(sig,6000);
+	sig = sig * env;
+    sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+    Out.ar(out, sig);
+}).add;
+
 // debug a few time related values
 (
 SynthDef(\debug, { |bgn = -1, end = -1, delta = -1, sustain = -1, unitDuration = -1, cycle = -1|
