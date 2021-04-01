@@ -218,3 +218,38 @@ Pdef(0,
 	)
 ).play;
 )
+
+// an example using bow which is a digital wave guide physical model of a bowed instrument
+(
+var a = Pwhite(0.0,0.25).asStream;
+var b = Pwhite(0.75,1.0).asStream;
+Pdef(0,
+	Pseed(243,
+		Pbind(*[
+			type: \cln,
+			snd: \bow,
+			frc: Pexprand(0.1,1.0),
+			pos: Pexprand(0.07,0.7),
+			octave: Pstutter(Pexprand(1,5),Pxshuf((1..6),inf)),
+			scale: Scale.aeolian.tuning_(Tuning.vallotti),
+			degree: Pstutter(Pexprand(1,5),Pxshuf((0..7),inf)),
+			mtranpose: Pstutter(Pexprand(1,5),Pxshuf((-11..3),inf)),
+			amp: Pstutter(2,Pexprand(0.555,0.888)/Pkey(\octave).linexp(1,6,0.9,2)),
+			atk: Pexprand(1.0,15.0)-1,
+			hld: Pwhite(0.5,4.0),
+			rel: Pwhite(5.0,10.0),
+			crv: Pwhite(0.0,8.0)-Prand([0,8],inf),
+			sustain: Pexprand(29.0, 80.0),
+			legato: Pexprand(29.0, 80.0),
+			pan: Pseq([Pfuncn({ a.next }, 1),Pfuncn({ b.next }, 1)], inf).trace,
+			lhf: Pexprand(0.25,0.75),
+			bpr: Pseg([1,1/256],Pwhite(30,90),\sine, inf),
+			dur: 1/Pwrand2([1/4,1/2,1,2,4,5,7,8],[4,6,1,8,4,5,1/2,2],inf),
+			dla: 1/64,
+			dlf: 0,
+			dlt: 16,
+			dark: 1/16,
+		])
+	)
+).play(quant:1);
+)
