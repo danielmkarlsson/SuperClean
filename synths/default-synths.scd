@@ -3,7 +3,7 @@
 Add your own instruments in this file.
 
 // supported parameters are:
-// sustain, spd, endspd, bgn, end, pan, acc
+// sustain, spd, endspd, bgn, end, pan, bnd
 // all instruments should use: out
 
 If your SuperClean instance is assigned to the variable ~clean, you can livecode these synths.
