@@ -75,7 +75,7 @@ CORE SYNTHDEFS FOR CLEAN
 		SynthDef("clean_delay" ++ numChannels, { |dryBus, effectBus, gate = 1, delaytime, delayfeedback, delaySend = 1, delayAmp = 1, lock = 0, cps = 1|
 			var signal;
 			var input = In.ar(dryBus, numChannels);
-			var maxdelaytime = 4;
+			var maxdelaytime = 16;
 
 			input = input * delaySend.lag(LFNoise1.kr(1).range(0.01, 0.02)); // regulate input
 
