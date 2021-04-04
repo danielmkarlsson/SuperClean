@@ -192,7 +192,7 @@ SynthDef("dfd", {|out = 0, freq = 440, res = 1, den = 0, amp = 2, pan = 0.5, att
 SynthDef("bow", { |out=0, freq=440, amp=1.0,frc=1, gate=1,pos=0.07,c1=0.25,c3=31,pan=0,att = 0.0, rel = 1.0, crv = -8.0|
     var env, vib, sig;
 	env = Env.perc(att, rel, amp, crv).kr(doneAction: 2);
-    sig = DWGBowed.ar(freq.clip(20,5000, amp,frc, gate,pos,0.1,c1,c3);
+    sig = DWGBowed.ar(freq.clip(20,5000), amp,frc, gate,pos,0.1,c1,c3);
     sig = DWGSoundBoard.ar(sig);
 	sig = BPF.ar(sig,118,1)+sig;
     sig = BPF.ar(sig,430,1)+sig;
