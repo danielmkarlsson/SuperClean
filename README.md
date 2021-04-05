@@ -292,8 +292,8 @@ and remove sample folders as you go, maybe because you have a slightly older
 computer that you found in the tech trash, then this is for you:
 
 ```
-~clean.postSampleInfo; // check which samples are loaded into ram and the shortest and longest duration
-~clean.freeSoundFiles([\rnb]); // this presupposes that you first add a sample folder called rnb
+~clean.postSampleInfo; // check which samples are loaded into ram and get some stats on those
+~clean.freeSoundFiles([\rnb]); // remove a sample folder called rnb
 ~clean.postSampleInfo; // now, the rnb samples should be gone.
 ```
 
