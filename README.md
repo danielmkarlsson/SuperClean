@@ -292,7 +292,7 @@ and remove sample folders as you go, maybe because you have a slightly older
 computer that you found in the tech trash, then this is for you:
 
 ```
-~clean.postSampleInfo; // check which samples are loaded into ram
+~clean.postSampleInfo; // check which samples are loaded into ram and the shortest and longest duration
 ~clean.freeSoundFiles([\rnb]); // this presupposes that you first add a sample folder called rnb
 ~clean.postSampleInfo; // now, the rnb samples should be gone.
 ```
@@ -301,32 +301,14 @@ computer that you found in the tech trash, then this is for you:
 <details>
 <summary>(reOrdered to reflect relevance)</summary>
 
-• ~~Single line installation~~  
-• ~~.clip value ranges for all filters~~  
-• ~~All Clean to Clean~~  
-• ~~Add samples and change path _inside_ SuperClean~~  
-• ~~Fix aliases in core-synths.scd (bpf stuck at default value)~~  
-• ~~Fix aliases in core-synths-global.scd, seems to inherit keys from Synthdef args, dla,dlf,dlt is goal~~  
-• ~~Add FM synthdef~~  
-• ~~Add Additive synthdef~~  
-• ~~Add `crv` param to env~~  
-• ~~Raise output volume~~  
-• ~~Stereo sample playback~~  
-• ~~Set audible default values for `fmx`, what are sensible defaults?~~  
-• ~~Pan not working in `fmx`~~  
-• ~~Pan not working in `uio`~~  
 • ~~Drag to extensions folder install~~  
 • ~~No need to delete -master in folder name after .zip download~~  
-
-• Look into increasing `dlt` max to 16
-• Reevaluate cubic interpolation (want longer file playback)  
+• ~~Increase `dlt` max to 16~~
+ 
 • ReDo rm with feedback  
-• Sequence the order of effects  
+• Sequence the order of effects    
 • FadeTime T1 style  
 • NRT render inside SuperClean  
-
-• Include `Pxshuf`  
-• Include `Pbjorklund`  
 
 • Swap out the reverb (how to make it sound better while still at low cpu?)  
 • Maybe add that tape effect  
@@ -337,3 +319,4 @@ computer that you found in the tech trash, then this is for you:
 
 Now I might not be the bestest gunSlinger there is round these here parts, but I was able to get this thing corralled, albeit
 awkwardly, so just goes to show, you can too!
+
