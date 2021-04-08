@@ -51,6 +51,35 @@ midinote    0 to 127. 60 is default. Interestingly accepts floats which allows f
 freq        When working with synths and we want to work with frequencies instead of midi note numbers as above, accepts integers 20 to 20000
 scale       Choose scale, for example: Scale.harmonicMinor, add a tuning there like this: Scale.harmonicMinor.tuning_(Tuning.sept1)
 degree      Negative infinity to infinity really but proly there will be seven degrees in scale
+octave      Choose the octave. Range is zero infinity really but a reasonable range is more like 1 to 6. Accepts floats which is crazy/fun
+ctranspose  Chromatic transpostion. All keys on piano. Range is something like integers between -63 and 64 but depends on everything else.
+mtranspose  Modal transposition of degree within a scale. Works in combination with other keys like degree and scale.
+harmonic    Multiplies the frequency determined by midinote, typically to an overtone. https://en.wikipedia.org/wiki/Overtone
+
+stepsPerOctave has no documentation that I can find. Very little is know about this strange parameter other than that it's default is 12.
+Try untoggling that key in this example:
+
+(
+Pdef(0,
+	Pbind(*[
+		type: \cln,
+		snd: \fmx,
+		dur: 1/8,
+		pan: Pwhite(0.0, 1.0),
+		degree: Pseq((0 .. 7), inf),
+		stepsPerOctave: Pwhite(1,12),
+	])
+).play
+)
+
+There are some notable exceptions in this list of keys that provide convenient
+calculation of frequency when compared to the equivalent list in SuperCollider.
+This is because these keys have been reconstructed inside the custom event type
+that is SuperClean. There are some workarounds. You can use ctranspose as a dropin
+replacement for root. If you add 60 to a midinote value you get the equivalent
+to note. If you add a fraction like for example 0.5 at the end of a midinote
+calculation you get the equivalent of detune.
+
 legato      Like a variable soft cut dependent on dur where 1 is equal to dur. This is unlike cut in that it only affects itself
 sustain     Adds sustain by changing the timescale of the envelope. Can turn a drum into a drone. Value range is a float above 0 to infinity
 
@@ -143,7 +172,7 @@ iph
 wid
 
 The \dfd synth definition is a transient excited filter, the filter itself is noisy and can selfoscillate
-den: the density of transients. 
+den: the density of transients.
 res: the resonance of the filter. 1 is a tremendous sweetspot. Range is 0 to infinity, values above 1 will wreak havoc.
 typ: the type of filter where 0 is low pass and 1 is high pass.
 nsl: the noise level. Range is 0 to infinity.
@@ -155,7 +184,7 @@ typ
 nsl
 
 The \bow synth definition is a digital wave guide physical model of a bowed instrument.
-frc: Force. 
+frc: Force.
 pos: Position.
 bpr: Bow pressure.
 
