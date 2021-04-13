@@ -15,9 +15,6 @@ they do not. Default values for parameters get set in CleanAux.sc
 {
 	var numChannels = ~clean.numChannels;
 
-
-
-	// write variants for different sample buffer sizes
 	(1..SuperClean.maxSampleNumChannels).do { |sampleNumChannels|
 
 		var name = format("clean_sample_%_%", sampleNumChannels, numChannels);
@@ -31,18 +28,17 @@ they do not. Default values for parameters get set in CleanAux.sc
 
 			// sample phase
 			// BufSampleRate adjusts the rate if the sound file doesn't have the same rate as the soundcard
-			// phase =  Sweep.ar(1, rate * BufSampleRate.ir(bufnum)) + (BufFrames.ir(bufnum) * bgn);
+			phase =  Sweep.ar(1, rate * BufSampleRate.ir(bufnum)) + (BufFrames.ir(bufnum) * bgn);
 
 			numFrames = BufFrames.ir(bufnum);
 			sawrate = rate * BufSampleRate.ir(bufnum) / (absdif(bgn, end) * numFrames);
-			phase = (spd.sign * LFSaw.ar(sawrate, 1)).range(bgn,end) * numFrames;
 
 			sound = BufRd.ar(
 				numChannels: sampleNumChannels,
 				bufnum: bufnum,
 				phase: phase,
 				loop: 0,
-				interpolation: 4 // cubic interpolation, do we need that? Really tho? Seems to just make playing long samples sound bad.
+				interpolation: 4
 			);
 
 			sound = CleanPan.ar(sound, numChannels, pan);
@@ -55,7 +51,6 @@ they do not. Default values for parameters get set in CleanAux.sc
 	Bus Routing Monitor
 	*/
 
-
 	// the monitor does the mixing and zeroing of the busses for each sample grain
 	// so that they can all play in one bus
 
@@ -67,7 +62,6 @@ they do not. Default values for parameters get set in CleanAux.sc
 		OffsetOut.ar(out, signal);
 		ReplaceOut.ar(in, Silent.ar(numChannels)) // clears bus signal for subsequent synths
 	}, [\ir, \ir, \ir, \ir, \ir, \ir]).add;
-
 
 	/*
 	Internal Signal Routing Synths
@@ -83,8 +77,6 @@ they do not. Default values for parameters get set in CleanAux.sc
 	Effect SynthDefs
 	These per-sample-effects are freed after Monitor envelope has ended
 	*/
-
-	// would be nice to have some more parameters in some cases
 
 	SynthDef("clean_crush" ++ numChannels, { |out, crush = 4|
 		var signal = In.ar(out, numChannels);
@@ -296,7 +288,7 @@ they do not. Default values for parameters get set in CleanAux.sc
 		ReplaceOut.ar(out, signal);
 	}, [\ir, \ir, \ir, \ir]).add;
 
-	// Ring modulation with `rma` (modulation wet), `rmf` (modulation frequency), `rdf` (the frequency to glissando in from) and `rdt` (the glissando time)
+	// Ring modulation
 	~clean.addModule('rma', { |cleanEvent|
 		cleanEvent.sendSynth("clean_rma" ++ ~clean.numChannels,
 			[
@@ -379,7 +371,7 @@ they do not. Default values for parameters get set in CleanAux.sc
 	}, { ~frz.notNil } );
 
 
-	SynthDef("spectral-freeze" ++ ~clean.numChannels, { |out, freeze| // broken, I dunno, untoggle and use at own risk, values seem to be 0 for off and 1 for on
+	SynthDef("spectral-freeze" ++ ~clean.numChannels, { |out, freeze| // broken, use at own risk, values seem to be 0 for off and 1 for on
 	var signal, chain, in;
 	signal = In.ar(out, ~clean.numChannels);
 	chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
@@ -473,7 +465,6 @@ they do not. Default values for parameters get set in CleanAux.sc
 		)
 	}, { ~hbrick.notNil });
 
-
 	SynthDef("hbr" ++ ~clean.numChannels, { |out, hbrick|
 		var signal, chain, in, clean, teeth = 256;
 		signal = In.ar(out, ~clean.numChannels);
@@ -549,47 +540,6 @@ they do not. Default values for parameters get set in CleanAux.sc
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
-	// grainfb
-	~clean.addModule('gra', { |cleanEvent|
-		cleanEvent.sendSynth('grainfb' ++ ~clean.numChannels,
-			[
-				fbgrainsize: ~grs,
-				fbgrainrand: ~grr,
-				fbgain: ~grf,
-				drywet: ~gra,
-				out: ~out
-			]
-		)
-	}, { ~gra.notNil });
-
-	SynthDef("grainfb" ++ numChannels, {|out, fbgrainsize = 0.25, fbgrainrand = 0.8, fbgain = 0.1, drywet = 0.5|
-		var signal = In.ar(out, numChannels);
-		var bufLength = 1.0;
-		var localBuf = { LocalBuf(bufLength * SampleRate.ir).clear }.dup(numChannels);
-		var warp = localBuf.collect {|buf, index|
-			var grains = Warp1.ar(
-				1,
-				buf,
-				LFSaw.kr(1/bufLength).range(0, 1),
-				Drand([ 2, - 2 ], inf),
-				fbgrainsize.linlin(0.0, 1.0, 0.0, 2.0),
-				-1,
-				2,
-				fbgrainrand.linlin(0.0, 1.0, 0.2, 1.0),
-				4
-			);
-			// edge case for numChannels == 1
-			signal = [signal].flatten;
-			RecordBuf.ar(tanh(signal[index] + HPF.ar(tanh(grains * fbgain), 30)), buf);
-			grains;
-		};
-		warp = warp.tanh;
-		//warp = HPF.ar(warp * 0.5, 150);
-		drywet = drywet.clip(0, 1);
-		warp = (signal * sqrt(1 - drywet)) + (warp * sqrt(drywet));
-		ReplaceOut.ar(out, warp);
-	}, [\ir]).add;
-
 	// A low pass filter for the first half of the range, and a high pass for the rest.
 	~clean.addModule('lhf', { |cleanEvent|
 		cleanEvent.sendSynth('lhf-filter' ++ ~clean.numChannels,
@@ -618,6 +568,36 @@ they do not. Default values for parameters get set in CleanAux.sc
 		);
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
+
+	/*
+	// A nice reverb, behave very different on per event than on global, apply an env maybe for "reverse" reverb effect?
+	~clean.addModule('nhh', { |cleanEvent|
+		cleanEvent.sendSynth('nhh' ++ ~clean.numChannels,
+			[
+				nhh: ~nhh,
+				rts: ~rts,
+				bld: ~bld,
+				lfc: ~lfc,
+				lrt: ~lrt,
+				hfc: ~hfc,
+				hrt: ~hrt,
+				edf: ~edf,
+				ldf: ~ldf,
+				mdr: ~mdr,
+				mdd: ~mdd,
+				out: ~out
+			]
+	)}, { ~nhh.notNil});
+
+	SynthDef("nhh" ++ ~clean.numChannels, {|out, nhh, rts=1, bld=0.5, lfc=200, lrt=0.5, hfc=4000, hrt=0.5, edf=0.5, ldf=0.5, mdr=0.2, mdd=0.3|
+        var sig, wet;
+        sig = In.ar(out, ~clean.numChannels);
+        wet = sig;
+		wet = wet + NHHall.ar(wet, rts, bld, lfc, lrt, hfc, hrt, edf, ldf, mdr, mdd);
+        sig = XFade2.ar(sig, wet, nhh);
+        ReplaceOut.ar(out, sig)
+	}, [\ir, \ir]).add;
+*/
 
 }.value
 )
