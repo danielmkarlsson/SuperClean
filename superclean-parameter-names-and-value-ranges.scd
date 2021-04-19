@@ -33,6 +33,13 @@ dlt         Delay time, value range is a very low float to 16.0
 rin         Set the amplitude of the input to the reverb
 rev         Reverb time (or room size, if we can imagine that)
 dry         Decrease the amplitude of the reverb
+hal         Amplitude of the hal reverb, zero to one where zero is completely dry and one is really wet
+rts         Approximate 60dB decay time of the mid frequencies. Setting this to a very high number results in a very long reverb. Try 0 to 999.
+bld         This should control the bleed from mono to stereo as the reverb decays but instead there's a discontinuity, will try to fix
+edf         Early diffusion. Higher values have a sharper attack and add metallic coloration to the signal.
+ldf         Late diffusion. Higher values have a sharper attack and add metallic coloration to the signal.
+hlp         Low pass filter before the hal reverb.
+hhp         High pass filter before the hal reverb.
 bgn         Where in the file to begin playing back the file
 end         Where in the file to end playing back the file
 bnd         Change playback speed of samples while running, accepts positive and negative values
