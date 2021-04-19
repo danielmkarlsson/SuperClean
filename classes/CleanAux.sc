@@ -1,7 +1,7 @@
 /*
 
 An aux can be used as a separate audio output for when you want to do multichannel output,
-or when you want to apply delay, reverb or some other effect to something. It is possible to
+or when you want to apply delay, reverb or some other effect to different things. It is possible to
 have a part of what you are hearing dry, and another part of what you are hearing wet. You can
 set up auxs in the startup.scd file. Look for this line:
 
@@ -25,8 +25,6 @@ CleanAux {
 	var <synthBus, <globalEffectBus, <dryBus;
 	var <group, <globalEffects, <cutGroups;
 	var <>minSustain;
-
-
 	var <>defaultParentEvent;
 
 	*new { |clean, outBus, auxIndex = 0|
@@ -48,7 +46,6 @@ CleanAux {
 		this.initDefaultGlobalEffects;
 		this.initNodeTree;
 		this.makeDefaultParentEvent;
-
 		ServerTree.add(this, server); // synth node tree init
 		CmdPeriod.add(this);
 	}
@@ -56,12 +53,13 @@ CleanAux {
 	initDefaultGlobalEffects {
 		this.globalEffects = [
 			// all global effects sleep when the input is quiet for long enough and no parameters are set.
+			GlobalCleanEffect(\clean_hal, [\hal, \rts, \bld, \edf, \ldf, \hhp, \hlp]),
 			GlobalCleanEffect(\clean_delay, [\delaytime, \delayfeedback, \delaySend, \delayAmp, \lock, \cps]),
 			GlobalCleanEffect(\clean_reverb, [\rev, \rin, \dry]),
+			//GlobalCleanEffect(\clean_grainfb, [\grainfb]),
 			GlobalCleanEffect(\clean_dark, [\dark]),
 			GlobalCleanEffect(\clean_rms, [\rmsReplyRate, \rmsPeakLag]).alwaysRun_(true),
 			GlobalCleanEffect(\clean_monitor).alwaysRun_(true),
-
 		]
 	}
 
@@ -185,6 +183,8 @@ CleanAux {
 			~sho = 0.0;
 			~lot = 0.0;
 			~hit = 0.0;
+			~nhp = 20;
+			~nlp = 20000;
 			~unit = \r;
 			~midinote = #{ ~note ? ~num + (~octave * 12) };
 			~freq = #{
@@ -227,23 +227,19 @@ CleanAux {
 			~octave = 5.0;
 			~degree = 0;
 			~scale = #[0, 2, 4, 5, 7, 9, 11];  // diatonic major scale
-
 			~stepsPerOctave = 12.0;
 			~detuneFreq = 0.0;     // detune in Hertz
 			~harmonic = 1.0;    // harmonic ratio
 			~octaveRatio = 2.0;
 			~num = 0; // sample number or note
-
 			//~freq = #{ ~midinote.value.midicps };
 			~delta = 1.0;
-
 			~latency = 0.0;
 			~lag = 0.0;
 			~length = 1.0;
 			~lop = 1.0;
 			~dry = 0.0;
 			~lock = 0; // if set to 1, syncs delay times with cps
-
 			~amp = 0.5;
 			~fadeTime = 0.001;
 
@@ -259,9 +255,6 @@ CleanAux {
 			~notFound = {
 				"no synth or sample named '%' could be found.".format(~snd).postln;
 			};
-
 		}
 	}
-
-
 }
