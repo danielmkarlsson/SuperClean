@@ -181,7 +181,7 @@ wid
 
 The \dfd synth definition is a transient excited filter, the filter itself is noisy and can selfoscillate
 den: the density of transients.
-res: the resonance of the filter. 1 is a tremendous sweetspot. Range is 0 to infinity, values above 1 will wreak havoc.
+res: the resonance of the filter. 1 is a tremendous sweetspot. Range is 0.0 to 1.01.
 typ: the type of filter where 0 is low pass and 1 is high pass.
 nsl: the noise level. Range is 0 to infinity.
 
