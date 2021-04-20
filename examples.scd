@@ -57,7 +57,7 @@ Pdef(0,
 				pan: Pstutter(Pwhite(0, 28), Pwrand([Pwhite(0.0, 0.333), Pwhite(0.666, 1.0)], [1, 1.5].normalizeSum, inf)),
 				lpf: Pwrand([625, 1250, 2500, 5000, 10000, 20000], (1 .. 6).normalizeSum, inf),
 				spd: Pwrand([
-                    1/64, 1/32, 1/16, 1/8, 1/4, 1/2, 1, 2, 4, 8, 16, 32, 64], 
+                    1/64, 1/32, 1/16, 1/8, 1/4, 1/2, 1, 2, 4, 8, 16, 32, 64],
                     [1, 2, 4, 8, 16, 32, 64, 32, 16, 8, 4,  2, 1].normalizeSum,inf),
 				shp: Pwhite(0.0, 1.0).trace,
 				dla: 0.001,
@@ -70,7 +70,7 @@ Pdef(0,
 			]), 1, 15,
 		)
 	)
-).play(quant: 1);
+).play(quant:1);
 );
 
 // an example using add which is the built in additive synthesizer
@@ -96,7 +96,7 @@ Pdef(0,
 		sustain: Pexprand(0.25, 1.25),
 		stretch: Pseg(Pexprand(0.75, 1.25), Pexprand(0.5, 8.0), \exp, inf),
 	])
-).play(quant: 1);
+).play(quant:1);
 )
 
 
@@ -122,7 +122,7 @@ Pdef(0,
 		midinote: 60 + Pstutter(Pwhite(5, 11), Pxrand((-24, Pstutter(Pwhite(1, 100), Prand([-9, -10], inf)) .. 24), inf)),
 		legato: Pkey(\atk) + Pkey(\hld) + Pkey(\rel) + Pkey(\sustain),
 	])
-).play(quant: 1);
+).play(quant:1);
 )
 
 // an example using drm which is the built in drum synthesizer
@@ -196,37 +196,31 @@ Pdef(0,
 ).play(quant:1);
 )
 
-( // an example using dfd which is a transient excited filter that can selfoscillate
-Pdef(0,
-	Pseed(879,
+( // an example using dfd which is a transient / noise excited filter that can selfoscillate
+Pdef(0, // deterministic operations, indefinite duration
+	Pseed(192,
 		Pbind(*[
 			type: \cln,
 			snd: \dfd,
-			scale: Scale.partch_o5,
-			octave: Pwrand((2 .. 6), (6 .. 2).normalizeSum, inf),
-			degree: Pstutter(Pwhite(0, 7), Pwhite(0, 7)),
-			dur: Pstutter(Pexprand(1, 16), Pexprand(0.01, 0.5)),
-			amp: Pexprand(0.5, 1.0).trace,
-			res: Pwhite(0.9, 1.05),
-			atk: Pexprand(0.00001, 25.0),
-			hld: Pexprand(0.1, 2.5),
-			rel: Pexprand(0.1, 25.0),
-			legato: Pwhite(10.0, 20.0),
-			sustain: Pwhite(10.0, 20.0),
-			den: Pexprand(0.0001, 100),
-			tri: Pkey(\octave).linlin(2, 6, 1, 0),
-			dark: 1/32,
+			amp: Pseg(Pexprand(0.25, 1.0), Pwhite(5.0, 10.0), \exp, inf),
+			rel: Phprand(0.0, 4.0),
+			freq: 80 * Plprand(1, 13),
+			sustain: 8,
+			legato: 8,
+			res: Pseg(Pexprand(0.9725, 1.01), Pwhite(5.0, 10.0), \exp, inf).trace,
+			dur: 1/8,
+			stretch: Pseg([1, 4, 1, 0.75, 1], [10, 5, 10], \sin, inf),
 		])
 	)
-).play;
+).play
 )
 
 // an example using bow which is a digital wave guide physical model of a bowed instrument
-(
+( // deterministic operations, indefinite duration
 var a = Pwhite(0.0, 0.25).asStream;
 var b = Pwhite(0.75, 1.0).asStream;
 Pdef(0,
-	Pseed(263,
+	Pseed(253,
 		Pbind(*[
 			type: \cln,
 			snd: \bow,
@@ -236,21 +230,23 @@ Pdef(0,
 			scale: Scale.aeolian.tuning_(Tuning.vallotti),
 			degree: Pstutter(Pexprand(1, 5), Pxrand((0 .. 7), inf)),
 			mtranpose: Pstutter(Pexprand(1, 5), Pxrand((-11 .. 3), inf)),
-			amp: Pstutter(2, Pexprand(0.444, 0.66666 / Pkey(\octave).linexp(1, 6, 1, 2))),
+			amp: Pstutter(2, Pexprand(0.555, 0.66666 / Pkey(\octave).linexp(1, 6, 0.9, 2))),
 			atk: Pexprand(1.0, 15.0) - 1,
 			hld: Pwhite(0.5, 4.0),
 			rel: Pwhite(5.0, 10.0),
 			crv: Pwhite(0.0, 8.0) - Prand([0, 8], inf),
-			sustain: Pexprand(19.0, 60.0),
-			legato: Pexprand(19.0, 60.0),
+			sustain: Pexprand(29.0, 80.0),
+			legato: Pexprand(29.0, 80.0),
 			pan: Pseq([Pfuncn({ a.next }, 1), Pfuncn({ b.next }, 1)], inf).trace,
 			lhf: Pexprand(0.25, 0.75),
 			bpr: Pseg([1, 1/256], Pwhite(30, 90), \sine, inf),
-			dur: 1 / Pwrand([1/4, 1/2, 1, 2, 4, 5], [8, 6, 4, 2, 1, 1/2].normalizeSum, inf),
+			dur: 1 / Pwrand([1/4, 1/2, 1, 2, 4, 5, 7, 8], [4, 6, 1, 8, 4, 5, 1/2, 2].normalizeSum, inf),
 			dla: 1/64,
 			dlf: 0,
 			dlt: 16,
-			dark: 1/16,
+			dark: 1/8,
+			hal: 1/16,
+			rts: Pseg([0, 64, 0], Pwhite(30, 90), \sine, inf),
 		])
 	)
 ).play(quant:1);
