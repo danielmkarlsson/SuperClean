@@ -48,6 +48,9 @@ rdt         The time in seconds it takes to glissando from the detune frequency
 smr         spectral smear
 scm         spectral scramble
 enh         spectral enhance
+ocu         Octave up 
+ocd         Octave down
+ocq         Quarter-frequency harmonics (two octaves down)
 
 dur         The duration between events, range is a float above zero to infity, zero is infinitely fast, so, you mos def never want to do that
 midinote    0 to 127. 60 is default. Interestingly accepts floats which allows for microtonality
