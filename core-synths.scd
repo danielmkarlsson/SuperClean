@@ -263,18 +263,18 @@ they do not. Default values for parameters get set in CleanAux.sc
 		ReplaceOut.ar(out, LeakDC.ar(sig));
 	}, [\ir, \ir]).add;
 
-	// This is apparantly the octaver from Sonic Pi
-	// uses `oc1` for octave harmonics, `oc2` for half-frequency harmonics, and `oc3` for quarter-frequency harmonics
+	// This is apparently the octaver from Sonic Pi
+	// uses `ocu` for octave up , `ocd` for octave down, and `ocq` for quarter-frequency harmonics
 	~clean.addModule('oct', { |cleanEvent|
 		cleanEvent.sendSynth("clean_octer" ++ ~clean.numChannels,
 			[
-				octer: ~oc1,
-				octersub: ~oc2,
-				octersubsub: ~oc3,
+				octer: ~ocu,
+				octersub: ~ocd,
+				octersubsub: ~ocq,
 				out: ~out
 			]
 		)
-	}, { ~oc1.notNil or: { ~oc2.notNil } or: { ~oc3.notNil }});
+	}, { ~ocu.notNil or: { ~ocd.notNil } or: { ~ocq.notNil }});
 
 	SynthDef("clean_octer" ++ ~clean.numChannels, { |out, octer, octersub, octersubsub|
 		var signal, oct1, oct2, oct3, sub;
