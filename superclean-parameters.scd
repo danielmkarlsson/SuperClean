@@ -51,6 +51,8 @@ enh         spectral enhance
 ocu         Octave up 
 ocd         Octave down
 ocq         Quarter-frequency harmonics (two octaves down)
+fsh         Frequency shift, value range goes both positive and negative, works in combination with fsm, try values -32 to 32
+fsm	    Frequency shift multiplier, value range goes both positive and negative, works in combination with fsh, try values -4 to 4
 
 dur         The duration between events, range is a float above zero to infity, zero is infinitely fast, so, you mos def never want to do that
 midinote    0 to 127. 60 is default. Interestingly accepts floats which allows for microtonality
