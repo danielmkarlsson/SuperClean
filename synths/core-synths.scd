@@ -230,7 +230,6 @@ they do not. Default values for parameters get set in CleanAux.sc
 		cleanEvent.sendSynth("frequencyshifter" ++ ~clean.numChannels,
 			[
 				fsh: ~fsh,
-				fsp: ~fsp,
 				fsm: ~fsm,
 				freq: ~freq,
 				out: ~out
