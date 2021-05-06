@@ -53,6 +53,12 @@ ocd         Octave down
 ocq         Quarter-frequency harmonics (two octaves down)
 fsh         Frequency shift, value range goes both positive and negative, works in combination with fsm, try values -32 to 32
 fsm	    Frequency shift multiplier, value range goes both positive and negative, works in combination with fsh, try values -4 to 4
+hal	    A hall reverb, this is the wet parameter, or put another way, the amplitude of the reverb.
+rts 	    The RT60 value of the reverb. This goes from 0 to 999. That top value is approaching inifity. It is super duper long.
+edf	    Early diffusion of the hal reverb.
+ldf	    Late diffusion of the hal reverb.
+hhp	    A high pass filter before the hal reverb. Value range is 20 to 20000.
+hlp	    A low pass filter before the hal reverb. Value range is 20 to 20000.
 
 dur         The duration between events, range is a float above zero to infity, zero is infinitely fast, so, you mos def never want to do that
 midinote    0 to 127. 60 is default. Interestingly accepts floats which allows for microtonality
