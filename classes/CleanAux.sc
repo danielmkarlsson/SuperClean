@@ -58,6 +58,7 @@ CleanAux {
 			GlobalCleanEffect(\clean_reverb, [\rev, \rin, \dry]),
 			//GlobalCleanEffect(\clean_grainfb, [\grainfb]),
 			GlobalCleanEffect(\clean_dark, [\dark]),
+			GlobalCleanEffect(\clean_tanh, [\tnh, \tng, \tnb, \tna]),
 			GlobalCleanEffect(\clean_rms, [\rmsReplyRate, \rmsPeakLag]).alwaysRun_(true),
 			GlobalCleanEffect(\clean_monitor).alwaysRun_(true),
 		]
