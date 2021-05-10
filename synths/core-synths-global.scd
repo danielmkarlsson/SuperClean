@@ -44,7 +44,7 @@ they'll come back automatically
 		var drySignal = In.ar(dryBus, numChannels);
 		var wetSignal = In.ar(effectBus, numChannels);
 		var signal = wetSignal + drySignal;
-		CleanPause.ar(signal, graceTime:4);
+		CleanPause.ar(signal, graceTime:8);
 		EnvGen.kr(Env.asr, gate, doneAction:2);
 		SendPeakRMS.kr(signal, replyRate: rmsReplyRate, peakLag: rmsPeakLag, cmdName:"/rms", replyID: auxIndex)
 	}, [\kr, \ir, \ir, \kr, \kr, \kr]).add;
@@ -129,7 +129,25 @@ they'll come back automatically
 		signal = signal * (1 - hal -1).lag(lgt);
 		CleanPause.ar(signal.sum, graceTime:4);
 		Out.ar(effectBus, signal);
-	}).add;
+	}, [\ir, \ir]).add;
+
+	SynthDef("clean_tanh" ++ numChannels, {
+		|dryBus, effectBus, gate = 1, tnh = 0, tng = 1, tnb = 20000, tna = 20000|
+		var drySignal = In.ar(dryBus, numChannels);
+		var wetSignal = In.ar(effectBus, numChannels);
+		var sig = wetSignal + drySignal;
+		var lgt = 0.0625;
+		//sig = In.ar(dryBus, numChannels).asArray.sum;
+		sig = LPF.ar(sig, tnb.clip(20, 20000).lag(lgt));
+		sig = sig * tng.clip(0.0, 999.0);
+		sig = sig = tanh(sig);
+		sig = LPF.ar(sig, tna.clip(20, 20000).lag(lgt));
+		sig = LeakDC.ar(sig);
+		sig = sig * (1 - tnh.linlin(0.0, 1.0, 1.0, 0.0));
+		CleanPause.ar(sig, graceTime:4);
+		sig = sig * EnvGen.kr(Env.asr, gate, doneAction:2);
+		Out.ar(effectBus, sig);
+	}, [\ir, \ir]).add;
 
 	//"---- core synth defs loaded ----".postln;
 
