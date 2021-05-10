@@ -59,6 +59,10 @@ edf	    Early diffusion of the hal reverb.
 ldf	    Late diffusion of the hal reverb.
 hhp	    A high pass filter before the hal reverb. Value range is 20 to 20000.
 hlp	    A low pass filter before the hal reverb. Value range is 20 to 20000.
+tnh: 	    Wet mix of the global tanh based distortion. Unlike the other distortions this one is added after synths are summed. Try a fifth through this.
+tnb: 	    Low pass filter before the tanh based distortion.
+tng: 	    Tanh gain stage, this makes tons of ditortion. Range is 0.0 to 999.0
+tna: 	    Low pass filter after the tanh based distortion.
 
 dur         The duration between events, range is a float above zero to infity, zero is infinitely fast, so, you mos def never want to do that
 midinote    0 to 127. 60 is default. Interestingly accepts floats which allows for microtonality
