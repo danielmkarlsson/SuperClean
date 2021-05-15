@@ -52,13 +52,13 @@ ocu         Octave up
 ocd         Octave down
 ocq         Quarter-frequency harmonics (two octaves down)
 fsh         Frequency shift, value range goes both positive and negative, works in combination with fsm, try values -32 to 32
-fsm	    Frequency shift multiplier, value range goes both positive and negative, works in combination with fsh, try values -4 to 4
-hal	    A hall reverb, this is the wet parameter, or put another way, the amplitude of the reverb.
+fsm	        Frequency shift multiplier, value range goes both positive and negative, works in combination with fsh, try values -4 to 4
+hal	        A hall reverb, this is the wet parameter, or put another way, the amplitude of the reverb.
 rts 	    The RT60 value of the reverb. This goes from 0 to 999. That top value is approaching inifity. It is super duper long.
-edf	    Early diffusion of the hal reverb.
-ldf	    Late diffusion of the hal reverb.
-hhp	    A high pass filter before the hal reverb. Value range is 20 to 20000.
-hlp	    A low pass filter before the hal reverb. Value range is 20 to 20000.
+edf	        Early diffusion of the hal reverb.
+ldf	        Late diffusion of the hal reverb.
+hhp	        A high pass filter before the hal reverb. Value range is 20 to 20000.
+hlp	        A low pass filter before the hal reverb. Value range is 20 to 20000.
 tnh: 	    Wet mix of the global tanh based distortion. Unlike the other distortions this one is added after synths are summed. Try a fifth through this.
 tnb: 	    Low pass filter before the tanh based distortion.
 tng: 	    Tanh gain stage, this makes tons of ditortion. Range is 0.0 to 999.0
