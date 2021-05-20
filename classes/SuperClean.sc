@@ -100,6 +100,10 @@ SuperClean {
 		soundLibrary.loadSoundFiles(paths, appendToExisting = false, namingFunction)
 	}
 
+	lsf { |paths, appendToExisting = false, namingFunction|
+		soundLibrary.loadSoundFiles(paths, appendToExisting = false, namingFunction)
+	}
+
 	loadSoundFile { |path, name, appendToExisting = false|
 		soundLibrary.loadSoundFile(path, name, appendToExisting)
 	}
