@@ -32,7 +32,7 @@ they do not. Default values for parameters get set in CleanAux.sc
 
 			numFrames = BufFrames.ir(bufnum);
 			sawrate = rate * BufSampleRate.ir(bufnum) / (absdif(bgn, end) * numFrames);
-
+/*
 			sound = BufRd.ar(
 				numChannels: sampleNumChannels,
 				bufnum: bufnum,
@@ -40,7 +40,8 @@ they do not. Default values for parameters get set in CleanAux.sc
 				loop: 0,
 				interpolation: 4
 			);
-
+*/
+			sound = PlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, startPos: phase, doneAction:2);
 			sound = CleanPan.ar(sound, numChannels, pan);
 
 			Out.ar(out, sound)
