@@ -35,7 +35,7 @@ are updating because otherwise you might run into some double trouble there with
 
 ## Origins and acknowledgements
 
-Julian Rohrhuber and Alex McLean built this thing initially, then I changed a few little things here and there.
+Julian Rohrhuber built this thing initially, then I changed a few little things here and there.
 Scott Cazan then gave me some much needed assistance in my little remodeling efforts. What you have here is essentially a
 shameless ripOff / fork of / homage to SuperDirt. Marcus Pal created the FM synth and the additive synth.
 
