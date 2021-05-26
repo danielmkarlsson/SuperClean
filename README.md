@@ -35,9 +35,9 @@ are updating because otherwise you might run into some double trouble there with
 
 ## Origins and acknowledgements
 
-Julian Rohrhuber built this thing initially, then I changed a few little things here and there.
-Scott Cazan then gave me some much needed assistance in my little remodeling efforts. What you have here is essentially a
-shameless ripOff / fork of / homage to SuperDirt. Marcus Pal created the FM synth and the additive synth.
+Julian Rohrhuber built this thing initially, then I changed some things here and there. I had a lot of help from friends along the way. 
+What you have here is essentially a shameless ripOff / fork of / homage to SuperDirt. A special shoutout to Marcus Pal who initially created the FM synth and the 
+additive synth.
 
 ## Requirements
 
