@@ -43,7 +43,6 @@ additive synth.
 
 * SuperCollider v3.9 or above: https://supercollider.github.io/download
 * Mos def you should get the entirely essential sc3-plugins: https://github.com/supercollider/sc3-plugins/
-* git (no link here because this will get taken care of by your os asking you to allow it to install git)
 
 ## Lean is good
 
