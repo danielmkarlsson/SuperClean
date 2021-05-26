@@ -291,6 +291,7 @@ computer that you found in the tech trash, then this is for you:
 • ~~Drag to extensions folder install~~  
 • ~~No need to delete -master in folder name after .zip download~~  
 • ~~Increase `dlt` max to 16~~
+• ~~Long sample playback without roundoff errors~~  
  
 • ReDo rm with feedback  
 • Sequence the order of effects    
