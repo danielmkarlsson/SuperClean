@@ -68,7 +68,7 @@ to load in to ram all the time when you need to start over quickly because reaso
 I asked Scott to make sure that the filters are only able to accept values in the range of human hearing, 20 to 20000 hz.
 This way the filters won't blow up. Also there is a nifty limiter that saves our ears ~~if~~ when things get unexpectedly
 loud. This limiter can also be leaned in to on purpose yielding all manner of hawt sound. Be sure to not miss out on the
-fun of sending values greater than one to `gain`.
+fun of sending values greater than one to `amp`.
 
 ## Start yer engines!
 
