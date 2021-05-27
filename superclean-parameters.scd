@@ -146,7 +146,7 @@ parameter controls the amount of feedback inside the oscillator. Value range is
 parameter controls teh space blaster to metal kickdrum morph. Lower values are
 more space blaster like. Higher values sound tighter.
 
-tun
+tun 
 fed
 pew
 
@@ -154,8 +154,8 @@ The \hat synth definition is a noise source through a filter and an envelope.
 You can use tun in a weird way to provide some variation on the frequency.
 bnd sweeps the filter.
 
-tun
-bnd
+tun: -1.0, 1.0
+bnd: -1.0, 1.0
 
 The \kps synth definition Karplus-Strong physical modeling of a vibrating string,
 using a delay line (CombL) excited by an intial pulse (Impulse)
