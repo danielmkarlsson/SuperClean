@@ -27,7 +27,7 @@ SynthDef(\add,  {| out, ada = 0.001, adr = 1,
 	o = o * e * AmpComp.kr(freq, 40, 0.3);
 	o = CleanPan.ar(o, ~clean.numChannels, pan);
 	Out.ar(out, o);
-}).add;
+}).store;
 
 // A four operator FM synth
 SynthDef(\fmx, {| sustain = 1, pan, amp = 0.1, out = 0,
@@ -52,7 +52,7 @@ SynthDef(\fmx, {| sustain = 1, pan, amp = 0.1, out = 0,
 	sig = (sig * amp*0.7) * LFNoise1.ar(0).range(1, 1);
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, tanh(LeakDC.ar(sig)));
-}).add;
+}).store;
 
 // A sine oscillator
 SynthDef("sin", {|out = 0, sustain = 1, bnd, freq = 440, iph = 0, amp = 1.0, pan = 0, att = 0.0, rel = 1.0, crv = -8.0|
@@ -64,7 +64,7 @@ SynthDef("sin", {|out = 0, sustain = 1, bnd, freq = 440, iph = 0, amp = 1.0, pan
 	sig = sig * env;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, sig);
-}).add;
+}).store;
 
 // A saw oscillator
 SynthDef("saw", {|out = 0, sustain = 1, bnd, freq = 440, iph = 0, wid = 0.25, amp = 1.0, pan = 0, att = 0.0, rel = 1.0, crv = -8.0|
@@ -76,7 +76,7 @@ SynthDef("saw", {|out = 0, sustain = 1, bnd, freq = 440, iph = 0, wid = 0.25, am
 	sig = sig * env;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, Pan2.ar(sig, pan));
-}).add;
+}).store;
 
 
 // A square oscillator
@@ -90,7 +90,7 @@ SynthDef("sqr", {|out = 0, sustain = 1, bnd, freq = 440, amp = 0.5, pan = 0, att
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, Pan2.ar(sig, pan));
 },
-).add;
+).store;
 
 // live audio input, (does this really work tho?)
 (
@@ -102,7 +102,7 @@ SynthDef(\in, { |out, sustain = 1, spd = 1, bgn = 0, end = 1, pan, accelerate, o
 	OffsetOut.ar(out,
 		CleanPan.ar(sound, ~clean.numChannels, pan)
 	)
-}).add
+}).store
 );
 
 // read input from nth routing bus
@@ -114,7 +114,7 @@ SynthDef(\clean_from, { |out, sustain = 1, in, pan|
 	Out.ar(out,
 		CleanPan.ar(sound, ~clean.numChannels, pan)
 	)
-}).add;
+}).store;
 
 ~clean.soundLibrary.addSynth(\from,
 	(
@@ -137,7 +137,7 @@ SynthDef(\inr, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, bnd,
 	OffsetOut.ar(out,
 		CleanPan.ar(sound, ~clean.numChannels, pan)
 	)
-}).add
+}).store
 );
 
 // Karplus-Strong physical modeling of a vibrating string, using a delay line (CombL) excited by an intial pulse (Impulse)
@@ -151,7 +151,7 @@ SynthDef(\kps, {|out, sustain=1, pan, bnd = 0, freq, detune=0.0 |
 	sound = CombC.ar(sound, 0.05, pitch.reciprocal*(1-(0/100)), sustain) // remove detune because safety resons
 	+ CombL.ar(sound, 0.05, pitch.reciprocal*(1+(0/100)), sustain);
 	OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env)) // move pan up before the two delay lines are introduced, hard pan them
-}).add
+}).store
 );
 
 //  drum synthesis
@@ -165,7 +165,7 @@ SynthDef(\drm, {|out, pew=1, sustain=1, pan, fed=0, tun |
 	env = EnvGen.ar(Env.linen(0.01, 0, 1, 1, -3), timeScale:sustain, doneAction:2);
 	sound = LPF.ar(SinOscFB.ar(XLine.ar(freq.expexp(10, 2000, 1000, 8000), freq, 0.025/pew), fed), 9000);
 	OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env))
-}).add
+}).store
 );
 
 // Hi-hat using Rumble-San's implementation as a starting point
@@ -176,11 +176,11 @@ SynthDef(\drm, {|out, pew=1, sustain=1, pan, fed=0, tun |
 SynthDef(\hat, {|out, sustain=1, pan, bnd, tun |
 	var env, sound, accel, freq;
 	env = EnvGen.ar(Env.linen(0.01, 0, 0.3, 1, -3), timeScale:sustain, doneAction:2);
-	accel = Line.kr(1, 1+bnd.clip(-1.0,1.0), 0.2*sustain);
-	freq = 2000*accel*(tun/5 + 1).wrap(0.5,2);
+	accel = Line.kr(1, 1+bnd.clip(-1.0, 1.0), 0.2*sustain);
+	freq = 2000 * accel * (tun.clip(-1.0, 1.0) / 5 + 1).wrap(0.5,2);
 	sound = HPF.ar(LPF.ar(WhiteNoise.ar(1), 3*freq), freq);
 	OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env))
-}).add
+}).store
 );
 
 // Transient excited filter
@@ -190,7 +190,7 @@ SynthDef("dfd", {|out = 0, freq = 440, res = 1, den = 0, amp = 1, pan = 0.5, att
 	sig = DFM1.ar(Dust2.ar(den.dup(~clean.numChannels), amp), freq.clip(20, 7139), res.clip(0.0, 1.01), 1, typ, nsl);	sig = sig * env;
 	//sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, sig);
-}).add;
+}).store;
 
 // Digital wave guide physical model of a bowed instrument
 SynthDef("bow", { |out=0, freq=440, amp=1.0,frc=1, gate=1,pos=0.07,c1=0.25,c3=31,pan=0,att = 0.0, rel = 1.0, crv = -8.0|
@@ -205,7 +205,7 @@ SynthDef("bow", { |out=0, freq=440, amp=1.0,frc=1, gate=1,pos=0.07,c1=0.25,c3=31
 	sig = sig * env;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, sig);
-}).add;
+}).store;
 
 // debug a few time related values
 (
@@ -217,7 +217,7 @@ SynthDef(\debug, { |bgn = -1, end = -1, delta = -1, sustain = -1, unitDuration =
 	sustain.poll(Impulse.kr(0), label: "sustain");
 	unitDuration.poll(Impulse.kr(0), label: "unitDuration");
 	DC.kr(0).poll(Impulse.kr(0), label: "\n\n");
-}).add
+}).store
 );
 )
 
