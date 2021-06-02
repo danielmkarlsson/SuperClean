@@ -145,10 +145,13 @@ SynthDef(\inr, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, bnd,
 // "bnd" is used for a pitch glide, and "sustain" changes the envelope timescale
 (
 SynthDef(\kps, {|out, sustain=1, pan, bnd = 0, freq, detune=0.0 |
+	var accel, freqclipped;
 	var env = EnvGen.ar(Env.linen(0.002, 0.996, 0.002, 1,-3), timeScale:sustain, doneAction:2);
 	var sound = Decay.ar(Impulse.ar(0,0,0.1), 0.1*(freq.cpsmidi)/69) * WhiteNoise.ar;
 	var pitch = freq * Line.kr(1, 1+0, sustain);
-	sound = CombC.ar(sound, 0.05, pitch.reciprocal*(1-(0/100)), sustain) // remove detune because safety resons
+	accel = Line.kr(1, 1 + bnd.clip(-1.0, 1.0), 0.2 * sustain);
+	freqclipped = freq.clip(20, 20000) * accel;
+	sound = CombC.ar(sound, 0.05, freqclipped.clip(20, 20000).reciprocal*(1-(0/100)), sustain)
 	+ CombL.ar(sound, 0.05, pitch.reciprocal*(1+(0/100)), sustain);
 	OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env)) // move pan up before the two delay lines are introduced, hard pan them
 }).store
@@ -170,7 +173,7 @@ SynthDef(\drm, {|out, pew=1, sustain=1, pan, fed=0, tun |
 
 // Hi-hat using Rumble-San's implementation as a starting point
 // http://blog.rumblesan.com/post/53271713518/drum-sounds-in-supercollider-part-1
-// using "num" in a weird way to provide some variation on the frequency
+// using "tun" in a weird way to provide some variation on the frequency
 // "sustain" affects the overall envelope rate, "bnd" sweeps the filter
 (
 SynthDef(\hat, {|out, sustain=1, pan, bnd, tun |
