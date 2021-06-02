@@ -48,7 +48,7 @@ rdt         The time in seconds it takes to glissando from the detune frequency
 smr         spectral smear
 scm         spectral scramble
 enh         spectral enhance
-ocu         Octave up 
+ocu         Octave up
 ocd         Octave down
 ocq         Quarter-frequency harmonics (two octaves down)
 fsh         Frequency shift, value range goes both positive and negative, works in combination with fsm, try values -32 to 32
@@ -143,10 +143,10 @@ In the \drm synth definition you can change the tuning of the drum with tun.
 Strange wrapping and nonlinear range. Start trying values around 1.  The fdb
 parameter controls the amount of feedback inside the oscillator. Value range is
 0 to a lot where 0 is a sine, the higher up you go the noisier. The pew
-parameter controls teh space blaster to metal kickdrum morph. Lower values are
+parameter controls the space blaster to metal kickdrum morph. Lower values are
 more space blaster like. Higher values sound tighter.
 
-tun 
+tun
 fed
 pew
 
@@ -154,12 +154,12 @@ The \hat synth definition is a noise source through a filter and an envelope.
 You can use tun in a weird way to provide some variation on the frequency.
 bnd sweeps the filter.
 
-tun: -1.0, 1.0
-bnd: -1.0, 1.0
+tun
+bnd
 
 The \kps synth definition Karplus-Strong physical modeling of a vibrating string,
 using a delay line (CombL) excited by an intial pulse (Impulse)
-freq or midinote controls the frequency. bnd is used for a pitch glide
+freq or midinote controls the frequency. bnd is used for a pitch glide. Value range is -1 to 1.
 
 freq
 bnd
