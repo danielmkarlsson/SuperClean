@@ -79,7 +79,7 @@ they do not. Default values for parameters get set in CleanAux.sc
 	These per-sample-effects are freed after Monitor envelope has ended
 	*/
 
-	// A fuzz.
+	// This fuzz synthdef was originally designed by Jonathan Liljedahl. http://kymatica.com/
 	~clean.addModule('fuz', { |cleanEvent|
 		cleanEvent.sendSynth('fuz' ++ ~clean.numChannels,
 			[
