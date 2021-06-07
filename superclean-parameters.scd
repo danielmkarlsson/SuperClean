@@ -63,6 +63,8 @@ tnh: 	    Wet mix of the global tanh based distortion. Unlike the other distorti
 tnb: 	    Low pass filter before the tanh based distortion.
 tng: 	    Tanh gain stage, this makes tons of ditortion. Range is 0.0 to 999.0
 tna: 	    Low pass filter after the tanh based distortion.
+fuz: 	    A very raw kind of distortion. Has a built in gate. Very touch sensitive. Value range is 0 or 1. On or off.
+fzv: 	    Fuzz value. Range is zero to infinity.
 
 dur         The duration between events, range is a float above zero to infity, zero is infinitely fast, so, you mos def never want to do that
 midinote    0 to 127. 60 is default. Interestingly accepts floats which allows for microtonality
