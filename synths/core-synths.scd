@@ -32,15 +32,15 @@ they do not. Default values for parameters get set in CleanAux.sc
 
 			numFrames = BufFrames.ir(bufnum);
 			sawrate = rate * BufSampleRate.ir(bufnum) / (absdif(bgn, end) * numFrames);
-/*
+			/*
 			sound = BufRd.ar(
-				numChannels: sampleNumChannels,
-				bufnum: bufnum,
-				phase: phase,
-				loop: 0,
-				interpolation: 4
+			numChannels: sampleNumChannels,
+			bufnum: bufnum,
+			phase: phase,
+			loop: 0,
+			interpolation: 4
 			);
-*/
+			*/
 			sound = PlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, startPos: phase, doneAction:2);
 			sound = CleanPan.ar(sound, numChannels, pan);
 
@@ -78,6 +78,35 @@ they do not. Default values for parameters get set in CleanAux.sc
 	Effect SynthDefs
 	These per-sample-effects are freed after Monitor envelope has ended
 	*/
+
+	// A fuzz.
+	~clean.addModule('fuz', { |cleanEvent|
+		cleanEvent.sendSynth('fuz' ++ ~clean.numChannels,
+			[
+				fuz: ~fuz,
+				fzv: ~fzv,
+				out: ~out
+			]
+	)}, { ~fuz.notNil or: { ~fzv.notNil } });
+
+	SynthDef (\fuz ++ ~clean.numChannels, { |out, fzv = 3, fuz = 0|
+	var sig, dry, gate, in;
+	in = In.ar(out, numChannels);
+	sig = in;
+	gate = Amplitude.ar(sig,0.005,0.005) > 0.002;
+	sig = (sig * 4).tanh;
+	sig = MidEQ.ar(sig,100,1,20);
+	dry = sig;
+	sig = (Limiter.ar(sig * 50) * fzv).wrap(-1, 1) + sig;
+	sig = sig.tanh;
+	sig = MidEQ.ar(sig,200,1,20);
+	sig = MidEQ.ar(sig,1000,1,-20);
+	sig = LPF.ar(sig,8000);
+	sig = (sig+dry).tanh;
+	sig = MidEQ.ar(sig,4000,1,-20);
+	sig = Select.ar(fuz, [in, sig * gate]);
+	ReplaceOut.ar(out, sig)
+	}, [\ir, \ir]).add;
 
 	SynthDef("clean_crush" ++ numChannels, { |out, crush = 4|
 		var signal = In.ar(out, numChannels);
@@ -160,69 +189,32 @@ they do not. Default values for parameters get set in CleanAux.sc
 	}, [\ir, \ir, \ir, \ir]).add;
 
 	/*SynthDef("clean_tremolo" ++ numChannels, { |out, tremolorate = 1.0, tremolodepth = 0.5 |
-		var signal, tremolowave;
+	var signal, tremolowave;
 
-		tremolodepth = tremolodepth.clip(0, 1) * 0.5;
-		tremolowave = (1 - tremolodepth) + SinOsc.ar(tremolorate, 0.5pi, tremolodepth);
+	tremolodepth = tremolodepth.clip(0, 1) * 0.5;
+	tremolowave = (1 - tremolodepth) + SinOsc.ar(tremolorate, 0.5pi, tremolodepth);
 
-		signal = In.ar(out, numChannels);
-		signal = signal * tremolowave;
+	signal = In.ar(out, numChannels);
+	signal = signal * tremolowave;
 
-		ReplaceOut.ar(out, signal);
+	ReplaceOut.ar(out, signal);
 	}, [\ir, \ir, \ir]).add;*/
 
 	/*// Phaser audio DSP effect definition. Params: phaserrate (Hz); phaserdepth (amplitude)
 	SynthDef("clean_phaser" ++ numChannels, { |out, phaserrate = 1.0, phaserdepth = 0.5, sustain = 4 |
-		var signal, phaserwave;
-		var phase =  LFPar.kr(phaserrate).range(0.0088, 0.01);
+	var signal, phaserwave;
+	var phase =  LFPar.kr(phaserrate).range(0.0088, 0.01);
 
-		phaserdepth = phaserdepth.clip(0, 1);
+	phaserdepth = phaserdepth.clip(0, 1);
 
-		signal = In.ar(out, numChannels);
+	signal = In.ar(out, numChannels);
 
-		phaserwave = AllpassL.ar(signal, sustain, phase, 0, phaserdepth);
+	phaserwave = AllpassL.ar(signal, sustain, phase, 0, phaserdepth);
 
-		signal = signal + phaserwave;
+	signal = signal + phaserwave;
 
-		ReplaceOut.ar(out, signal);
+	ReplaceOut.ar(out, signal);
 	}, [\ir, \ir, \ir]).add;*/
-
-	// Waveloss
-	// Divides an audio stream into tiny segments, using the signal's
-	// zero-crossings as segment boundaries, and discards a fraction of them.
-
-	~clean.addModule('wls', { |cleanEvent|
-		cleanEvent.sendSynth('wls' ++ ~clean.numChannels,
-			[
-				wls: ~wls,
-				out: ~out
-			]
-		)
-	}, { ~wls.notNil });
-
-	SynthDef("wls" ++ ~clean.numChannels, { |out, wls = 1|
-		var sig = In.ar(out, ~clean.numChannels);
-		sig = WaveLoss.ar(sig, wls, outof: 100, mode: 2);
-		ReplaceOut.ar(out, sig)
-	},[\ir, \ir]).add;
-
-	// Squiz
-	// "reminiscent of some weird mixture of filter, ring-modulator
-	// and pitch-shifter"
-	~clean.addModule('sqz', { |cleanEvent|
-		cleanEvent.sendSynth('squiz' ++ ~clean.numChannels,
-			[
-				pitchratio: ~sqz,
-				out: ~out
-			]
-		)
-	}, { ~sqz.notNil });
-
-	SynthDef("squiz" ++ ~clean.numChannels, { |out, pitchratio = 1|
-		var sig = In.ar(out, ~clean.numChannels);
-		sig = Squiz.ar(sig, pitchratio);
-		ReplaceOut.ar(out, sig)
-	}, [\ir, \ir]).add;
 
 	// Frequency shifter
 	// Total shift is sum of `fshift` (in Hz) and `fshiftnote` times the current note frequency.
@@ -362,14 +354,13 @@ they do not. Default values for parameters get set in CleanAux.sc
 
 	// Spectral freeze
 	/*~clean.addModule('spectral-freeze', { |cleanEvent|
-		cleanEvent.sendSynth('spectral-freeze' ++ ~clean.numChannels,
-			[
-				freeze: ~frz,
-				out: ~out
-			]
-		)
+	cleanEvent.sendSynth('spectral-freeze' ++ ~clean.numChannels,
+	[
+	freeze: ~frz,
+	out: ~out
+	]
+	)
 	}, { ~frz.notNil } );
-
 
 	SynthDef("spectral-freeze" ++ ~clean.numChannels, { |out, freeze| // broken, use at own risk, values seem to be 0 for off and 1 for on
 	var signal, chain, in;
@@ -382,12 +373,12 @@ they do not. Default values for parameters get set in CleanAux.sc
 
 	// Spectral comb
 	~clean.addModule('cmb', { |cleanEvent|
-	cleanEvent.sendSynth('spectral-comb' ++ ~clean.numChannels,
-	[
-	comb: ~cmb,
-	out: ~out
-	]
-	)
+		cleanEvent.sendSynth('spectral-comb' ++ ~clean.numChannels,
+			[
+				comb: ~cmb,
+				out: ~out
+			]
+		)
 	}, { ~cmb.notNil });
 
 	SynthDef("spectral-comb" ++ ~clean.numChannels, { |out, comb|
@@ -543,9 +534,6 @@ they do not. Default values for parameters get set in CleanAux.sc
 	// A low pass filter for the first half of the range, and a high pass for the rest.
 	~clean.addModule('lhf', { |cleanEvent|
 		cleanEvent.sendSynth('lhf-filter' ++ ~clean.numChannels,
-			// OPTIONAL
-			// passing this array of parameters could be left out,
-			// but it makes it clear what happens
 			[
 				lhf: ~lhf,
 				out: ~out
@@ -568,36 +556,6 @@ they do not. Default values for parameters get set in CleanAux.sc
 		);
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
-
-	/*
-	// A nice reverb, behave very different on per event than on global, apply an env maybe for "reverse" reverb effect?
-	~clean.addModule('nhh', { |cleanEvent|
-		cleanEvent.sendSynth('nhh' ++ ~clean.numChannels,
-			[
-				nhh: ~nhh,
-				rts: ~rts,
-				bld: ~bld,
-				lfc: ~lfc,
-				lrt: ~lrt,
-				hfc: ~hfc,
-				hrt: ~hrt,
-				edf: ~edf,
-				ldf: ~ldf,
-				mdr: ~mdr,
-				mdd: ~mdd,
-				out: ~out
-			]
-	)}, { ~nhh.notNil});
-
-	SynthDef("nhh" ++ ~clean.numChannels, {|out, nhh, rts=1, bld=0.5, lfc=200, lrt=0.5, hfc=4000, hrt=0.5, edf=0.5, ldf=0.5, mdr=0.2, mdd=0.3|
-        var sig, wet;
-        sig = In.ar(out, ~clean.numChannels);
-        wet = sig;
-		wet = wet + NHHall.ar(wet, rts, bld, lfc, lrt, hfc, hrt, edf, ldf, mdr, mdd);
-        sig = XFade2.ar(sig, wet, nhh);
-        ReplaceOut.ar(out, sig)
-	}, [\ir, \ir]).add;
-*/
 
 }.value
 )
