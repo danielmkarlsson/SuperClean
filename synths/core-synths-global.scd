@@ -101,14 +101,18 @@ they'll come back automatically
 		Out.ar(effectBus, snd);
 	}, [\ir, \ir]).add;
 
-	// GVerb with LPF actually, but dark sounds _way_ better so, there you have it
-	SynthDef("clean_dark" ++ numChannels, {
-		|dryBus, effectBus, gate = 1, in, out, dark=1|
-		var sig;
+	// cav, pronounced "cave"
+	SynthDef("clean_cav" ++ numChannels, {
+		|dryBus, effectBus, gate = 1, in, out, cav = 1, cai = 1, cvt = 30, cvd = 0.5,  cvl = 1000|
+		var sig, lgt = 0.5;
 		sig = In.ar(dryBus, numChannels).asArray.sum;
-		sig = GVerb.ar(sig, 250, 30, 0.5, 0.5, 15, 1, 0.7, 0.5);
-		sig = LPF.ar(sig, 1000);
-		sig = sig * (1 - dark.lag(0.0625) - 1);
+		sig = GVerb.ar(
+			sig * cai.clip(0.0, 1.0).lag(lgt),
+			250,
+			cvt.clip(0.0, 1.0).linlin(0.0, 1.0, 0.001, 30).lag(lgt),
+			cvd.clip(0.0, 1.0).lag(lgt), 0.5, 15, 1, 0.7, 0.5);
+		sig = LPF.ar(sig, cvl.clip(0.0, 1.0).lag(lgt).linexp(0.0, 1.0, 20.0, 1000.0));
+		sig = sig * (1 - cav.lag(lgt) - 1);
 		CleanPause.ar(sig, graceTime:4);
 		Out.ar(effectBus, sig);
 	}, [\ir, \ir]).add;
@@ -116,7 +120,7 @@ they'll come back automatically
 	// NHHall based reverb, this implementation works, but could be improved in future to accept n number of channels
 	SynthDef("clean_hal" ++ numChannels, {
 		|dryBus, effectBus, gate=1, hal, hhp=20, hlp=20000, rts=1, bld=0.5, edf=0.5, ldf=0.5|
-		var wet, lgt=0.0625;
+		var wet, lgt = 0.0625;
 		var signal = In.ar(dryBus, numChannels);
 		signal = HPF.ar(signal, hhp.clip(20,20000).lag(lgt));
 		signal = LPF.ar(signal, hlp.clip(20,20000).lag(lgt));
