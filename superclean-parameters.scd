@@ -4,73 +4,79 @@
 This may not be a complete list of parameter names.
 The value range for the below parameters is 0.0 to 1.0 unless otherwise indicated
 
-snd         Sample folder or synth name
-num         Which sample in a folder, from zero up to the amount of files in that folder and then wraps back around
-pan         Pans the sound
-shp         Waveshaping amount
-sac         Shaping amplitude compensation
-slo         Waveshaping low
-shi         Waveshaping high
-sho         Waveshaping offset
-lot         Waveshaping low threshold
-hit         Waveshaping high threshold
-dst         A crunchy distortion with a lot of high harmonics
-tri         A triode-like distortion
-amp         Make it louder! Can go above one to lean into the limiter
-spd         Sample playback speed, default is 1.0, negative numbers play the sample backwards, slower playback rates closer to 0
-atk         The attack time of the envelope, the envelope parameters are expressed in seconds, 1.0 here means a one second fade in time
-hld         The hold time of the envelope
-rel         The release time of the envelope
-crv         Envelope curvature, swings both ways. That is to say it uses both positive and negative values, try values between -8 to 8
-lpf         Low pass filter, value range is 20 to 20000
-hpf         High pass filter, value range is 20 to 20000
-bpf         Band pass filter, value range is 20 to 20000
-lpq         Low pass filter resonance
-hpq         High pass filter resonance
-bpq         Band pass filter resonance
-lhf         Low & high pass filter combo where 0.5 does nothing, 0.0 sets the lpf to 20hz and 1.0 sets the hpf to 20000
-dla         Delay amplitude
-dlf         Delay feedback, proly best to think of 0.94 as the max sane value
-dlt         Delay time, value range is a very low float to 16.0
-rin         Set the amplitude of the input to the reverb
-rev         Reverb time (or room size, if we can imagine that)
-dry         Decrease the amplitude of the reverb
-bgn         Where in the file to begin playing back the file
-end         Where in the file to end playing back the file
-bnd         Change playback speed of samples while running, accepts positive and negative values
-lop         How many times to loop the file, takes integers, works in consort with the envelope parameters
-cut         Cut groups, cuts itself as well as other things in the same cut group. Rougher edges than leagato in terms of sound
-aux         An auxiliary output, you can use these for different outputs or same output with different effects depending on your startup file
-rma         Ringmodulation wet
-rmf         Ringmodulation frequency
-rdf         The frequency to glissando in from, which can be above or below rmf, range is 20 to 20000
-rdt         The time in seconds it takes to glissando from the detune frequency
-smr         spectral smear
-scm         spectral scramble
-enh         spectral enhance
-ocu         Octave up
-ocd         Octave down
-ocq         Quarter-frequency harmonics (two octaves down)
-fsh         Frequency shift, value range goes both positive and negative, works in combination with fsm, try values -32 to 32
-fsm         Frequency shift multiplier, value range goes both positive and negative, works in combination with fsh, try values -4 to 4
-hal         A hall reverb, this is the wet parameter, or put another way, the amplitude of the reverb.
-rts 	    The RT60 value of the reverb. This goes from 0 to 999. That top value is approaching inifity. It is super duper long.
-edf 	    Early diffusion of the hal reverb.
-ldf 	    Late diffusion of the hal reverb.
-hhp 	    A high pass filter before the hal reverb. Value range is 20 to 20000.
-hlp 	    A low pass filter before the hal reverb. Value range is 20 to 20000.
-tnh: 	    Wet mix of the global tanh based distortion. Unlike the other distortions this one is added after synths are summed. Try a fifth through this.
-tnb: 	    Low pass filter before the tanh based distortion.
-tng: 	    Tanh gain stage, this makes tons of ditortion. Range is 0.0 to 999.0
-tna: 	    Low pass filter after the tanh based distortion.
-fuz: 	    A very raw kind of distortion. Has a built in gate. Very touch sensitive. Value range is 0 or 1. On or off.
-fzv: 	    Fuzz value. Range is zero to infinity.
+snd:	Sample folder or synth name
+num:	Which sample in a folder, from zero up to the amount of files in that folder and then wraps back around
+pan:	Pans the sound
+shp:	Waveshaping amount
+sac:	Shaping amplitude compensation
+slo:	Waveshaping low
+shi:	Waveshaping high
+sho:	Waveshaping offset
+lot:	Waveshaping low threshold
+hit:	Waveshaping high threshold
+dst:	A crunchy distortion with a lot of high harmonics
+tri:	A triode-like distortion
+amp:	Make it louder! Can go above one to lean into the limiter
+spd:	Sample playback speed, default is 1.0, negative numbers play the sample backwards, slower playback rates closer to 0
+atk:	The attack time of the envelope, the envelope parameters are expressed in seconds, 1.0 here means a one second fade in time
+hld:	The hold time of the envelope
+rel:	The release time of the envelope
+crv:	Envelope curvature, swings both ways. That is to say it uses both positive and negative values, try values between -8 to 8
+lpf:	Low pass filter, value range is 20 to 20000
+hpf:	High pass filter, value range is 20 to 20000
+bpf:	Band pass filter, value range is 20 to 20000
+lpq:	Low pass filter resonance
+hpq:	High pass filter resonance
+bpq:	Band pass filter resonance
+lhf:	Low & high pass filter combo where 0.5 does nothing, 0.0 sets the lpf to 20hz and 1.0 sets the hpf to 20000
+dla:	Delay amplitude.
+dlf:	Delay feedback, proly best to think of 0.94 as the max sane value.
+dlt:	Delay time, value range is a very low float to 16.0
+rin:	Set the amplitude of the input to the reverb.
+rev:	Reverb time (or room size, if we can imagine that).
+dry:	Decrease the amplitude of the reverb.
+bgn:	Where in the file to begin playing back the file.
+end:	Where in the file to end playing back the file.
+bnd:	Change playback speed of samples while running, accepts positive and negative values.
+lop:	How many times to loop the file, takes integers, works in consort with the envelope parameters.
+cut:	Cut groups, cuts itself as well as other things in the same cut group. Rougher edges than legato in terms of sound tho so.
+aux:	An auxiliary output, you can use these for different outputs or same output with different effects depending on your startup file
+rma:	Ringmodulation wet
+rmf:	Ringmodulation frequency
+rdf:	The frequency to glissando in from, which can be above or below rmf, range is 20 to 20000
+rdt:	The time in seconds it takes to glissando from the detune frequency
+smr:	spectral smear
+scm:	spectral scramble
+enh:	spectral enhance
+ocu:	Octave up
+ocd:	Octave down
+ocq:	Quarter-frequency harmonics (two octaves down)
+fsh:	Frequency shift, value range goes both positive and negative, works in combination with fsm, try values -32 to 32
+fsm:	Frequency shift multiplier, value range goes both positive and negative, works in combination with fsh, try values -4 to 4
+hal:	A hall reverb, this is the wet parameter, or put another way, the amplitude of the reverb.
+rts:	The RT60 value of the reverb. This goes from 0 to 999. That top value is approaching inifity. It is super duper long.
+edf:	Early diffusion of the hal reverb.
+ldf:	Late diffusion of the hal reverb.
+hhp:	A high pass filter before the hal reverb. Value range is 20 to 20000.
+hlp:	A low pass filter before the hal reverb. Value range is 20 to 20000.
+tnh:	 Wet mix of the tanh based distortion. Unlike  other distortions this is added after synths are summed. Try a fifth through this.
+tnb:	Low pass filter before the tanh based distortion.
+tng:	Tanh gain stage, this makes tons of ditortion. Range is 0.0 to 999.0
+tna:	Low pass filter after the tanh based distortion.
+fuz:	A very raw kind of distortion. Has a built in gate. Very touch sensitive. Value range is 0 or 1. On or off.
+fzv:	Fuzz value. Range is zero to infinity.
+cav:	The amplitude of the cav reverb. Range is zero to infinity but will eventually hit the limiter.
+cai:	The input or send into the cav reverb. Range is zero to one.
+cvt:	The cav reverb time. Range is zero to one.
+cvd:	The cav reverb dampening. Range is zero to one.
+cvl:	The cav low pass filter after the reverb. Range is zero to one.
+
 
 dur         The duration between events, range is a float above zero to infity, zero is infinitely fast, so, you mos def never want to do that
 midinote    0 to 127. 60 is default. Interestingly accepts floats which allows for microtonality
 freq        When working with synths and we want to work with frequencies instead of midi note numbers as above, accepts integers 20 to 20000
 scale       Choose scale, for example: Scale.harmonicMinor, add a tuning there like this: Scale.harmonicMinor.tuning_(Tuning.sept1)
-degree      Negative infinity to infinity really but proly there will be seven degrees in scale
+degree      Negative infinity to infinity really but proly there will be seven degrees in scale.
 octave      Choose the octave. Range is zero infinity really but a reasonable range is more like 1 to 6. Accepts floats which is crazy/fun
 ctranspose  Chromatic transpostion. All keys on piano. Range is something like integers between -63 and 64 but depends on everything else.
 mtranspose  Modal transposition of degree within a scale. Works in combination with other keys like degree and scale.
@@ -284,7 +290,7 @@ Pdef(0,
             smr: Pwrand([0, 1], [32, 1].normalizeSum, inf),
             scm: Pwrand([0,1],[16,1].normalizeSum,inf),
             enh: Pwrand([0,1],[8,1].normalizeSum,inf),
-            dark: Pwrand([0,0.5],[4,1].normalizeSum,inf),
+            cav: Pwrand([0,0.5],[4,1].normalizeSum,inf),
             degree: Pstutter(Pkey(\rps),Pxrand((0..7),inf)),
             octave: Pstutter(Pkey(\rps),Pxrand((2..6),inf)),
             sustain: Pexprand(1,4).round(0.25),

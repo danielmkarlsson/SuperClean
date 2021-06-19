@@ -29,7 +29,7 @@ Pdef(0,
 			freq: (Pstutter(Pexprand(4, 32), 10 * Pexprand(1, 5).round)
 				* Pstutter(Pexprand(1, 64), Pexprand(1, 5)).round
 				* Pstutter(Pkey(\rps), Pexprand(1, 7).round)),
-			dark: Pseg(Pexprand(0.25, 1.0), Pexprand(8.0, 64.0), \welch, inf),
+			cav: Pseg(Pexprand(0.25, 1.0), Pexprand(8.0, 64.0), \welch, inf),
 			pan: Pbrown(0.0, 1.0, Pstutter(Pwhite(1, 3), Pwhite(0.01, 0.1))).trace,
 			atk: Pexprand(0.01, 4.0),
 			hld: Pkey(\dur) * 2,
@@ -244,7 +244,7 @@ Pdef(0,
 			dla: 1/64,
 			dlf: 0,
 			dlt: 16,
-			dark: 1/8,
+			cav: 1/8,
 			hal: 1/16,
 			rts: Pseg([0, 64, 0], Pwhite(30, 90), \sine, inf),
 		])
