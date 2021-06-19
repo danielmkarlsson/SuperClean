@@ -57,7 +57,7 @@ CleanAux {
 			GlobalCleanEffect(\clean_delay, [\delaytime, \delayfeedback, \delaySend, \delayAmp, \lock, \cps]),
 			GlobalCleanEffect(\clean_reverb, [\rev, \rin, \dry]),
 			//GlobalCleanEffect(\clean_grainfb, [\grainfb]),
-			GlobalCleanEffect(\clean_dark, [\dark]),
+			GlobalCleanEffect(\clean_cav, [\cav, \cai, \cvt, \cvd, \cvl]),
 			GlobalCleanEffect(\clean_tanh, [\tnh, \tng, \tnb, \tna]),
 			GlobalCleanEffect(\clean_rms, [\rmsReplyRate, \rmsPeakLag]).alwaysRun_(true),
 			GlobalCleanEffect(\clean_monitor).alwaysRun_(true),
