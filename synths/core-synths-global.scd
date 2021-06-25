@@ -78,7 +78,23 @@ they'll come back automatically
 			CleanPause.ar(signal, graceTime:4);
 			Out.ar(effectBus, signal);
 		}, [\ir, \ir]).add;
-
+/*
+	SynthDef ("tap"  ++ numChannels, {
+		|dryBus, effectBus, gate = 1,  wow = 1, dropOuts = 1 |
+		var in, del, sig, feed, svaj, amp;
+		in = In.ar(dryBus, numChannels);
+		in = tanh(in * 0.5);
+		feed = in;
+		amp = (LFNoise1.ar(15).range(0.8,1.1) * LFNoise1.ar(17).range(0.1,20).clip(0.3,1).lag(0.05));
+		feed = feed * dropOuts.if(amp,1);
+		svaj = LFNoise1.ar([2,9],[0.0011, 0.001]).sum.lag(0.4);
+		svaj = svaj - svaj.clip2(0.0007);
+		svaj = svaj * wow;
+		del = DelayL.ar(HPF.ar(feed, 10).tanh, 2.0, 0.002 + svaj);
+		sig = LeakDC.ar(del);
+		Out.ar(effectBus, del);
+	}, [\ir, \ir]).add;
+*/
 	// As I understand it, this reverb was created by Jost Muxfeld and James McCartney, it is not my cup of tea
 	SynthDef("clean_reverb" ++ numChannels, { |dryBus, effectBus, gate = 1, rin = 0, rev = 0.1, dry = 0|
 		var in, snd, loop, depth;
@@ -113,6 +129,20 @@ they'll come back automatically
 			cvd.clip(0.0, 1.0).lag(lgt), 0.5, 15, 1, 0.7, 0.5);
 		sig = LPF.ar(sig, cvl.clip(0.0, 1.0).lag(lgt).linexp(0.0, 1.0, 20.0, 1000.0));
 		sig = sig * (1 - cav.lag(lgt) - 1);
+		CleanPause.ar(sig, graceTime:4);
+		Out.ar(effectBus, sig);
+	}, [\ir, \ir]).add;
+
+	// Impulse Response based reverb
+	//~path = "/Users/danielmkarlsson/Library/Application\ Support/SuperCollider/Extensions/SuperClean/clean-samples/mir/mir4.wav";
+	~path = Main.packages.asDict.at('SuperClean') +/+ "/clean-samples/mir/mir4.wav";
+	~ezConv = EZConv(~path);
+	SynthDef("\clean_mir" ++ numChannels, {
+		|dryBus, effectBus, gate = 1, in, out, mii = 1 mir = 0.0 |
+		var sig, lgt = 0.5;
+		sig = In.ar(dryBus, numChannels).asArray.sum;
+		sig = ~ezConv.ar(sig * mii.clip(0.0, 1.0).lag(lgt), leak: 0.1, mul: 1/16);
+		sig = sig * (1 - mir.lag(lgt) - 1);
 		CleanPause.ar(sig, graceTime:4);
 		Out.ar(effectBus, sig);
 	}, [\ir, \ir]).add;
