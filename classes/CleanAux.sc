@@ -58,7 +58,7 @@ CleanAux {
 			GlobalCleanEffect(\clean_reverb, [\rev, \rin, \dry]),
 			//GlobalCleanEffect(\clean_grainfb, [\grainfb]),
 			GlobalCleanEffect(\clean_cav, [\cav, \cai, \cvt, \cvd, \cvl]),
-			//GlobalCleanEffect(\clean_mir, [\mir, \mii]),
+			GlobalCleanEffect(\clean_mir, [\mir, \mii]),
 			GlobalCleanEffect(\clean_tanh, [\tnh, \tng, \tnb, \tna]),
 			//GlobalCleanEffect(\tap, [\tap, \drp]),
 			GlobalCleanEffect(\clean_rms, [\rmsReplyRate, \rmsPeakLag]).alwaysRun_(true),
