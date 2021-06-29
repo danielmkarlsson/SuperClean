@@ -37,7 +37,8 @@ are updating because otherwise you might run into some double trouble there with
 
 Julian Rohrhuber built this thing initially, then I changed some things here and there. I had a lot of help from friends along the way. 
 What you have here is essentially a shameless ripOff / fork of / homage to SuperDirt. A special shoutout to Marcus Pal who initially created the FM synth and the 
-additive synth. `mir` builds on the work of David Granström, specifically [EZConv](https://github.com/davidgranstrom/EZConv) which is just amazing.
+additive synth. `mir` builds on the work of [David Granström](https://davidgranstrom.com/), specifically [EZConv](https://github.com/davidgranstrom/EZConv) 
+which is just amazing.
 
 ## Requirements
 
