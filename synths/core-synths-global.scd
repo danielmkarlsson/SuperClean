@@ -4,9 +4,9 @@ AUX BASED (GLOBAL)
 CORE SYNTHDEFS FOR CLEAN
 (REQUIRED: GlobalCleanEffects)
 
-Global synth defs: these synths run in each CleanAux and are only released when it is stopped
-when you change them, to update them, hit cmd-period (which stops the synths on the server) once.
-they'll come back automatically
+Global synth defs: These synths run on each CleanAux and are only released when stopped.
+If you make changes to them, hit cmd-period to update them.
+They'll come back automatically.
 
 */
 
@@ -64,11 +64,11 @@ they'll come back automatically
 			var signal;
 			var input = In.ar(dryBus, numChannels);
 			var maxdelaytime = 16;
-			input = input * delaySend.lag(LFNoise1.kr(1).range(0.01, 0.02)); // regulate input
+			input = input * delaySend.lag(LFNoise1.kr(1).range(0.01, 0.02)); // Regulate input.
 			delayfeedback = delayfeedback.max(0);
 			delaytime = delaytime * if(lock, reciprocal(cps), 1);
-			delaytime = delaytime.clip(0, maxdelaytime); // just to be sure
-			// from sc3-plugins
+			delaytime = delaytime.clip(0, maxdelaytime); // Just to be sure.
+			// From sc3-plugins.
 			signal = \SwitchDelay.asClass.ar(input, 1, 1, delaytime, delayfeedback, maxdelaytime);
 			DetectSilence.ar(signal, time:1, doneAction: 1);
 			// doesn't work properly. We don't really know when it's not used anymore.
@@ -95,7 +95,7 @@ they'll come back automatically
 		Out.ar(effectBus, del);
 	}, [\ir, \ir]).add;
 */
-	// As I understand it, this reverb was created by Jost Muxfeld and James McCartney, it is not my cup of tea
+	// As I understand it, this reverb was created by Jost Muxfeld and James McCartney, it is not my cup of tea.
 	SynthDef("clean_reverb" ++ numChannels, { |dryBus, effectBus, gate = 1, rin = 0, rev = 0.1, dry = 0|
 		var in, snd, loop, depth;
 		in = In.ar(dryBus, numChannels).asArray.sum;
@@ -132,21 +132,20 @@ they'll come back automatically
 		CleanPause.ar(sig, graceTime:4);
 		Out.ar(effectBus, sig);
 	}, [\ir, \ir]).add;
-/*
+
 	// Impulse Response based reverb
-	//~path = "/Users/danielmkarlsson/Library/Application\ Support/SuperCollider/Extensions/SuperClean/clean-samples/mir/mir4.wav";
-	~path = Main.packages.asDict.at('SuperClean') +/+ "/clean-samples/mir/mir4.wav";
-	~ezConv = EZConv(~path);
+	~path = Main.packages.asDict.at('SuperClean') +/+ "/clean-samples/mmd/mir/mir4.wav";
+	~ezConvX = EZConvX(~path);
 	SynthDef("\clean_mir" ++ numChannels, {
 		|dryBus, effectBus, gate = 1, in, out, mii = 1 mir = 0.0 |
 		var sig, lgt = 0.5;
 		sig = In.ar(dryBus, numChannels).asArray.sum;
-		sig = ~ezConv.ar(sig * mii.clip(0.0, 1.0).lag(lgt), leak: 0.1, mul: 1/16);
+		sig = ~ezConvX.ar(sig * mii.clip(0.0, 1.0).lag(lgt), leak: 0.1, mul: 1/16);
 		sig = sig * (1 - mir.lag(lgt) - 1);
 		CleanPause.ar(sig, graceTime:4);
 		Out.ar(effectBus, sig);
 	}, [\ir, \ir]).add;
-*/
+
 	// NHHall based reverb, this implementation works, but could be improved in future to accept n number of channels
 	SynthDef("clean_hal" ++ numChannels, {
 		|dryBus, effectBus, gate=1, hal, hhp=20, hlp=20000, rts=1, bld=0.5, edf=0.5, ldf=0.5|
