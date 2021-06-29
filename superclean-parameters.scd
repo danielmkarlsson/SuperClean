@@ -70,7 +70,8 @@ cai:	The input or send into the cav reverb. Range is zero to one.
 cvt:	The cav reverb time. Range is zero to one.
 cvd:	The cav reverb dampening. Range is zero to one.
 cvl:	The cav low pass filter after the reverb. Range is zero to one.
-
+mir:	Mimer impulse response reverb. mir controls the "wet" or output volume of the reverb.
+mii:	Controls the input volume into the reverb.
 
 dur         The duration between events, range is a float above zero to infity, zero is infinitely fast, so, you mos def never want to do that
 midinote    0 to 127. 60 is default. Interestingly accepts floats which allows for microtonality
