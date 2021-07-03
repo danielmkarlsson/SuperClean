@@ -6,38 +6,44 @@ extreme modulation indexes. SuperClean even includes a remarkably efficient addi
 world. SuperClean is, in short, a one-stop-shopping-experience for folks who want:
 
 • An MPC,  
-• a bunch of effects, and.   
+• a bunch of effects, and,   
 • a couple of synths. 
 
 for the low, low asking price of: _free_.
 Also, on a personal note here, hey, this is what I use to make music with every day.
-I really like making music and, for me, this makes it way funner.
+I really love making music and, for me, this makes it way funner.
 Try it! What have you got to loose?
 
 ![Maureen "Ma Dukes" Yancey smiling with her son J Dilla's MPC 3000](Dilla-Smithsonian-mpc1.jpg)
 
 ## Installation
 
-Download the .zip and drag it into your extensions folder.
+Download the .zip, unzip it, make sure it's called SuperClean (_not_ SuperClean-master) and drag it into your Extensions folder.
 
 ## Updating
 
-If you used the drag to Extensions folder option above then replace that folder and you are done. 
-If you went with the Quarks option from way back when that was a thing then I have found that in order to be able to update consistently across 
-different operating systems I need to first uninstall:
+Drag the updated SuperClean folder to Extensions folder, which replaces the old SuperClean folder and you are done.
+Make sure this folder is called SuperClean, not SuperClean-master.  
+If you went with the Quarks option from way back when that was a thing, then click below.
+<details>  
+<br>
+I have found that in order to be able to update consistently across 
+different operating systems I need to first uninstall by running this line in SuperCollider:  
 
 `Quarks.uninstall("SuperClean");`
 
 I then manually delete the old SuperClean folder, reinstall with the above dragging to the folder Extensions method, then recompile the class library.
 
 If you have used the old quarks method in the past then take extra special care to delete that old quarks SuperClean folder as you 
-are updating because otherwise you might run into some double trouble there with your new SuperClean folder in Extensions.
-
+are updating because otherwise you might run into some double trouble there with your new SuperClean folder in Extensions. 
+</details>
+	
 ## Origins and acknowledgements
 
 Julian Rohrhuber built this thing initially, then I changed some things here and there. I had a lot of help from friends along the way. 
 What you have here is essentially a shameless ripOff / fork of / homage to SuperDirt. A special shoutout to Marcus Pal who initially created the FM synth and the 
-additive synth. `mir` builds on the work of [David Granström](https://davidgranstrom.com/), specifically [EZConv](https://github.com/davidgranstrom/EZConv) 
+additive synth.  
+`mir` builds on the work of [David Granström](https://davidgranstrom.com/), specifically [EZConv](https://github.com/davidgranstrom/EZConv) 
 which is just amazing.
 
 ## Requirements
