@@ -59,42 +59,42 @@ They'll come back automatically.
 
 	*/
 
-		SynthDef("clean_delay" ++ numChannels, {
-			|dryBus, effectBus, gate = 1, delaytime, delayfeedback, delaySend = 1, delayAmp = 1, lock = 0, cps = 1|
-			var signal;
-			var input = In.ar(dryBus, numChannels);
-			var maxdelaytime = 16;
-			input = input * delaySend.lag(LFNoise1.kr(1).range(0.01, 0.02)); // Regulate input.
-			delayfeedback = delayfeedback.max(0);
-			delaytime = delaytime * if(lock, reciprocal(cps), 1);
-			delaytime = delaytime.clip(0, maxdelaytime); // Just to be sure.
-			// From sc3-plugins.
-			signal = \SwitchDelay.asClass.ar(input, 1, 1, delaytime, delayfeedback, maxdelaytime);
-			DetectSilence.ar(signal, time:1, doneAction: 1);
-			// doesn't work properly. We don't really know when it's not used anymore.
-			// this would have to be an explicit signal from sclang
-			signal = signal * EnvGen.kr(Env.asr, gate, doneAction:2);
-			signal = signal * delayAmp.lag(0.01);
-			CleanPause.ar(signal, graceTime:4);
-			Out.ar(effectBus, signal);
-		}, [\ir, \ir]).add;
-/*
-	SynthDef ("tap"  ++ numChannels, {
-		|dryBus, effectBus, gate = 1,  wow = 1, dropOuts = 1 |
-		var in, del, sig, feed, svaj, amp;
-		in = In.ar(dryBus, numChannels);
-		in = tanh(in * 0.5);
-		feed = in;
-		amp = (LFNoise1.ar(15).range(0.8,1.1) * LFNoise1.ar(17).range(0.1,20).clip(0.3,1).lag(0.05));
-		feed = feed * dropOuts.if(amp,1);
-		svaj = LFNoise1.ar([2,9],[0.0011, 0.001]).sum.lag(0.4);
-		svaj = svaj - svaj.clip2(0.0007);
-		svaj = svaj * wow;
-		del = DelayL.ar(HPF.ar(feed, 10).tanh, 2.0, 0.002 + svaj);
-		sig = LeakDC.ar(del);
-		Out.ar(effectBus, del);
+	SynthDef("clean_delay" ++ numChannels, {
+		|dryBus, effectBus, gate = 1, delaytime, delayfeedback, delaySend = 1, delayAmp = 1, lock = 0, cps = 1|
+		var signal;
+		var input = In.ar(dryBus, numChannels);
+		var maxdelaytime = 16;
+		input = input * delaySend.lag(LFNoise1.kr(1).range(0.01, 0.02)); // Regulate input.
+		delayfeedback = delayfeedback.max(0);
+		delaytime = delaytime * if(lock, reciprocal(cps), 1);
+		delaytime = delaytime.clip(0, maxdelaytime); // Just to be sure.
+		// From sc3-plugins.
+		signal = \SwitchDelay.asClass.ar(input, 1, 1, delaytime, delayfeedback, maxdelaytime);
+		DetectSilence.ar(signal, time:1, doneAction: 1);
+		// doesn't work properly. We don't really know when it's not used anymore.
+		// this would have to be an explicit signal from sclang
+		signal = signal * EnvGen.kr(Env.asr, gate, doneAction:2);
+		signal = signal * delayAmp.lag(0.01);
+		CleanPause.ar(signal, graceTime:4);
+		Out.ar(effectBus, signal);
 	}, [\ir, \ir]).add;
-*/
+	/*
+	SynthDef ("tap"  ++ numChannels, {
+	|dryBus, effectBus, gate = 1,  wow = 1, dropOuts = 1 |
+	var in, del, sig, feed, svaj, amp;
+	in = In.ar(dryBus, numChannels);
+	in = tanh(in * 0.5);
+	feed = in;
+	amp = (LFNoise1.ar(15).range(0.8,1.1) * LFNoise1.ar(17).range(0.1,20).clip(0.3,1).lag(0.05));
+	feed = feed * dropOuts.if(amp,1);
+	svaj = LFNoise1.ar([2,9],[0.0011, 0.001]).sum.lag(0.4);
+	svaj = svaj - svaj.clip2(0.0007);
+	svaj = svaj * wow;
+	del = DelayL.ar(HPF.ar(feed, 10).tanh, 2.0, 0.002 + svaj);
+	sig = LeakDC.ar(del);
+	Out.ar(effectBus, del);
+	}, [\ir, \ir]).add;
+	*/
 	// As I understand it, this reverb was created by Jost Muxfeld and James McCartney, it is not my cup of tea.
 	SynthDef("clean_reverb" ++ numChannels, { |dryBus, effectBus, gate = 1, rin = 0, rev = 0.1, dry = 0|
 		var in, snd, loop, depth;

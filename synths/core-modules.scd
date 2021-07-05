@@ -1,6 +1,6 @@
 /*
 CORE MODULES
-(REQUIRE: CORE SYNTHS)
+(REQUIRE: CORE EFFECTS)
 Core Modules: these are called for each event,
 and they represent the list of possible (effect) synths on the event level
 Usually, they correspond to a SynthDef (here in core-synths), you could call any function in them
@@ -104,26 +104,26 @@ they respond to the existence of a value for one of the parameters
 
 }, { ~bpf.notNil });
 
-~clean.addModule('cru',
+~clean.addModule('bit',
 	{ |cleanEvent|
 		cleanEvent.sendSynth("clean_crush" ++ ~numChannels,
 			[
-				crush: ~cru,
+				crush: ~bit,
 				out: ~out
 		])
 
-}, { ~cru.notNil });
+}, { ~bit.notNil });
 
 
-~clean.addModule('crs',
+~clean.addModule('sam',
 	{ |cleanEvent|
 		cleanEvent.sendSynth("clean_coarse" ++ ~numChannels,
 			[
-				coarse: ~crs,
+				coarse: ~sam,
 				out: ~out
 		])
 
-}, { ~crs.notNil and: { ~crs > 1 } }); // coarse == 1 => full rate
+}, { ~sam.notNil and: { ~sam > 1 } }); // coarse == 1 => full rate
 
 ~clean.addModule('lpf',
 	{ |cleanEvent|

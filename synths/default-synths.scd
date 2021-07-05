@@ -75,9 +75,8 @@ SynthDef("saw", {|out = 0, sustain = 1, bnd, freq = 440, iph = 0, wid = 0.25, am
 	sig = VarSaw.ar(freqclipped.clip(20, 20000), iph, wid, 0.75);
 	sig = sig * env;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
-	Out.ar(out, Pan2.ar(sig, pan));
+	Out.ar(out, sig);
 }).store;
-
 
 // A square oscillator
 SynthDef("sqr", {|out = 0, sustain = 1, bnd, freq = 440, amp = 0.5, pan = 0, att = 0.0, rel = 1.0, crv = -8.0, wid = 0.25|
@@ -88,7 +87,7 @@ SynthDef("sqr", {|out = 0, sustain = 1, bnd, freq = 440, amp = 0.5, pan = 0, att
 	sig = Pulse.ar(freqclipped.clip(20, 20000), wid, 0.75);
 	sig = sig * env;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
-	Out.ar(out, Pan2.ar(sig, pan));
+	Out.ar(out, sig);
 },
 ).store;
 
@@ -171,7 +170,7 @@ SynthDef(\drm, {|out, pew=1, sustain=1, pan, fed=0, tun |
 }).store
 );
 
-// Hi-hat using Rumble-San's implementation as a starting point
+// This hat sound builds on the work of Rumble-San
 // http://blog.rumblesan.com/post/53271713518/drum-sounds-in-supercollider-part-1
 // using "tun" in a weird way to provide some variation on the frequency
 // "sustain" affects the overall envelope rate, "bnd" sweeps the filter
@@ -179,9 +178,9 @@ SynthDef(\drm, {|out, pew=1, sustain=1, pan, fed=0, tun |
 SynthDef(\hat, {|out, sustain=1, pan, bnd, tun |
 	var env, sound, accel, freq;
 	env = EnvGen.ar(Env.linen(0.01, 0, 0.3, 1, -3), timeScale:sustain, doneAction:2);
-	accel = Line.kr(1, 1+bnd.clip(-1.0, 1.0), 0.2*sustain);
-	freq = 2000 * accel * (tun.clip(-1.0, 1.0) / 5 + 1).wrap(0.5,2);
-	sound = HPF.ar(LPF.ar(WhiteNoise.ar(1), 3*freq), freq);
+	accel = Line.kr(1, 1 + bnd.clip(-1.0, 1.0), 0.2 * sustain);
+	freq = 2000 * accel * (tun.clip(-1.0, 1.0) / 5 + 1).wrap(0.5, 2);
+	sound = HPF.ar(LPF.ar(WhiteNoise.ar(1), 3 * freq), freq);
 	OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env))
 }).store
 );
@@ -189,16 +188,17 @@ SynthDef(\hat, {|out, sustain=1, pan, bnd, tun |
 // Transient excited filter
 SynthDef("dfd", {|out = 0, freq = 440, res = 1, den = 0, amp = 1, pan = 0.5, att = 0.0, rel = 1.0, crv = -8.0, typ = 0.0, nsl = 0|
 	var env, sig;
-	env = Env.perc(att, rel, amp*300, crv).kr(doneAction: 2);
-	sig = DFM1.ar(Dust2.ar(den.dup(~clean.numChannels), amp), freq.clip(20, 7139), res.clip(0.0, 1.01), 1, typ, nsl);	sig = sig * env;
+	env = Env.perc(att, rel, amp * 300, crv).kr(doneAction: 2);
+	sig = DFM1.ar(Dust2.ar(den.dup(~clean.numChannels), amp), freq.clip(20, 7139), res.clip(0.0, 1.01), 1, typ, nsl);
+	sig = sig * env;
 	//sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, sig);
 }).store;
 
 // Digital wave guide physical model of a bowed instrument
-SynthDef("bow", { |out=0, freq=440, amp=1.0,frc=1, gate=1,pos=0.07,c1=0.25,c3=31,pan=0,att = 0.0, rel = 1.0, crv = -8.0|
+SynthDef("bow", { |out=0, freq=440, amp=1.0, frc=1, gate=1, pos=0.07 ,c1=0.25, c3=31, pan=0, atk = 0.0, rel = 1.0, crv = -8.0|
 	var env, vib, sig;
-	env = Env.perc(att, rel, amp*0.666, crv).kr(doneAction: 2);
+	env = Env.perc(atk, rel, amp*0.666, crv).kr(doneAction: 2);
 	sig = DWGBowed.ar(freq.clip(20,5000), amp,frc, gate,pos,0.1,c1,c3);
 	sig = DWGSoundBoard.ar(sig);
 	sig = BPF.ar(sig,118,1)+sig;
