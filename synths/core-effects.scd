@@ -107,13 +107,13 @@ they do not. Default values for parameters get set in CleanAux.sc
 	ReplaceOut.ar(out, sig)
 	}, [\ir, \ir]).add;
 
-	SynthDef("bit" ++ numChannels, { |out, crush = 4|
+	SynthDef("clean_crush" ++ numChannels, { |out, crush = 4|
 		var signal = In.ar(out, numChannels);
 		signal = signal.round(0.5 ** (crush-1));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
-	SynthDef("sam" ++ numChannels, { |out, coarse = 0, bandq = 10|
+	SynthDef("clean_coarse" ++ numChannels, { |out, coarse = 0, bandq = 10|
 		var signal = In.ar(out, numChannels);
 		signal = Latch.ar(signal, Impulse.ar(SampleRate.ir / coarse));
 		ReplaceOut.ar(out, signal)
