@@ -23,4 +23,4 @@
 
 // For many:
 
-~makeAlias.(\mmd, \m, \rnb, \r);
+~makeAlias.(\mmd, \m, \rnb, \rhythmnblues);
