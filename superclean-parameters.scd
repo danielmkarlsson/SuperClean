@@ -72,16 +72,21 @@ cvd:	The cav reverb dampening. Range is zero to one.
 cvl:	The cav low pass filter after the reverb. Range is zero to one.
 mir:	Mimer impulse response reverb. mir controls the "wet" or output volume of the reverb.
 mii:	Controls the input volume into the reverb.
+bit:	Roughly translates to bit rate reduction. Value range is zero to infinity. Lower values give more action.
+sam:	Roughly translates to sample rate reduction. Value range is zero to infinity. Higher values give more action.
 
-dur         The duration between events, range is a float above zero to infity, zero is infinitely fast, so, you mos def never want to do that
-midinote    0 to 127. 60 is default. Interestingly accepts floats which allows for microtonality
-freq        When working with synths and we want to work with frequencies instead of midi note numbers as above, accepts integers 20 to 20000
-scale       Choose scale, for example: Scale.harmonicMinor, add a tuning there like this: Scale.harmonicMinor.tuning_(Tuning.sept1)
-degree      Negative infinity to infinity really but proly there will be seven degrees in scale.
-octave      Choose the octave. Range is zero infinity really but a reasonable range is more like 1 to 6. Accepts floats which is crazy/fun
-ctranspose  Chromatic transpostion. All keys on piano. Range is something like integers between -63 and 64 but depends on everything else.
-mtranspose  Modal transposition of degree within a scale. Works in combination with other keys like degree and scale.
-harmonic    Multiplies the frequency determined by midinote, typically to an overtone. https://en.wikipedia.org/wiki/Overtone
+The parameters below aren't actually part of SuperClean, but are very useful
+and because SuperClean is running inside SuperCollider, we can use them.
+
+dur:        The duration between events, range is a float above zero to infity, zero is infinitely fast, so, you mos def never want to do that
+midinote:   0 to 127. 60 is default. Interestingly accepts floats which allows for microtonality
+freq:       When working with synths and we want to work with frequencies instead of midi note numbers as above, accepts integers 20 to 20000
+scale:      Choose scale, for example: Scale.harmonicMinor, add a tuning there like this: Scale.harmonicMinor.tuning_(Tuning.sept1)
+degree:     Negative infinity to infinity really but proly there will be seven degrees in scale.
+octave:     Choose the octave. Range is zero infinity really but a reasonable range is more like 1 to 6. Accepts floats which is crazy/fun
+ctranspose: Chromatic transpostion. All keys on piano. Range is something like integers between -63 and 64 but depends on everything else.
+mtranspose: Modal transposition of degree within a scale. Works in combination with other keys like degree and scale.
+harmonic:   Multiplies the frequency determined by midinote, typically to an overtone. https://en.wikipedia.org/wiki/Overtone
 
 stepsPerOctave has no documentation that I can find. Very little is know about this strange parameter other than that it's default is 12.
 Try untoggling that key in this example:
@@ -107,12 +112,9 @@ replacement for root. If you add 60 to a midinote value you get the equivalent
 to note. If you add a fraction like for example 0.5 at the end of a midinote
 calculation you get the equivalent of detune.
 
-legato      Like a variable soft cut dependent on dur where 1 is equal to dur. This is unlike cut in that it only affects itself
-sustain     Adds sustain by changing the timescale of the envelope. Can turn a drum into a drone. Value range is a float above 0 to infinity
+legato :     Like a variable soft cut dependent on dur where 1 is equal to dur. This is unlike cut in that it only affects itself.
+sustain:     Adds sustain by changing the timescale of the envelope. Can turn a drum into a drone. Value range is a float above 0 to infinity.
 
-This last group of parameters aren't actually part of SuperClean,
-but are very useful and because SuperClean is running inside SuperCollider,
-we can use them.
 
 In the \fmx synth definition the envelope segments are expressed in
 percentages. e4 through to e1 tell you how far into the note value that the
@@ -130,23 +132,23 @@ especially important for me where modulation indexes are concerned. Without
 this level of detail, FM can otherwise easily become a very round about way for
 me to make white noise.
 
-freq
-hr1
-hr2
-hr3
-hr4
-fdb
-mi2
-mi3
-mi4
-en1
-en2
-en3
-en4
-cu1
-cu2
-cu3
-cu4
+freq:
+hr1:
+hr2:
+hr3:
+hr4:
+fdb:
+mi2:
+mi3:
+mi4:
+en1:
+en2:
+en3:
+en4:
+cu1:
+cu2:
+cu3:
+cu4:
 
 In the \drm synth definition you can change the tuning of the drum with tun.
 Strange wrapping and nonlinear range. Start trying values around 1.  The fdb
@@ -155,31 +157,31 @@ parameter controls the amount of feedback inside the oscillator. Value range is
 parameter controls the space blaster to metal kickdrum morph. Lower values are
 more space blaster like. Higher values sound tighter.
 
-tun
-fed
-pew
+tun:
+fed:
+pew:
 
 The \hat synth definition is a noise source through a filter and an envelope.
 You can use tun in a weird way to provide some variation on the frequency.
 bnd sweeps the filter.
 
-tun
-bnd
+tun:
+bnd:
 
 The \kps synth definition Karplus-Strong physical modeling of a vibrating string,
 using a delay line (CombL) excited by an intial pulse (Impulse)
 freq or midinote controls the frequency. bnd is used for a pitch glide. Value range is -1 to 1.
 
-freq
-bnd
+freq:
+bnd:
 
 The \sin synth definition is a sine wave oscillator. It accepts freq and midinote
 and parameters like those. It can also let you control the initial phase with the
 iph parameter. This might not be very exciting since it is a sine wave and frequency
 is either 100% phase cancelled out or not at all.
 
-freq
-iph
+freq:
+iph:
 
 The \saw synth definition is a saw wave oscillator. It accepts freq and midinote
 and parameters like those. It can also let you control the initial phase with the
@@ -187,16 +189,16 @@ iph parameter. This might  potentially be very cool because you can then partial
 phase out another saw wave. You can also control the width of the saw wave with
 the wid parameter.
 
-freq
-iph
-wid
+freq:
+iph:
+wid:
 
 The \sqr synth definition is a square wave oscillator. Same thing as above for the
 parameters.
 
-freq
-iph
-wid
+freq:
+iph:
+wid:
 
 The \dfd synth definition is a transient excited filter, the filter itself is noisy and can selfoscillate
 den: the density of transients.
@@ -204,21 +206,21 @@ res: the resonance of the filter. 1 is a tremendous sweetspot. Range is 0 to 1.0
 typ: the type of filter where 0.0 is low pass and 1.0 is high pass.
 nsl: the noise level. Range is 0 to infinity. Go easy here, as a little goes a very long way.
 
-freq
-den
-res
-typ
-nsl
+freq:
+den:
+res:
+typ:
+nsl:
 
 The \bow synth definition is a digital wave guide physical model of a bowed instrument.
 frc: Force.
 pos: Position.
 bpr: Bow pressure.
 
-freq
-frc
-pos
-bpr
+freq:
+frc:
+pos:
+bpr:
 
 // Here's an example using most of the parameters from above all together in one wild mess
 (
