@@ -11,7 +11,7 @@ world. SuperClean is, in short, a one-stop-shopping-experience for folks who wan
 • some synths, and,
 • a flexible routing system 
 
-for the low, low asking price of: _free_.
+for the low, low asking price of: _free_.  
 Also, on a personal note here, hey, this is what I use to make music with every day.
 I really love making music and, for me, this makes it way funner.
 Try it! What have you got to loose?
@@ -270,7 +270,7 @@ Pdef(0,
 ```
 
 Find more examples of code I have written using this framework in this companion repository called 
-[SuperClean-code](https://github.com/danielmkarlsson/SuperClean-code)
+[SuperClean-code](https://github.com/danielmkarlsson/SuperClean-code).
 
 ## Modify all of the things!!!11
 
