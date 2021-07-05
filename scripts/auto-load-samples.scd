@@ -7,7 +7,7 @@ Then you can use this script to dynamically try and load them.
 
 
 (
-// keep track of what we have tried to load
+// Keep track of what we have tried to load
 var failed = Set.new;
 
 // try to laod
@@ -17,18 +17,17 @@ var autoLoad = { |sound|
 		~clean.loadOnly([sound]);
 		if(~clean.buffers.at(sound).notNil) { failed.remove(sound) };
 	} {
-		// if loading fails, here is a message:
+		// If loading fails, here is a message:
 		"couldn't load soundfile for %\n".format(sound).postln
 	}
 };
 
-// use the "\notFound" hook in clean.
+// Use the "\notFound" hook in clean.
 ~clean.set(\notFound, { autoLoad.(~snd) });
 )
 
+// Try it out: while playing any pattern, now remove all samples:
 
-// try it out: while playing any pattern, now remove all samples:
+~clean.freeSoundFiles;
 
-~clean.freeSoundFiles
-
-// they should automatically come back.
+// They should automatically come back when you reboot or recompile the class library.

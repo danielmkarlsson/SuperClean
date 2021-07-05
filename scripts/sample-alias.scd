@@ -1,6 +1,4 @@
-
-
-// make an alias for a sample name
+// Make an alias for a sample name.
 
 (
 ~makeAlias = { | ...pairs |
@@ -21,9 +19,8 @@
 };
 )
 
+~makeAlias.(\mmd, \m);
 
-~makeAlias.(\bd, \b);
+// For many:
 
-// for many:
-
-~makeAlias.(\hh, \h, \can, \c);
+~makeAlias.(\mmd, \m, \rnb, \r);
