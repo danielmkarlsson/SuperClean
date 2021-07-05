@@ -19,7 +19,10 @@ Try it! What have you got to loose?
 
 ## Installation
 
-Download the .zip, unzip it, make sure it's called SuperClean (_not_ SuperClean-master) and drag it into your Extensions folder.
+Download the .zip,  
+unzip it,  
+make sure it's called SuperClean (_not_ SuperClean-master),  
+then drag it into your Extensions folder.
 
 ## Updating
 
