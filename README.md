@@ -6,8 +6,9 @@ extreme modulation indexes. SuperClean even includes a remarkably efficient addi
 world. SuperClean is, in short, a one-stop-shopping-experience for folks who want:
 
 • An MPC,  
-• a bunch of effects, and,   
-• a couple of synths. 
+• a bunch of effects,   
+• some synths, and,
+• a flexible routing system 
 
 for the low, low asking price of: _free_.
 Also, on a personal note here, hey, this is what I use to make music with every day.
