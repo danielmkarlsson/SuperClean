@@ -1,5 +1,6 @@
 # SuperClean
-A framework comprising of some basic utilities for use _inside_ of SuperCollider itself.  
+A framework comprising of some basic utilities for use inside of SuperCollider.  
+
 Not only can you play back all of your samples without needless hassle in an environment that can grow with you.
 SuperClean now also contains an FM synth, whose four justly tuneable operators deliver unparalleled cleanliness, even at
 extreme modulation indexes. SuperClean even includes a remarkably efficient additive synth which literally sounds out of this
@@ -112,8 +113,8 @@ if (\SCNvim.asClass.notNil) {
 	}
 };
 
-// A simple triangle wave synth in stereo with panning and a simple low pass filter
-// This synthDef was written by Mads Kjeldgaard and requires the sc3 plugins
+// A simple triangle wave synth in stereo with panning and a simple low pass filter.
+// This synthDef was written by Mads Kjeldgaard and requires the sc3 plugins.
 s.doWhenBooted{
 	SynthDef.new(\default, {
 		arg dur, attack=0.01, release=1.0,
@@ -129,12 +130,12 @@ s.doWhenBooted{
 };
 
 s.waitForBoot {
-	~clean = SuperClean(2, s); // two output channels, increase if you want to pan across more channels
-	~clean.loadSoundFiles; // hot swap in samples from anywhere!
+	~clean = SuperClean(2, s); // Two output channels, increase if you want to pan across more channels.
+	~clean.loadSoundFiles; // Hot swap in samples from anywhere!
 	// for example: ~clean.loadSoundFiles("~/Downloads/rnb");
-	s.sync; // optionally: wait for samples to be read
-	~clean.start([0,0,0]); // first 8 out looks like [0,2,4,6]
-	SuperClean.default = ~clean; // make the clean key sequenceable inside of SUperCollider
+	s.sync; // Wait for samples to be read.
+	~clean.start([0,0,0]); // First 8 out looks like [0,2,4,6]
+	SuperClean.default = ~clean; // Make the clean key sequenceable inside of SuperCollider.
 	"[ SuperClean up + running ]".postln;
 };
 )
@@ -143,7 +144,7 @@ s.waitForBoot {
 If you _do_ have something in your Startup.scd, then you get to pick and choose which parts of mine you want to add to yours.
 
 If, and only if, you are in that latter category, then proly the only part you for sure want to add in your Startup.scd (or
-evaluate every time you want to run some SuperClean) in order for the below code to work on your machine is:
+evaluate every time you want to run some SuperClean code) in order for the below code to work on your machine is:
 
 `SuperClean.default = ~clean;`
 
@@ -165,14 +166,8 @@ s.waitForBoot {
 
 ## Whatsit look like?
 
-Here are some examples of using the Pattern paradigm within SuperCollider to control SuperClean. First there's an example of
-sequencing samples I made with my Micro Modular. Halfway down is an example of using the `fmx` synth which ships with
-SuperClean. Finally at the end there you'll find an example of working with `uio` which is the additive synth. That example
-uses a `Pfunc` to generate not just one pitch but a whole _bunch_ of pitches at the same time. Now, I know that looks a little
-different. It is bringing another paradigm, functions, into Patterns. In SuperCollider there are many ways of doing the same
-thing. Different strokes for different folks is all. Additive is such a wildly different way of making sound that it warranted
-a different approach to control. I would have prefered to stay within the Pattern paradigm as it has been my experience that
-SuperCollider is so vast that the scope needs to be narrowed somewhat in order to be approachable.
+Here are some examples of using the Pattern paradigm within SuperCollider to control SuperClean. First there's an example of 
+using the `fmx` synth. Further down is an example of sequencing some samples I made with my Micro Modular. 
 
 ```text
 // An example using fmx which is the built in four operator FM synthesizer.
@@ -254,14 +249,14 @@ and remove sample folders as you go, maybe because you have a slightly older
 computer that you found in the tech trash, then this is for you:
 
 ```
-~clean.postSampleInfo; // check which samples are loaded into ram and get some stats on those
-~clean.freeSoundFiles([\rnb]); // remove a sample folder called rnb
-~clean.postSampleInfo; // now, the rnb samples should be gone.
+~clean.postSampleInfo; // Check which samples are loaded into ram and get some stats on those.
+~clean.freeSoundFiles([\rnb]); // Remove a sample folder called rnb.
+~clean.postSampleInfo; // Now, the rnb sample folder should be gone.
 ```
 
 ## How does it work?
 I guess you could say it's a hack of the event type. You turn on SuperClean, as you might turn on the power for your 
-rack of of samplers, synths and effects like this
+rack of of samplers, synths and effects like this:
 
 ```
 (
@@ -273,12 +268,15 @@ Pdef(0,
 ).play
 )
 ```
+
 Find more examples of code I have written using this framework in this companion repository called 
 [SuperClean-code](https://github.com/danielmkarlsson/SuperClean-code)
 
 ## Modify all of the things!!!11
 
-Now I might not be the bestest gun slinger there is round these here parts, but I was able to get this thing corralled, albeit
-awkwardly, so just goes to show, you can too! If you end using this and modifying it to better suit your needs I'd love to talk you
-about maybe including those changes here. Please get in touch with me through [my site](https://danielmkarlsson.com/).
+Now I might not be the bestest gun slinger there is round these here parts, but I was able to get this thing corralled, 
+so just goes to show, you can do it too!  
+
+If you do end using this, and modifying it to better suit your needs, I'd love to talk you about maybe including those changes here. 
+Please get in touch with me through [my site](https://danielmkarlsson.com/).
 
