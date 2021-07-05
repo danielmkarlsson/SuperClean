@@ -1,5 +1,5 @@
 # SuperClean
-A SuperCollider implementation of the SuperClean sampler for use _inside_ of SuperCollider itself.
+A framework comprising of some basic utilities for use _inside_ of SuperCollider itself.
 Not only can you play back all of your samples without needless hassle in an environment that can grow with you.
 SuperClean now also contains an FM synth, whose four justly tuneable operators deliver unparalleled cleanliness, even at
 extreme modulation indexes. SuperClean even includes a remarkably efficient additive synth which literally sounds out of this
@@ -254,6 +254,9 @@ computer that you found in the tech trash, then this is for you:
 ~clean.freeSoundFiles([\rnb]); // remove a sample folder called rnb
 ~clean.postSampleInfo; // now, the rnb samples should be gone.
 ```
+
+## How does it work?
+I guess you could say it's a hack of the event type. 
 
 ## TODO
 <details>
