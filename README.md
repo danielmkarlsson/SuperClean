@@ -15,7 +15,7 @@ for the low, low asking price of: _free_.
 Also, on a personal note here, hey, this is what I use to make music with every day.  
 I really love making music and, for me, this makes it way funner.  
 Go ahead, try it!  
-What have you got to loose?  
+What have you got to lose?  
 
 ![Maureen "Ma Dukes" Yancey smiling with her son J Dilla's MPC 3000](Dilla-Smithsonian-mpc1.jpg)
 
