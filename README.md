@@ -175,7 +175,7 @@ a different approach to control. I would have prefered to stay within the Patter
 SuperCollider is so vast that the scope needs to be narrowed somewhat in order to be approachable.
 
 ```text
-// an example using fmx which is the built in four operator FM synthesizer
+// An example using fmx which is the built in four operator FM synthesizer.
 (
 Pdef(0,
 	Pseed(4,
@@ -205,7 +205,7 @@ Pdef(0,
 			freq: (Pstutter(Pexprand(4,32),10*Pexprand(1,5).round)
 				*Pstutter(Pexprand(1,64),Pexprand(1,5)).round
 				*Pstutter(Pkey(\rps),Pexprand(1,7).round)),
-			dark: Pseg(Pexprand(0.25,1.0),Pexprand(8.0,64.0),\welch,inf),
+			cav: Pseg(Pexprand(0.25,1.0),Pexprand(8.0,64.0),\welch,inf),
 			pan: Pbrown(0.0,1.0,Pstutter(Pwhite(1,3),Pwhite(0.01,0.1))).trace,
 			atk: Pexprand(0.01,4.0),
 			hld: Pkey(\dur)*2,
@@ -217,7 +217,7 @@ Pdef(0,
 ).play(quant:1);
 );
 
-// an example of using the sampler, looks for samples in a folder called mmd
+// An example of using the sampler, looks for samples in a folder called mmd.
 (
 Pdef(\0,
     Pseed(Pn(999,1),
@@ -260,8 +260,21 @@ computer that you found in the tech trash, then this is for you:
 ```
 
 ## How does it work?
-I guess you could say it's a hack of the event type. 
+I guess you could say it's a hack of the event type. You turn on SuperClean, as you might turn on the power for your 
+rack of of samplers, synths and effects like this
 
+```
+(
+Pdef(0,
+	Pbind(*[
+		type: \cln, // This line turns SuperClean on.
+		snd: \mmd, // This line plays the first sample in the mmd folder.
+	])
+).play
+)
+```
+Find more examples of code I have written using this framework in this companion repository called 
+[SuperClean-code](https://github.com/danielmkarlsson/SuperClean-code)
 
 ## Modify all of the things!!!11
 
