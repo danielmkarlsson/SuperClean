@@ -262,27 +262,10 @@ computer that you found in the tech trash, then this is for you:
 ## How does it work?
 I guess you could say it's a hack of the event type. 
 
-## TODO
-<details>
-<summary>(reOrdered to reflect relevance)</summary>
-
-• ~~Drag to extensions folder install~~  
-• ~~No need to delete -master in folder name after .zip download~~  
-• ~~Increase `dlt` max to 16~~
-• ~~Long sample playback without roundoff errors~~  
- 
-• ReDo rm with feedback  
-• Sequence the order of effects    
-• FadeTime T1 style  
-• NRT render inside SuperClean  
-
-• Swap out the reverb (how to make it sound better while still at low cpu?)  
-• Maybe add that tape effect  
-
-</details>
 
 ## Modify all of the things!!!11
 
-Now I might not be the bestest gunSlinger there is round these here parts, but I was able to get this thing corralled, albeit
-awkwardly, so just goes to show, you can too!
+Now I might not be the bestest gun slinger there is round these here parts, but I was able to get this thing corralled, albeit
+awkwardly, so just goes to show, you can too! If you end using this and modifying it to better suit your needs I'd love to talk you
+about maybe including those changes here. Please get in touch with me through [my site](https://danielmkarlsson.com/).
 
