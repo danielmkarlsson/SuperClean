@@ -1,5 +1,5 @@
 # SuperClean
-A framework comprising of some basic utilities for use _inside_ of SuperCollider itself.
+A framework comprising of some basic utilities for use _inside_ of SuperCollider itself.  
 Not only can you play back all of your samples without needless hassle in an environment that can grow with you.
 SuperClean now also contains an FM synth, whose four justly tuneable operators deliver unparalleled cleanliness, even at
 extreme modulation indexes. SuperClean even includes a remarkably efficient additive synth which literally sounds out of this
