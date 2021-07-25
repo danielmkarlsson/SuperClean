@@ -2,32 +2,32 @@
 /*
 
 This may not be a complete list of parameter names.
-The value range for the below parameters is 0.0 to 1.0 unless otherwise indicated
+The value range for the below parameters is 0.0 to 1.0 unless otherwise indicated.
 
-snd:	Sample folder or synth name
-num:	Which sample in a folder, from zero up to the amount of files in that folder and then wraps back around
-pan:	Pans the sound
-shp:	Waveshaping amount
-sac:	Shaping amplitude compensation
-slo:	Waveshaping low
-shi:	Waveshaping high
-sho:	Waveshaping offset
-lot:	Waveshaping low threshold
-hit:	Waveshaping high threshold
-dst:	A crunchy distortion with a lot of high harmonics
-tri:	A triode-like distortion
-amp:	Make it louder! Can go above one to lean into the limiter
+snd:	Sample folder or synth name.
+num:	Which sample in a folder, from zero up to the amount of files in that folder and then wraps back around.
+pan:	Pans the sound.
+shp:	Waveshaping amount.
+sac:	Shaping amplitude compensation.
+slo:	Waveshaping low.
+shi:	Waveshaping high.
+sho:	Waveshaping offset.
+lot:	Waveshaping low threshold.
+hit:	Waveshaping high threshold.
+dst:	A crunchy distortion with a lot of high harmonics.
+tri:	A triode-like distortion.
+amp:	Make it louder! Can go above one to lean into the limiter.
 spd:	Sample playback speed, default is 1.0, negative numbers play the sample backwards, slower playback rates closer to 0
-atk:	The attack time of the envelope, the envelope parameters are expressed in seconds, 1.0 here means a one second fade in time
-hld:	The hold time of the envelope
-rel:	The release time of the envelope
+atk:	The attack time of the envelope, the envelope parameters are expressed in seconds, 1.0 here means a one second fade in time.
+hld:	The hold time of the amplitude envelope.
+rel:	The release time of the amplitude envelope.
 crv:	Envelope curvature, swings both ways. That is to say it uses both positive and negative values, try values between -8 to 8
 lpf:	Low pass filter, value range is 20 to 20000
 hpf:	High pass filter, value range is 20 to 20000
 bpf:	Band pass filter, value range is 20 to 20000
-lpq:	Low pass filter resonance
-hpq:	High pass filter resonance
-bpq:	Band pass filter resonance
+lpq:	Low pass filter resonance.
+hpq:	High pass filter resonance.
+bpq:	Band pass filter resonance.
 lhf:	Low & high pass filter combo where 0.5 does nothing, 0.0 sets the lpf to 20hz and 1.0 sets the hpf to 20000
 dla:	Delay amplitude.
 dlf:	Delay feedback, proly best to think of 0.94 as the max sane value.
@@ -37,20 +37,21 @@ rev:	Reverb time (or room size, if we can imagine that).
 dry:	Decrease the amplitude of the reverb.
 bgn:	Where in the file to begin playing back the file.
 end:	Where in the file to end playing back the file.
-bnd:	Change playback speed of samples while running, accepts positive and negative values.
+bnd:	Bend. Change playback speed of samples while running, accepts positive and negative values. Certain synths also accept bnd. See below.
+bnt:	Bend time. Accepts positive values. This value gets multiplied with the sustain key. The default is 0.2
 lop:	How many times to loop the file, takes integers, works in consort with the envelope parameters.
 cut:	Cut groups, cuts itself as well as other things in the same cut group. Rougher edges than legato in terms of sound tho so.
-aux:	An auxiliary output, you can use these for different outputs or same output with different effects depending on your startup file
-rma:	Ringmodulation wet
-rmf:	Ringmodulation frequency
-rdf:	The frequency to glissando in from, which can be above or below rmf, range is 20 to 20000
-rdt:	The time in seconds it takes to glissando from the detune frequency
-smr:	spectral smear
-scm:	spectral scramble
-enh:	spectral enhance
-ocu:	Octave up
-ocd:	Octave down
-ocq:	Quarter-frequency harmonics (two octaves down)
+aux:	An auxiliary output, you can use these for different outputs or same output with different effects depending on your startup file.
+rma:	Ringmodulation wet amount.
+rmf:	Ringmodulation frequency.
+rdf:	The ringmodulation frequency to glissando in from, which can be above or below rmf, range is 20 to 20000
+rdt:	The time in seconds it takes to glissando from the ringmodulatio detune frequency.
+smr:	Spectral smear.
+scm:	Spectral scramble.
+enh:	Spectral enhance.
+ocu:	Octave up.
+ocd:	Octave down.
+ocq:	Quarter-frequency harmonics (two octaves down).
 fsh:	Frequency shift, value range goes both positive and negative, works in combination with fsm, try values -32 to 32
 fsm:	Frequency shift multiplier, value range goes both positive and negative, works in combination with fsh, try values -4 to 4
 hal:	A hall reverb, this is the wet parameter, or put another way, the amplitude of the reverb.
@@ -174,6 +175,7 @@ freq or midinote controls the frequency. bnd is used for a pitch glide. Value ra
 
 freq:
 bnd:
+bnt:
 
 The \sin synth definition is a sine wave oscillator. It accepts freq and midinote
 and parameters like those. It can also let you control the initial phase with the
@@ -182,6 +184,8 @@ is either 100% phase cancelled out or not at all.
 
 freq:
 iph:
+bnd:
+bnt:
 
 The \saw synth definition is a saw wave oscillator. It accepts freq and midinote
 and parameters like those. It can also let you control the initial phase with the
@@ -192,6 +196,8 @@ the wid parameter.
 freq:
 iph:
 wid:
+bnd:
+bnt:
 
 The \sqr synth definition is a square wave oscillator. Same thing as above for the
 parameters.
@@ -199,6 +205,8 @@ parameters.
 freq:
 iph:
 wid:
+bnd:
+bnt:
 
 The \dfd synth definition is a transient excited filter, the filter itself is noisy and can selfoscillate
 den: the density of transients.
