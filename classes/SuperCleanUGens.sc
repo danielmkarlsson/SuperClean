@@ -1,7 +1,6 @@
-
 /*
 
-A few UGen classes that build subgraphs for SuperClean Synths
+A few UGen classes that build subgraphs for SuperClean Synths.
 
 The panners take care of different combinations of in and out channels.
 
@@ -9,13 +8,13 @@ They should be used through the
 
 *defaultPanningFunction*
 
-which can be modified before starting a SuperClean instance. This is still a bit experimental, but should work on any number of input and output channel settings.
+which can be modified before starting a SuperClean instance. This is still a bit experimental,
+but should work on any number of input and output channel settings.
 
-Generally, these pseudo ugens below expect a bipolar pan range [-1..1]
+Generally, these pseudo ugens below expect a bipolar pan range [-1 .. 1]
 CleanEvent converts the input: ~pan = ~pan * 2 - 1;
 
 */
-
 
 CleanPan {
 	classvar <>defaultPanningFunction;
@@ -52,8 +51,6 @@ CleanPan {
 	}
 }
 
-
-
 CleanPanBalance2 : UGen {
 
 	*ar { | signals, span = 1, pan = 0.0, mul = 1 |
@@ -69,7 +66,6 @@ CleanPanBalance2 : UGen {
 		}
 	}
 }
-
 
 CleanSplay2 : UGen {
 
@@ -118,7 +114,6 @@ CleanSplayAz : UGen {
 	}
 }
 
-
 CleanEnvGen : UGen {
 	*ar { |env, bgn, end, spd, sustain, endspd|
 		var stretch = env.times.sum * if(endspd.isNil) { spd } { spd + endspd * 0.5 };
@@ -140,11 +135,12 @@ CleanRateScale : UGen {
 	}
 }
 
-
 /*
+
 In order to avoid bookkeeping on the language side, we implement cutgroups as follows:
 The language initialises the synth with its sample id (some number that correlates with the sample name) and the cutgroup.
 Before we start the new synth, we send a /set message to all synths, and those that match the specifics will be released.
+
 */
 
 CleanGateCutGroup {
@@ -159,7 +155,6 @@ CleanGateCutGroup {
 	}
 }
 
-
 CleanPause {
 
 	*ar { | signal, graceTime = 1 |
@@ -171,5 +166,3 @@ CleanPause {
 	}
 
 }
-
-
