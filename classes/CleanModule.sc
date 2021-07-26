@@ -1,8 +1,8 @@
 /*
 
 CleanModules encapsulate two functions:
-1) for testing for parameters (whether or not to start a synth at all)
-2) activated when the parameters are found in the message from tidal
+1) For testing for parameters (whether or not to start a synth at all).
+2) Activated when the parameters are found in the message.
 
 */
 
