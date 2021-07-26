@@ -37,8 +37,10 @@ rev:	Reverb time (or room size, if we can imagine that).
 dry:	Decrease the amplitude of the reverb.
 bgn:	Where in the file to begin playing back the file.
 end:	Where in the file to end playing back the file.
-bnd:	Bend. Change playback speed of samples while running, accepts positive and negative values. Certain synths also accept bnd. See below.
+bnd:	Bend. Change playback speed of samples while running, accepts positive and negative values. Certain synths also accept bnd.
 bnt:	Bend time. Accepts positive values. This value gets multiplied with the sustain key. The default is 0.2
+bno:	Offset the time at which the bend begins.
+bnc:	Bend curvature. Accepts positive and negative values.
 lop:	How many times to loop the file, takes integers, works in consort with the envelope parameters.
 cut:	Cut groups, cuts itself as well as other things in the same cut group. Rougher edges than legato in terms of sound tho so.
 aux:	An auxiliary output, you can use these for different outputs or same output with different effects depending on your startup file.
@@ -79,7 +81,7 @@ sam:	Roughly translates to sample rate reduction. Value range is zero to infinit
 The parameters below aren't actually part of SuperClean, but are very useful
 and because SuperClean is running inside SuperCollider, we can use them.
 
-dur:        The duration between events, range is a float above zero to infity, zero is infinitely fast, so, you mos def never want to do that
+dur:        The duration between events, range is a float above zero to infity, zero is infinitely fast, so, you mos def never want to do that.
 midinote:   0 to 127. 60 is default. Interestingly accepts floats which allows for microtonality
 freq:       When working with synths and we want to work with frequencies instead of midi note numbers as above, accepts integers 20 to 20000
 scale:      Choose scale, for example: Scale.harmonicMinor, add a tuning there like this: Scale.harmonicMinor.tuning_(Tuning.sept1)
@@ -100,7 +102,7 @@ Pdef(0,
 		dur: 1/8,
 		pan: Pwhite(0.0, 1.0),
 		degree: Pseq((0 .. 7), inf),
-		stepsPerOctave: Pwhite(1,12),
+		stepsPerOctave: Pwhite(1, 12),
 	])
 ).play
 )
@@ -176,6 +178,8 @@ freq or midinote controls the frequency. bnd is used for a pitch glide. Value ra
 freq:
 bnd:
 bnt:
+bno:
+bnc:
 
 The \sin synth definition is a sine wave oscillator. It accepts freq and midinote
 and parameters like those. It can also let you control the initial phase with the
@@ -186,6 +190,8 @@ freq:
 iph:
 bnd:
 bnt:
+bno:
+bnc:
 
 The \saw synth definition is a saw wave oscillator. It accepts freq and midinote
 and parameters like those. It can also let you control the initial phase with the
@@ -198,6 +204,8 @@ iph:
 wid:
 bnd:
 bnt:
+bno:
+bnc:
 
 The \sqr synth definition is a square wave oscillator. Same thing as above for the
 parameters.
@@ -207,6 +215,9 @@ iph:
 wid:
 bnd:
 bnt:
+bno:
+bnc:
+
 
 The \dfd synth definition is a transient excited filter, the filter itself is noisy and can selfoscillate
 den: the density of transients.
@@ -229,6 +240,25 @@ freq:
 frc:
 pos:
 bpr:
+
+The \ixa synth definition is a kind of phase distortion based synth.
+It has a lot of potential for timbral unfolding after initiation.
+It builds on the work of Nathan Ho. Read more here: https://nathan.ho.name/posts/ixa-synthesis/
+sbs: slopeBelow speed.
+sbr: slopeAbove range.
+sas: slopeAbove speed.
+sar: slopeAbove range.
+ths: threshold speed.
+thr: threshold range.
+
+freq:
+frc:
+pos:
+bpr:
+bnd:
+bnt:
+bno:
+bnc:
 
 // Here's an example using most of the parameters from above all together in one wild mess
 (
