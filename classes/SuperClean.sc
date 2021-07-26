@@ -1,9 +1,9 @@
 /*
 
-SuperCollider implementation of Clean
+SuperCollider implementation of Clean.
 
 This object handles local effects.
-These are relative to a server and a number of output channels
+These are relative to a server and a number of output channels.
 It keeps a number of clean auxs (see below).
 
 */
@@ -172,8 +172,8 @@ SuperClean {
 		modules = names.collect { |x| this.getModule(x) }.reject { |x| x.isNil }
 	}
 
-	// SynthDefs are signal processing graph definitions
-	// this is also where the modules are added
+	// SynthDefs are signal processing graph definitions.
+	// This is also where the modules are added.
 
 	loadSynthDefs { |path|
 		var filePaths;
