@@ -1,15 +1,13 @@
-
 /*
-this keeps state of running synths that have a lifespan of the CleanAux
-sends OSC only when an update is necessary
 
-"name" is the name of the SynthDef
-(for each possible number of channels appended by a number, see: core-synths)
-"paramNames" is an array of keys (symbols) which to look up as arguments
-"numChannels" is the number of synth channels (no need to specify if you use it in a CleanAux)
+This keeps the state of running synths that have a lifespan of the CleanAux.
+
+"name" is the name of the SynthDef.
+(for each possible number of channels appended by a number, see: core-synths).
+"paramNames" is an array of keys (symbols) to look up as arguments.
+"numChannels" is the number of synth channels (no need to specify if you use it in a CleanAux).
+
 */
-
-
 
 GlobalCleanEffect {
 
@@ -31,9 +29,9 @@ GlobalCleanEffect {
 	release { |releaseTime = 0.2|
 		if(synth.notNil) {
 			synth.server.sendBundle(nil,
-				['/error', -1], // surpress error, because we don't keep track of server state
-				[12, synth.nodeID, 1], // /n_run: make sure it isn't paused
-				[15, synth.nodeID, \gate, -1.0 - releaseTime], // n_set: use gate to set release time
+				['/error', -1], // Surpress error, because we don't keep track of server state.
+				[12, synth.nodeID, 1], // /n_run: make sure it isn't paused.
+				[15, synth.nodeID, \gate, -1.0 - releaseTime], // n_set: use gate to set release time.
 				['/error', -2]
 			);
 		};

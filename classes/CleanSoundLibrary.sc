@@ -1,12 +1,10 @@
-
 /*
 
 This library unifies access to buffers and synth events.
 
-valid fileExtensions can be extended, currently they are ["wav", "aif", "aiff", "aifc"]
+Valid fileExtensions are ["wav", "aif", "aiff", "aifc"].
 
 */
-
 
 CleanSoundLibrary {
 
@@ -116,14 +114,11 @@ CleanSoundLibrary {
 		^bufferEvents[name] ?? { synthEvents[name] }
 	}
 
-
 	freeAllSoundFiles {
 		buffers.do { |x| x.asArray.do { |buf| buf.free } };
 		buffers = IdentityDictionary.new;
 		bufferEvents = IdentityDictionary.new;
 	}
-
-
 
 	/*
 
@@ -223,7 +218,6 @@ CleanSoundLibrary {
 		^Buffer.readWithInfo(server, path)
 	}
 
-
 	/* access */
 
 
@@ -241,7 +235,6 @@ CleanSoundLibrary {
 		var allEvents = this.at(name);
 		^if(allEvents.isNil) {
 			if(SynthDescLib.at(name).notNil) {
-				// use tidal's "num" as note, only for synths that have no event defined
 				(instrument: name, hash: name.identityHash)
 			} {
 				if(defaultEvent.notNil) {
@@ -294,7 +287,6 @@ CleanSoundLibrary {
 		}
 	}
 
-
 	/* info */
 
 	postSampleInfo {
@@ -327,7 +319,4 @@ CleanSoundLibrary {
 		bufferEvents = bufferEvents.copy;
 		synthEvents = synthEvents.copy;
 	}
-
-
-
 }
