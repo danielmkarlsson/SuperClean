@@ -14,7 +14,7 @@ s.options.numInputBusChannels = 2; // set to hardware input channel size, if nec
 s.latency = 0.3;
 // MIDIClient.init; // Untoggle this when you want to do MIDI
 // m = MIDIOut.new(0); // Maybe yours is different?
-// m.latency = 0; // Faster is better so fastest is bestest right?
+// m.latency = 0.3; // This should match s.latency
 // thisProcess.platform.recordingsDir = "/your/path/here/"; // choose where supercollider recordings end up
 
 // scnvim
