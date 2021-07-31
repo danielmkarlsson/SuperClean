@@ -46,11 +46,14 @@ are updating because otherwise you might run into some double trouble there with
 	
 ## Origins and acknowledgements
 
-Julian Rohrhuber built this thing initially, then I changed some things here and there. I had a lot of help from friends along the way. 
-What you have here is essentially a shameless ripOff / fork of / homage to SuperDirt. A special shoutout to Marcus Pal who initially created the FM synth and the 
+[Julian Rohrhuber](https://www.rsh-duesseldorf.de/en/institutes/institute-for-music-and-media/faculty/rohrhuber-julian/) built this thing initially, 
+then I changed some things here and there. I had a lot of help from friends along the way. 
+What you have here is essentially a shameless ripoff / fork of / homage to SuperDirt. A special shoutout to [Marcus Pal](https://www.marcuspal.com/) 
+who initially created the FM synth and the 
 additive synth.  
 `mir` builds on the work of [David Granström](https://davidgranstrom.com/), specifically [EZConv](https://github.com/davidgranstrom/EZConv) 
-which is just amazing.
+which is just amazing.  
+`ixa` builds on the work of [Nathan Ho](https://nathan.ho.name/posts/ixa-synthesis/).
 
 ## Requirements
 
@@ -59,10 +62,9 @@ which is just amazing.
 
 ## Lean is good
 
-I only included a tiny amount of samples inside the clean-samples folder. I also trimmed the fat a lil bit with regards to the
-effects and synths that are included. That's the main thing. I did that because that's a lot of data to have to download if
-you're sharing a very slow wifi connection with 20 other kids who are also trying to get sat up at the same time. Also fewer
-dependencies means less things that can go sideways with the install procedure.
+I only included a tiny amount of samples inside the clean-samples folder. I did that because that's a lot of data to have to download if
+you're sharing a very slow wifi connection with 20 other kids who are also trying to get sat up at the same time. Also, fewer
+dependencies means less things that can go sideways with the install procedure. SuperClean requires no other languages or external text editors to function.
 
 ## Be free to be you
 
