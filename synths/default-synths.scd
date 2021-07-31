@@ -51,7 +51,7 @@ SynthDef("fmx", {| sustain = 1, pan, amp = 0.1, out = 0,
 
 // This synthdef builds on the work of Nathan Ho. https://nathan.ho.name/posts/ixa-synthesis/
 SynthDef("ixa", {| out, sustain = 1, pan, amp = 0.5, freq = 440, bnd = 0, bno = 0, bnt = 0.2, bnc = 0,
-    sbs = 2, sas = 2, ths = 2, sbr = 1, sar = 1, thr = 1, crv, att = 0.0, rel = 1.0|
+    bes = 2, abs = 2, ths = 2, ber = 1, abr = 1, thr = 1, crv, att = 0.0, rel = 1.0|
 	var phase;
 	var slopeBelow, slopeAbove, threshold;
 	var env, accel, sig, freqclipped;
@@ -62,8 +62,8 @@ SynthDef("ixa", {| out, sustain = 1, pan, amp = 0.5, freq = 440, bnd = 0, bno = 
         [0, 0, bnc]  //optional curvature
     ));
 	freqclipped = freq.clip(20, 20000) * accel;
-	slopeBelow = LFNoise2.kr(sbs).range(0, sbr);
-	slopeAbove = LFNoise2.kr(sas).range(0, sar);
+	slopeBelow = LFNoise2.kr(bes).range(0, ber);
+	slopeAbove = LFNoise2.kr(abs).range(0, abr);
 	threshold = LFNoise2.kr(ths).range(0, thr);
 	phase = Phasor.ar(0, freqclipped.clip(20, 20000) / SampleRate.ir, 0, 1);
 	phase = Select.ar(phase > threshold, [phase * slopeAbove, threshold + ((phase - threshold) * slopeAbove)]);
