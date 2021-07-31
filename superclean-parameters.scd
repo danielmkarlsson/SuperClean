@@ -252,9 +252,12 @@ ths: threshold speed.
 thr: threshold range.
 
 freq:
-frc:
-pos:
-bpr:
+sbs:
+sbr:
+sas:
+sar:
+ths:
+thr:
 bnd:
 bnt:
 bno:
