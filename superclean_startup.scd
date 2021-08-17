@@ -46,7 +46,7 @@ s.waitForBoot {
 	// for example: ~clean.loadSoundFiles("~/Downloads/rnb");
 	s.sync; // optionally: wait for samples to be read
 	~clean.start([0,0,0]); // first 8 out looks like [0,2,4,6]
-	SuperClean.default = ~clean; // make the clean key sequenceable inside of SUperCollider
+	SuperClean.default = ~clean; // make the clean key sequenceable inside of SuperCollider
 	"[ SuperClean up + running ]".postln;
 };
 )
