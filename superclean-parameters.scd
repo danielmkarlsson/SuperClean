@@ -244,10 +244,10 @@ bpr:
 The \ixa synth definition is a kind of phase distortion based synth.
 It has a lot of potential for timbral unfolding after initiation.
 It builds on the work of Nathan Ho. Read more here: https://nathan.ho.name/posts/ixa-synthesis/
-sbs: slopeBelow speed.
-sbr: slopeBelow range.
-sas: slopeAbove speed.
-sar: slopeAbove range.
+bes: slopeBelow speed.
+ber: slopeBelow range.
+abs: slopeAbove speed.
+abr: slopeAbove range.
 ths: threshold speed.
 thr: threshold range.
 
