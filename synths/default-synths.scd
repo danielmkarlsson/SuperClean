@@ -51,11 +51,11 @@ SynthDef("fmx", {| sustain = 1, pan, amp = 0.1, out = 0,
 
 // This synthdef builds on the work of Nathan Ho. https://nathan.ho.name/posts/ixa-synthesis/
 SynthDef("ixa", {| out, sustain = 1, pan, amp = 0.5, freq = 440, bnd = 0, bno = 0, bnt = 0.2, bnc = 0,
-    bes = 2, abs = 2, ths = 2, ber = 1, abr = 1, thr = 1, crv, att = 0.0, rel = 1.0|
+    bes = 2, abs = 2, ths = 2, ber = 1, abr = 1, thr = 1, crv, atk = 0.0, rel = 1.0|
 	var phase;
 	var slopeBelow, slopeAbove, threshold;
 	var env, accel, sig, freqclipped;
-	env = Env.perc(att, rel, amp, crv).kr(doneAction: 2);
+	env = Env.perc(atk, rel, amp, crv).kr(doneAction: 2);
 	accel = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt * sustain],
@@ -75,9 +75,9 @@ SynthDef("ixa", {| out, sustain = 1, pan, amp = 0.5, freq = 440, bnd = 0, bno = 
 
 // A sine wave oscillator.
 SynthDef("sin", {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, iph = 0, amp = 1.0,
-	pan = 0, att = 0.0, rel = 1.0, crv = -8.0|
+	pan = 0, atk = 0.0, rel = 1.0, crv = -8.0|
 	var env, accel, sig, freqclipped;
-	env = Env.perc(att, rel, amp, crv).kr(doneAction: 2);
+	env = Env.perc(atk, rel, amp, crv).kr(doneAction: 2);
 	accel = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt * sustain],
@@ -91,9 +91,9 @@ SynthDef("sin", {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fr
 }).store;
 
 // A saw wave oscillator.
-SynthDef("saw", {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, iph = 0, wid = 0.25, amp = 1.0, pan = 0, att = 0.0, rel = 1.0, crv = -8.0|
+SynthDef("saw", {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, iph = 0, wid = 0.25, amp = 1.0, pan = 0, atk = 0.0, rel = 1.0, crv = -8.0|
 	var env, accel, sig, freqclipped;
-	env = Env.perc(att, rel, amp, crv).kr(doneAction: 2);
+	env = Env.perc(atk, rel, amp, crv).kr(doneAction: 2);
 	accel = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt * sustain],
@@ -107,9 +107,9 @@ SynthDef("saw", {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fr
 }).store;
 
 // A square wave oscillator.
-SynthDef("sqr", {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, amp = 0.5, pan = 0, att = 0.0, rel = 1.0, crv = -8.0, wid = 0.25|
+SynthDef("sqr", {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, amp = 0.5, pan = 0, atk = 0.0, rel = 1.0, crv = -8.0, wid = 0.25|
 	var env, accel, sig, freqclipped;
-	env = Env.perc(att, rel, amp*0.5, crv).kr(doneAction: 2);
+	env = Env.perc(atk, rel, amp*0.5, crv).kr(doneAction: 2);
 	accel = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt * sustain],
@@ -225,9 +225,9 @@ SynthDef(\hat, {|out, sustain=1, pan, bnd, tun |
 );
 
 // Transient excited filter.
-SynthDef("dfd", {|out = 0, freq = 440, res = 1, den = 0, amp = 1, pan = 0.5, att = 0.0, rel = 1.0, crv = -8.0, typ = 0.0, nsl = 0|
+SynthDef("dfd", {|out = 0, freq = 440, res = 1, den = 0, amp = 1, pan = 0.5, atk = 0.0, rel = 1.0, crv = -8.0, typ = 0.0, nsl = 0|
 	var env, sig;
-	env = Env.perc(att, rel, amp * 300, crv).kr(doneAction: 2);
+	env = Env.perc(atk, rel, amp * 300, crv).kr(doneAction: 2);
 	sig = DFM1.ar(Dust2.ar(den.dup(~clean.numChannels), amp), freq.clip(20, 7139), res.clip(0.0, 1.01), 1, typ, nsl);
 	sig = sig * env;
 	//sig = CleanPan.ar(sig, ~clean.numChannels, pan);
