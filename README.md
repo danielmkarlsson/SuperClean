@@ -28,7 +28,7 @@ then drag it into your Extensions folder.
 
 ## Updating
 
-Drag the updated SuperClean folder to Extensions folder, which replaces the old SuperClean folder and you are done.
+Drag the updated SuperClean folder to the Extensions folder, which replaces the old SuperClean folder and you are done.
 Make sure this folder is called SuperClean, not SuperClean-master.  
 If you went with the Quarks option from way back when that was a thing, then click below.
 <details>  
