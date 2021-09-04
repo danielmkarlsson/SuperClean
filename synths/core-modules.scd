@@ -20,7 +20,7 @@ this may be refactored later.
 */
 (
 
-~clean.addModule('sound',
+~clean.addModule(\sound,
 	{ |cleanEvent|
 		if(~diversion.value.isNil) {
 			if(~buffer.notNil) {
@@ -53,11 +53,11 @@ these function as effects on the input of the synth or sample (see SynthDefs in 
 they respond to the existence of a value for one of the parameters
 */
 
-~clean.addModule('out_to',
+~clean.addModule(\out_to,
 	{ |cleanEvent|
 		var busses = ~clean.audioRoutingBusses;
 		var bus = busses.wrapAt(~to.asInteger);
-		cleanEvent.sendSynth("clean_out" ++ ~numChannels,
+		cleanEvent.sendSynth(\clean_out ++ ~numChannels,
 			[
 				to: bus.index,
 				out: ~out
@@ -69,7 +69,7 @@ they respond to the existence of a value for one of the parameters
 // synth needs to have an audio rate control.
 // it would be nice to be able to map several arguments
 
-~clean.addModule('map_from',
+~clean.addModule(\map_from,
 	{ |cleanEvent|
 		var busses = ~clean.audioRoutingBusses;
 		var bus = if(~from.isNil) { busses.at(0) } { busses.wrapAt(~from.asInteger) };
@@ -82,9 +82,9 @@ they respond to the existence of a value for one of the parameters
 		)
 }, { ~toArg.notNil });
 
-~clean.addModule('hpf',
+~clean.addModule(\hpf,
 	{ |cleanEvent|
-		cleanEvent.sendSynth("clean_hpf" ++ ~numChannels,
+		cleanEvent.sendSynth(\clean_hpf ++ ~numChannels,
 			[
 				hcutoff: ~hpf,
 				hresonance: ~hpq,
@@ -93,9 +93,9 @@ they respond to the existence of a value for one of the parameters
 
 }, { ~hpf.notNil });
 
-~clean.addModule('bpf',
+~clean.addModule(\bpf,
 	{ |cleanEvent|
-		cleanEvent.sendSynth("clean_bpf" ++ ~numChannels,
+		cleanEvent.sendSynth(\clean_bpf ++ ~numChannels,
 			[
 				bandqf: ~bpf,
 				bandq: ~bpq,
@@ -104,9 +104,9 @@ they respond to the existence of a value for one of the parameters
 
 }, { ~bpf.notNil });
 
-~clean.addModule('bit',
+~clean.addModule(\bit,
 	{ |cleanEvent|
-		cleanEvent.sendSynth("clean_crush" ++ ~numChannels,
+		cleanEvent.sendSynth(\clean_crush ++ ~numChannels,
 			[
 				crush: ~bit,
 				out: ~out
@@ -115,9 +115,9 @@ they respond to the existence of a value for one of the parameters
 }, { ~bit.notNil });
 
 
-~clean.addModule('sam',
+~clean.addModule(\sam,
 	{ |cleanEvent|
-		cleanEvent.sendSynth("clean_coarse" ++ ~numChannels,
+		cleanEvent.sendSynth(\clean_coarse ++ ~numChannels,
 			[
 				coarse: ~sam,
 				out: ~out
@@ -125,9 +125,9 @@ they respond to the existence of a value for one of the parameters
 
 }, { ~sam.notNil and: { ~sam > 1 } }); // coarse == 1 => full rate
 
-~clean.addModule('lpf',
+~clean.addModule(\lpf,
 	{ |cleanEvent|
-		cleanEvent.sendSynth("clean_lpf" ++ ~numChannels,
+		cleanEvent.sendSynth(\clean_lpf ++ ~numChannels,
 			[
 				cutoff: ~lpf,
 				resonance: ~lpq,
@@ -136,9 +136,9 @@ they respond to the existence of a value for one of the parameters
 
 }, { ~lpf.notNil });
 
-~clean.addModule('env',
+~clean.addModule(\env,
 	{ |cleanEvent|
-		cleanEvent.sendSynth('clean_envelope' ++ ~numChannels,
+		cleanEvent.sendSynth(\clean_envelope ++ ~numChannels,
 			[
 				attack: ~atk,
 				hold: ~hld,
@@ -149,9 +149,9 @@ they respond to the existence of a value for one of the parameters
 }, { ~atk.notNil or: { ~rel.notNil }});
 
 /*
-~clean.addModule('tremolo',
+~clean.addModule(\tremolo,
 	{ |cleanEvent|
-		cleanEvent.sendSynth('clean_tremolo' ++ ~numChannels,
+		cleanEvent.sendSynth(\clean_tremolo ++ ~numChannels,
 			[
 				tremolorate: ~trr,
 				tremolodepth: ~trd,
@@ -161,9 +161,9 @@ they respond to the existence of a value for one of the parameters
 */
 
 /*// Phaser audio DSP effect declaration
-~clean.addModule('phaser',
+~clean.addModule(\phaser,
 	{ |cleanEvent|
-		cleanEvent.sendSynth('clean_phaser' ++ ~numChannels,
+		cleanEvent.sendSynth(\clean_phaser ++ ~numChannels,
 			[
 				phaserrate: ~phr,
 				phaserdepth: ~phd,

@@ -11,7 +11,7 @@ If your SuperClean instance is assigned to the variable ~clean, you can livecode
 
 (
 // An additive synth.
-SynthDef("add",  {| out, ada = 0.001, adr = 1,
+SynthDef(\add,  {| out, ada = 0.001, adr = 1,
 	amp = 1,
 	adc = 1,
 	freq = 200,
@@ -29,7 +29,7 @@ SynthDef("add",  {| out, ada = 0.001, adr = 1,
 }).store;
 
 // A four operator FM synth.
-SynthDef("fmx", {| sustain = 1, pan, amp = 0.1, out = 0,
+SynthDef(\fmx, {| sustain = 1, pan, amp = 0.1, out = 0,
 	freq = 440, bnd, mi1 = 0.8, hr4 = 1 ,hr3 = 2, hr2 = 1, hr1= 0, mi4 = 1, mi3 = 0.5,
 	mi2 = 4, en1 = 0, en2 = 0, en3 = 0, en4 = 0, cu1 = 0, cu2 = 0, cu3 = 0,
 	cu4 = 0, det = 0.0 |
@@ -50,7 +50,7 @@ SynthDef("fmx", {| sustain = 1, pan, amp = 0.1, out = 0,
 }).store;
 
 // This synthdef builds on the work of Nathan Ho. https://nathan.ho.name/posts/ixa-synthesis/
-SynthDef("ixa", {| out, sustain = 1, pan, amp = 0.5, freq = 440, bnd = 0, bno = 0, bnt = 0.2, bnc = 0,
+SynthDef(\ixa, {| out, sustain = 1, pan, amp = 0.5, freq = 440, bnd = 0, bno = 0, bnt = 0.2, bnc = 0,
     bes = 2, abs = 2, ths = 2, ber = 1, abr = 1, thr = 1, crv, atk = 0.0, rel = 1.0|
 	var phase;
 	var slopeBelow, slopeAbove, threshold;
@@ -74,7 +74,7 @@ SynthDef("ixa", {| out, sustain = 1, pan, amp = 0.5, freq = 440, bnd = 0, bno = 
 }).store;
 
 // A sine wave oscillator.
-SynthDef("sin", {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, iph = 0, amp = 1.0,
+SynthDef(\sin, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, iph = 0, amp = 1.0,
 	pan = 0, atk = 0.0, rel = 1.0, crv = -8.0|
 	var env, accel, sig, freqclipped;
 	env = Env.perc(atk, rel, amp, crv).kr(doneAction: 2);
@@ -91,7 +91,7 @@ SynthDef("sin", {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fr
 }).store;
 
 // A saw wave oscillator.
-SynthDef("saw", {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, iph = 0, wid = 0.25, amp = 1.0, pan = 0, atk = 0.0, rel = 1.0, crv = -8.0|
+SynthDef(\saw, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, iph = 0, wid = 0.25, amp = 1.0, pan = 0, atk = 0.0, rel = 1.0, crv = -8.0|
 	var env, accel, sig, freqclipped;
 	env = Env.perc(atk, rel, amp, crv).kr(doneAction: 2);
 	accel = EnvGen.kr(Env(
@@ -107,7 +107,7 @@ SynthDef("saw", {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fr
 }).store;
 
 // A square wave oscillator.
-SynthDef("sqr", {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, amp = 0.5, pan = 0, atk = 0.0, rel = 1.0, crv = -8.0, wid = 0.25|
+SynthDef(\sqr, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, amp = 0.5, pan = 0, atk = 0.0, rel = 1.0, crv = -8.0, wid = 0.25|
 	var env, accel, sig, freqclipped;
 	env = Env.perc(atk, rel, amp*0.5, crv).kr(doneAction: 2);
 	accel = EnvGen.kr(Env(
@@ -225,7 +225,7 @@ SynthDef(\hat, {|out, sustain=1, pan, bnd, tun |
 );
 
 // Transient excited filter.
-SynthDef("dfd", {|out = 0, freq = 440, res = 1, den = 0, amp = 1, pan = 0.5, atk = 0.0, rel = 1.0, crv = -8.0, typ = 0.0, nsl = 0|
+SynthDef(\dfd, {|out = 0, freq = 440, res = 1, den = 0, amp = 1, pan = 0.5, atk = 0.0, rel = 1.0, crv = -8.0, typ = 0.0, nsl = 0|
 	var env, sig;
 	env = Env.perc(atk, rel, amp * 300, crv).kr(doneAction: 2);
 	sig = DFM1.ar(Dust2.ar(den.dup(~clean.numChannels), amp), freq.clip(20, 7139), res.clip(0.0, 1.01), 1, typ, nsl);
@@ -235,7 +235,7 @@ SynthDef("dfd", {|out = 0, freq = 440, res = 1, den = 0, amp = 1, pan = 0.5, atk
 }).store;
 
 // Digital wave guide physical model of a bowed instrument.
-SynthDef("bow", { |out=0, freq=440, amp=1.0, frc=1, gate=1, pos=0.07 ,c1=0.25, c3=31, pan=0, atk = 0.0, rel = 1.0, crv = -8.0|
+SynthDef(\bow, { |out=0, freq=440, amp=1.0, frc=1, gate=1, pos=0.07 ,c1=0.25, c3=31, pan=0, atk = 0.0, rel = 1.0, crv = -8.0|
 	var env, vib, sig;
 	env = Env.perc(atk, rel, amp*0.666, crv).kr(doneAction: 2);
 	sig = DWGBowed.ar(freq.clip(20,5000), amp,frc, gate,pos,0.1,c1,c3);

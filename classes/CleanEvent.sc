@@ -154,7 +154,7 @@ CleanEvent {
 
 	sendGateSynth {
 		server.sendMsg(\s_new,
-			"clean_gate" ++ ~numChannels,
+			\clean_gate ++ ~numChannels,
 			-1, // no id
 			1, // add action: addToTail
 			~synthGroup, // send to group
