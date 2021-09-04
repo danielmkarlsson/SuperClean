@@ -28,7 +28,7 @@ then drag it into your Extensions folder.
 
 ## Updating
 
-Drag the updated SuperClean folder to Extensions folder, which replaces the old SuperClean folder and you are done.
+Drag the updated SuperClean folder to the Extensions folder, which replaces the old SuperClean folder and you are done.
 Make sure this folder is called SuperClean, not SuperClean-master.  
 If you went with the Quarks option from way back when that was a thing, then click below.
 <details>  
@@ -280,6 +280,6 @@ Find more examples of code I have written using this framework in this companion
 Now I might not be the bestest gun slinger there is round these here parts, but I was able to get this thing corralled, 
 so just goes to show, you can do it too!  
 
-If you do end using this, and modifying it to better suit your needs, I'd love to talk you about maybe including those changes here. 
+If you do end up using this, and modifying it to better suit your needs, I'd love to talk you about maybe including those changes here. 
 Please get in touch with me through [my site](https://danielmkarlsson.com/).
 
