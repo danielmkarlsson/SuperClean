@@ -66,7 +66,7 @@ SynthDef(\ixa, {| out, sustain = 1, pan, amp = 0.5, freq = 440, bnd = 0, bno = 0
 	slopeAbove = LFNoise2.kr(abs).range(0, abr);
 	threshold = LFNoise2.kr(ths).range(0, thr);
 	phase = Phasor.ar(0, freqclipped.clip(20, 20000) / SampleRate.ir, 0, 1);
-	phase = Select.ar(phase > threshold, [phase * slopeAbove, threshold + ((phase - threshold) * slopeAbove)]);
+	phase = Select.ar(phase > threshold, [phase * slopeAbove, threshold + ((phase - threshold) * slopeBelow)]);
 	sig = SinOsc.ar(0, phase * 2pi);
 	sig = sig * env;
     sig = CleanPan.ar(sig, ~clean.numChannels, pan);
