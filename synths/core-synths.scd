@@ -54,7 +54,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	// The monitor does the mixing and zeroing of the busses for each sample grain
 	// so that they can all play in one bus.
 
-	SynthDef("clean_gate" ++ numChannels, { |out, in, sustain = 1, fadeInTime = 0.0001, fadeTime = 0.0001, amp = 1|
+	SynthDef(\clean_gate ++ numChannels, { |out, in, sustain = 1, fadeInTime = 0.0001, fadeTime = 0.0001, amp = 1|
 		var signal = In.ar(in, numChannels);
 		//  doneAction: 14: free surrounding group and all nodes
 		var env = EnvGen.ar(Env([0, 1, 1, 0], [fadeInTime, sustain, fadeTime], \sin), levelScale: amp, doneAction: 14);
@@ -67,7 +67,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	Internal Signal Routing Synths
 	*/
 
-	SynthDef("clean_out" ++ numChannels, { |out, to, sustain = 1, fadeInTime = 0.0001, fadeTime = 0.0001, amp = 1|
+	SynthDef(\clean_out ++ numChannels, { |out, to, sustain = 1, fadeInTime = 0.0001, fadeTime = 0.0001, amp = 1|
 		var signal = In.ar(out, numChannels);
 		var env = EnvGen.ar(Env([0, 1, 1, 0], [fadeInTime, sustain, fadeTime], \sin), levelScale: amp);
 		Out.ar(to, signal * env);
@@ -79,8 +79,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	*/
 
 	// This fuzz synthdef was originally designed by Jonathan Liljedahl. http://kymatica.com/
-	~clean.addModule('fuz', { |cleanEvent|
-		cleanEvent.sendSynth('fuz' ++ ~clean.numChannels,
+	~clean.addModule(\fuz, { |cleanEvent|
+		cleanEvent.sendSynth(\fuz ++ ~clean.numChannels,
 			[
 				fuz: ~fuz,
 				fzv: ~fzv,
@@ -107,26 +107,26 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		ReplaceOut.ar(out, sig)
 	}, [\ir, \ir]).add;
 
-	SynthDef("bit" ++ numChannels, { |out, crush = 4|
+	SynthDef(\bit ++ numChannels, { |out, crush = 4|
 		var signal = In.ar(out, numChannels);
 		signal = signal.round(0.5 ** (crush-1));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
-	SynthDef("sam" ++ numChannels, { |out, coarse = 0, bandq = 10|
+	SynthDef(\sam ++ numChannels, { |out, coarse = 0, bandq = 10|
 		var signal = In.ar(out, numChannels);
 		signal = Latch.ar(signal, Impulse.ar(SampleRate.ir / coarse));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
 
-	SynthDef("clean_hpf" ++ numChannels, { |out, hcutoff = 440, hresonance = 0|
+	SynthDef(\clean_hpf ++ numChannels, { |out, hcutoff = 440, hresonance = 0|
 		var signal = In.ar(out, numChannels);
 		var hcutoffClipped = hcutoff.abs.clip(20, 20000);
 		signal = RHPF.ar(signal, hcutoffClipped, hresonance.linexp(0, 1, 1, 0.001));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
 
-	SynthDef("clean_bpf" ++ numChannels, { |out, bandqf = 440, bandq = 10|
+	SynthDef(\clean_bpf ++ numChannels, { |out, bandqf = 440, bandq = 10|
 		var signal = In.ar(out, numChannels);
 		//bandq = max(1, bandq); // limit quality, avoid division by zero
 		bandq = bandq.clip(0, 1).linlin(0, 1, 1, 10000);
@@ -137,16 +137,16 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
 
-	SynthDef("clean_lpf" ++ numChannels, { |out, cutoff = 440, resonance = 0|
+	SynthDef(\clean_lpf ++ numChannels, { |out, cutoff = 440, resonance = 0|
 		var signal = In.ar(out, numChannels);
 		var cutoffClipped = cutoff.abs.clip(20, 20000);
 		signal = RLPF.ar(signal, cutoffClipped, resonance.linexp(0, 1, 1, 0.001));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
 
-	~clean.addModule('shp',
+	~clean.addModule(\shp,
 		{ |cleanEvent|
-			cleanEvent.sendSynth("clean_shape" ++ ~numChannels,
+			cleanEvent.sendSynth(\clean_shape ++ ~numChannels,
 				[
 					shp: ~shp,
 					amp_compensation_amount: ~sac,
@@ -160,7 +160,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 
 	}, { ~shp.notNil });
 
-	SynthDef("clean_shape" ++ numChannels, {
+	SynthDef(\clean_shape ++ numChannels, {
 		|out, shape = 0, amp = 1.0,  amp_compensation_amount = 0.99, lo = 1, hi = 0, offset = 0, lo_thresh = 0, hi_thresh = 0|
 		var abs, diff;
 		var signal = In.ar(out, numChannels);
@@ -181,7 +181,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		ReplaceOut.ar(out, Limiter.ar(LeakDC.ar(signal * (amp+diff))));
 	}, [\ir, \ir]).add;
 
-	SynthDef("clean_envelope" ++ numChannels, { |out, attack = 0, hold = 0, release = inf, crv = 0.3 |
+	SynthDef(\clean_envelope ++ numChannels, { |out, attack = 0, hold = 0, release = inf, crv = 0.3 |
 		var signal = In.ar(out, numChannels);
 		signal = signal * EnvGen.ar(Env.linen(attack, hold, release, 1, crv));
 		ReplaceOut.ar(out, signal);
@@ -190,8 +190,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	// Frequency shifter
 	// Total shift is sum of `fshift` (in Hz) and `fshiftnote` times the current note frequency.
 	// `fshiftphase` allows control over the phase.
-	~clean.addModule('fsh', { |cleanEvent|
-		cleanEvent.sendSynth("frequencyshifter" ++ ~clean.numChannels,
+	~clean.addModule(\fsh, { |cleanEvent|
+		cleanEvent.sendSynth(\frequencyshifter ++ ~clean.numChannels,
 			[
 				fsh: ~fsh,
 				fsm: ~fsm,
@@ -201,7 +201,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		)
 	}, { ~fsh.notNil });
 
-	SynthDef("frequencyshifter" ++ ~clean.numChannels, { |out, fsh, fsp, fsm, freq|
+	SynthDef(\frequencyshifter ++ ~clean.numChannels, { |out, fsh, fsp, fsm, freq|
 		var sig = In.ar(out, ~clean.numChannels);
 		var shift = freq * fsm + fsh;
 		sig = FreqShift.ar(sig, shift, fsp);
@@ -209,8 +209,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, [\ir, \ir, \ir, \ir, \ir]).add;
 
 	// Triode-like distortion, uses only the `tri` parameter.
-	~clean.addModule('tri', { |cleanEvent|
-		cleanEvent.sendSynth("triode" ++ ~clean.numChannels,
+	~clean.addModule(\tri, { |cleanEvent|
+		cleanEvent.sendSynth(\triode ++ ~clean.numChannels,
 			[
 				tri: ~tri,
 				out: ~out
@@ -218,7 +218,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		)
 	}, { ~tri.notNil });
 
-	SynthDef("triode" ++ ~clean.numChannels, { |out, tri|
+	SynthDef(\triode ++ ~clean.numChannels, { |out, tri|
 		var sig, sc;
 		sig = In.ar(out, ~clean.numChannels);
 		sc = tri * 10 + 0.001;
@@ -228,8 +228,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 
 	// This is apparently the octaver from Sonic Pi, which makes me guess credit should go to Sam Aaron.
 	// uses `ocu` for octave up , `ocd` for octave down, and `ocq` for quarter-frequency harmonics.
-	~clean.addModule('oct', { |cleanEvent|
-		cleanEvent.sendSynth("clean_octer" ++ ~clean.numChannels,
+	~clean.addModule(\oct, { |cleanEvent|
+		cleanEvent.sendSynth(\clean_octer ++ ~clean.numChannels,
 			[
 				octer: ~ocu,
 				octersub: ~ocd,
@@ -239,7 +239,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		)
 	}, { ~ocu.notNil or: { ~ocd.notNil } or: { ~ocq.notNil }});
 
-	SynthDef("clean_octer" ++ ~clean.numChannels, { |out, octer, octersub, octersubsub|
+	SynthDef(\clean_octer ++ ~clean.numChannels, { |out, octer, octersub, octersubsub|
 		var signal, oct1, oct2, oct3, sub;
 		signal = In.ar(out, ~clean.numChannels);
 		oct1 = 2.0 * LeakDC.ar( abs(signal) );
@@ -252,8 +252,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, [\ir, \ir, \ir, \ir]).add;
 
 	// Ring modulation
-	~clean.addModule('rma', { |cleanEvent|
-		cleanEvent.sendSynth("clean_rma" ++ ~clean.numChannels,
+	~clean.addModule(\rma, { |cleanEvent|
+		cleanEvent.sendSynth(\clean_rma ++ ~clean.numChannels,
 			[
 				rma: ~rma,
 				rmf: ~rmf,
@@ -264,7 +264,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		)
 	}, { ~rma.notNil });
 
-	SynthDef("clean_rma" ++ ~clean.numChannels, { |out, rma = 0, rmf = 0, rdf, rdt = 0.5|
+	SynthDef(\clean_rma ++ ~clean.numChannels, { |out, rma = 0, rmf = 0, rdf, rdt = 0.5|
 		var signal, mod;
 		signal = In.ar(out, ~clean.numChannels);
 		mod = rma * SinOsc.ar(Clip.kr(XLine.kr(rdf, rmf, rdt), 20, 20000));
@@ -273,8 +273,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, [\ir, \ir, \ir, \ir]).add;
 
 	// A crunchy distortion with a lot of high harmonics, the only parameter is `dst`.
-	~clean.addModule('dst', { |cleanEvent|
-		cleanEvent.sendSynth("clean_distortion" ++ ~clean.numChannels,
+	~clean.addModule(\dst, { |cleanEvent|
+		cleanEvent.sendSynth(\clean_distortion ++ ~clean.numChannels,
 			[
 				dst: ~dst,
 				out: ~out
@@ -282,7 +282,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		)
 	}, { ~dst.notNil });
 
-	SynthDef("clean_distortion" ++ ~clean.numChannels, { |out, dst = 0|
+	SynthDef(\clean_distortion ++ ~clean.numChannels, { |out, dst = 0|
 		var signal, mod;
 		signal = In.ar(out, ~clean.numChannels);
 		mod = CrossoverDistortion.ar(signal, amp: 0.2, smooth: 0.01);
@@ -294,7 +294,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 
 	//These spectral effects below are Mads Kjeldgaard's handywork.
 	// Spectral delay
-	~clean.addModule('sda', { |cleanEvent|
+	~clean.addModule(\sda, { |cleanEvent|
 		cleanEvent.sendSynth('spectral-delay' ++ ~clean.numChannels,
 			[
 				xsdelay: ~sdx,
@@ -306,7 +306,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		)
 	}, { ~sda.notNil });
 
-	SynthDef("spectral-delay" ++ ~clean.numChannels, { |out, tsdelay = 0.5, xsdelay = 0.5, sda = 0, sdq = 0.005|
+	SynthDef('spectral-delay' ++ ~clean.numChannels, { |out, tsdelay = 0.5, xsdelay = 0.5, sda = 0, sdq = 0.005|
 
 		var signal, delayTime, delays, freqs, filtered;
 		var size = 16;
@@ -333,7 +333,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	)
 	}, { ~frz.notNil } );
 
-	SynthDef("spectral-freeze" ++ ~clean.numChannels, { |out, freeze| // broken, use at own risk, values seem to be 0 for off and 1 for on
+	SynthDef('spectral-freeze' ++ ~clean.numChannels, { |out, freeze| // broken, use at own risk, values seem to be 0 for off and 1 for on
 	var signal, chain, in;
 	signal = In.ar(out, ~clean.numChannels);
 	chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
@@ -343,7 +343,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	*/
 
 	// Spectral comb
-	~clean.addModule('cmb', { |cleanEvent|
+	~clean.addModule(\cmb, { |cleanEvent|
 		cleanEvent.sendSynth('spectral-comb' ++ ~clean.numChannels,
 			[
 				comb: ~cmb,
@@ -352,7 +352,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		)
 	}, { ~cmb.notNil });
 
-	SynthDef("spectral-comb" ++ ~clean.numChannels, { |out, comb|
+	SynthDef('spectral-comb' ++ ~clean.numChannels, { |out, comb|
 		var signal, chain, in, clean, teeth = 256;
 		signal = In.ar(out, ~clean.numChannels);
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
@@ -361,7 +361,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, [\ir, \ir]).add;
 
 	// Spectral smear
-	~clean.addModule('smr', { |cleanEvent|
+	~clean.addModule(\smr, { |cleanEvent|
 		cleanEvent.sendSynth('spectral-smear' ++ ~clean.numChannels,
 			[
 				smear: ~smr,
@@ -370,7 +370,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		)
 	}, { ~smr.notNil });
 
-	SynthDef("spectral-smear" ++ ~clean.numChannels, { |out, smear|
+	SynthDef('spectral-smear' ++ ~clean.numChannels, { |out, smear|
 		var signal, chain, in;
 		signal = In.ar(out, ~clean.numChannels);
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
@@ -379,7 +379,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, [\ir, \ir]).add;
 
 	// Spectral scramble
-	~clean.addModule('scm', { |cleanEvent|
+	~clean.addModule(\scm, { |cleanEvent|
 		cleanEvent.sendSynth('spectral-scram' ++ ~clean.numChannels,
 			[
 				scram: ~scm,
@@ -388,7 +388,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		)
 	}, { ~scm.notNil });
 
-	SynthDef("spectral-scram" ++ ~clean.numChannels, { |out, scram|
+	SynthDef('spectral-scram' ++ ~clean.numChannels, { |out, scram|
 		var signal, chain, in, clean, teeth = 256;
 		signal = In.ar(out, ~clean.numChannels);
 		clean = signal;
@@ -398,7 +398,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, [\ir, \ir]).add;
 
 	// Spectral binshift
-	~clean.addModule('sbs', { |cleanEvent|
+	~clean.addModule(\sbs, { |cleanEvent|
 		cleanEvent.sendSynth('spectral-binshift' ++ ~clean.numChannels,
 			[
 				binshift: ~sbs,
@@ -407,7 +407,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		)
 	}, { ~sbs.notNil });
 
-	SynthDef("spectral-binshift" ++ ~clean.numChannels, { |out, binshift|
+	SynthDef('spectral-binshift' ++ ~clean.numChannels, { |out, binshift|
 		var signal, chain, in, clean, teeth = 256;
 		signal = In.ar(out, ~clean.numChannels);
 		clean = signal;
@@ -418,7 +418,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, [\ir, \ir]).add;
 
 	// Spectral high pass filter
-	~clean.addModule('hbr', { |cleanEvent|
+	~clean.addModule(\hbr, { |cleanEvent|
 		cleanEvent.sendSynth('spectral-hbrick' ++ ~clean.numChannels,
 			[
 				hbrick: ~hbr,
@@ -427,7 +427,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		)
 	}, { ~hbrick.notNil });
 
-	SynthDef("hbr" ++ ~clean.numChannels, { |out, hbrick|
+	SynthDef('spectral-hbrick' ++ ~clean.numChannels, { |out, hbrick|
 		var signal, chain, in, clean, teeth = 256;
 		signal = In.ar(out, ~clean.numChannels);
 		clean = signal;
@@ -437,7 +437,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, [\ir, \ir]).add;
 
 	// Spectral low pass filter
-	~clean.addModule('lbr', { |cleanEvent|
+	~clean.addModule(\lbr, { |cleanEvent|
 		cleanEvent.sendSynth('spectral-lbrick' ++ ~clean.numChannels,
 			[
 				lbrick: ~lbr,
@@ -446,7 +446,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		)
 	}, { ~lbrick.notNil });
 
-	SynthDef("spectral-lbrick" ++ ~clean.numChannels, { |out, lbrick|
+	SynthDef('spectral-lbrick' ++ ~clean.numChannels, { |out, lbrick|
 		var signal, chain, in, clean, teeth = 256;
 		signal = In.ar(out, ~clean.numChannels);
 		clean = signal;
@@ -457,7 +457,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, [\ir, \ir]).add;
 
 	// Conformer
-	~clean.addModule('scf', { |cleanEvent|
+	~clean.addModule(\scf, { |cleanEvent|
 		cleanEvent.sendSynth('spectral-conformer' ++ ~clean.numChannels,
 			[
 				real: ~scf,
@@ -467,7 +467,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		)
 	}, { ~ral.notNil or: ~img.notNil });
 
-	SynthDef("spectral-conformer" ++ ~clean.numChannels, { |out, real = 0.5, imag = 0.5|
+	SynthDef('spectral-conformer' ++ ~clean.numChannels, { |out, real = 0.5, imag = 0.5|
 		var signal, chain, in, clean, teeth = 256;
 		signal = In.ar(out, ~clean.numChannels);
 		clean = signal;
@@ -479,7 +479,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, [\ir, \ir, \ir]).add;
 
 	// Enhance
-	~clean.addModule('enh', { |cleanEvent|
+	~clean.addModule(\enh, { |cleanEvent|
 		cleanEvent.sendSynth('spectral-enhance' ++ ~clean.numChannels,
 			[
 				enhance: ~enh,
@@ -488,7 +488,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		)
 	}, { ~enh.notNil });
 
-	SynthDef("spectral-enhance" ++ ~clean.numChannels, { |out, enhance = 0.5|
+	SynthDef('spectral-enhance' ++ ~clean.numChannels, { |out, enhance = 0.5|
 		var signal, chain, in, clean, teeth = 256;
 		signal = In.ar(out, ~clean.numChannels);
 		clean = signal;
@@ -503,7 +503,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, [\ir, \ir]).add;
 
 	// A low pass filter for the first half of the range, and a high pass for the rest.
-	~clean.addModule('lhf', { |cleanEvent|
+	~clean.addModule(\lhf, { |cleanEvent|
 		cleanEvent.sendSynth('lhf-filter' ++ ~clean.numChannels,
 			[
 				lhf: ~lhf,
@@ -511,7 +511,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 			]
 	)}, { ~lhf.notNil});
 
-	SynthDef("lhf-filter" ++ ~clean.numChannels, { |out, lhf|
+	SynthDef('lhf-filter' ++ ~clean.numChannels, { |out, lhf|
 		var signal;
 		var lpfCutoffFreq = lhf.linexp(0, 0.5, 20, 10000);
 		var hpfCutoffFreq = lhf.linexp(0.5, 1, 20, 10000);

@@ -20,7 +20,7 @@ They'll come back automatically.
 
 	*/
 
-	SynthDef("clean_monitor" ++ numChannels, { |dryBus, effectBus, outBus, gate = 1|
+	SynthDef(\clean_monitor ++ numChannels, { |dryBus, effectBus, outBus, gate = 1|
 		var drySignal = In.ar(dryBus, numChannels);
 		var wetSignal = In.ar(effectBus, numChannels);
 		//var signal = XFade2.ar(wetSignal, drySignal, dry * 2 - 1);
@@ -40,7 +40,7 @@ They'll come back automatically.
 	}, [\ir, \ir, \kr, \kr]).add;
 
 	// RMS measurement, sending back to editor
-	SynthDef("clean_rms" ++ numChannels, { |gate = 1, dryBus, effectBus, rmsReplyRate, rmsPeakLag, auxIndex|
+	SynthDef(\clean_rms ++ numChannels, { |gate = 1, dryBus, effectBus, rmsReplyRate, rmsPeakLag, auxIndex|
 		var drySignal = In.ar(dryBus, numChannels);
 		var wetSignal = In.ar(effectBus, numChannels);
 		var signal = wetSignal + drySignal;
@@ -59,7 +59,7 @@ They'll come back automatically.
 
 	*/
 
-	SynthDef("clean_delay" ++ numChannels, {
+	SynthDef(\clean_delay ++ numChannels, {
 		|dryBus, effectBus, gate = 1, delaytime, delayfeedback, delaySend = 1, delayAmp = 1, lock = 0, cps = 1|
 		var signal;
 		var input = In.ar(dryBus, numChannels);
@@ -96,7 +96,7 @@ They'll come back automatically.
 	}, [\ir, \ir]).add;
 	*/
 	// As I understand it, this reverb was created by Jost Muxfeld and James McCartney, it is not my cup of tea.
-	SynthDef("clean_reverb" ++ numChannels, { |dryBus, effectBus, gate = 1, rin = 0, rev = 0.1, dry = 0|
+	SynthDef(\clean_reverb ++ numChannels, { |dryBus, effectBus, gate = 1, rin = 0, rev = 0.1, dry = 0|
 		var in, snd, loop, depth;
 		in = In.ar(dryBus, numChannels).asArray.sum;
 		in = in * rin.lag(LFNoise1.kr(1).range(0.01, 0.02)); // regulate input
@@ -118,7 +118,7 @@ They'll come back automatically.
 	}, [\ir, \ir]).add;
 
 	// cav, pronounced "cave"
-	SynthDef("clean_cav" ++ numChannels, {
+	SynthDef(\clean_cav ++ numChannels, {
 		|dryBus, effectBus, gate = 1, in, out, cav = 1, cai = 1, cvt = 30, cvd = 0.5,  cvl = 1000|
 		var sig, lgt = 0.5;
 		sig = In.ar(dryBus, numChannels).asArray.sum;
@@ -136,7 +136,7 @@ They'll come back automatically.
 	// Impulse Response based reverb
 	~path = Main.packages.asDict.at('SuperClean') +/+ "/clean-samples/mmd/mir/mir4.wav";
 	~ezConvX = EZConvX(~path);
-	SynthDef("\clean_mir" ++ numChannels, {
+	SynthDef(\clean_mir ++ numChannels, {
 		|dryBus, effectBus, gate = 1, in, out, mii = 1 mir = 0.0 |
 		var sig, lgt = 0.5;
 		sig = In.ar(dryBus, numChannels).asArray.sum;
@@ -147,7 +147,7 @@ They'll come back automatically.
 	}, [\ir, \ir]).add;
 */
 	// NHHall based reverb, this implementation works, but could be improved in future to accept n number of channels
-	SynthDef("clean_hal" ++ numChannels, {
+	SynthDef(\clean_hal ++ numChannels, {
 		|dryBus, effectBus, gate=1, hal, hhp=20, hlp=20000, rts=1, bld=0.5, edf=0.5, ldf=0.5|
 		var wet, lgt = 0.0625;
 		var signal = In.ar(dryBus, numChannels);
@@ -164,7 +164,7 @@ They'll come back automatically.
 		Out.ar(effectBus, signal);
 	}, [\ir, \ir]).add;
 
-	SynthDef("clean_tanh" ++ numChannels, {
+	SynthDef(\clean_tanh ++ numChannels, {
 		|dryBus, effectBus, gate = 1, tnh = 0, tng = 1, tnb = 20000, tna = 20000|
 		var drySignal = In.ar(dryBus, numChannels);
 		var wetSignal = In.ar(effectBus, numChannels);

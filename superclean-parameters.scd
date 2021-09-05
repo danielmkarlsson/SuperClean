@@ -152,7 +152,7 @@ cu3:
 cu4:
 
 In the \drm synth definition you can change the tuning of the drum with tun.
-Strange wrapping and nonlinear range. Start trying values around 1.  The fdb
+Strange wrapping and nonlinear range. Start trying values around 1.  The fed
 parameter controls the amount of feedback inside the oscillator. Value range is
 0 to a lot where 0 is a sine, the higher up you go the noisier. The pew
 parameter controls the space blaster to metal kickdrum morph. Lower values are
