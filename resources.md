@@ -24,3 +24,4 @@ Resources for learning SuperCollider and SuperClean with special emphasis on Pat
 ## Useful Plugins
 
 - [Pwrand2](https://github.com/ffforces/Pwrand2)
+- [Pxshuf](https://github.com/davidgranstrom/Pxshuf)
