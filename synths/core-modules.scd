@@ -106,7 +106,7 @@ they respond to the existence of a value for one of the parameters
 
 ~clean.addModule(\bit,
 	{ |cleanEvent|
-		cleanEvent.sendSynth(\clean_crush ++ ~numChannels,
+		cleanEvent.sendSynth(\bit ++ ~numChannels,
 			[
 				crush: ~bit,
 				out: ~out
@@ -117,7 +117,7 @@ they respond to the existence of a value for one of the parameters
 
 ~clean.addModule(\sam,
 	{ |cleanEvent|
-		cleanEvent.sendSynth(\clean_coarse ++ ~numChannels,
+		cleanEvent.sendSynth(\sam ++ ~numChannels,
 			[
 				coarse: ~sam,
 				out: ~out
