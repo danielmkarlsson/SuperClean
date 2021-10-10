@@ -246,7 +246,7 @@ SynthDef(\hat, {|out, sustain=1, pan, bnd, tun |
 // Clap Synthesizer. This builds on the work of Nathan Ho: https://youtu.be/L9D78W8C-3w
 // Call it by providing \clp as a value to the \snd key in a pattern.
 // Parameters:
-// srp | srq | bdy | tha | tho | fco | dmp
+// srp | srq | bdy | bdt | tha | tho | fco | dmp
 // amp | pan | atk | rel | crv | gate | sustain
 // // (NEW: )
 (
