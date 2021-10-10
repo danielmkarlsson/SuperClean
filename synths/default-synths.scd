@@ -1,15 +1,35 @@
 /*
 
-Add your own instruments in this file.
-
-// Supported parameters are:
-// sustain, spd, endspd, bgn, end, pan, bnd
-// All instruments should use: out
-
-If your SuperClean instance is assigned to the variable ~clean, you can livecode these synths.
 */
 
 (
+/*
+Function to store argument preset values for each synth. It will eventually be removed and added as a method for CleanSoundLibrary.
+Use it by elsewhere by evaluating ~clean.soundLibrary.synthEvents[\preset][\store].(\superCleanSynthAbbrev)
+Use it here by evaluating presetStore.(\superCleanSynthAbbrev)
+Look up all default values by evaluating ~clean.soundLibrary.synthEvents[\preset]
+Look up all default values for a specific synth by evaluating ~clean.soundLibrary.synthEvents[\preset][\superCleanSynthAbbrev]
+And look up the default value for a synth's parameter by evaluating ~clean.soundLibrary.synthEvents[\preset][\superCleanSynthAbbrev][\synthArgName]
+*/
+var presetStore;
+~clean.soundLibrary.synthEvents[\preset] ?? { ~clean.soundLibrary.synthEvents.put(\preset, Event(know:true)) };
+presetStore = { |synth, verbose = false|
+	var i;
+	~clean.soundLibrary.synthEvents.keysValuesDo { |key, value|
+		if (key == synth) {
+			~clean.soundLibrary.synthEvents[\preset][synth] ?? { ~clean.soundLibrary.synthEvents[\preset].put(synth, ()) };
+			i = value[0].at(\instrument);
+			if (verbose) { i.postln };
+			SynthDescLib.global.at(i).controlDict.do { |item|
+				~clean.soundLibrary.synthEvents[\preset][synth].put(item.name, item.defaultValue);
+				if (verbose) { [item.name, item.defaultValue].postln };
+			}
+		}
+	}
+};
+~clean.soundLibrary.synthEvents[\preset][\store] ?? { ~clean.soundLibrary.synthEvents[\preset].put(\store, presetStore) };
+
+
 // An additive synth.
 SynthDef(\add,  {| out, ada = 0.001, adr = 1,
 	amp = 1,
@@ -212,7 +232,6 @@ SynthDef(\drm, {|out, pew=1, sustain=1, pan, fed=0, tun |
 // This uses "tun" in a weird way to provide some variation on the frequency.
 // "sustain" affects the overall envelope rate.
 // "bnd" sweeps the filter.
-
 (
 SynthDef(\hat, {|out, sustain=1, pan, bnd, tun |
 	var env, sound, accel, freq;
@@ -223,6 +242,56 @@ SynthDef(\hat, {|out, sustain=1, pan, bnd, tun |
 	OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env))
 }).store
 );
+
+// Clap Synthesizer. This builds on the work of Nathan Ho: https://youtu.be/L9D78W8C-3w
+// Call it by providing \clp as a value to the \snd key in a pattern.
+// Parameters:
+// srp | srq | bdy | bdt | tha | tho | fco | dmp
+// amp | pan | atk | rel | crv | gate | sustain
+// // (NEW: )
+(
+SynthDef(\cleanS_clap, {
+	var out = \out.ir, amp = \amp.kr(0.35), pan = \pan.kr, attack = \attack.ir(0.05), release = \release.ir(0.7),
+	ampEnvCurve = \ampEnvCurve.ir(-7), gate = \gate.kr(1), sustain = \sustain.kr(1), cutoff = \cutoff.kr(1611),
+	resonance = \resonance.kr(0.5).clip(0.01, 1.0), sharpness = \sharpness.kr(0.35).linlin(0.0, 1.0, -500, 500),
+	thumpAmp = \thumpAmp.kr(0.7), thumpOffset = \thumpOffset.kr(0.7), bendTime = \bendTime.kr(0.2).max(0),
+	bendAmount = \bendAmount.kr(0.5).linlin(0.0, 1.0, 0.5, 1.0, nil), damping = \damping.kr(11000);
+	var signal, thump, filterFreq, pitchEnv, clapEnv, thumpEnv, ampEnv;
+	filterFreq = cutoff + sharpness;
+	pitchEnv = Env([1, 1 + bendAmount, 1], bendTime * 0.5, \exp).kr(0, gate);
+	clapEnv = Env([0, 1, 0, 0.8, 0, 0.7, 0], [0.001, 0.008, 0.001, 0.008, 0.001, release]).kr(0, gate);
+	thumpEnv = Env.perc(0.001, 0.1, 1, 2).kr(0, gate);
+	ampEnv = Env.perc(attack, release, 1, -7).kr(Done.freeSelf, gate, sustain);
+	signal = Hasher.ar(Sweep.ar);
+	thump = RHPF.ar(signal, filterFreq * thumpOffset * pitchEnv, 0.2) * thumpAmp * thumpEnv * 2;
+	signal = BPF.ar(signal, filterFreq, resonance);
+	signal = (signal * 30 * pitchEnv * 8).tanh;
+	signal = (signal + thump).softclip;
+	signal = signal.softclip * 1.4;
+	signal = LPF.ar(signal, damping);
+	signal = signal * clapEnv * ampEnv * (amp * 2); // amp * 3 --- level match scaling;
+	signal = CleanPan.ar(signal, ~clean.numChannels, pan);
+    ReplaceOut.ar(out, signal)
+}).store;
+
+~clean.soundLibrary.addSynth(\clp, (
+	instrument: \cleanS_clap,
+	attack: { ~atk ?? { ~clean.soundLibrary.synthEvents[\preset][\clp][\attack] } },
+	release: { ~rel ?? { ~clean.soundLibrary.synthEvents[\preset][\clp][\release] } },
+	ampEnvCurve: { ~crv ?? { ~clean.soundLibrary.synthEvents[\preset][\clp][\ampEnvCurve] } },
+	sharpness: { ~srp ?? { ~clean.soundLibrary.synthEvents[\preset][\clp][\sharpness] } },
+	resonance: { ~srq ?? { ~clean.soundLibrary.synthEvents[\preset][\clp][\resonance] } },
+	damping: { ~dmp ?? { ~clean.soundLibrary.synthEvents[\preset][\clp][\damping] } },
+	bendAmount: { ~bdy ?? { ~clean.soundLibrary.synthEvents[\preset][\clp][\bendAmount] } },
+	bendTime: { ~bdt ?? { ~clean.soundLibrary.synthEvents[\preset][\clp][\bendTime] } },
+	thumpAmp: { ~tha ?? { ~clean.soundLibrary.synthEvents[\preset][\clp][\thumpAmp] } },
+	thumpOffset: { ~tho ?? { ~clean.soundLibrary.synthEvents[\preset][\clp][\thumpOffset] } },
+	cutoff: { ~fco ?? { ~clean.soundLibrary.synthEvents[\preset][\clp][\cutoff] } }
+), useSynthDefSustain: true);
+
+presetStore.(\clp);
+);
+
 
 // Transient excited filter.
 SynthDef(\dfd, {|out = 0, freq = 440, res = 1, den = 0, amp = 1, pan = 0.5, atk = 0.0, rel = 1.0, crv = -8.0, typ = 0.0, nsl = 0|

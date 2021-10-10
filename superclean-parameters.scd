@@ -76,6 +76,7 @@ cvl:	The cav low pass filter after the reverb. Range is zero to one.
 bit:	Roughly translates to bit rate reduction. Value range is zero to infinity. Lower values give more action.
 sam:	Roughly translates to sample rate reduction. Value range is zero to infinity. Higher values give more action.
 
+
 The parameters below aren't actually part of SuperClean, but are very useful
 and because SuperClean is running inside SuperCollider, we can use them.
 
@@ -104,6 +105,7 @@ Pdef(0,
 	])
 ).play
 )
+
 
 There are some notable exceptions in this list of keys that provide convenient
 calculation of frequency when compared to the equivalent list in SuperCollider.
@@ -151,6 +153,7 @@ cu2:
 cu3:
 cu4:
 
+
 In the \drm synth definition you can change the tuning of the drum with tun.
 Strange wrapping and nonlinear range. Start trying values around 1.  The fed
 parameter controls the amount of feedback inside the oscillator. Value range is
@@ -162,12 +165,33 @@ tun:
 fed:
 pew:
 
+
 The \hat synth definition is a noise source through a filter and an envelope.
 You can use tun in a weird way to provide some variation on the frequency.
 bnd sweeps the filter.
 
 tun:
 bnd:
+
+
+The \clp synth definition uses a full frequency range impulse that is run through
+a narrow band-pass filter and a fast envelope for the clap's noise burst, and a
+high-pass filter to provide some body at the onset of the hit.  Set the volume of
+the body by using the tha parameter (thump amp), and control it's initial pitchbend
+amount with bdy, and use bdt to set how long it takes to get there.  Thump's tuning
+can also be adjusted relative to the main clap sound by usingthe tho key. Control the
+character of the sound with the srp (sharpness) parameter, which allows you to tune
+the claps, sounding maybe a bit more "real" somewhere between 0.3 and 0.35, and more
+synthetic elsewhere. The srq parameter, the band-pass filter's resonance allows you to
+dial in the tone a bit more. The dmp key controls a final LPF that acts a dampener for the sound.
+
+srp: (0, 1) parameter range
+srq: (0, 1) parameter range
+bdy: -(0, 1)+ parameter range
+tha: (0, 1)+ parameter range
+tho: (0.01, 1)+ parameter range
+dmp: (20, 20000) parameter range
+
 
 The \kps synth definition Karplus-Strong physical modeling of a vibrating string,
 using a delay line (CombL) excited by an intial pulse (Impulse)
@@ -178,6 +202,7 @@ bnd:
 bnt:
 bno:
 bnc:
+
 
 The \sin synth definition is a sine wave oscillator. It accepts freq and midinote
 and parameters like those. It can also let you control the initial phase with the
@@ -190,6 +215,7 @@ bnd:
 bnt:
 bno:
 bnc:
+
 
 The \saw synth definition is a saw wave oscillator. It accepts freq and midinote
 and parameters like those. It can also let you control the initial phase with the
@@ -209,7 +235,6 @@ The \sqr synth definition is a square wave oscillator. Same thing as above for t
 parameters.
 
 freq:
-iph:
 wid:
 bnd:
 bnt:
@@ -229,6 +254,7 @@ res:
 typ:
 nsl:
 
+
 The \bow synth definition is a digital wave guide physical model of a bowed instrument.
 frc: Force.
 pos: Position.
@@ -238,6 +264,7 @@ freq:
 frc:
 pos:
 bpr:
+
 
 The \ixa synth definition is a kind of phase distortion based synth.
 It has a lot of potential for timbral unfolding after initiation.
@@ -254,6 +281,7 @@ bnd:
 bnt:
 bno:
 bnc:
+
 
 // Here's an example using most of the parameters from above all together in one wild mess
 (
@@ -394,4 +422,6 @@ Pdef(3,
     )
 ).play(quant:1);
 )
+
+*/
 ```
