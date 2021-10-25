@@ -38,6 +38,7 @@ rename synthBus : sourceBus : instanceBus
 
 */
 
+/*
 (
 /*/*/*/* Routing and Analysis */*/*/*/
 
@@ -494,3 +495,4 @@ postCutoff: ~tna, // tca
 // presetStore.(\tnh);
 );
 )
+*/
