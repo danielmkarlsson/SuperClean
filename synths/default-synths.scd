@@ -1,7 +1,7 @@
 /*
 
 */
-
+/*
 (
 /*
 Function to store argument preset values for each synth. It will eventually be removed and added as a method for CleanSoundLibrary.
@@ -319,3 +319,4 @@ SynthDef(\bow, { |out=0, freq=440, amp=1.0, frc=1, gate=1, pos=0.07 ,c1=0.25, c3
 }).store;
 )
 
+*/
