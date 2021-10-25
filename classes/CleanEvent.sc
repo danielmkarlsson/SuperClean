@@ -46,6 +46,7 @@ CleanEvent {
 
 			// legato/sustain/release overlap fix:
 
+			// "old legato: ".post; ~legato.postln;
 			// synth's envelope release time cut along with event if legato < 1
 			~legato = if(~legato ?? { 1 } >= 1) {
 				~legato ?? { 1 } + (~dur ?? { 1 } * (~rel ?? {
@@ -67,6 +68,7 @@ CleanEvent {
 			} {
 				~legato
 			}
+			// "new legato: ".post; ~legato.postln;
 
 			// synth's envelope release time persists (still happens) even if legato < 1
 			/*
@@ -165,14 +167,12 @@ CleanEvent {
 	}
 
 	finaliseParameters {
-		~amp = pow(~amp.value, 1) * ~amp.value;
+
 		~channel !? { ~pan = ~pan.value + (~channel.value / ~numChannels) };
 		~pan = ~pan * 2 - 1; // convert unipolar (0..1) range into bipolar one (-1...1)
 		~delayAmp = ~dla ? 0.0; // below is how you would rename parameter names to anything you want
 		~delaytime = ~dlt ? 0.0;
 		~delayfeedback = ~dlf ? 0.0;
-		~bandf = ~bpf ? 0.0;
-		~bandq = ~bpq ? 0.0;
 
 
 		~latency = ~latency + ~lag.value + (~offset.value * ~spd.value); // don't accidentally change this tho
@@ -215,6 +215,26 @@ CleanEvent {
 		)
 	}
 
+	sendInstanceSumBus {
+		server.sendMsg(\s_new,
+			\clean_instanceSumBus,
+			-1, // no id
+			1, // add action: addToTail
+			~synthGroup, // send to group
+			*[
+				input: aux.synthBus.index, // read from synth bus, which is reused
+				output: aux.dryBus.index, // write to aux dry bus
+				amp: ~ivl ?? { SynthDescLib.global.at(\clean_instanceSumBus).controlDict[\amp].defaultValue },
+				attack: ~iat ?? { SynthDescLib.global.at(\clean_instanceSumBus).controlDict[\attack].defaultValue },
+				sustainTime: ~ist ?? { ~sustain },
+				release: ~irl ?? { SynthDescLib.global.at(\clean_instanceSumBus).controlDict[\release].defaultValue },
+				ampEnvCurve: ~iec ?? { SynthDescLib.global.at(\clean_instanceSumBus).controlDict[\ampEnvCurve].defaultValue },
+				drive: ~ich ?? { SynthDescLib.global.at(\clean_instanceSumBus).controlDict[\drive].defaultValue },
+				gain: ~ign ?? { SynthDescLib.global.at(\clean_instanceSumBus).controlDict[\gain].defaultValue }
+			]
+		)
+	}
+
 	prepareSynthGroup { |outerGroup|
 		~synthGroup = server.nextNodeID;
 		server.sendMsg(\g_new, ~synthGroup, 1, outerGroup ? aux.group);
@@ -238,7 +258,9 @@ CleanEvent {
 
 			this.prepareSynthGroup(cutGroup);
 			modules.do(_.value(this));
-			this.sendGateSynth; // this one needs to be last
+			// this.sendGateSynth; // this one needs to be last
+			this.sendInstanceSumBus; // this one needs to be last
+
 
 		});
 
