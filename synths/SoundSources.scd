@@ -769,7 +769,7 @@ SynthDef(\cleanS_filterPing, {
 
 	bendEnv = Env([1, 1, 1 + bend], [bendStartOffset, bendTime * timeScale], [0, 0, bendCurve]).kr(0, gate);
 	bentFreq = (freq * bendEnv).clip(20, 7139);
-	release.poll;
+
 	ampEnv = Env.linen(attack, (timeScale - 1).max(0), release, amp * 300, ampEnvCurve).kr(Done.freeSelf, gate /*, timeScale */);
 	// ampEnv = Env.perc(attack, release, amp * 300, ampEnvCurve).kr(Done.freeSelf, gate, timeScale); // orig, with gate & timeScale added
 
