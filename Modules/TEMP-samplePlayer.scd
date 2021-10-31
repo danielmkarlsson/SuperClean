@@ -11,571 +11,89 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 */
 
 (
-{
-	var numChannels = ~clean.numChannels;
+var numChannels = ~clean.numChannels;
 
-	(1..SuperClean.maxSampleNumChannels).do { |sampleNumChannels|
+(1..SuperClean.maxSampleNumChannels).do { |sampleNumChannels|
 
-		var name = format("clean_sample_%_%", sampleNumChannels, numChannels);
+	var name = format("clean_sample_%_%", sampleNumChannels, ~clean.numChannels).asSymbol;
 
-		SynthDef(name, { |out, bufnum, sustain = 1, bgn = 0, end = 1, spd = 1, endspd = 1, freq = 440, pan = 0|
 
-			var sound, rate, phase, sawrate, numFrames;
+	SynthDef(name, {
+		var out = \out.ir, amp = \amp.kr(0.3), pan = \pan.kr, freq = \freq.kr(440).abs, bend = \bend.kr.clip(-1, 1),
+		bendTime = \bendTime.ir(0.2).abs, bendStartOffset = \bendStartOffset.ir.abs, bendCurve = \bendCurve.ir,
+		attack = \attack.ir(0.001).abs, release = \release.ir(1).abs, ampEnvCurve = \ampEnvCurve.ir,
+		gate = \gate.tr(1), timeScale = \timeScale.kr(1).abs, bufnum = \bufnum.ir, begin = \begin.kr, end = \end.kr(1),
+		speed = \speed.kr(1), endSpeed = \endSpeed.kr(1);
 
-			// Playback speed.
-			rate = Line.kr(spd, endspd, sustain) * (freq / 60.midicps);
+		var sound, rate, phase, sawrate, numFrames, ampEnv, bendEnv;
 
-			// Sample phase.
-			// BufSampleRate adjusts the rate if the sound file doesn't have the same rate as the soundcard.
-			phase =  Sweep.ar(1, rate * BufSampleRate.ir(bufnum)) + (BufFrames.ir(bufnum) * bgn);
+		ampEnv = Env.perc(attack, release, amp, ampEnvCurve).kr(Done.freeSelf, gate, timeScale);
+		bendEnv = Env([1, 1, 1 + bend], [bendStartOffset, bendTime * timeScale], [0, 0, bendCurve]).kr(0, gate);
 
-			numFrames = BufFrames.ir(bufnum);
-			sawrate = rate * BufSampleRate.ir(bufnum) / (absdif(bgn, end) * numFrames);
-			/*
-			sound = BufRd.ar(
-			numChannels: sampleNumChannels,
-			bufnum: bufnum,
-			phase: phase,
-			loop: 0,
-			interpolation: 4
-			);
-			*/
-			sound = PlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, startPos: phase, loop: 0.0, doneAction:0);
-			sound = CleanPan.ar(sound, numChannels, pan);
+		// Playback speed.
+		rate = Line.kr(speed, endSpeed, timeScale) * (freq / 60.midicps);
 
-			Out.ar(out, sound)
-		}, [\ir, \ir, \ir, \ir, \ir, \ir, \ir, \ir]).add;
-	};
+		// Sample phase.
+		// BufSampleRate adjusts the rate if the sound file doesn't have the same rate as the soundcard.
+		phase =  Sweep.ar(1, rate * BufSampleRate.ir(bufnum)) + (BufFrames.ir(bufnum) * begin);
+
+		numFrames = BufFrames.ir(bufnum);
+		sawrate = rate * BufSampleRate.ir(bufnum) / (absdif(begin, end) * numFrames);
+		/*
+		sound = BufRd.ar(
+		numChannels: sampleNumChannels,
+		bufnum: bufnum,
+		phase: phase,
+		loop: 0,
+		interpolation: 4
+		);
+		*/
+
+		sound = PlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, startPos: phase, loop: 0.0, doneAction:0);
+		sound = sound * ampEnv * amp;
+		sound = CleanPan.ar(sound, numChannels, pan);
+
+		Out.ar(out, sound)
+	}).add;
 
 	~clean.addModule(\sound,
-	{ |cleanEvent|
-		if(~diversion.value.isNil) {
-			if(~buffer.notNil) {
-				// argumets could be omitted using getMsgFunc, but for making it easier to understand, we write them out
-				cleanEvent.sendSynth(~instrument,  [
-					bufnum: ~buffer,
-					sustain: ~sustain,
-					spd: ~spd,
-					freq: ~freq,
-					endspd: ~endspd,
-					bgn: ~bgn,
-					end: ~end,
-					lop: ~lop,
-					pan: ~pan,
-					out: ~out
-				])
-			} {
-				if(~instrument.isNil) {
-					"module 'sound': instrument not found: %".format(~sound).postln
+		{ |cleanEvent|
+			if(~diversion.value.isNil) {
+				if(~buffer.notNil) {
+					// argumets could be omitted using getMsgFunc, but for making it easier to understand, we write them out
+					cleanEvent.sendSynth(~instrument,  [
+						bufnum: ~buffer,
+						speed: ~spd,
+						freq: ~freq,
+						endSpeed: ~endspd,
+						begin: ~bgn,
+						end: ~end,
+						loop: ~lop,
+						pan: ~pan,
+						out: ~out,
+						amp: ~amp,
+						bend: ~bnd ?? { SynthDescLib.global.at(name).controlDict[\bend].defaultValue },
+						bendTime: ~bnt ?? { SynthDescLib.global.at(name).controlDict[\bendTime].defaultValue },
+						bendStartOffset: ~bno ?? { SynthDescLib.global.at(name).controlDict[\bendStartOffset].defaultValue },
+						bendCurve: ~bnc ?? {SynthDescLib.global.at(name).controlDict[\bendCurve].defaultValue },
+						attack: ~atk ?? { SynthDescLib.global.at(name).controlDict[\attack].defaultValue },
+						release: ~rel ?? { SynthDescLib.global.at(name).controlDict[\release].defaultValue },
+						ampEnvCurve: ~crv ?? { SynthDescLib.global.at(name).controlDict[\ampEnvCurve].defaultValue },
+						gate: ~gate ?? { SynthDescLib.global.at(name).controlDict[\gate].defaultValue },
+						timeScale: ~tsc ?? { SynthDescLib.global.at(name).controlDict[\timeScale].defaultValue },
+
+
+					])
 				} {
-					// here, we just derive the arguments as necessary from the environment
-					cleanEvent.sendSynth(~instrument, ~argNames)
+					if(~instrument.isNil) {
+						"module 'sound': instrument not found: %".format(~sound).postln
+					} {
+						// here, we just derive the arguments as necessary from the environment
+						cleanEvent.sendSynth(~instrument, ~argNames)
+					}
 				}
 			}
-		}
-});
-/*
-	/*
-	Bus Routing Monitor
-	*/
 
-	// The monitor does the mixing and zeroing of the busses for each sample grain
-	// so that they can all play in one bus.
-
-	SynthDef(\clean_gate ++ numChannels, { |out, in, sustain = 1, fadeInTime = 0.0001, fadeTime = 0.0001, amp = 1|
-		var signal = In.ar(in, numChannels);
-		//  doneAction: 14: free surrounding group and all nodes
-		var env = EnvGen.ar(Env([0, 1, 1, 0], [fadeInTime, sustain, fadeTime], \sin), levelScale: amp, doneAction: 14);
-		signal = signal * env * CleanGateCutGroup.ar(fadeTime, doneAction: 14);
-		OffsetOut.ar(out, signal);
-		ReplaceOut.ar(in, Silent.ar(numChannels)) // clears bus signal for subsequent synths
-	}, [\ir, \ir, \ir, \ir, \ir, \ir]).add;
-
-	/*
-	Internal Signal Routing Synths
-	*/
-
-	SynthDef(\clean_out ++ numChannels, { |out, to, sustain = 1, fadeInTime = 0.0001, fadeTime = 0.0001, amp = 1|
-		var signal = In.ar(out, numChannels);
-		var env = EnvGen.ar(Env([0, 1, 1, 0], [fadeInTime, sustain, fadeTime], \sin), levelScale: amp);
-		Out.ar(to, signal * env);
-	}, [\ir, \ir]).add;
-
-	/*
-	Effect SynthDefs
-	These per-sample-effects are freed after Monitor envelope has ended.
-	*/
-
-	// This fuzz synthdef was originally designed by Jonathan Liljedahl. http://kymatica.com/
-	~clean.addModule(\fuz, { |cleanEvent|
-		cleanEvent.sendSynth(\fuz ++ ~clean.numChannels,
-			[
-				fuz: ~fuz,
-				fzv: ~fzv,
-				out: ~out
-			]
-	)}, { ~fuz.notNil or: { ~fzv.notNil } });
-
-	SynthDef (\fuz ++ ~clean.numChannels, { |out, fzv = 3, fuz = 0|
-		var sig, dry, gate, in;
-		in = In.ar(out, numChannels);
-		sig = in;
-		gate = Amplitude.ar(sig,0.005,0.005) > 0.002;
-		sig = (sig * 4).tanh;
-		sig = MidEQ.ar(sig,100,1,20);
-		dry = sig;
-		sig = (Limiter.ar(sig * 50) * fzv).wrap(-1, 1) + sig;
-		sig = sig.tanh;
-		sig = MidEQ.ar(sig,200,1,20);
-		sig = MidEQ.ar(sig,1000,1,-20);
-		sig = LPF.ar(sig,8000);
-		sig = (sig+dry).tanh;
-		sig = MidEQ.ar(sig,4000,1,-20);
-		sig = Select.ar(fuz, [in, sig * gate]);
-		ReplaceOut.ar(out, sig)
-	}, [\ir, \ir]).add;
-
-	SynthDef(\bit ++ numChannels, { |out, crush = 4|
-		var signal = In.ar(out, numChannels);
-		signal = signal.round(0.5 ** (crush-1));
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir]).add;
-
-	SynthDef(\sam ++ numChannels, { |out, coarse = 0, bandq = 10|
-		var signal = In.ar(out, numChannels);
-		signal = Latch.ar(signal, Impulse.ar(SampleRate.ir / coarse));
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir, \ir]).add;
-
-	SynthDef(\clean_hpf ++ numChannels, { |out, hcutoff = 440, hresonance = 0|
-		var signal = In.ar(out, numChannels);
-		var hcutoffClipped = hcutoff.abs.clip(20, 20000);
-		signal = RHPF.ar(signal, hcutoffClipped, hresonance.linexp(0, 1, 1, 0.001));
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir, \ir]).add;
-
-	SynthDef(\clean_bpf ++ numChannels, { |out, bandqf = 440, bandq = 10|
-		var signal = In.ar(out, numChannels);
-		//bandq = max(1, bandq); // limit quality, avoid division by zero
-		bandq = bandq.clip(0, 1).linlin(0, 1, 1, 10000);
-		bandqf = max(20, bandqf); // limit lower end, avoid blow up
-		bandqf = bandqf.abs.clip(20, 20000);
-
-		signal = BPF.ar(signal, bandqf, 1/bandq) * max(bandq, 1.0);
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir, \ir]).add;
-
-	SynthDef(\clean_lpf ++ numChannels, { |out, cutoff = 440, resonance = 0|
-		var signal = In.ar(out, numChannels);
-		var cutoffClipped = cutoff.abs.clip(20, 20000);
-		signal = RLPF.ar(signal, cutoffClipped, resonance.linexp(0, 1, 1, 0.001));
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir, \ir]).add;
-
-	~clean.addModule(\shp,
-		{ |cleanEvent|
-			cleanEvent.sendSynth(\clean_shape ++ ~numChannels,
-				[
-					shp: ~shp,
-					amp_compensation_amount: ~sac,
-					lo: ~slo,
-					hi: ~shi,
-					offset: ~sho,
-					lo_thresh: ~lot,
-					hi_thresh: ~hit,
-					out: ~out
-			])
-
-	}, { ~shp.notNil });
-
-	SynthDef(\clean_shape ++ numChannels, {
-		|out, shape = 0, amp = 1.0,  amp_compensation_amount = 0.99, lo = 1, hi = 0, offset = 0, lo_thresh = 0, hi_thresh = 0|
-		var abs, diff;
-		var signal = In.ar(out, numChannels);
-		shape = min(shape, 1.0 - 4e-10).explin(0.001, 1, 0.0, 0.999999);
-		amp_compensation_amount = amp_compensation_amount.linlin(0.0,1.0,0.0001,1.0);
-		amp = 1.0 - (amp_compensation_amount * shape / (shape +amp_compensation_amount )) * amp;
-		shape = (1.0 * shape) / (1.0 - shape);
-		signal = (1 + shape) * signal / (1 + (shape * abs(signal)));
-		offset = offset.linlin(0.0,1.0,1.0,5.0);
-		hi = hi * offset; lo = lo * offset;
-		abs = hi - lo;
-		lo_thresh = lo_thresh.linlin(0.0,1.0,-1.0,1.0);
-		lo = lo + (abs * lo_thresh);
-		hi_thresh = hi_thresh.linlin(0.0,1.0,-1.0,1.0);
-		hi = hi - (abs * hi_thresh);
-		signal = Fold.ar(signal, lo, hi);
-		diff = 1 - (lo - hi + (hi * lo));
-		ReplaceOut.ar(out, Limiter.ar(LeakDC.ar(signal * (amp+diff))));
-	}, [\ir, \ir]).add;
-
-	SynthDef(\clean_envelope ++ numChannels, { |out, attack = 0, hold = 0, release = inf, crv = 0.3 |
-		var signal = In.ar(out, numChannels);
-		signal = signal * EnvGen.ar(Env.linen(attack, hold, release, 1, crv));
-		ReplaceOut.ar(out, signal);
-	}, [\ir, \ir, \ir, \ir]).add;
-
-	// Frequency shifter
-	// Total shift is sum of `fshift` (in Hz) and `fshiftnote` times the current note frequency.
-	// `fshiftphase` allows control over the phase.
-	~clean.addModule(\fsh, { |cleanEvent|
-		cleanEvent.sendSynth(\frequencyshifter ++ ~clean.numChannels,
-			[
-				fsh: ~fsh,
-				fsm: ~fsm,
-				freq: ~freq,
-				out: ~out
-			]
-		)
-	}, { ~fsh.notNil });
-
-	SynthDef(\frequencyshifter ++ ~clean.numChannels, { |out, fsh, fsp, fsm, freq|
-		var sig = In.ar(out, ~clean.numChannels);
-		var shift = freq * fsm + fsh;
-		sig = FreqShift.ar(sig, shift, fsp);
-		ReplaceOut.ar(out, sig);
-	}, [\ir, \ir, \ir, \ir, \ir]).add;
-
-	// Triode-like distortion, uses only the `tri` parameter.
-	~clean.addModule(\tri, { |cleanEvent|
-		cleanEvent.sendSynth(\triode ++ ~clean.numChannels,
-			[
-				tri: ~tri,
-				out: ~out
-			]
-		)
-	}, { ~tri.notNil });
-
-	SynthDef(\triode ++ ~clean.numChannels, { |out, tri|
-		var sig, sc;
-		sig = In.ar(out, ~clean.numChannels);
-		sc = tri * 10 + 0.001;
-		sig = (sig * (sig > 0)) + (tanh(sig * sc) / sc * (sig < 0));
-		ReplaceOut.ar(out, LeakDC.ar(sig));
-	}, [\ir, \ir]).add;
-
-	// This is apparently the octaver from Sonic Pi, which makes me guess credit should go to Sam Aaron.
-	// uses `ocu` for octave up , `ocd` for octave down, and `ocq` for quarter-frequency harmonics.
-	~clean.addModule(\oct, { |cleanEvent|
-		cleanEvent.sendSynth(\clean_octer ++ ~clean.numChannels,
-			[
-				octer: ~ocu,
-				octersub: ~ocd,
-				octersubsub: ~ocq,
-				out: ~out
-			]
-		)
-	}, { ~ocu.notNil or: { ~ocd.notNil } or: { ~ocq.notNil }});
-
-	SynthDef(\clean_octer ++ ~clean.numChannels, { |out, octer, octersub, octersubsub|
-		var signal, oct1, oct2, oct3, sub;
-		signal = In.ar(out, ~clean.numChannels);
-		oct1 = 2.0 * LeakDC.ar( abs(signal) );
-		sub = LPF.ar(signal, 440);
-		oct2 = ToggleFF.ar(sub);
-		oct3 = ToggleFF.ar(oct2);
-		signal = SelectX.ar(octer.abs.clip(0.0, 1.0), [signal, octer.abs.clip(0.0, 1.0) * oct1, DC.ar(0)]);
-		signal = signal + (octersub * oct2 * sub) + (octersubsub * oct3 * sub);
-		ReplaceOut.ar(out, signal);
-	}, [\ir, \ir, \ir, \ir]).add;
-
-	// Ring modulation
-	~clean.addModule(\rma, { |cleanEvent|
-		cleanEvent.sendSynth(\clean_rma ++ ~clean.numChannels,
-			[
-				rma: ~rma,
-				rmf: ~rmf,
-				rdf: ~rdf,
-				rdt: ~rdt,
-				out: ~out
-			]
-		)
-	}, { ~rma.notNil });
-
-	SynthDef(\clean_rma ++ ~clean.numChannels, { |out, rma = 0, rmf = 0, rdf, rdt = 0.5|
-		var signal, mod;
-		signal = In.ar(out, ~clean.numChannels);
-		mod = rma * SinOsc.ar(Clip.kr(XLine.kr(rdf, rmf, rdt), 20, 20000));
-		signal = ring1(signal, mod); // Looks confusing huh? Well ring1, as it turns out, is an operator, search for it in the docs
-		ReplaceOut.ar(out, signal);
-	}, [\ir, \ir, \ir, \ir]).add;
-
-	// A crunchy distortion with a lot of high harmonics, the only parameter is `dst`.
-	~clean.addModule(\dst, { |cleanEvent|
-		cleanEvent.sendSynth(\clean_distortion ++ ~clean.numChannels,
-			[
-				dst: ~dst,
-				out: ~out
-			]
-		)
-	}, { ~dst.notNil });
-
-	SynthDef(\clean_distortion ++ ~clean.numChannels, { |out, dst = 0|
-		var signal, mod;
-		signal = In.ar(out, ~clean.numChannels);
-		mod = CrossoverDistortion.ar(signal, amp: 0.2, smooth: 0.01);
-		mod = mod + (0.1 * dst * DynKlank.ar(`[[60,61,240,3000 + SinOsc.ar(62,mul: 100)],nil,[0.1, 0.1, 0.05, 0.01]], signal));
-		mod = (mod.cubed * 8).softclip * 0.5;
-		mod = SelectX.ar(dst, [signal, mod]);
-		Out.ar(out, mod);
-	}, [\ir, \ir]).add;
-
-	//These spectral effects below are Mads Kjeldgaard's handywork.
-	// Spectral delay
-	~clean.addModule(\sda, { |cleanEvent|
-		cleanEvent.sendSynth('spectral-delay' ++ ~clean.numChannels,
-			[
-				xsdelay: ~sdx,
-				tsdelay: ~sdt,
-				sda: ~sda,
-				sdq: ~sdq,
-				out: ~out
-			]
-		)
-	}, { ~sda.notNil });
-
-	SynthDef('spectral-delay' ++ ~clean.numChannels, { |out, tsdelay = 0.5, xsdelay = 0.5, sda = 0, sdq = 0.005|
-
-		var signal, delayTime, delays, freqs, filtered;
-		var size = 16;
-		var maxDelayTime = 0.2;
-		signal = In.ar(out, ~clean.numChannels);
-		delayTime = tsdelay * maxDelayTime;
-		filtered = (1..size).sum { |i|
-			var filterFreq = i.linexp(1, size, 40, 17000);
-			var sig = BPF.ar(signal, filterFreq, sdq);
-			// the delay pattern is determined from xsdelay by bitwise-and:
-			DelayN.ar(sig, maxDelayTime, i & xsdelay * (1 / size) * delayTime )
-		};
-		signal = signal * 0.2 + ((filtered * 4) * sda); // this controls wet / dry
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir, \ir]).add;
-
-	// Spectral freeze
-	/*~clean.addModule('spectral-freeze', { |cleanEvent|
-	cleanEvent.sendSynth('spectral-freeze' ++ ~clean.numChannels,
-	[
-	freeze: ~frz,
-	out: ~out
-	]
-	)
-	}, { ~frz.notNil } );
-
-	SynthDef('spectral-freeze' ++ ~clean.numChannels, { |out, freeze| // broken, use at own risk, values seem to be 0 for off and 1 for on
-	var signal, chain, in;
-	signal = In.ar(out, ~clean.numChannels);
-	chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
-	signal = IFFT(PV_Freeze(chain, freeze));
-	ReplaceOut.ar(out, signal)
-	}, [\ir, \ir]).add;
-	*/
-
-	// Spectral comb
-	~clean.addModule(\cmb, { |cleanEvent|
-		cleanEvent.sendSynth('spectral-comb' ++ ~clean.numChannels,
-			[
-				comb: ~cmb,
-				out: ~out
-			]
-		)
-	}, { ~cmb.notNil });
-
-	SynthDef('spectral-comb' ++ ~clean.numChannels, { |out, comb|
-		var signal, chain, in, clean, teeth = 256;
-		signal = In.ar(out, ~clean.numChannels);
-		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
-		signal = IFFT(PV_RectComb(chain, numTeeth: teeth * comb.abs.clip(0.0, 1.0), width: 1-comb.abs.clip(0.0, 1.0)));
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir]).add;
-
-	// Spectral smear
-	~clean.addModule(\smr, { |cleanEvent|
-		cleanEvent.sendSynth('spectral-smear' ++ ~clean.numChannels,
-			[
-				smear: ~smr,
-				out: ~out
-			]
-		)
-	}, { ~smr.notNil });
-
-	SynthDef('spectral-smear' ++ ~clean.numChannels, { |out, smear|
-		var signal, chain, in;
-		signal = In.ar(out, ~clean.numChannels);
-		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
-		signal = IFFT(PV_MagSmear(chain, bins: smear.linexp(0.0,1.0,1,64)));
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir]).add;
-
-	// Spectral scramble
-	~clean.addModule(\scm, { |cleanEvent|
-		cleanEvent.sendSynth('spectral-scram' ++ ~clean.numChannels,
-			[
-				scram: ~scm,
-				out: ~out
-			]
-		)
-	}, { ~scm.notNil });
-
-	SynthDef('spectral-scram' ++ ~clean.numChannels, { |out, scram|
-		var signal, chain, in, clean, teeth = 256;
-		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
-		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
-		signal = IFFT(PV_BinScramble(chain, wipe: scram, width: scram));
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir]).add;
-
-	// Spectral binshift
-	~clean.addModule(\sbs, { |cleanEvent|
-		cleanEvent.sendSynth('spectral-binshift' ++ ~clean.numChannels,
-			[
-				binshift: ~sbs,
-				out: ~out
-			]
-		)
-	}, { ~sbs.notNil });
-
-	SynthDef('spectral-binshift' ++ ~clean.numChannels, { |out, binshift|
-		var signal, chain, in, clean, teeth = 256;
-		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
-		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
-		signal = IFFT(PV_BinShift(chain, stretch: binshift.linlin(0.0,1.0,0.01,4.0),
-			shift: binshift * 10, interp: 1));
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir]).add;
-
-	// Spectral high pass filter
-	~clean.addModule(\hbr, { |cleanEvent|
-		cleanEvent.sendSynth('spectral-hbrick' ++ ~clean.numChannels,
-			[
-				hbrick: ~hbr,
-				out: ~out
-			]
-		)
-	}, { ~hbrick.notNil });
-
-	SynthDef('spectral-hbrick' ++ ~clean.numChannels, { |out, hbrick|
-		var signal, chain, in, clean, teeth = 256;
-		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
-		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
-		signal = IFFT(PV_BrickWall(chain, wipe: hbrick * 0.6)); // Signal almost disappears around 0.5 therefore it's scaled a bit
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir]).add;
-
-	// Spectral low pass filter
-	~clean.addModule(\lbr, { |cleanEvent|
-		cleanEvent.sendSynth('spectral-lbrick' ++ ~clean.numChannels,
-			[
-				lbrick: ~lbr,
-				out: ~out
-			]
-		)
-	}, { ~lbrick.notNil });
-
-	SynthDef('spectral-lbrick' ++ ~clean.numChannels, { |out, lbrick|
-		var signal, chain, in, clean, teeth = 256;
-		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
-		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
-		// lbrick parameter scaled to negative range to activate lopass filter (see ugen help file)
-		signal = IFFT(PV_BrickWall(chain, wipe: lbrick.linlin(0.0,1.0,0.0,(-1.0))));
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir]).add;
-
-	// Conformer
-	~clean.addModule(\scf, { |cleanEvent|
-		cleanEvent.sendSynth('spectral-conformer' ++ ~clean.numChannels,
-			[
-				real: ~scf,
-				imag: ~img,
-				out: ~out
-			]
-		)
-	}, { ~ral.notNil or: ~img.notNil });
-
-	SynthDef('spectral-conformer' ++ ~clean.numChannels, { |out, real = 0.5, imag = 0.5|
-		var signal, chain, in, clean, teeth = 256;
-		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
-		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
-		signal = IFFT(
-			PV_ConformalMap(chain, real.linlin(0.0,1.0,0.01,2.0), imag.linlin(0.00,1.0,0.01,10.0))
-		).tanh;
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir, \ir]).add;
-
-	// Enhance
-	~clean.addModule(\enh, { |cleanEvent|
-		cleanEvent.sendSynth('spectral-enhance' ++ ~clean.numChannels,
-			[
-				enhance: ~enh,
-				out: ~out
-			]
-		)
-	}, { ~enh.notNil });
-
-	SynthDef('spectral-enhance' ++ ~clean.numChannels, { |out, enhance = 0.5|
-		var signal, chain, in, clean, teeth = 256;
-		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
-		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
-		signal = IFFT(
-			PV_SpectralEnhance(chain,
-				enhance.linlin(0.0,1.0,1,16),
-				enhance.linlin(0.0,1.0,1.0,5.0),
-				enhance.linlin(0.0,1.0,0.0,0.99))
-		).tanh; // .tanh is used as a crude limiter here beacause sometimes this ugen goes crazy
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir]).add;
-
-	// A low pass filter for the first half of the range, and a high pass for the rest.
-	~clean.addModule(\lhf, { |cleanEvent|
-		cleanEvent.sendSynth('lhf-filter' ++ ~clean.numChannels,
-			[
-				lhf: ~lhf,
-				out: ~out
-			]
-	)}, { ~lhf.notNil});
-
-	SynthDef('lhf-filter' ++ ~clean.numChannels, { |out, lhf|
-		var signal;
-		var lpfCutoffFreq = lhf.linexp(0, 0.5, 20, 10000);
-		var hpfCutoffFreq = lhf.linexp(0.5, 1, 20, 10000);
-
-		signal = In.ar(out, ~clean.numChannels);
-
-		signal = RHPF.ar(
-			RLPF.ar(
-				signal,
-				lpfCutoffFreq
-			),
-			hpfCutoffFreq
-		);
-		ReplaceOut.ar(out, signal)
-	}, [\ir, \ir]).add;
-
-	SynthDef(\clean_instanceSumBus, {
-	var input = \input.ir, output = \output.ir, amp = \amp.kr(1), gate = \gate.kr(1), attack = \attack.ir(0.001).abs,
-	sustainTime = \sustainTime.ir.abs, release = \release.ir(1).abs, ampEnvCurve = \ampEnvCurve.ir,
-	drive = \drive.kr, gain = \gain.kr(5);
-	var agc, agcDrive, agcClean, ampEnv, signal;
-	agc = 0.7 - ((drive >= 2) * drive.linexp(2, 10, 0.1, 0.45));
-	agcDrive = drive.linlin(1.1, 10, 0.25, 0.125, \min);
-	agcDrive = agcDrive + ((drive > 1) * agcDrive.neg * 2) + ((drive <= 1) * 0.0625);
-	agcClean = drive.linlin(1.1, 10, 1, 0.375, \min) + ((drive <= 1) * 0.25);
-	ampEnv = Env.linen(attack, sustainTime, release, 1, ampEnvCurve).kr(Done.freeGroup, gate);
-	signal = In.ar(input, ~clean.numChannels);
-	signal = (
-		((signal * drive * gain).tanh * (amp * agcDrive) * (drive > 0)) +
-		(signal * (amp * agcClean) * (1 - drive)) *
-		agc
-	);
-	signal = LeakDC.ar(signal);
-	signal = signal * ampEnv;
-	OffsetOut.ar(output, signal)
-}).add;
-*/
-}.value
+	});
+}
 )
