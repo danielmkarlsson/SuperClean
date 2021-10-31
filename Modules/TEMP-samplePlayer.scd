@@ -47,6 +47,34 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		}, [\ir, \ir, \ir, \ir, \ir, \ir, \ir, \ir]).add;
 	};
 
+	~clean.addModule(\sound,
+	{ |cleanEvent|
+		if(~diversion.value.isNil) {
+			if(~buffer.notNil) {
+				// argumets could be omitted using getMsgFunc, but for making it easier to understand, we write them out
+				cleanEvent.sendSynth(~instrument,  [
+					bufnum: ~buffer,
+					sustain: ~sustain,
+					spd: ~spd,
+					freq: ~freq,
+					endspd: ~endspd,
+					bgn: ~bgn,
+					end: ~end,
+					lop: ~lop,
+					pan: ~pan,
+					out: ~out
+				])
+			} {
+				if(~instrument.isNil) {
+					"module 'sound': instrument not found: %".format(~sound).postln
+				} {
+					// here, we just derive the arguments as necessary from the environment
+					cleanEvent.sendSynth(~instrument, ~argNames)
+				}
+			}
+		}
+});
+/*
 	/*
 	Bus Routing Monitor
 	*/
@@ -528,5 +556,26 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
+	SynthDef(\clean_instanceSumBus, {
+	var input = \input.ir, output = \output.ir, amp = \amp.kr(1), gate = \gate.kr(1), attack = \attack.ir(0.001).abs,
+	sustainTime = \sustainTime.ir.abs, release = \release.ir(1).abs, ampEnvCurve = \ampEnvCurve.ir,
+	drive = \drive.kr, gain = \gain.kr(5);
+	var agc, agcDrive, agcClean, ampEnv, signal;
+	agc = 0.7 - ((drive >= 2) * drive.linexp(2, 10, 0.1, 0.45));
+	agcDrive = drive.linlin(1.1, 10, 0.25, 0.125, \min);
+	agcDrive = agcDrive + ((drive > 1) * agcDrive.neg * 2) + ((drive <= 1) * 0.0625);
+	agcClean = drive.linlin(1.1, 10, 1, 0.375, \min) + ((drive <= 1) * 0.25);
+	ampEnv = Env.linen(attack, sustainTime, release, 1, ampEnvCurve).kr(Done.freeGroup, gate);
+	signal = In.ar(input, ~clean.numChannels);
+	signal = (
+		((signal * drive * gain).tanh * (amp * agcDrive) * (drive > 0)) +
+		(signal * (amp * agcClean) * (1 - drive)) *
+		agc
+	);
+	signal = LeakDC.ar(signal);
+	signal = signal * ampEnv;
+	OffsetOut.ar(output, signal)
+}).add;
+*/
 }.value
 )

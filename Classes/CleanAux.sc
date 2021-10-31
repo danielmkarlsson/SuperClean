@@ -164,12 +164,6 @@ CleanAux {
 			~pan = 0.5;
 			~amp = 0.5;
 			~cut = 0.0;
-			~sac = 0.99;
-			~slo = 1.0;
-			~shi = 0.0;
-			~sho = 0.0;
-			~lot = 0.0;
-			~hit = 0.0;
 			~nhp = 20;
 			~nlp = 20000;
 			~mii = 1;
