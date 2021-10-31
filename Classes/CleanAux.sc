@@ -116,23 +116,6 @@ CleanAux {
 		globalEffects.do { |x| x.set(event) };
 	}
 
-/*
-	amp_ { |val|
-		this.set(\amp, val)
-	}
-
-	amp {
-		^this.get(\amp)
-	}
-
-	fadeTime_ { |val|
-		this.set(\fadeTime, val)
-	}
-
-	fadeTime {
-		^this.get(\fadeTime)
-	}
-*/
 	freeSynths {
 		server.bind {
 			server.sendMsg("/n_free", group);
