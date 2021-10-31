@@ -177,7 +177,7 @@ SuperClean {
 
 	loadSynthDefs { |path|
 		var filePaths;
-		path = path ?? { "../synths".resolveRelative };
+		path = path ?? { "../Modules".resolveRelative };
 		filePaths = pathMatch(standardizePath(path +/+ "*"));
 		filePaths.do { |filepath|
 			if(filepath.splitext.last == "scd") {

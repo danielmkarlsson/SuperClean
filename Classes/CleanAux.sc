@@ -116,22 +116,6 @@ CleanAux {
 		globalEffects.do { |x| x.set(event) };
 	}
 
-	amp_ { |val|
-		this.set(\amp, val)
-	}
-
-	amp {
-		^this.get(\amp)
-	}
-
-	fadeTime_ { |val|
-		this.set(\fadeTime, val)
-	}
-
-	fadeTime {
-		^this.get(\fadeTime)
-	}
-
 	freeSynths {
 		server.bind {
 			server.sendMsg("/n_free", group);
@@ -178,17 +162,11 @@ CleanAux {
 			~end = 1.0;
 			~spd = 1.0;
 			~pan = 0.5;
-			~amp = 0.75;
+			~amp = 0.5;
 			~cut = 0.0;
-			~sac = 0.99;
-			~slo = 1.0;
-			~shi = 0.0;
-			~sho = 0.0;
-			~lot = 0.0;
-			~hit = 0.0;
 			~nhp = 20;
 			~nlp = 20000;
-			//~mii = 1;
+			~mii = 1;
 			~unit = \r;
 			~midinote = #{ ~note ? ~num + (~octave * 12) };
 			~freq = #{
@@ -244,7 +222,6 @@ CleanAux {
 			~lop = 1.0;
 			~dry = 0.0;
 			~lock = 0; // if set to 1, syncs delay times with cps
-			~amp = 0.5;
 			~fadeTime = 0.001;
 
 			// values from the clean bus
