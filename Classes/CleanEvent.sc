@@ -36,6 +36,8 @@ CleanEvent {
 
 	mergeSoundEvent {
 		var soundEvent = aux.clean.soundLibrary.getEvent(~snd, ~num);
+		var relTime;
+
 		if(soundEvent.isNil) {
 			// only call ~notFound if no ~diversion is given that anyhow redirects control
 			if(~diversion.isNil) { ~notFound.value }
@@ -46,24 +48,46 @@ CleanEvent {
 
 			// legato/sustain/release overlap fix:
 
-			// synth's envelope release time cut along with event if legato < 1
-			~legato = if(~legato ?? { 1 } >= 1) {
-				~legato ?? { 1 } + (~dur ?? { 1 } * (~rel ?? {
-					if(~clean.soundLibrary.synthEvents[~snd].notNil) {
-						if(SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\release].notNil) {
-							SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\release].defaultValue
+			// release lookup and multichannel house keeping (event length should be based around longest release)
+			relTime = if(~rel.notNil) {
+				if(~rel.isKindOf(Collection)) {
+					relTime = ~rel.sort { |a, b| a > b };
+					relTime[0]
+				} {
+					~rel
+				}
+			} {
+				if(~clean.soundLibrary.synthEvents[~snd].notNil) {
+					if(SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\release].notNil) {
+						SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\release].defaultValue
+					} {
+						if(SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\rel].notNil) {
+							SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\rel].defaultValue
 						} {
-							if(SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\rel].notNil) {
-								SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\rel].defaultValue
-						} { 1 } }
-					} { if(SynthDescLib.global.at(~snd).notNil) {
+							1
+						}
+					}
+				} {
+					if(SynthDescLib.global.at(~snd).notNil) {
 						if(SynthDescLib.global.at(~snd).controlDict[\release].notNil) {
 							SynthDescLib.global.at(~snd).controlDict[\release].defaultValue
 						} {
 							if(SynthDescLib.global.at(~snd).controlDict[\rel].notNil) {
 								SynthDescLib.global.at(~snd).controlDict[\rel].defaultValue
-						} {	1 } }
-				} { 1 } } }))
+							} {
+								1
+							}
+						}
+					} {
+						1
+					}
+				}
+			};
+
+
+			// synth's envelope release time cut along with event if legato < 1
+			~legato = if(~legato ?? { 1 } >= 1) {
+				~legato ?? { 1 } + ((~dur ?? { 1 }) * relTime)
 			} {
 				~legato
 			}
@@ -72,24 +96,25 @@ CleanEvent {
 			// synth's envelope release time persists (still happens) even if legato < 1
 			/*
 			~legato =  ~legato ?? { 1 } + (~dur ?? { 1 } * (~rel ?? {
-				if(~clean.soundLibrary.synthEvents[~snd].notNil) {
-					if(SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\release].notNil) {
-						SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\release].defaultValue
-					} {
-						if(SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\rel].notNil) {
-							SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\rel].defaultValue
-					} { 1 } }
-				} { if(SynthDescLib.global.at(~snd).notNil) {
-					if(SynthDescLib.global.at(~snd).controlDict[\release].notNil) {
-						SynthDescLib.global.at(~snd).controlDict[\release].defaultValue
-					} {
-						if(SynthDescLib.global.at(~snd).controlDict[\rel].notNil) {
-							SynthDescLib.global.at(~snd).controlDict[\rel].defaultValue
-					} {	1 } }
+			if(~clean.soundLibrary.synthEvents[~snd].notNil) {
+			if(SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\release].notNil) {
+			SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\release].defaultValue
+			} {
+			if(SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\rel].notNil) {
+			SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\rel].defaultValue
+			} { 1 } }
+			} { if(SynthDescLib.global.at(~snd).notNil) {
+			if(SynthDescLib.global.at(~snd).controlDict[\release].notNil) {
+			SynthDescLib.global.at(~snd).controlDict[\release].defaultValue
+			} {
+			if(SynthDescLib.global.at(~snd).controlDict[\rel].notNil) {
+			SynthDescLib.global.at(~snd).controlDict[\rel].defaultValue
+			} {	1 } }
 			} { 1 } } }))
 			*/
 		}
 	}
+
 
 	orderTimeSpan {
 		var temp;
