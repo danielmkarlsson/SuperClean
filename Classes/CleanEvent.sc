@@ -46,7 +46,6 @@ CleanEvent {
 
 			// legato/sustain/release overlap fix:
 
-			// "old legato: ".post; ~legato.postln;
 			// synth's envelope release time cut along with event if legato < 1
 			~legato = if(~legato ?? { 1 } >= 1) {
 				~legato ?? { 1 } + (~dur ?? { 1 } * (~rel ?? {
@@ -68,7 +67,7 @@ CleanEvent {
 			} {
 				~legato
 			}
-			// "new legato: ".post; ~legato.postln;
+
 
 			// synth's envelope release time persists (still happens) even if legato < 1
 			/*
@@ -197,24 +196,6 @@ CleanEvent {
 		}
 	}
 
-	sendGateSynth {
-		server.sendMsg(\s_new,
-			\clean_gate ++ ~numChannels,
-			-1, // no id
-			1, // add action: addToTail
-			~synthGroup, // send to group
-			*[
-				in: aux.synthBus.index, // read from synth bus, which is reused
-				out: aux.dryBus.index, // write to aux dry bus
-				amp: ~amp,
-				sample: ~hash, // required for the cutgroup mechanism
-				sustain: ~sustain, // after sustain, free all synths and group
-				fadeInTime: ~fadeInTime, // fade in
-				fadeTime: ~fadeTime // fade out
-			]
-		)
-	}
-
 	sendInstanceSumBus {
 		server.sendMsg(\s_new,
 			\clean_instanceSumBus,
@@ -258,7 +239,6 @@ CleanEvent {
 
 			this.prepareSynthGroup(cutGroup);
 			modules.do(_.value(this));
-			// this.sendGateSynth; // this one needs to be last
 			this.sendInstanceSumBus; // this one needs to be last
 
 
