@@ -1,23 +1,17 @@
-/*
-
-AUX BASED (GLOBAL)
-CORE SYNTHDEFS FOR CLEAN
-(REQUIRED: GlobalCleanEffects)
-
-Global synth defs: These synths run on each CleanAux and are only released when stopped.
-If you make changes to them, hit cmd-period to update them.
-They'll come back automatically.
-
-*/
+// Updated Global Effects
+// Currently deactivated until after properly testing all units.
 
 
 /*
-NOTES
-NOTES
-NOTES
-NOTES
+NOTES/TO DO:
+
+
+
+
+.add or .store SynthDefs
 
 The order and arg names are currently set in CleanAux.sc: initDefaultGlobalEffects, ~ line 56.
+Order is mostly unimportant (except for outputMonitor and rms)
 
 Some arg name translation is happening in CleanEvent.sc: finaliseParameters, ~ line 171.
 
@@ -35,6 +29,7 @@ rename dryBus : instanceBus : globalDryBus
 rename effectBus : globalBus : globalWetBus
 rename synthBus : sourceBus : instanceBus
 
+Is there a real use for \clean_rms? Remove?
 
 */
 
