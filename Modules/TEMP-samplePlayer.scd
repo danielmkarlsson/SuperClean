@@ -1,3 +1,6 @@
+/*
+Commented out and moved into InstaceEffects.scd temporarily to perserve order of execution: sources > effects
+
 (
 var numChannels = ~clean.numChannels;
 
@@ -74,3 +77,4 @@ var numChannels = ~clean.numChannels;
 
 });
 )
+*/
