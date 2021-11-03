@@ -1,28 +1,8 @@
 /*
-
-EVENT - BASED
-CORE SYNTHDEF EFFECTS FOR SUPERCLEAN
-These synthdefs can be hacked at runtime, and hey something breaks, you can always download a fresh one.
-Live coding them requires that you have your SuperClean instance in an environment variable called ~clean.
-
-A quick note for hackers: You might think that default values for parameters get set in
-the SynthDefs, but alas they do not. Default values for parameters get set in CleanAux.sc
-
-*/
-
-/*
-NOTES
-NOTES
-NOTES
-NOTES
+NOTES/TO DO:
 
 
-How to set location of clean_out dynamically? this will likely be explored in SuperClean.sc class defs- an easy way to redefine module order
 
-Class Change: move ~clean.addModule (SuperClean.sc) to CleanSoundLibrary.sc and standardize? Or really it's the .sendSynth method in CleanEvent.sc that's dealing with arg name translation... maybe?
-
-
-Make presetStore work
 
 Amplitude: instead of output amount: input amplitude? \XXi ?
 

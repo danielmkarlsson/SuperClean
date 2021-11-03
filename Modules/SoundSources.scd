@@ -1,18 +1,10 @@
 /*
-
-brief description of this doc
-
-*/
+NOTES/TO DO:
 
 
 
-/*
-questions & to do::
-questions & to do::
 
-
-
-Move sample player into this file
+.add or .store SynthDefs?
 
 Should atk / rel / crv rates be set to kr if retriggering is a consideration?
 
@@ -24,44 +16,19 @@ Sample player name this name corresponds to line 263 of CleanSoundLibrary.sc. Re
 // Perhaps achievable by using ~clean.soundLibrary.addBuffer to add sample player SynthDef.
 // // see CleanSoundLibrary.sc for more
 
-
 Add timeScale array to \fmx.
 
 Synths with arrays for specific parameter: add additional "global" parameter which allows all of them to be set simultaneously?
 
-Do no add out, amp, & pan conversions to Dictionaries for now. TBD why this breaks things. (out is obvious, but the other two aren't)
+Do no add out, amp, & pan conversions to Dictionaries for now. TBD why this breaks things.
 */
 
 (
-/*
-Function to store argument preset values for each synth.
-Use it by elsewhere by evaluating ~clean.soundLibrary.synthEvents[\preset][\store].(\superCleanSynthAbbrev)
-Use it here by evaluating presetStore.(\superCleanSynthAbbrev)
-Look up all default values by evaluating ~clean.soundLibrary.synthEvents[\preset]
-Look up all default values for a specific synth by evaluating ~clean.soundLibrary.synthEvents[\preset][\superCleanSynthAbbrev]
-And look up the default value for a synth's parameter by evaluating ~clean.soundLibrary.synthEvents[\preset][\superCleanSynthAbbrev][\synthArgName]
-*/
-var presetStore;
-~clean.soundLibrary.synthEvents[\preset] ?? { ~clean.soundLibrary.synthEvents.put(\preset, Event(know:true)) };
-presetStore = { |synth, verbose = false|
-	var i;
-	~clean.soundLibrary.synthEvents.keysValuesDo { |key, value|
-		if(key == synth) {
-			~clean.soundLibrary.synthEvents[\preset][synth] ?? { ~clean.soundLibrary.synthEvents[\preset].put(synth, ()) };
-			i = value[0].at(\instrument);
-			if(verbose) { i.postln };
-			SynthDescLib.global.at(i).controlDict.do { |item|
-				~clean.soundLibrary.synthEvents[\preset][synth].put(item.name, item.defaultValue);
-				if(verbose) { [item.name, item.defaultValue].postln };
-			}
-		}
-	}
-};
-~clean.soundLibrary.synthEvents[\preset][\store] ?? { ~clean.soundLibrary.synthEvents[\preset].put(\store, presetStore) };
-// ~clean.soundLibrary.synthEvents[\presetStore] ?? { ~clean.soundLibrary.synthEvents.put(\presetStore, presetStore) }; more efficient?
 
 
 /*
+Currently in file called "TEMP-samplePlayer" until further testing and improvements are complete
+
 // Sample player.
 // Call it by providing \folderNameOfLoadedSamples as a value to the \snd key in a pattern, and specify which sample by providing a number to the \num key.
 // Parameters:
