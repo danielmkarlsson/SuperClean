@@ -1,15 +1,3 @@
-/*
-
-EVENT - BASED
-CORE SYNTHDEF EFFECTS FOR SUPERCLEAN
-These synthdefs can be hacked at runtime, and hey something breaks, you can always download a fresh one.
-Live coding them requires that you have your SuperClean instance in an environment variable called ~clean.
-
-A quick note for hackers: You might think that default values for parameters get set in
-the SynthDefs, but alas they do not. Default values for parameters get set in CleanAux.sc
-
-*/
-
 (
 var numChannels = ~clean.numChannels;
 
@@ -21,41 +9,24 @@ var numChannels = ~clean.numChannels;
 	SynthDef(name, {
 		var out = \out.ir, amp = \amp.kr(0.3), pan = \pan.kr, freq = \freq.kr(440).abs, bend = \bend.kr.clip(-1, 1),
 		bendTime = \bendTime.ir(0.2).abs, bendStartOffset = \bendStartOffset.ir.abs, bendCurve = \bendCurve.ir,
-		attack = \attack.ir(0.001).abs, release = \release.ir(1).abs, ampEnvCurve = \ampEnvCurve.ir,
-		gate = \gate.tr(1), timeScale = \timeScale.kr(1).abs, bufnum = \bufnum.ir, begin = \begin.kr, end = \end.kr(1),
-		speed = \speed.kr(1), endSpeed = \endSpeed.kr(1);
+		attack = \attack.ir(0.001).abs, release = \release.ir.abs, ampEnvCurve = \ampEnvCurve.ir,
+		gate = \gate.tr(1), timeScale = \timeScale.kr.abs, bufnum = \bufnum.ir, begin = \begin.kr, end = \end.kr(1),
+		speed = \speed.kr(1), endSpeed = \endSpeed.kr(1), loop = \loop.kr, trig = \trig.kr(1);
 
 		var sound, rate, phase, sawrate, numFrames, ampEnv, bendEnv;
 
-		var holdTime = (BufFrames.ir(bufnum) * sampleNumChannels - 1) * timeScale;
+		var holdScale = (timeScale * (timeScale > 0)) + (1 * (timeScale <= 0) * (release <= 0));
+		var holdTime = BufDur.ir(bufnum) * holdScale;
 
-		// change holdTime, or convert to Env.Perc for no sample overlapping.
 		ampEnv = Env.linen(attack, holdTime, release, 1, ampEnvCurve).kr(Done.freeSelf, gate/*, timeScale*/);
 
 		bendEnv = Env([1, 1, 1 + bend], [bendStartOffset, bendTime * timeScale], [0, 0, bendCurve]).kr(0, gate);
 
 		// Playback speed.
-		rate = Line.kr(speed, endSpeed, timeScale) * (freq / 60.midicps);
+		rate = freq * 60.midicps.reciprocal * speed * bendEnv;
 
-		// Sample phase.
-		// BufSampleRate adjusts the rate if the sound file doesn't have the same rate as the soundcard.
-		phase =  Sweep.ar(1, rate * BufSampleRate.ir(bufnum)) + (BufFrames.ir(bufnum) * begin);
-
-		numFrames = BufFrames.ir(bufnum);
-		sawrate = rate * BufSampleRate.ir(bufnum) / (absdif(begin, end) * numFrames);
-		/*
-		sound = BufRd.ar(
-		numChannels: sampleNumChannels,
-		bufnum: bufnum,
-		phase: phase,
-		loop: 0,
-		interpolation: 4
-		);
-		*/
-
-		sound = PlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, startPos: phase, loop: 0.0, doneAction:0);
-		sound = sound * amp;
-		sound = sound * ampEnv;
+		sound = PlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, trig, begin, loop);
+		sound = sound * ampEnv * amp;
 		sound = CleanPan.ar(sound, numChannels, pan);
 
 		Out.ar(out, sound)
@@ -69,12 +40,13 @@ var numChannels = ~clean.numChannels;
 				// argumets could be omitted using getMsgFunc, but for making it easier to understand, we write them out
 				cleanEvent.sendSynth(~instrument,  [
 					bufnum: ~buffer,
-					speed: ~spd,
+					speed: ~spd ?? { SynthDescLib.global.at(~instrument).controlDict[\speed].defaultValue },
 					freq: ~freq,
 					endSpeed: ~endspd,
 					begin: ~bgn,
 					end: ~end,
-					loop: ~lop,
+					loop: ~lop ?? { SynthDescLib.global.at(~instrument).controlDict[\loop].defaultValue },
+					trig: ~trig ?? { SynthDescLib.global.at(~instrument).controlDict[\trig].defaultValue },
 					pan: ~pan,
 					out: ~out,
 					amp: ~amp,
@@ -90,7 +62,7 @@ var numChannels = ~clean.numChannels;
 
 
 				])
-			} {
+			} { // currently responsible for spawning non-sample sound sources!!!!!!!
 				if(~instrument.isNil) {
 					"module 'sound': instrument not found: %".format(~sound).postln
 				} {
@@ -101,5 +73,4 @@ var numChannels = ~clean.numChannels;
 		}
 
 });
-
 )
