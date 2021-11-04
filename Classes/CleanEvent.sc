@@ -191,7 +191,7 @@ CleanEvent {
 	}
 
 	finaliseParameters {
-
+		~amp = ~amp.value.pow(2);
 		~channel !? { ~pan = ~pan.value + (~channel.value / ~numChannels) };
 		~pan = ~pan * 2 - 1; // convert unipolar (0..1) range into bipolar one (-1...1)
 		~delayAmp = ~dla ? 0.0; // below is how you would rename parameter names to anything you want
