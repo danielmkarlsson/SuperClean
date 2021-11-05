@@ -21,7 +21,8 @@ Add compressor effect
 
 (
 /*/*/*/* Sample Player */*/*/*/
-/*/*/*/* Temporarily here to perserve order of execution: samples/sources before effects */*/*/*/
+/*/*/*/* Temporarily here to perserve order of execution: samples/sources before effects
+Eventually to move to SoundSources file */*/*/*/
 (
 (1..SuperClean.maxSampleNumChannels).do { |sampleNumChannels|
 
