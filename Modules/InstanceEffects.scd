@@ -1,8 +1,28 @@
 /*
-NOTES/TO DO:
+
+EVENT - BASED
+CORE SYNTHDEF EFFECTS FOR SUPERCLEAN
+These synthdefs can be hacked at runtime, and hey something breaks, you can always download a fresh one.
+Live coding them requires that you have your SuperClean instance in an environment variable called ~clean.
+
+A quick note for hackers: You might think that default values for parameters get set in
+the SynthDefs, but alas they do not. Default values for parameters get set in CleanAux.sc
+
+*/
+
+/*
+NOTES
+NOTES
+NOTES
+NOTES
 
 
+How to set location of clean_out dynamically? this will likely be explored in SuperClean.sc class defs- an easy way to redefine module order
 
+Class Change: move ~clean.addModule (SuperClean.sc) to CleanSoundLibrary.sc and standardize? Or really it's the .sendSynth method in CleanEvent.sc that's dealing with arg name translation... maybe?
+
+
+Make presetStore work
 
 Amplitude: instead of output amount: input amplitude? \XXi ?
 
@@ -20,9 +40,13 @@ Add compressor effect
 
 
 (
-/*/*/*/* Sample Player */*/*/*/
-/*/*/*/* Temporarily here to perserve order of execution: samples/sources before effects
-Eventually to move to SoundSources file */*/*/*/
+// Sample player.
+/*/*/*/* Temporarily here to perserve order of execution: samples/sources before effects */*/*/*/
+// Call it by providing \folderNameOfLoadedSamples as a value to the \snd key in a pattern, and specify which sample by providing a number to the \num key.
+// Parameters:
+// num | bgn | spd | lop | rtg |
+// amp | pan | atk | rel | crv | gate | tsc | bnd | bnt | bno | bnc | freq | out
+// // (NEW: lop, rtg, fdt, amp, atk, rel, crv, gate, tsc, bnd, bnt, bno, bnc)
 (
 (1..SuperClean.maxSampleNumChannels).do { |sampleNumChannels|
 
@@ -32,27 +56,28 @@ Eventually to move to SoundSources file */*/*/*/
 	SynthDef(name, {
 		var out = \out.ir, amp = \amp.kr(0.3), pan = \pan.kr, freq = \freq.kr(440).abs, bend = \bend.kr.clip(-1, 1),
 		bendTime = \bendTime.ir(0.2).abs, bendStartOffset = \bendStartOffset.ir.abs, bendCurve = \bendCurve.ir,
-		attack = \attack.ir(0.001).abs, release = \release.ir.abs, ampEnvCurve = \ampEnvCurve.ir,
-		gate = \gate.tr(1), timeScale = \timeScale.kr.abs, bufnum = \bufnum.ir, begin = \begin.kr, end = \end.kr(1),
-		speed = \speed.kr(1), endSpeed = \endSpeed.kr(1), loop = \loop.kr, trig = \trig.kr(1);
+		attack = \attack.ir(0.001).abs, release = \release.ir.abs, ampEnvCurve = \ampEnvCurve.ir, gate = \gate.tr(1),
+		timeScale = \timeScale.kr.abs;
+		var buf = \buf.ir, startPos = \startPos.kr, speed = \speed.kr(1), loop = \loop.kr, trig = \trig.kr(1);
 
-		var sound, rate, phase, sawrate, numFrames, ampEnv, bendEnv;
-
-		var holdScale = (timeScale * (timeScale > 0)) + (1 * (timeScale <= 0) * (release <= 0));
-		var holdTime = BufDur.ir(bufnum) * holdScale;
-
-		ampEnv = Env.linen(attack, holdTime, release, 1, ampEnvCurve).kr(Done.freeSelf, gate/*, timeScale*/);
+		var bendEnv, rate, holdScale, holdTime, ampEnv, signal;
 
 		bendEnv = Env([1, 1, 1 + bend], [bendStartOffset, bendTime * timeScale], [0, 0, bendCurve]).kr(0, gate);
-
-		// Playback speed.
 		rate = freq * 60.midicps.reciprocal * speed * bendEnv;
 
-		sound = PlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, trig, begin, loop);
-		sound = sound * ampEnv * amp;
-		sound = CleanPan.ar(sound, ~clean.numChannels, pan);
+		// if timeScale and release are not explicitly defined, holdTime is the length of the sample, and release is bypassed
+		// if release is set, and timeScale, is not, the hold portion of the Env is bypassed
+		holdScale = (timeScale * (timeScale > 0)) + (1 * (timeScale <= 0) * (release <= 0));
+		holdTime = BufDur.ir(buf) * holdScale;
+		ampEnv = Env.linen(attack, holdTime, release, amp, ampEnvCurve).kr(Done.freeSelf, gate/*, timeScale*/);
 
-		Out.ar(out, sound)
+		startPos = startPos.linlin(0, 1, 0, BufSamples.ir(buf)); // for scaling startPos btwn 0 & 1
+		startPos = (startPos * (speed >= 0)) + ((BufSamples.ir(buf) - startPos) * (speed < 0));
+		signal = PlayBuf.ar(sampleNumChannels, buf, BufRateScale.ir(buf) * rate, trig, startPos, loop);
+
+		signal = signal * ampEnv;
+		signal = CleanPan.ar(signal, ~clean.numChannels, pan);
+		Out.ar(out, signal)
 	}).add;
 };
 
@@ -62,17 +87,10 @@ Eventually to move to SoundSources file */*/*/*/
 			if(~buffer.notNil) {
 				// argumets could be omitted using getMsgFunc, but for making it easier to understand, we write them out
 				cleanEvent.sendSynth(~instrument,  [
-					bufnum: ~buffer,
-					speed: ~spd ?? { SynthDescLib.global.at(~instrument).controlDict[\speed].defaultValue },
-					freq: ~freq,
-					endSpeed: ~endspd,
-					begin: ~bgn,
-					end: ~end,
-					loop: ~lop ?? { SynthDescLib.global.at(~instrument).controlDict[\loop].defaultValue },
-					trig: ~trig ?? { SynthDescLib.global.at(~instrument).controlDict[\trig].defaultValue },
-					pan: ~pan,
 					out: ~out,
 					amp: ~amp,
+					pan: ~pan,
+					freq: ~freq,
 					bend: ~bnd ?? { SynthDescLib.global.at(~instrument).controlDict[\bend].defaultValue },
 					bendTime: ~bnt ?? { SynthDescLib.global.at(~instrument).controlDict[\bendTime].defaultValue },
 					bendStartOffset: ~bno ?? { SynthDescLib.global.at(~instrument).controlDict[\bendStartOffset].defaultValue },
@@ -82,8 +100,11 @@ Eventually to move to SoundSources file */*/*/*/
 					ampEnvCurve: ~crv ?? { SynthDescLib.global.at(~instrument).controlDict[\ampEnvCurve].defaultValue },
 					gate: ~gate ?? { SynthDescLib.global.at(~instrument).controlDict[\gate].defaultValue },
 					timeScale: ~tsc ?? { SynthDescLib.global.at(~instrument).controlDict[\timeScale].defaultValue },
-
-
+					buf: ~buffer ?? { SynthDescLib.global.at(~instrument).controlDict[\buf].defaultValue },
+					speed: ~spd ?? { SynthDescLib.global.at(~instrument).controlDict[\speed].defaultValue },
+					startPos: ~bgn ?? { SynthDescLib.global.at(~instrument).controlDict[\startPos].defaultValue },
+					trig: ~rtg ?? { SynthDescLib.global.at(~instrument).controlDict[\trig].defaultValue },
+					loop: ~lop ?? { SynthDescLib.global.at(~instrument).controlDict[\loop].defaultValue }
 				])
 			} { // currently responsible for spawning non-sample sound sources!!!!!!!
 				/*if(~instrument.isNil) {
@@ -1171,20 +1192,26 @@ SynthDef(\clean_busSend, {
 (
 SynthDef(\clean_instanceSumBus, {
 	var input = \input.ir, output = \output.ir, amp = \amp.kr(1), gate = \gate.kr(1), attack = \attack.ir(0.001).abs,
-	sustainTime = \sustainTime.ir.abs, release = \release.ir(1).abs, ampEnvCurve = \ampEnvCurve.ir,
-	drive = \drive.kr, gain = \gain.kr(5);
+	sustainTime = \sustainTime.ir.abs, release = \release.ir(1).abs, ampEnvCurve = \ampEnvCurve.ir;
+	var drive = \drive.kr, gain = \gain.kr(5);
+
 	var agc, agcDrive, agcClean, ampEnv, signal;
+
 	agc = 0.7 - ((drive >= 2) * drive.linexp(2, 10, 0.1, 0.45));
 	agcDrive = drive.linlin(1.1, 10, 0.25, 0.125, \min);
 	agcDrive = agcDrive + ((drive > 1) * agcDrive.neg * 2) + ((drive <= 1) * 0.0625);
 	agcClean = drive.linlin(1.1, 10, 1, 0.375, \min) + ((drive <= 1) * 0.25);
+
 	ampEnv = Env.linen(attack, sustainTime, release, 1, ampEnvCurve).kr(Done.freeGroup, gate);
+	// ampEnv = Env.asr(attack, 1.0, release, ampEnvCurve).kr(Done.freeGroup, gate);
+
 	signal = In.ar(input, ~clean.numChannels);
 	signal = (
 		((signal * drive * gain).tanh * (amp * agcDrive) * (drive > 0)) +
 		(signal * (amp * agcClean) * (1 - drive)) *
 		agc
 	);
+
 	signal = LeakDC.ar(signal);
 	signal = signal * ampEnv;
 	OffsetOut.ar(output, signal)
