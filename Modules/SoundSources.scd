@@ -1,10 +1,18 @@
 /*
-NOTES/TO DO:
+
+brief description of this doc
+
+*/
 
 
 
+/*
+questions & to do::
+questions & to do::
 
-.add or .store SynthDefs?
+
+
+Move sample player into this file
 
 Should atk / rel / crv rates be set to kr if retriggering is a consideration?
 
@@ -16,121 +24,24 @@ Sample player name this name corresponds to line 263 of CleanSoundLibrary.sc. Re
 // Perhaps achievable by using ~clean.soundLibrary.addBuffer to add sample player SynthDef.
 // // see CleanSoundLibrary.sc for more
 
+
 Add timeScale array to \fmx.
 
 Synths with arrays for specific parameter: add additional "global" parameter which allows all of them to be set simultaneously?
 
-Do no add out, amp, & pan conversions to Dictionaries for now. TBD why this breaks things.
+Do no add out, amp, & pan conversions to Dictionaries for now. TBD why this breaks things. (out is obvious, but the other two aren't)
 */
 
 (
-
-
 /*
-Currently in file called "TEMP-samplePlayer" until further testing and improvements are complete
-
 // Sample player.
 // Call it by providing \folderNameOfLoadedSamples as a value to the \snd key in a pattern, and specify which sample by providing a number to the \num key.
 // Parameters:
 // num | bgn | len* | spd | lop | rtg | fdt |
-// amp | pan | atk | rel | crv | gate | timeScale | bnd | bnt | bno | bnc | freq | out
+// amp | pan | atk | rel | crv | gate | tsc | bnd | bnt | bno | bnc | freq | out
 // // (NEW: len, lop, rtg, fdt, amp, atk, rel, crv, gate, bnd, bnt, bno, bnc)
 * formerly end (now a time value, rather than position, set -1 for total sample length)
-({
-	var samplePlayer = {
-		var out = \out.ir, amp = \amp.kr(0.3), pan = \pan.kr, freq = \freq.kr(440), bend = \bend.kr, bendTime = \bendTime.ir(0.2),
-		bendStartOffset = \bendStartOffset.ir, bendCurve = \bendCurve.ir, attack = \attack.ir(0.001), release = \release.ir(1),
-		ampEnvCurve = \ampEnvCurve.ir(-1), gate = \gate.tr(1), timeScale = \timeScale.kr(1),
-		bufnum = \bufnum.ir, playRate = \playRate.kr(1), trigger = \trigger.kr(1), start = \start.ir, playTime = \playTime.ir(-1),
-		loop = \loop.kr, fadeTime = \fadeTime.ir(0.001);
 
-		var bendEnv, bentFreq, ampEnv, signal, rate, startEnv;
-		bendEnv = Env([1, 1, 1 + bend.clip(-1.0, 1.0)], [bendStartOffset, bendTime * timeScale], [0, 0, bendCurve]).kr(0, gate);
-		rate = playRate * (freq * 60.midicps.reciprocal) * bendEnv;
-
-
-
-		signal = XPlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, trigger, start, playTime, loop, fadeTime);
-
-// sustainPortion should be ((playTime == -1) * lengthOfSample) + ((playTime != -1) * playTime), or similar
-		ampEnv = Env.linen(attack, sustainPortion, release, amp, ampEnvCurve).kr(Done.freeSelf, gate, timeScale);
-		signal = signal * ampEnv;
-		signal = CleanPan.ar(signal, ~clean.numChannels, pan);
-
-		OffsetOut.ar(out, sound)
-	};
-
-	(1 .. SuperClean.maxSampleNumChannels).do { |sampleNumChannels|
-		var fullName = format("clean_%chSamplePlayer", sampleNumChannels).asSymbol; // this name corresponds to line 263 of CleanSoundLibrary.sc
-		var cleanName = ("spl" ++ sampleNumChannels).asSymbol;
-		SynthDef(fullName, samplePlayer).store;
-
-
-		~clean.addModule(\sound,
-			{ |cleanEvent|
-				if(~diversion.value.isNil) {
-					if(~buffer.notNil) {
-						// argumets could be omitted using getMsgFunc, but for making it easier to understand, we write them out
-						cleanEvent.sendSynth(~instrument,  [
-							out: ~out,
-							amp: ~amp,
-							pan: ~pan,
-							// freq: ~freq,
-							bend: ~bnd,
-							bendTime: ~bnt,
-							bendStartOffset: ~bno,
-							bendCurve: ~bnc,
-							attack: ~atk,
-							release: ~rel,
-							ampEnvCurve: ~crv,
-							gate: ~gate,
-							timeScale: ~timeScale,
-							bufnum: ~buffer,
-							playRate: ~spd,
-							trigger: ~trg,
-							start: ~bgn,
-							playTime: ~len,
-							loop: ~lop,
-							fadeTime: ~fdt,
-						])
-					} {
-						if(~instrument.isNil) {
-							"module 'sound': instrument not found: %".format(~sound).postln
-						} {
-							// here, we just derive the arguments as necessary from the environment
-							cleanEvent.sendSynth(~instrument, ~argNames)
-						}
-					}
-				}
-		});
-
-		~clean.soundLibrary.addSynth(cleanName, (
-			instrument: fullName,
-			// out: { ~out ?? { SynthDescLib.global.at(cleanName).controlDict[\out].defaultValue } },
-// amp: { ~amp ?? { SynthDescLib.global.at(cleanName).controlDict[\amp].defaultValue } },
-// pan: { ~pan ?? { SynthDescLib.global.at(cleanName).controlDict[\pan].defaultValue } },
-			// freq: { ~freq ?? { SynthDescLib.global.at(cleanName).controlDict[\freq].defaultValue } },
-			bend: { ~bnd ?? { SynthDescLib.global.at(cleanName).controlDict[\bend].defaultValue } },
-			bendTime: { ~bnt ?? { SynthDescLib.global.at(cleanName).controlDict[\bendTime].defaultValue } },
-			bendStartOffset: { ~bno ?? { SynthDescLib.global.at(cleanName).controlDict[\bendStartOffset].defaultValue } },
-			bendCurve: { ~bnc ?? { SynthDescLib.global.at(cleanName).controlDict[\bendCurve].defaultValue } },
-			attack: { ~atk ?? { SynthDescLib.global.at(cleanName).controlDict[\attack].defaultValue } },
-			release: { ~rel ?? { SynthDescLib.global.at(cleanName).controlDict[\release].defaultValue } },
-			ampEnvCurve: { ~crv ?? { SynthDescLib.global.at(cleanName).controlDict[\ampEnvCurve].defaultValue } },
-			gate: { ~gate ?? { SynthDescLib.global.at(cleanName).controlDict[\gate].defaultValue } },
-			bufnum: { ~buffer ?? { SynthDescLib.global.at(cleanName).controlDict[\bufnum].defaultValue } },
-			playRate: { ~spd ?? { SynthDescLib.global.at(cleanName).controlDict[\playRate].defaultValue } },
-			trigger: { ~rtg ?? { SynthDescLib.global.at(cleanName).controlDict[\trigger].defaultValue } },
-			start: { ~bgn ?? { SynthDescLib.global.at(cleanName).controlDict[\start].defaultValue } },
-			playTime: { ~len ?? { SynthDescLib.global.at(cleanName).controlDict[\playTime].defaultValue } },
-			loop: { ~lop ?? { SynthDescLib.global.at(cleanName).controlDict[\loop].defaultValue } },
-			fadeTime: { ~fde ?? { SynthDescLib.global.at(cleanName).controlDict[\fadeTime].defaultValue } }
-		), useSynthDefSustain: true);
-
-		presetStore.(cleanName);
-	}
-}.value
-);
 */
 
 
@@ -139,9 +50,10 @@ Currently in file called "TEMP-samplePlayer" until further testing and improveme
 // Call it by providing \add as a value to the \snd key in a pattern, and by providing an array for frequency or pitch (or any other similar key).
 // Parameters:
 // ada | adr | slw | adc*
-// amp | pan | atk | rel | crv | gate | tsc | bnd | bnt | bno | bnc | freq
-// // (NEW: gate, timeScale, bnd, bnt, bno, bnc)
+// amp | pan | atk | rel | crv | gate | tsc* | bnd | bnt | bno | bnc | freq
+// // (NEW: gate, tsc*, bnd, bnt, bno, bnc)
 // *adc no longer for vol env- now for slideEnv
+// *tsc formerly named sustain
 (
 SynthDef(\cleanS_warp, {
 	var out = \out.ir, amp = \amp.kr(0.3), pan = \pan.kr, freq = \freq.kr(440).abs, bend = \bend.kr.clip(-1, 1),
@@ -157,12 +69,12 @@ SynthDef(\cleanS_warp, {
 	bendEnv[1] = Env([1, 1, 1 + bend], [bendStartOffset, bendTime * timeScale], [0, 0, bendCurve]).kr(0, gate); // pitch bend
 	bentFreq = (freq * bendEnv[0] * bendEnv[1]).clip(20, 20000);
 
-	ampEnv[0] = Env.perc(freqUpTime, freqDownTime + 0.0001, 1, ampEnvCurve).kr(0, gate);
+	ampEnv[0] = Env.perc(freqUpTime, freqDownTime + 0.0001, 1, ampEnvCurve).kr(0, gate); // useful?
 	ampEnv[1] = Env.linen(attack, (timeScale - 1).max(0), release, 1, ampEnvCurve).kr(Done.freeSelf, gate, timeScale);
 
 	signal = SinOsc.ar(bentFreq);
 
-	signal = signal * amp * ampEnv[0] * ampEnv[1] * AmpComp.kr(freq, 40, 0.3);
+	signal = signal * amp * (ampEnv[0].max(0.2) * 0.5) * ampEnv[1] * AmpComp.kr(freq, 40, 0.3); // ampEnv[0]??
 	signal = CleanPan.ar(signal, ~clean.numChannels, pan);
 	OffsetOut.ar(out, signal)
 }).store;
@@ -197,7 +109,8 @@ SynthDef(\cleanS_warp, {
 // hr1 | hr2 | hr3 | hr4 | mi1 | mi2 | mi3 | mi4 | en1 | en2 | en3 | en4
 // er1 | er2 | er3 | er4 | cu1 | cu2 | cu3 | cu4 | det | uni
 // amp | pan | atk | rel | crv | gate | tsc | bnd | bnt | bno | bnc | freq | out
-// // (NEW: uni, gate, am1-4, er1-4, bnd, bnt, bno, bnc)
+// // (NEW: uni, gate, tsc*, am1-4, er1-4, bnd, bnt, bno, bnc)
+// *tsc formerly named sustain
 (
 SynthDef(\cleanS_fmx, {
 	var out = \out.ir, amp = [\amp1.kr(1), \amp2.kr(1), \amp3.kr(1), \amp4.kr(1), \amp.kr(0.3)], pan = \pan.kr, freq = \freq.kr(440).abs,
@@ -236,6 +149,7 @@ SynthDef(\cleanS_fmx, {
 
 ~clean.soundLibrary.addSynth(\fmx, (
 	instrument: \cleanS_fmx,
+	// out: { ~out },
 	// amp: { ~amp ?? { SynthDescLib.global.at(\cleanS_fmx).controlDict[\amp].defaultValue } },
 	// pan: { ~pan ?? { SynthDescLib.global.at(\cleanS_fmx).controlDict[\pan].defaultValue } },
 	// freq: { ~freq ?? { SynthDescLib.global.at(\cleanS_fmx).controlDict[\freq].defaultValue } },
@@ -271,9 +185,7 @@ SynthDef(\cleanS_fmx, {
 	harmonicityRatio2: { ~hr2 ?? { SynthDescLib.global.at(\cleanS_fmx).controlDict[\harmonicityRatio2].defaultValue } },
 	harmonicityRatio3: { ~hr3 ?? { SynthDescLib.global.at(\cleanS_fmx).controlDict[\harmonicityRatio3].defaultValue } },
 	harmonicityRatio4: { ~hr4 ?? { SynthDescLib.global.at(\cleanS_fmx).controlDict[\harmonicityRatio4].defaultValue } }
-), useSynthDefSustain: true);
-
-// presetStore.(\fmx);
+));
 );
 
 
@@ -282,8 +194,9 @@ SynthDef(\cleanS_fmx, {
 // Call it by providing \ixa as a value to the \snd key in a pattern.
 // Parameters:
 // bes | ber | abs | abr | ths | thr
-// amp | pan | atk | rel | crv | gate | tsc | bnd | bnt | bno | bnc | freq | out
-// // (NEW: gate (and timeScale on ampEnv))
+// amp | pan | atk | rel | crv | gate | tsc* | bnd | bnt | bno | bnc | freq | out
+// // (NEW: gate (and tsc on ampEnv))
+// *tsc formerly named sustain
 (
 SynthDef(\cleanS_ixa, {
 	var out = \out.ir, amp = \amp.kr(0.3), pan = \pan.kr, freq = \freq.kr(440).abs, bend = \bend.kr.clip(-1, 1),
@@ -316,6 +229,7 @@ SynthDef(\cleanS_ixa, {
 
 ~clean.soundLibrary.addSynth(\ixa, (
 	instrument: \cleanS_ixa,
+	// out: { ~out },
 	// amp: { ~amp ?? { SynthDescLib.global.at(\cleanS_ixa).controlDict[\amp].defaultValue } },
 	// pan: { ~pan ?? { SynthDescLib.global.at(\cleanS_ixa).controlDict[\pan].defaultValue } },
 	// freq: { ~freq ?? { SynthDescLib.global.at(\cleanS_ixa).controlDict[\freq].defaultValue } },
@@ -335,8 +249,6 @@ SynthDef(\cleanS_ixa, {
 	thresholdSpeed: { ~ths ?? { SynthDescLib.global.at(\cleanS_ixa).controlDict[\thresholdSpeed].defaultValue } },
 	thresholdRange: { ~thr ?? { SynthDescLib.global.at(\cleanS_ixa).controlDict[\thresholdRange].defaultValue } }
 ));
-
-// presetStore.(\ixa);
 );
 
 
@@ -345,8 +257,9 @@ SynthDef(\cleanS_ixa, {
 // Call it by providing \sin as a value to the \snd key in a pattern.
 // Parameters:
 // iph
-// amp | pan | atk | rel | crv | gate | tsc | bnd | bnt | bno | bnc | freq | out
-// // (NEW: gate (and timeScale on ampEnv))
+// amp | pan | atk | rel | crv | gate | tsc* | bnd | bnt | bno | bnc | freq | out
+// // (NEW: gate (and tsc on ampEnv))
+// *tsc formerly named sustain
 (
 SynthDef(\cleanS_sine, {
 	var out = \out.ir, amp = \amp.kr(0.3), pan = \pan.kr, freq = \freq.kr(440), bend = \bend.kr.clip(-1, 1),
@@ -371,6 +284,7 @@ SynthDef(\cleanS_sine, {
 
 ~clean.soundLibrary.addSynth(\sin, (
 	instrument: \cleanS_sine,
+	// out: { ~out },
 	// amp: { ~amp ?? { SynthDescLib.global.at(\cleanS_sine).controlDict[\amp].defaultValue } },
 	// pan: { ~pan ?? { SynthDescLib.global.at(\cleanS_sine).controlDict[\pan].defaultValue } },
 	// freq: { ~freq ?? { SynthDescLib.global.at(\cleanS_sine).controlDict[\freq].defaultValue } },
@@ -384,9 +298,7 @@ SynthDef(\cleanS_sine, {
 	gate: { ~gate ?? { SynthDescLib.global.at(\cleanS_sine).controlDict[\gate].defaultValue } },
 	timeScale: { ~tsc ?? { SynthDescLib.global.at(\cleanS_sine).controlDict[\timeScale].defaultValue } },
 	initPhase: { ~iph ?? { SynthDescLib.global.at(\cleanS_sine).controlDict[\initPhase].defaultValue } }
-), useSynthDefSustain: true);
-
-// presetStore.(\sin);
+));
 );
 
 
@@ -396,8 +308,9 @@ SynthDef(\cleanS_sine, {
 // Call it by providing \saw as a value to the \snd key in a pattern.
 // Parameters:
 // wid | iph
-// amp | pan | atk | rel | crv | gate | tsc | bnd | bnt | bno | bnc | freq | out
-// // (NEW: gate (and timeScale on ampEnv))
+// amp | pan | atk | rel | crv | gate | tsc* | bnd | bnt | bno | bnc | freq | out
+// // (NEW: gate (and tsc on ampEnv))
+// *tsc formerly named sustain
 (
 SynthDef(\cleanS_sawTri, {
 	var out = \out.ir, amp = \amp.kr(0.3), pan = \pan.kr, freq = \freq.kr(440).abs, bend = \bend.kr.clip(-1, 1),
@@ -422,6 +335,7 @@ SynthDef(\cleanS_sawTri, {
 
 ~clean.soundLibrary.addSynth(\saw, (
 	instrument: \cleanS_sawTri,
+	// out: { ~out },
 	// amp: { ~amp ?? { SynthDescLib.global.at(\cleanS_sawTri).controlDict[\amp].defaultValue } },
 	// pan: { ~pan ?? { SynthDescLib.global.at(\cleanS_sawTri).controlDict[\pan].defaultValue } },
 	// freq: { ~freq ?? { SynthDescLib.global.at(\cleanS_sawTri).controlDict[\freq].defaultValue } },
@@ -436,9 +350,7 @@ SynthDef(\cleanS_sawTri, {
 	timeScale: { ~tsc ?? { SynthDescLib.global.at(\cleanS_sawTri).controlDict[\timeScale].defaultValue } },
 	initPhase: { ~iph ?? { SynthDescLib.global.at(\cleanS_sawTri).controlDict[\initPhase].defaultValue } },
 	width: { ~wid ?? { SynthDescLib.global.at(\cleanS_sawTri).controlDict[\width].defaultValue } }
-), useSynthDefSustain: true);
-
-// presetStore.(\saw);
+));
 );
 
 
@@ -448,15 +360,16 @@ SynthDef(\cleanS_sawTri, {
 // Call it by providing \sqr as a value to the \snd key in a pattern.
 // Parameters:
 // wid | iph*
-// amp | pan | atk | rel | crv | gate | tsc | bnd | bnt | bno | bnc | freq | out
+// amp | pan | atk | rel | crv | gate | tsc* | bnd | bnt | bno | bnc | freq | out
 // // (NEW: gate (and timeScale on ampEnv))
 // *iph not implemented with Pulse
+// *tsc formerly named sustain
 (
 SynthDef(\cleanS_pulse, {
 	var out = \out.ir, amp = \amp.kr(0.3), pan = \pan.kr, freq = \freq.kr(440).abs, bend = \bend.kr.clip(-1, 1),
 	bendTime = \bendTime.ir(0.2), bendStartOffset = \bendStartOffset.ir.abs, bendCurve = \bendCurve.ir,
 	attack = \attack.ir(0.001).abs, release = \release.ir(1).abs, ampEnvCurve = \ampEnvCurve.ir(-8), gate = \gate.tr(1),
-	timeScale = \timeScale.kr(1);
+	timeScale = \timeScale.kr(1).abs;
 	var initPhase = \initPhase.ir.clip(0, 1), width = \width.kr(0.25).clip(0, 1);
 
 	var bendEnv, bentFreq, ampEnv, signal;
@@ -476,6 +389,7 @@ SynthDef(\cleanS_pulse, {
 
 ~clean.soundLibrary.addSynth(\sqr, (
 	instrument: \cleanS_pulse,
+	// out: { ~out },
 	// amp: { ~amp ?? { SynthDescLib.global.at(\cleanS_pulse).controlDict[\amp].defaultValue } },
 	// pan: { ~pan ?? { SynthDescLib.global.at(\cleanS_pulse).controlDict[\pan].defaultValue } },
 	// freq: { ~freq ?? { SynthDescLib.global.at(\cleanS_pulse).controlDict[\freq].defaultValue } },
@@ -490,9 +404,7 @@ SynthDef(\cleanS_pulse, {
 	timeScale: { ~tsc ?? { SynthDescLib.global.at(\cleanS_pulse).controlDict[\timeScale].defaultValue } },
 	initPhase: { ~iph ?? { SynthDescLib.global.at(\cleanS_pulse).controlDict[\initPhase].defaultValue } },
 	width: { ~wid ?? { SynthDescLib.global.at(\cleanS_pulse).controlDict[\width].defaultValue } }
-), useSynthDefSustain: true);
-
-// presetStore.(\sqr);
+));
 );
 
 
@@ -502,8 +414,9 @@ SynthDef(\cleanS_pulse, {
 // Call it by providing \kps as a value to the \snd key in a pattern.
 // Parameters:
 // det (not currently implemented)
-// amp | pan | atk | rel | crv | gate | tsc | bnd | bnt | bno | bnc | freq | out
+// amp | pan | atk | rel | crv | gate | tsc* | bnd | bnt | bno | bnc | freq | out
 // // (NEW: amp, atk, rel, crv, gate)
+// *tsc formerly named sustain
 (
 SynthDef(\cleanS_karplusStrong, {
 	var out = \out.ir, amp = \amp.kr(0.3), pan = \pan.kr, freq = \freq.kr(440).abs, bend = \bend.kr.clip(-1, 1),
@@ -536,6 +449,7 @@ SynthDef(\cleanS_karplusStrong, {
 
 ~clean.soundLibrary.addSynth(\kps, (
 	instrument: \cleanS_karplusStrong,
+	// out: { ~out },
 	// amp: { ~amp ?? { SynthDescLib.global.at(\cleanS_karplusStrong).controlDict[\amp].defaultValue } },
 	// pan: { ~pan ?? { SynthDescLib.global.at(\cleanS_karplusStrong).controlDict[\pan].defaultValue } },
 	// freq: { ~freq ?? { SynthDescLib.global.at(\cleanS_karplusStrong).controlDict[\freq].defaultValue } },
@@ -549,9 +463,7 @@ SynthDef(\cleanS_karplusStrong, {
 	gate: { ~gate ?? { SynthDescLib.global.at(\cleanS_karplusStrong).controlDict[\gate].defaultValue } },
 	timeScale: { ~tsc ?? { SynthDescLib.global.at(\cleanS_karplusStrong).controlDict[\timeScale].defaultValue } },
 	detune: { ~det ?? { SynthDescLib.global.at(\cleanS_karplusStrong).controlDict[\detune].defaultValue } }
-), useSynthDefSustain: true);
-
-// presetStore.(\kps);
+));
 );
 
 
@@ -561,8 +473,9 @@ SynthDef(\cleanS_karplusStrong, {
 // Call it by providing \drm as a value to the \snd key in a pattern.
 // Parameters:
 // tun | fed | pew | fco
-// amp | pan | atk | rel | crv | gate | tsc | out
+// amp | pan | atk | rel | crv | gate | tsc* | out
 // // (NEW: fco, amp, atk, rel, crv, gate)
+// *tsc formerly named sustain
 (
 SynthDef(\cleanS_drum, {
 	var out = \out.ir, amp = \amp.kr(0.3), pan = \pan.kr, attack = \attack.ir(0.01).abs, release = \release.ir(1).abs,
@@ -587,6 +500,7 @@ SynthDef(\cleanS_drum, {
 
 ~clean.soundLibrary.addSynth(\drm, (
 	instrument: \cleanS_drum,
+	// out: { ~out },
 	// amp: { ~amp ?? { SynthDescLib.global.at(\cleanS_drum).controlDict[\amp].defaultValue } },
 	// pan: { ~pan ?? { SynthDescLib.global.at(\cleanS_drum).controlDict[\pan].defaultValue } },
 	attack: { ~atk ?? { SynthDescLib.global.at(\cleanS_drum).controlDict[\attack].defaultValue } },
@@ -598,9 +512,7 @@ SynthDef(\cleanS_drum, {
 	feedback: { ~fed ?? { SynthDescLib.global.at(\cleanS_drum).controlDict[\feedback].defaultValue } },
 	sweep: { ~pew ?? { SynthDescLib.global.at(\cleanS_drum).controlDict[\sweep].defaultValue } },
 	cutoff: { ~fco ?? { SynthDescLib.global.at(\cleanS_drum).controlDict[\cutoff].defaultValue } },
-), useSynthDefSustain: true);
-
-// presetStore.(\drm);
+));
 );
 
 
@@ -610,8 +522,9 @@ SynthDef(\cleanS_drum, {
 // Call it by providing \hat as a value to the \snd key in a pattern.
 // Parameters:
 // tun | bnd | cfr
-// amp | pan | atk | rel | crv | gate | tsc | bnt | bno | bnc | out
+// amp | pan | atk | rel | crv | gate | tsc* | bnt | bno | bnc | out
 // // (NEW: cfr, bnt, bno, bnc, amp, atk, rel, crv, gate)
+// *tsc formerly named sustain
 (
 SynthDef(\cleanS_hat, {
 	var out = \out.ir, amp = \amp.kr(0.3), pan = \pan.kr, bend = \bend.kr.clip(-1, 1), bendTime = \bendTime.ir(0.2).abs,
@@ -635,6 +548,7 @@ SynthDef(\cleanS_hat, {
 
 ~clean.soundLibrary.addSynth(\hat, (
 	instrument: \cleanS_hat,
+	// out: { ~out },
 	// amp: { ~amp ?? { SynthDescLib.global.at(\cleanS_hat).controlDict[\amp].defaultValue } },
 	// pan: { ~pan ?? { SynthDescLib.global.at(\cleanS_hat).controlDict[\pan].defaultValue } },
 	bend: { ~bnd ?? { SynthDescLib.global.at(\cleanS_hat).controlDict[\bend].defaultValue } },
@@ -648,9 +562,7 @@ SynthDef(\cleanS_hat, {
 	timeScale: { ~tsc ?? { SynthDescLib.global.at(\cleanS_hat).controlDict[\timeScale].defaultValue } },
 	tune: { ~tun ?? { SynthDescLib.global.at(\cleanS_hat).controlDict[\tune].defaultValue } },
 	centerFreq: { ~cfr ?? { SynthDescLib.global.at(\cleanS_hat).controlDict[\centerFreq].defaultValue } }
-), useSynthDefSustain: true);
-
-// presetStore.(\hat);
+));
 );
 
 
@@ -695,6 +607,7 @@ SynthDef(\cleanS_clap, {
 
 ~clean.soundLibrary.addSynth(\clp, (
 	instrument: \cleanS_clap,
+	// out: { ~out },
 	// amp: { ~amp ?? { SynthDescLib.global.at(\cleanS_clap).controlDict[\amp].defaultValue } },
 	// pan: { ~pan ?? { SynthDescLib.global.at(\cleanS_clap).controlDict[\pan].defaultValue } },
 	attack: { ~atk ?? { SynthDescLib.global.at(\cleanS_clap).controlDict[\attack].defaultValue } },
@@ -710,9 +623,7 @@ SynthDef(\cleanS_clap, {
 	thumpAmp: { ~tha ?? { SynthDescLib.global.at(\cleanS_clap).controlDict[\thumpAmp].defaultValue } },
 	thumpOffset: { ~tho ?? { SynthDescLib.global.at(\cleanS_clap).controlDict[\thumpOffset].defaultValue } },
 	cutoff: { ~fco ?? { SynthDescLib.global.at(\cleanS_clap).controlDict[\cutoff].defaultValue } }
-), useSynthDefSustain: true);
-
-// presetStore.(\clp);
+));
 );
 
 
@@ -722,15 +633,16 @@ SynthDef(\cleanS_clap, {
 // Call it by providing \dfd as a value to the \snd key in a pattern.
 // Parameters:
 // den | res | typ | nsl | ing
-// amp | pan | atk | rel | crv | gate | tsc | bnd | bnt | bno | bnc | freq | out
-// // (NEW: ing, timeScale, bnd, bnt, bno, bnc, gate)
+// amp | pan | atk | rel | crv | gate | tsc* | bnd | bnt | bno | bnc | freq | out
+// // (NEW: ing, tsc, bnd, bnt, bno, bnc, gate)
+// *tsc formerly named sustain
 (
 SynthDef(\cleanS_filterPing, {
 	var out = \out.ir, amp = \amp.kr(0.3), pan = \pan.kr, freq = \freq.kr(440), bend = \bend.kr.clip(-1, 1),
 	bendTime = \bendTime.ir(0.2).abs,bendStartOffset = \bendStartOffset.ir.abs, bendCurve = \bendCurve.ir,
 	attack = \attack.ir(0.001).abs, release = \release.ir(1).abs, ampEnvCurve = \ampEnvCurve.ir(-8), gate = \gate.tr(1),
 	timeScale = \timeScale.kr(1).abs, resonance = \resonance.kr(1).clip(0, 1.01), density = \density.kr.abs,
-	filterType = \filterType.kr.abs, noiseAmount = \noiseAmount.kr.abs, gain = \gain.kr(1).abs;
+	filterType = \filterType.kr.clip(0, 1), noiseAmount = \noiseAmount.kr.abs, gain = \gain.kr(1).abs;
 
 	var bendEnv, bentFreq, ampEnv, signal;
 
@@ -750,6 +662,7 @@ SynthDef(\cleanS_filterPing, {
 
 ~clean.soundLibrary.addSynth(\dfd, (
 	instrument: \cleanS_filterPing,
+	// out: { ~out },
 	// amp: { ~amp ?? { SynthDescLib.global.at(\cleanS_filterPing).controlDict[\amp].defaultValue } },
 	// pan: { ~pan ?? { SynthDescLib.global.at(\cleanS_filterPing).controlDict[\pan].defaultValue } },
 	// freq: { ~freq ?? { SynthDescLib.global.at(\cleanS_filterPing).controlDict[\freq].defaultValue } },
@@ -767,9 +680,7 @@ SynthDef(\cleanS_filterPing, {
 	filterType: { ~typ ?? { SynthDescLib.global.at(\cleanS_filterPing).controlDict[\filterType].defaultValue } },
 	noiseAmount: { ~nsl ?? { SynthDescLib.global.at(\cleanS_filterPing).controlDict[\noiseAmount].defaultValue } },
 	gain: { ~ing ?? { SynthDescLib.global.at(\cleanS_filterPing).controlDict[\gain].defaultValue } }
-), useSynthDefSustain: true);
-
-// presetStore.(\dfd);
+));
 );
 
 
@@ -779,9 +690,9 @@ SynthDef(\cleanS_filterPing, {
 // Call it by providing \dfd as a value to the \snd key in a pattern.
 // Parameters:
 // frc | pos | bvl | bpr* | ind | fls | imp | inh
-// amp | pan | atk | rel | crv | gate | tsc | bnd | bnt | bno | bnc | freq | out
-// // (NEW: bvl, bpr*, ind, fls, imp, inh, (gate on env, no BWG), tsc, bnd, bnt, bno, bnc)
-// *bpr seems to not have any effect. it will be removed
+// amp | pan | atk | rel | crv | gate | tsc* | bnd | bnt | bno | bnc | freq | out
+// // (NEW: bvl, bpr, ind, fls, imp, inh, (gate on env, no BWG), tsc, bnd, bnt, bno, bnc)
+// *tsc formerly named sustain
 (
 SynthDef(\cleanS_waveguide, {
 	var out = \out.ir, amp = \amp.kr(0.3), pan = \pan.kr, freq = \freq.kr(440).abs, bend = \bend.kr.clip(-1, 1),
@@ -813,6 +724,7 @@ SynthDef(\cleanS_waveguide, {
 
 ~clean.soundLibrary.addSynth(\bow, (
 	instrument: \cleanS_waveguide,
+	// out: { ~out },
 	// amp: { ~amp ?? { SynthDescLib.global.at(\cleanS_waveguide).controlDict[\amp].defaultValue } },
 	// pan: { ~pan ?? { SynthDescLib.global.at(\cleanS_waveguide).controlDict[\pan].defaultValue } },
 	// freq: { ~freq ?? { SynthDescLib.global.at(\cleanS_waveguide).controlDict[\freq].defaultValue } },
@@ -833,9 +745,7 @@ SynthDef(\cleanS_waveguide, {
 	freqLoss: { ~fls ?? { SynthDescLib.global.at(\cleanS_waveguide).controlDict[\freqLoss].defaultValue } },
 	impedance: { ~imp ?? { SynthDescLib.global.at(\cleanS_waveguide).controlDict[\impedance].defaultValue } },
 	inharmonicity: { ~inh ?? { SynthDescLib.global.at(\cleanS_waveguide).controlDict[\inharmonicity].defaultValue } }
-), useSynthDefSustain: true);
-
-// presetStore.(\bow);
+));
 );
 
 
@@ -845,9 +755,10 @@ SynthDef(\cleanS_waveguide, {
 // Call it by providing \ex along with the number of channels (ie: \ex1 or \ex2, up to \ex8) as a value to the \snd key in a pattern.
 // Parameters:
 // inb
-// amp | pan | atk | rel | crv | gate | tsc | out
+// amp | pan | atk | rel | crv | gate | tsc* | out
 // // (NEW: inb, amp, atk, rel, crv, gate, tsc)
 // *2-channel version formerly named \in
+// *tsc formerly named sustain
 ({
 	var channelGroups = (0 .. 7);
 	var variableChannelExternalInputs = { |numCh|
@@ -875,6 +786,7 @@ SynthDef(\cleanS_waveguide, {
 
 		~clean.soundLibrary.addSynth(cleanName, (
 			instrument: fullName,
+			// out: { ~out },
 			// amp: { ~amp ?? { SynthDescLib.global.at(fullName).controlDict[\amp].defaultValue } },
 			// pan: { ~pan ?? { SynthDescLib.global.at(fullName).controlDict[\pan].defaultValue } },
 			attack: { ~atk ?? { SynthDescLib.global.at(fullName).controlDict[\attack].defaultValue } },
@@ -883,9 +795,7 @@ SynthDef(\cleanS_waveguide, {
 			gate: { ~gate ?? { SynthDescLib.global.at(fullName).controlDict[\gate].defaultValue } },
 			timeScale: { ~tsc ?? { SynthDescLib.global.at(fullName).controlDict[\timeScale].defaultValue } },
 			input: { ~inb ?? { SynthDescLib.global.at(fullName).controlDict[\input].defaultValue } }
-		), useSynthDefSustain: true);
-
-		// presetStore.(cleanName);
+		));
 	};
 }.value // this function is here as a cheat to allow variables to be created for the actual function.
 );
@@ -897,9 +807,10 @@ SynthDef(\cleanS_waveguide, {
 // Call it by providing \es along with the number of channels (ie: \es1 or \es2, up to \es2) as a value to the \snd key in a pattern.
 // Parameters:
 // inb | win | det | iph | bgn | end | spd
-// amp | pan | atk | rel | crv | gate | tsc | bnd | bnt | bno | bnc | freq | out
+// amp | pan | atk | rel | crv | gate | tsc* | bnd | bnt | bno | bnc | freq | out
 // // (NEW: inb, bnt, bno, bnc, amp, atk, rel, crv, gate, (and tsc on ampEnv))
 // *formerly named \inr
+// *tsc formerly named sustain
 ({
 	var channelGroups = (0 .. 1);
 	var variableChannelExternalInputs = { |numCh|
@@ -936,6 +847,7 @@ SynthDef(\cleanS_waveguide, {
 
 		~clean.soundLibrary.addSynth(cleanName, (
 			instrument: fullName,
+			// out: { ~out },
 			// amp: { ~amp ?? { SynthDescLib.global.at(fullName).controlDict[\amp].defaultValue } },
 			// pan: { ~pan ?? { SynthDescLib.global.at(fullName).controlDict[\pan].defaultValue } },
 			// freq: { ~freq ?? { SynthDescLib.global.at(fullName).controlDict[\freq].defaultValue } },
@@ -955,9 +867,7 @@ SynthDef(\cleanS_waveguide, {
 			start: { ~bgn ?? { SynthDescLib.global.at(fullName).controlDict[\start].defaultValue } },
 			end: { ~end ?? { SynthDescLib.global.at(fullName).controlDict[\end].defaultValue } },
 			speed: { ~spd ?? { SynthDescLib.global.at(fullName).controlDict[\speed].defaultValue } }
-		), useSynthDefSustain: true);
-
-		// presetStore.(cleanName);
+		));
 	};
 }.value
 );
@@ -969,9 +879,10 @@ SynthDef(\cleanS_waveguide, {
 // Call it by providing \rcv as a value to the \snd key in a pattern.
 // Parameters:
 // inb
-// amp | pan | atk | rel | crv | gate | tsc | out
+// amp | pan | atk | rel | crv | gate | tsc* | out
 // // (NEW: amp, gate, atk, rel, crv)
 // *formerly named \from
+// *tsc formerly named sustain
 (
 SynthDef(\cleanR_busReceiver, {
 	var out = \out.ir, input = \input.ir, amp = \amp.kr(0.3), pan = \pan.kr,  attack = \attack.ir(0.001).abs,
@@ -990,6 +901,7 @@ SynthDef(\cleanR_busReceiver, {
 
 ~clean.soundLibrary.addSynth(\rcv, (
 	instrument: \cleanR_busReceiver,
+	// out: { ~out },
 	// amp: { ~amp ?? { SynthDescLib.global.at(\cleanR_busReceiver).controlDict[\amp].defaultValue } },
 	// pan: { ~pan ?? { SynthDescLib.global.at(\cleanR_busReceiver).controlDict[\pan].defaultValue } },
 	// freq: { ~freq ?? { SynthDescLib.global.at(\cleanR_busReceiver).controlDict[\freq].defaultValue } },
@@ -999,9 +911,7 @@ SynthDef(\cleanR_busReceiver, {
 	gate: { ~gate ?? { SynthDescLib.global.at(\cleanR_busReceiver).controlDict[\gate].defaultValue } },
 	timeScale: { ~tsc ?? { SynthDescLib.global.at(\cleanR_busReceiver).controlDict[\timeScale].defaultValue } },
 	input: { ~clean.audioRoutingBusses.wrapAt(~inb ?? { 0 }).index }
-), useSynthDefSustain: true);
-
-// presetStore.(\rcv);
+));
 );
 
 )
