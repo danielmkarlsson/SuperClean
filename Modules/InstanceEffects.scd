@@ -71,8 +71,8 @@ Add compressor effect
 		holdTime = BufDur.ir(buf) * holdScale;
 		ampEnv = Env.linen(attack, holdTime, release, amp, ampEnvCurve).kr(Done.freeSelf, gate/*, timeScale*/);
 
-		startPos = startPos.linlin(0, 1, 0, BufSamples.ir(buf)); // for scaling startPos btwn 0 & 1
-		startPos = (startPos * (speed >= 0)) + ((BufSamples.ir(buf) - startPos) * (speed < 0));
+		startPos = startPos.linlin(0, 1, 0, BufFrames.ir(buf)); // for scaling startPos btwn 0 & 1
+		startPos = (startPos * (speed >= 0)) + ((BufFrames.ir(buf) - startPos) * (speed < 0));
 		signal = PlayBuf.ar(sampleNumChannels, buf, BufRateScale.ir(buf) * rate, trig, startPos, loop);
 
 		signal = signal * ampEnv;
