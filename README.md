@@ -280,6 +280,6 @@ Find more examples of code I have written using this framework in this companion
 Now I might not be the bestest gun slinger there is round these here parts, but I was able to get this thing corralled, 
 so just goes to show, you can do it too!  
 
-If you do end up using this, and modifying it to better suit your needs, I'd love to talk you about maybe including those changes here. 
+If you do end up using this, and modifying it to better suit your needs, I'd love to talk to you about maybe including those changes here. 
 Please get in touch with me through [my site](https://danielmkarlsson.com/).
 
