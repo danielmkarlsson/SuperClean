@@ -62,7 +62,7 @@ edf:	Early diffusion of the hal reverb.
 ldf:	Late diffusion of the hal reverb.
 hhp:	A high pass filter before the hal reverb. Value range is 20 to 20000.
 hlp:	A low pass filter before the hal reverb. Value range is 20 to 20000.
-tnh:	 Wet mix of the tanh based distortion. Unlike  other distortions this is added after synths are summed. Try a fifth through this.
+tnh:	Wet mix of the tanh based distortion. Unlike  other distortions this is added after synths are summed. Try a fifth through this.
 tnb:	Low pass filter before the tanh based distortion.
 tng:	Tanh gain stage, this makes tons of ditortion. Range is 0.0 to 999.0
 tna:	Low pass filter after the tanh based distortion.

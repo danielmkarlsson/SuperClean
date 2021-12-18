@@ -8,7 +8,7 @@ world. SuperClean is, in short, a one-stop-shopping-experience for folks who wan
 
 • An MPC,  
 • a bunch of effects,   
-• some synths, and,   
+• some synths, and,
 • a flexible routing system 
 
 for the low, low asking price of: _free_.  
@@ -63,7 +63,7 @@ which is just amazing.
 ## Lean is good
 
 I only included a tiny amount of samples inside the clean-samples folder. I did that because that's a lot of data to have to download if
-you're sharing a very slow wifi connection with 20 other kids who are also trying to get set up at the same time. Also, fewer
+you're sharing a very slow wifi connection with 20 other kids who are also trying to get sat up at the same time. Also, fewer
 dependencies means less things that can go sideways with the install procedure. SuperClean requires no other languages or external text editors to function.
 
 ## Be free to be you
