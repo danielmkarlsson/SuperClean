@@ -2,7 +2,7 @@
 
 EVENT - BASED
 CORE SYNTHDEF EFFECTS FOR SUPERCLEAN
-These synthdefs can be hacked at runtime, and hey something breaks, you can always download a fresh one.
+These synthdefs can be hacked at runtime, and hey, if something breaks, you can always download a fresh version.
 Live coding them requires that you have your SuperClean instance in an environment variable called ~clean.
 
 A quick note for hackers: You might think that default values for parameters get set in
@@ -226,7 +226,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		ReplaceOut.ar(out, LeakDC.ar(sig));
 	}, [\ir, \ir]).add;
 
-	// This is apparently the octaver from Sonic Pi, which makes me guess credit should go to Sam Aaron.
+	// This is apparently the octaver from Sonic Pi, which makes me guess that credit should go to Sam Aaron.
 	// uses `ocu` for octave up , `ocd` for octave down, and `ocq` for quarter-frequency harmonics.
 	~clean.addModule(\oct, { |cleanEvent|
 		cleanEvent.sendSynth(\clean_octer ++ ~clean.numChannels,
