@@ -258,8 +258,8 @@ computer that you found in the tech trash, then this is for you:
 ```
 
 ## How does it work?
-I guess you could say it's a hack of the event type. You turn on SuperClean, as you might turn on the power for your 
-rack of of samplers, synths and effects like this:
+I guess you could say it's a hack of the event type. You turn on SuperClean, as you might turn on the power for a 
+rack of samplers, synths and effects like this:
 
 ```
 (
