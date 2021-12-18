@@ -24,7 +24,7 @@ this may be refactored later.
 	{ |cleanEvent|
 		if(~diversion.value.isNil) {
 			if(~buffer.notNil) {
-				// argumets could be omitted using getMsgFunc, but for making it easier to understand, we write them out
+				// arguments could be omitted using getMsgFunc, but to make it easier to understand, we write them out
 				cleanEvent.sendSynth(~instrument,  [
 					bufnum: ~buffer,
 					sustain: ~sustain,
@@ -41,7 +41,7 @@ this may be refactored later.
 				if(~instrument.isNil) {
 					"module 'sound': instrument not found: %".format(~sound).postln
 				} {
-					// here, we just derive the arguments as necessary from the environment
+					// here, we derive the arguments as necessary from the environment
 					cleanEvent.sendSynth(~instrument, ~argNames)
 				}
 			}
