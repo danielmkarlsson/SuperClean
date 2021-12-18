@@ -2,7 +2,7 @@
 
 A few UGen classes that build subgraphs for SuperClean Synths.
 
-The panners take care of different combinations of in and out channels.
+The panners takes care of different combinations of in and out channels.
 
 They should be used through the
 
@@ -57,7 +57,7 @@ CleanPanBalance2 : UGen {
 		var n, pos, amp;
 		signals = signals.asArray;
 		n = signals.size;
-		if(n == 0) { Error("CleanSplay input has not even one channel. Can't pan no channel, sorry.").throw };
+		if(n == 0) { Error("CleanSplay input has less than one channel. Can't pan no channel, sorry.").throw };
 		if(n == 1) {
 			^Pan2.ar(signals[0], pan.fold(-1, 1), mul)
 		} {
@@ -73,7 +73,7 @@ CleanSplay2 : UGen {
 		var n, pos, pan1;
 		signals = signals.asArray;
 		n = signals.size;
-		if(n == 0) { Error("CleanSplay input has not even one channel. Can't pan no channel, sorry.").throw };
+		if(n == 0) { Error("CleanSplay input has less than one channel. Can't pan no channel, sorry.").throw };
 		if(n == 1) {
 			^Pan2.ar(signals[0], pan, mul)
 		} {
@@ -101,7 +101,7 @@ CleanSplayAz : UGen {
 		var channels, n;
 		signals = signals.asArray;
 		n = signals.size;
-		if(n == 0) { Error("CleanSplay input has not even one channel. Can't pan no channel, sorry.").throw };
+		if(n == 0) { Error("CleanSplay input has less than one channel. Can't pan no channel, sorry.").throw };
 		span = span * splay.linlin(0, 1, numChannels / n, 1);
 		pan = pan + 1; // for PanAz, the first/last channel is not 0, but 1.
 		channels = signals.collect { |x, i|
@@ -160,7 +160,7 @@ CleanPause {
 	*ar { | signal, graceTime = 1 |
 		// immediately pause when started
 		PauseSelf.kr(Impulse.kr(0));
-		// when resumed and no sound is coming in, wait a while before ending aamp
+		// when resumed and no sound is coming in, wait a while before ending amp
 		signal = signal.abs + Trig1.ar(\resumed.tr(0), graceTime);
 		DetectSilence.ar(signal, time:graceTime, doneAction:1);
 	}
