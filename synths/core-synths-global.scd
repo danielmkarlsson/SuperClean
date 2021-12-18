@@ -78,6 +78,7 @@ They'll come back automatically.
 		CleanPause.ar(signal, graceTime:4);
 		Out.ar(effectBus, signal);
 	}, [\ir, \ir]).add;
+
 	/*
 	SynthDef ("tap"  ++ numChannels, {
 	|dryBus, effectBus, gate = 1,  wow = 1, dropOuts = 1 |
@@ -95,6 +96,7 @@ They'll come back automatically.
 	Out.ar(effectBus, del);
 	}, [\ir, \ir]).add;
 	*/
+
 	// As I understand it, this reverb was created by Jost Muxfeld and James McCartney, it is not my cup of tea.
 	SynthDef(\clean_reverb ++ numChannels, { |dryBus, effectBus, gate = 1, rin = 0, rev = 0.1, dry = 0|
 		var in, snd, loop, depth;
