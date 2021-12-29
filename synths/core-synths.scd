@@ -528,5 +528,69 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
+	~clean.addModule(\brf,
+		{ |cleanEvent|
+			cleanEvent.sendSynth(\clean_brf ++ numChannels,
+				[
+					bandrf: ~brf,
+					bandrq: ~brq,
+					numbrf: ~brn ?? { 1 },
+					offset: ~bro,
+					out: ~out
+			])
+
+	}, { ~brf.notNil });
+
+	SynthDef(\clean_brf ++ numChannels, { |out, bandrf = 440, bandrq = 1.0, numbrf = 1, offset = 0|
+
+		var signal = In.ar(out, numChannels);
+		bandrq = bandrq.clip(0.0, 1.0);
+		numbrf = numbrf.clip(0.0, 1.0);
+
+		// numbrf = 0, no BRFs; numbrf = 0.1, 1 BRF; numbrf = 0.2, 2 BRFs .. numbrf = 1.0, 10 BRFs
+		signal = Select.ar(numbrf.linlin(0.0, 0.1, 0, 1), [
+			signal,
+			BRF.ar(signal, bandrf, bandrq)
+		]);
+		signal = Select.ar(numbrf.linlin(0.1, 0.2, 0, 1), [
+			signal,
+			BRF.ar(signal, ((bandrf * (offset <= 0)) + ((offset <= 0)) + ((offset > 0) * bandrf * offset * 4.midiratio)).clip(20, 20000), bandrq) // offset up to 1/3 octave per BRF
+		]);
+		signal = Select.ar(numbrf.linlin(0.2, 0.3, 0, 1), [
+			signal,
+			BRF.ar(signal, ((bandrf * (offset <= 0)) + ((offset <= 0)) + ((offset > 0) * bandrf * offset * 8.midiratio)).clip(20, 20000), bandrq)
+		]);
+		signal = Select.ar(numbrf.linlin(0.3, 0.4, 0, 1), [
+			signal,
+			BRF.ar(signal, ((bandrf * (offset <= 0)) + ((offset <= 0)) + ((offset > 0) * bandrf * offset * 12.midiratio)).clip(20, 20000), bandrq)
+		]);
+		signal = Select.ar(numbrf.linlin(0.4, 0.5, 0, 1), [
+			signal,
+			BRF.ar(signal, ((bandrf * (offset <= 0)) + ((offset <= 0)) + ((offset > 0) * bandrf * offset * 16.midiratio)).clip(20, 20000), bandrq)
+		]);
+		signal = Select.ar(numbrf.linlin(0.5, 0.6, 0, 1), [
+			signal,
+			BRF.ar(signal, ((bandrf * (offset <= 0)) + ((offset <= 0)) + ((offset > 0) * bandrf * offset * 20.midiratio)).clip(20, 20000), bandrq)
+		]);
+		signal = Select.ar(numbrf.linlin(0.6, 0.7, 0, 1), [
+			signal,
+			BRF.ar(signal, ((bandrf * (offset <= 0)) + ((offset <= 0)) + ((offset > 0) * bandrf * offset * 24.midiratio)).clip(20, 20000), bandrq)
+		]);
+		signal = Select.ar(numbrf.linlin(0.7, 0.8, 0, 1), [
+			signal,
+			BRF.ar(signal, ((bandrf * (offset <= 0)) + ((offset <= 0)) + ((offset > 0) * bandrf * offset * 28.midiratio)).clip(20, 20000), bandrq)
+		]);
+		signal = Select.ar(numbrf.linlin(0.8, 0.9, 0, 1), [
+			signal,
+			BRF.ar(signal, ((bandrf * (offset <= 0)) + ((offset <= 0)) + ((offset > 0) * bandrf * offset * 32.midiratio)).clip(20, 20000), bandrq)
+		]);
+		signal = Select.ar(numbrf.linlin(0.9, 1.0, 0, 1), [
+			signal,
+			BRF.ar(signal, ((bandrf * (offset <= 0)) + ((offset <= 0)) + ((offset > 0) * bandrf * offset * 36.midiratio)).clip(20, 20000), bandrq)
+		]);
+
+		ReplaceOut.ar(out, signal)
+	}, [\ir]).add;
+
 }.value
 )
