@@ -144,7 +144,7 @@ CleanSoundLibrary {
 		names.do { |name|
 			this.loadSoundFileFolder(path +/+ name, name, appendToExisting)
 		};
-		"\n... file reading complete\n\n".post;
+		//"\nfile reading complete\n\n".post;
 	}
 
 	loadSoundFiles { |paths, appendToExisting = false, namingFunction = (_.basename)| // paths are folderPaths
@@ -164,7 +164,7 @@ CleanSoundLibrary {
 		folderPaths.do { |folderPath|
 			this.loadSoundFileFolder(folderPath, namingFunction.(folderPath), appendToExisting)
 		};
-		"\n... file reading complete. Required % MB of memory.\n\n".format(
+		"\nRequired % MB of memory.\n\n".format(
 			this.memoryFootprint - memory div: 1e6
 		).post;
 	}
