@@ -550,7 +550,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		// numbrf = 0, no BRFs; numbrf = 0.1, 1 BRF; numbrf = 0.2, 2 BRFs .. numbrf = 1.0, 10 BRFs
 		signal = Select.ar(numbrf.linlin(0.0, 0.1, 0, 1), [
 			signal,
-			BRF.ar(signal, bandrf, bandrq)
+			BRF.ar(signal, bandrf.clip(20, 20000), bandrq)
 		]);
 		signal = Select.ar(numbrf.linlin(0.1, 0.2, 0, 1), [
 			signal,
