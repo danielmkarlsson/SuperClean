@@ -135,7 +135,7 @@ They'll come back automatically.
 		Out.ar(effectBus, sig);
 	}, [\ir, \ir]).add;
 
-	// Impulse Response based reverb
+/*	// Impulse Response based reverb
 	~path = Main.packages.asDict.at('SuperClean') +/+ "/clean-samples/mmd/mir/mir4.wav";
 	~ezConvX = EZConvX(~path);
 	SynthDef(\clean_mir ++ numChannels, {
@@ -146,7 +146,7 @@ They'll come back automatically.
 		sig = sig * (1 - mir.lag(lgt) - 1);
 		CleanPause.ar(sig, graceTime:4);
 		Out.ar(effectBus, sig);
-	}, [\ir, \ir]).add;
+	}, [\ir, \ir]).add; */
 
 	// NHHall based reverb, this implementation works, but could be improved in future to accept n number of channels
 	SynthDef(\clean_hal ++ numChannels, {
