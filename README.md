@@ -12,8 +12,7 @@ world. SuperClean is, in short, a one-stop-shopping-experience for folks who wan
 • a flexible routing system 
 
 for the low, low asking price of: _free_.
-Also, on a personal note here, hey, this is what I use to make music with every day.  
-I really love making music and, for me, this makes it way funner.  
+Also, on a personal note here, hey, this is what I use to make music with every day. I really love making music and, for me, this makes it way funner.  
 Go ahead, try it!  
 What have you got to lose?  
 
