@@ -502,6 +502,40 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
+// Spectral Phase Decorrelator.
+// Made by Boris Klompus.
+// Activate it by providing the \psd or \psb key a value in a pattern.
+// Parameters:
+// psd | psa | psi | pso | psb
+// // (NEW: )
+(
+SynthDef(\clean_spectralPhaseDecorrelator, {
+	var bus = \bus.ir, inputGain = \inputGain.kr(1), outputGain = \outputGain.kr(1), blend = \blend.kr(0.5).linlin(0.0, 1.0, -1.0, 1.0),
+	depth = \depth.kr(0.1).linlin(0.0, 1.0, 0, 2pi), accumulate = \accumulate.kr;
+	var signal = Array.newClear(2); // array index: [0] - in/clean, [1] - effect/main
+	var numFrames = 2048;
+	signal[0] = In.ar(bus, ~clean.numChannels) * inputGain;
+	signal[1] = signal[0].asArray.collect { |x| FFT(LocalBuf(numFrames), x) };
+	signal[1] = IFFT(PV_PhaseShift(signal[1], [depth, depth.linlin(0, 2pi, 2pi, 0)], accumulate));
+	signal[1] = XFade2.ar(signal[0], signal[1], blend);
+	signal[1] = signal[1] * outputGain;
+	ReplaceOut.ar(bus, signal[1])
+}).add;
+
+~clean.addModule(\psd, { |cleanEvent|
+	cleanEvent.sendSynth(\clean_spectralPhaseDecorrelator, [
+		depth: ~psd ?? { SynthDescLib.global.at(\clean_spectralPhaseDecorrelator).controlDict[\depth].defaultValue },
+		accumulate: ~psa ?? { SynthDescLib.global.at(\clean_spectralPhaseDecorrelator).controlDict[\accumulate].defaultValue },
+		inputGain: ~psi ?? { SynthDescLib.global.at(\clean_spectralPhaseDecorrelator).controlDict[\inputGain].defaultValue },
+		outputGain: ~pso ?? { SynthDescLib.global.at(\clean_spectralPhaseDecorrelator).controlDict[\outputGain].defaultValue },
+		blend: ~psb ?? { SynthDescLib.global.at(\clean_spectralPhaseDecorrelator).controlDict[\blend].defaultValue },
+		bus: ~out
+	])
+}, { ~psd.notNil or: ~psb.notNil });
+
+// presetStore.(\psd);
+);
+
 	// A low pass filter for the first half of the range, and a high pass for the rest.
 	~clean.addModule(\lhf, { |cleanEvent|
 		cleanEvent.sendSynth('lhf-filter' ++ ~clean.numChannels,
