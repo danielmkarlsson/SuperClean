@@ -150,9 +150,10 @@ They'll come back automatically.
 
 	// NHHall based reverb, this implementation works, but could be improved in future to accept n number of channels
 	SynthDef(\clean_hal ++ numChannels, {
-		|dryBus, effectBus, gate=1, hal, hhp=20, hlp=20000, rts=1, bld=0.5, edf=0.5, ldf=0.5|
+		|dryBus, effectBus, gate=1, hal, hai = 1, hhp=20, hlp=20000, rts=1, bld=0.5, edf=0.5, ldf=0.5|
 		var wet, lgt = 0.0625;
 		var signal = In.ar(dryBus, numChannels);
+		signal = signal * hai.lag(lgt); 
 		signal = HPF.ar(signal, hhp.clip(20,20000).lag(lgt));
 		signal = LPF.ar(signal, hlp.clip(20,20000).lag(lgt));
 		signal = signal.asArray.collect { |sig|

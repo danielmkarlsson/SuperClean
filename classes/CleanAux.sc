@@ -53,7 +53,7 @@ CleanAux {
 	initDefaultGlobalEffects {
 		this.globalEffects = [
 			// all global effects sleep when the input is quiet for long enough and no parameters are set.
-			GlobalCleanEffect(\clean_hal, [\hal, \rts, \bld, \edf, \ldf, \hhp, \hlp]),
+			GlobalCleanEffect(\clean_hal, [\hal, \hai, \rts, \bld, \edf, \ldf, \hhp, \hlp]),
 			GlobalCleanEffect(\clean_delay, [\delaytime, \delayfeedback, \delaySend, \delayAmp, \lock, \cps]),
 			GlobalCleanEffect(\clean_reverb, [\rev, \rin, \dry]),
 			//GlobalCleanEffect(\clean_grainfb, [\grainfb]),

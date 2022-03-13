@@ -57,6 +57,7 @@ ocq:	Quarter-frequency harmonics (two octaves down).
 fsh:	Frequency shift, value range goes both positive and negative, works in combination with fsm, try values -32 to 32
 fsm:	Frequency shift multiplier, value range goes both positive and negative, works in combination with fsh, try values -4 to 4
 hal:	A hall reverb, this is the wet parameter, or put another way, the amplitude of the reverb.
+hai: The input or send into the hal reverb. Range is zero to one.
 rts:	The RT60 value of the reverb. This goes from 0 to 999. That top value is approaching inifity. It is super duper long.
 edf:	Early diffusion of the hal reverb.
 ldf:	Late diffusion of the hal reverb.
