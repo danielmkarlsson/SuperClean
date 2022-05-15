@@ -57,13 +57,13 @@ ocq:	Quarter-frequency harmonics (two octaves down).
 fsh:	Frequency shift, value range goes both positive and negative, works in combination with fsm, try values -32 to 32
 fsm:	Frequency shift multiplier, value range goes both positive and negative, works in combination with fsh, try values -4 to 4
 hal:	A hall reverb, this is the wet parameter, or put another way, the amplitude of the reverb.
-hai: The input or send into the hal reverb. Range is zero to one.
+hai: 	The input or send into the hal reverb. Range is zero to one.
 rts:	The RT60 value of the reverb. This goes from 0 to 999. That top value is approaching inifity. It is super duper long.
 edf:	Early diffusion of the hal reverb.
 ldf:	Late diffusion of the hal reverb.
 hhp:	A high pass filter before the hal reverb. Value range is 20 to 20000.
 hlp:	A low pass filter before the hal reverb. Value range is 20 to 20000.
-tnh:	 Wet mix of the tanh based distortion. Unlike  other distortions this is added after synths are summed. Try a fifth through this.
+tnh:	Wet mix of the tanh based distortion. Unlike  other distortions this is added after synths are summed. Try a fifth through this.
 tnb:	Low pass filter before the tanh based distortion.
 tng:	Tanh gain stage, this makes tons of ditortion. Range is 0.0 to 999.0
 tna:	Low pass filter after the tanh based distortion.
@@ -368,17 +368,17 @@ Pdef(1,
     Pseed(1,
         Pbind(*[
             type: Prand([\cln, \r], inf),
-            dur: 1/Prand([1, 2, 4,8], inf),
+            dur: 1 / Prand([1, 2, 4, 8], inf),
             snd: \mmd,
             num: Pwhite(0, 12),
-            legato: Pexprand(1,4).round,
+            legato: Pexprand(1, 4).round,
             pan: Pwhite(0.0, 1.0),
-            amp: Pexprand(1,3)-1,
-            spd: Prand([1/4,1/2,1,2,4,-0.25,-0.5,-2,-4],inf),
-            rel: Pexprand(1,4)-1,
-            crv: Pexprand(0.01,4)-4,
-            cut: Pwhite(0,1),
-            aux: Pwhite(0,1),
+            amp: Pexprand(1, 3) - 1,
+            spd: Prand([1/4, 1/2, 1, 2, 4, -0.25, -0.5, -2, -4], inf),
+            rel: Pexprand(1, 4) - 1,
+            crv: Pexprand(0.01, 4) - 4,
+            cut: Pwhite(0, 1),
+            aux: Pwhite(0, 1),
         ])
     )
 ).play(quant:1);
@@ -394,10 +394,10 @@ Pdef(2,
                 50 * (lo..hi);
             }),
             ada: Pexprand(0.00000000000000000000000000000000000000000000001,10.1),
-            adr: Pkey(\dur)+(Pexprand(0.000001,10.0)),
-            dur: Prand([16, 32], inf) / Pwrand([1, 2, 4, 8],[8, 4, 2, 1].normalizeSum, inf),
-            amp: Pexprand(0.5,1.0),
-			legato: 1,
+            adr: Pkey(\dur) + (Pexprand(0.000001, 10.0)),
+            dur: Prand([16, 32], inf) / Pwrand([1, 2, 4, 8], [8, 4, 2, 1].normalizeSum, inf),
+            amp: Pexprand(0.5, 1.0),
+	    legato: 1,
         ])
     )
 ).play(quant:1);
@@ -405,19 +405,19 @@ Pdef(2,
 Pdef(3,
     Pseed(63,
         Pbind(*[
-            type: Pwrand([\cln, \r],[1,0].normalizeSum, inf),
+            type: Pwrand([\cln, \r], [1, 0].normalizeSum, inf),
             snd: \kps,
             \freq, Pn(Plazy {
                 var lo = (1, 3 .. 11).wchoose((11, 9 .. 1));
                 var hi = (1, 3 .. 11).choose;
-                50 * Pseq((lo..hi), 1);
+                50 * Pseq((lo .. hi), 1);
             }).trace,
-            dur: 1/Pdup(Pwhite(5,11),Pwhite(5,11)),
-            sustain: Pdup(Pwhite(16,32),Pexprand(1/32,1)),
+            dur: 1 / Pdup(Pwhite(5, 11), Pwhite(5, 11)),
+            sustain: Pdup(Pwhite(16, 32), Pexprand(1/32, 1)),
             crv: 8,
-            amp: Pexprand(0.5,1.5),
-            lhf: Pseg([0.0,0.5,0.0],Pexprand(1,40),\lin,inf),
-            stretch: Pseg(Pseq([1,Pexprand(1/4,16),1],inf),Pexprand(1,20),\lin,inf),
+            amp: Pexprand(0.5, 1.5),
+            lhf: Pseg([0.0, 0.5, 0.0], Pexprand(1, 40), \lin, inf),
+            stretch: Pseg(Pseq([1, Pexprand(1/4, 16), 1], inf), Pexprand(1, 20), \lin, inf),
             legato: 4,
         ])
     )
