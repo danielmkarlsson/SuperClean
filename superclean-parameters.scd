@@ -38,7 +38,7 @@ dry:	Decrease the amplitude of the reverb.
 bgn:	Where in the file to begin playing back the file.
 end:	Where in the file to end playing back the file.
 bnd:	Bend. Change playback speed of samples while running, accepts positive and negative values. Certain synths also accept bnd.
-bnt:	Bend time. Accepts positive values. This value gets multiplied with the sustain key. The default is 0.2
+bnt:	Bend time. Accepts positive values that denote time in seconds. The default is 0.2
 bno:	Offset the time at which the bend begins.
 bnc:	Bend curvature. Accepts positive and negative values.
 lop:	How many times to loop the file, takes integers, works in consort with the envelope parameters.
