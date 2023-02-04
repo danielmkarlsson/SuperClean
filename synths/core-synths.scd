@@ -1,13 +1,10 @@
 /*
-
 EVENT - BASED
 CORE SYNTHDEF EFFECTS FOR SUPERCLEAN
 These synthdefs can be hacked at runtime, and hey, if something breaks, you can always download a fresh version.
 Live coding them requires that you have your SuperClean instance in an environment variable called ~clean.
-
 A quick note for hackers: You might think that default values for parameters get set in
 the SynthDefs, but alas they do not. Default values for parameters get set in CleanAux.sc
-
 */
 
 (
@@ -181,9 +178,9 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		ReplaceOut.ar(out, Limiter.ar(LeakDC.ar(signal * (amp+diff))));
 	}, [\ir, \ir]).add;
 
-	SynthDef(\clean_envelope ++ numChannels, { |out, attack = 0, hold = 0, release = inf, crv = 0.3 |
+	SynthDef(\clean_envelope ++ numChannels, { |out, attack = 0, hold = 0, release = inf, crv = 0.3, crt = 0.3|
 		var signal = In.ar(out, numChannels);
-		signal = signal * EnvGen.ar(Env.linen(attack, hold, release, 1, crv));
+		signal = signal * EnvGen.ar(Env.linen(attack, hold, release, 1, [crv, 0, crt]));
 		ReplaceOut.ar(out, signal);
 	}, [\ir, \ir, \ir, \ir]).add;
 
@@ -332,7 +329,6 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	]
 	)
 	}, { ~frz.notNil } );
-
 	SynthDef('spectral-freeze' ++ ~clean.numChannels, { |out, freeze| // broken, use at own risk, values seem to be 0 for off and 1 for on
 	var signal, chain, in;
 	signal = In.ar(out, ~clean.numChannels);
