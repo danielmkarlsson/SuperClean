@@ -188,6 +188,7 @@ CleanAux {
 			~hit = 0.0;
 			~nhp = 20;
 			~nlp = 20000;
+			~flp = 0;
 			//~mii = 1;
 			~unit = \r;
 			~midinote = #{ ~note ? ~num + (~octave * 12) };
