@@ -1,6 +1,3 @@
-```
-/*
-
 This may not be a complete list of parameter names.
 The value range for the below parameters is 0.0 to 1.0 unless otherwise indicated.
 
@@ -38,7 +35,7 @@ dry:	Decrease the amplitude of the reverb.
 bgn:	Where in the file to begin playing back the file.
 end:	Where in the file to end playing back the file.
 bnd:	Bend. Change playback speed of samples while running, accepts positive and negative values. Certain synths also accept bnd.
-bnt:	Bend time. Accepts positive values that denote time in seconds. The default is 0.2
+bnt:	Bend time. Accepts positive values. This value gets multiplied with the sustain key. The default is 0.2
 bno:	Offset the time at which the bend begins.
 bnc:	Bend curvature. Accepts positive and negative values.
 lop:	How many times to loop the file, takes integers, works in consort with the envelope parameters.
@@ -57,13 +54,12 @@ ocq:	Quarter-frequency harmonics (two octaves down).
 fsh:	Frequency shift, value range goes both positive and negative, works in combination with fsm, try values -32 to 32
 fsm:	Frequency shift multiplier, value range goes both positive and negative, works in combination with fsh, try values -4 to 4
 hal:	A hall reverb, this is the wet parameter, or put another way, the amplitude of the reverb.
-hai:	The input or send into the hal reverb. Range is zero to one.
 rts:	The RT60 value of the reverb. This goes from 0 to 999. That top value is approaching inifity. It is super duper long.
 edf:	Early diffusion of the hal reverb.
 ldf:	Late diffusion of the hal reverb.
 hhp:	A high pass filter before the hal reverb. Value range is 20 to 20000.
 hlp:	A low pass filter before the hal reverb. Value range is 20 to 20000.
-tnh:	 Wet mix of the tanh based distortion. Unlike  other distortions this is added after synths are summed. Try a fifth through this.
+tnh:	Wet mix of the tanh based distortion. Unlike  other distortions this is added after synths are summed. Try a fifth through this.
 tnb:	Low pass filter before the tanh based distortion.
 tng:	Tanh gain stage, this makes tons of ditortion. Range is 0.0 to 999.0
 tna:	Low pass filter after the tanh based distortion.
@@ -76,10 +72,11 @@ cvd:	The cav reverb dampening. Range is zero to one.
 cvl:	The cav low pass filter after the reverb. Range is zero to one.
 bit:	Roughly translates to bit rate reduction. Value range is zero to infinity. Lower values give more action.
 sam:	Roughly translates to sample rate reduction. Value range is zero to infinity. Higher values give more action.
+flp:	Flips the channels in a Stereo sound. Left becomes right and vice versa. Range is 0 or 1, where 0 is unaffected and 1 is flipped.
 
 
-The parameters below aren't actually part of SuperClean, but are very useful
-and because SuperClean is running inside SuperCollider, we can use them.
+The parameters below aren't actually part of SuperClean, but are very useful,
+and, because SuperClean is running inside SuperCollider, we can use them.
 
 dur:        The duration between events, range is a float above zero to infity, zero is infinitely fast, so, you mos def never want to do that.
 midinote:   0 to 127. 60 is default. Interestingly accepts floats which allows for microtonality
@@ -87,7 +84,7 @@ freq:       When working with synths and we want to work with frequencies instea
 scale:      Choose scale, for example: Scale.harmonicMinor, add a tuning there like this: Scale.harmonicMinor.tuning_(Tuning.sept1)
 degree:     Negative infinity to infinity really but proly there will be seven degrees in scale.
 octave:     Choose the octave. Range is zero infinity really but a reasonable range is more like 1 to 6. Accepts floats which is crazy/fun
-ctranspose: Chromatic transpostion. All keys on piano. Range is something like integers between -63 and 64 but depends on everything else.
+ctranspose: Chromatic transpostion. All the keys on a piano. Range is something like integers between -63 and 64 but depends on everything else.
 mtranspose: Modal transposition of degree within a scale. Works in combination with other keys like degree and scale.
 harmonic:   Multiplies the frequency determined by midinote, typically to an overtone. https://en.wikipedia.org/wiki/Overtone
 
@@ -129,7 +126,7 @@ denote the curvature of the envelope segments. hr is the harmonicity ratio of
 the operator. mi means modulation index, which is the modulation amount by
 which that oscillator will modulate the next. The last oscillator (e1) doesn’t
 have a modulation index value because it isn’t modulating anything else. The
-first oscillator modulates itself with the fb parameter. SuperCollider has an
+first oscillator modulates itself with the mi1 parameter. SuperCollider has an
 uncanny knack for delivering such clean synthesis, owing to negligible round
 off errors in the calculation of waveforms at the lowest level. This becomes
 especially important for me where modulation indexes are concerned. Without
@@ -141,7 +138,7 @@ hr1:
 hr2:
 hr3:
 hr4:
-fdb:
+mi1:
 mi2:
 mi3:
 mi4:
@@ -184,7 +181,8 @@ can also be adjusted relative to the main clap sound by usingthe tho key. Contro
 character of the sound with the srp (sharpness) parameter, which allows you to tune
 the claps, sounding maybe a bit more "real" somewhere between 0.3 and 0.35, and more
 synthetic elsewhere. The srq parameter, the band-pass filter's resonance allows you to
-dial in the tone a bit more. The dmp key controls a final LPF that acts a dampener for the sound.
+dial in the tone a bit more. The dmp key controls a final LPF that acts a dampener for 
+the sound.
 
 srp: (0, 1) parameter range
 srq: (0, 1) parameter range
@@ -243,7 +241,7 @@ bno:
 bnc:
 
 
-The \dfd synth definition is a transient excited filter, the filter itself is noisy and can selfoscillate
+The \dfd synth definition is a transient excited filter, the filter itself is noisy and can self oscillate
 den: the density of transients.
 res: the resonance of the filter. 1 is a tremendous sweetspot. Range is 0 to 1.01.
 typ: the type of filter where 0.0 is low pass and 1.0 is high pass.
@@ -332,7 +330,7 @@ Pdef(0,
             hr2: Pdup(Pkey(\rps) + Pwhite(0, 7), Pshuf((1 .. 4), inf)),
             hr3: Pdup(Pkey(\rps) - Pwhite(0, 7), Pshuf((1 .. 4), inf)),
             hr4: Pdup(Pkey(\rps) + Pwhite(0, 7), Pshuf((1 .. 4), inf)),
-            fdb: Pexprand(0.0001, 100.0),
+            mi1: Pexprand(0.0001, 100.0),
             mi2: Pdup(Pkey(\rps) + Pwhite(0, 7), Pshuf((0.0001 .. 4.0), inf)),
             mi3: Pdup(Pkey(\rps) + Pwhite(0, 7), Pshuf((0.0001 .. 4.0), inf)),
             mi4: Pdup(Pkey(\rps) + Pwhite(0, 7), Pshuf((0.0001 .. 4.0), inf)),
