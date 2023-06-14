@@ -60,7 +60,7 @@ They'll come back automatically.
 	*/
 
 	SynthDef(\clean_delay ++ numChannels, {
-		|dryBus, effectBus, gate = 1, delaytime, delayfeedback, delaySend = 1, delayAmp = 1, lock = 0, cps = 1|
+		|dryBus, effectBus, gate = 1, delaytime = 1, delayfeedback = 0.5, delaySend = 1, delayAmp = 1, lock = 0, cps = 1|
 		var signal;
 		var input = In.ar(dryBus, numChannels);
 		var maxdelaytime = 16;
@@ -69,7 +69,7 @@ They'll come back automatically.
 		delaytime = delaytime * if(lock, reciprocal(cps), 1);
 		delaytime = delaytime.clip(0, maxdelaytime); // Just to be sure.
 		// From sc3-plugins.
-		signal = \SwitchDelay.asClass.ar(input, 1, 1, delaytime, delayfeedback, maxdelaytime);
+		signal = \SwitchDelay.asClass.ar(input, 1, 1, delaytime, delayfeedback.clip(0.0, 1.0), maxdelaytime);
 		DetectSilence.ar(signal, time:1, doneAction: 1);
 		// doesn't work properly. We don't really know when it's not used anymore.
 		// this would have to be an explicit signal from sclang
@@ -153,7 +153,7 @@ They'll come back automatically.
 		|dryBus, effectBus, gate=1, hal, hai = 1, hhp=20, hlp=20000, rts=1, bld=0.5, edf=0.5, ldf=0.5|
 		var wet, lgt = 0.0625;
 		var signal = In.ar(dryBus, numChannels);
-		signal = signal * hai.lag(lgt); 
+		signal = signal * hai.lag(lgt);
 		signal = HPF.ar(signal, hhp.clip(20,20000).lag(lgt));
 		signal = LPF.ar(signal, hlp.clip(20,20000).lag(lgt));
 		signal = signal.asArray.collect { |sig|

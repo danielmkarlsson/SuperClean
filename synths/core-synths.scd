@@ -104,11 +104,31 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		ReplaceOut.ar(out, sig)
 	}, [\ir, \ir]).add;
 
+	~clean.addModule(\bit,
+	{ |cleanEvent|
+		cleanEvent.sendSynth(\bit ++ ~numChannels,
+			[
+				crush: ~bit,
+				out: ~out
+		])
+
+}, { ~bit.notNil });
+
 	SynthDef(\bit ++ numChannels, { |out, crush = 4|
 		var signal = In.ar(out, numChannels);
 		signal = signal.round(0.5 ** (crush-1));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
+
+	~clean.addModule(\sam,
+	{ |cleanEvent|
+		cleanEvent.sendSynth(\sam ++ ~numChannels,
+			[
+				coarse: ~sam,
+				out: ~out
+		])
+
+}, { ~sam.notNil and: { ~sam > 1 } }); // coarse == 1 => full rate
 
 	SynthDef(\sam ++ numChannels, { |out, coarse = 0, bandq = 10|
 		var signal = In.ar(out, numChannels);
@@ -116,12 +136,34 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
 
+	~clean.addModule(\hpf,
+	{ |cleanEvent|
+		cleanEvent.sendSynth(\clean_hpf ++ ~numChannels,
+			[
+				hcutoff: ~hpf,
+				hresonance: ~hpq,
+				out: ~out
+		])
+
+}, { ~hpf.notNil });
+
 	SynthDef(\clean_hpf ++ numChannels, { |out, hcutoff = 440, hresonance = 0|
 		var signal = In.ar(out, numChannels);
 		var hcutoffClipped = hcutoff.abs.clip(20, 20000);
 		signal = RHPF.ar(signal, hcutoffClipped, hresonance.linexp(0, 1, 1, 0.001));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
+
+	~clean.addModule(\bpf,
+	{ |cleanEvent|
+		cleanEvent.sendSynth(\clean_bpf ++ ~numChannels,
+			[
+				bandqf: ~bpf,
+				bandq: ~bpq,
+				out: ~out
+		])
+
+}, { ~bpf.notNil });
 
 	SynthDef(\clean_bpf ++ numChannels, { |out, bandqf = 440, bandq = 10|
 		var signal = In.ar(out, numChannels);
@@ -133,6 +175,17 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		signal = BPF.ar(signal, bandqf, 1/bandq) * max(bandq, 1.0);
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
+
+	~clean.addModule(\lpf,
+	{ |cleanEvent|
+		cleanEvent.sendSynth(\clean_lpf ++ ~numChannels,
+			[
+				cutoff: ~lpf,
+				resonance: ~lpq,
+				out: ~out
+		])
+
+}, { ~lpf.notNil });
 
 	SynthDef(\clean_lpf ++ numChannels, { |out, cutoff = 440, resonance = 0|
 		var signal = In.ar(out, numChannels);
@@ -177,6 +230,19 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		diff = 1 - (lo - hi + (hi * lo));
 		ReplaceOut.ar(out, Limiter.ar(LeakDC.ar(signal * (amp+diff))));
 	}, [\ir, \ir]).add;
+
+	~clean.addModule(\env,
+	{ |cleanEvent|
+		cleanEvent.sendSynth(\clean_envelope ++ ~numChannels,
+			[
+				attack: ~atk,
+				hold: ~hld,
+				release: ~rel,
+				crv: ~crv,
+				crt: ~crt,
+				out: ~out
+		])
+}, { ~atk.notNil or: { ~rel.notNil }});
 
 	SynthDef(\clean_envelope ++ numChannels, { |out, attack = 0, hold = 0, release = inf, crv = 0.3, crt = 0.3|
 		var signal = In.ar(out, numChannels);
@@ -498,39 +564,39 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
-// Spectral Phase Decorrelator.
-// Made by Boris Klompus.
-// Activate it by providing the \psd or \psb key a value in a pattern.
-// Parameters:
-// psd | psa | psi | pso | psb
-// // (NEW: )
-(
-SynthDef(\clean_spectralPhaseDecorrelator, {
-	var bus = \bus.ir, inputGain = \inputGain.kr(1), outputGain = \outputGain.kr(1), blend = \blend.kr(0.5).linlin(0.0, 1.0, -1.0, 1.0),
-	depth = \depth.kr(0.1).linlin(0.0, 1.0, 0, 2pi), accumulate = \accumulate.kr;
-	var signal = Array.newClear(2); // array index: [0] - in/clean, [1] - effect/main
-	var numFrames = 2048;
-	signal[0] = In.ar(bus, ~clean.numChannels) * inputGain;
-	signal[1] = signal[0].asArray.collect { |x| FFT(LocalBuf(numFrames), x) };
-	signal[1] = IFFT(PV_PhaseShift(signal[1], [depth, depth.linlin(0, 2pi, 2pi, 0)], accumulate));
-	signal[1] = XFade2.ar(signal[0], signal[1], blend);
-	signal[1] = signal[1] * outputGain;
-	ReplaceOut.ar(bus, signal[1])
-}).add;
+	// Spectral Phase Decorrelator.
+	// Made by Boris Klompus.
+	// Activate it by providing the \psd or \psb key a value in a pattern.
+	// Parameters:
+	// psd | psa | psi | pso | psb
+	// // (NEW: )
+	(
+		SynthDef(\clean_spectralPhaseDecorrelator, {
+			var bus = \bus.ir, inputGain = \inputGain.kr(1), outputGain = \outputGain.kr(1), blend = \blend.kr(0.5).linlin(0.0, 1.0, -1.0, 1.0),
+			depth = \depth.kr(0.1).linlin(0.0, 1.0, 0, 2pi), accumulate = \accumulate.kr;
+			var signal = Array.newClear(2); // array index: [0] - in/clean, [1] - effect/main
+			var numFrames = 2048;
+			signal[0] = In.ar(bus, ~clean.numChannels) * inputGain;
+			signal[1] = signal[0].asArray.collect { |x| FFT(LocalBuf(numFrames), x) };
+			signal[1] = IFFT(PV_PhaseShift(signal[1], [depth, depth.linlin(0, 2pi, 2pi, 0)], accumulate));
+			signal[1] = XFade2.ar(signal[0], signal[1], blend);
+			signal[1] = signal[1] * outputGain;
+			ReplaceOut.ar(bus, signal[1])
+		}).add;
 
-~clean.addModule(\psd, { |cleanEvent|
-	cleanEvent.sendSynth(\clean_spectralPhaseDecorrelator, [
-		depth: ~psd ?? { SynthDescLib.global.at(\clean_spectralPhaseDecorrelator).controlDict[\depth].defaultValue },
-		accumulate: ~psa ?? { SynthDescLib.global.at(\clean_spectralPhaseDecorrelator).controlDict[\accumulate].defaultValue },
-		inputGain: ~psi ?? { SynthDescLib.global.at(\clean_spectralPhaseDecorrelator).controlDict[\inputGain].defaultValue },
-		outputGain: ~pso ?? { SynthDescLib.global.at(\clean_spectralPhaseDecorrelator).controlDict[\outputGain].defaultValue },
-		blend: ~psb ?? { SynthDescLib.global.at(\clean_spectralPhaseDecorrelator).controlDict[\blend].defaultValue },
-		bus: ~out
-	])
-}, { ~psd.notNil or: ~psb.notNil });
+		~clean.addModule(\psd, { |cleanEvent|
+			cleanEvent.sendSynth(\clean_spectralPhaseDecorrelator, [
+				depth: ~psd ?? { SynthDescLib.global.at(\clean_spectralPhaseDecorrelator).controlDict[\depth].defaultValue },
+				accumulate: ~psa ?? { SynthDescLib.global.at(\clean_spectralPhaseDecorrelator).controlDict[\accumulate].defaultValue },
+				inputGain: ~psi ?? { SynthDescLib.global.at(\clean_spectralPhaseDecorrelator).controlDict[\inputGain].defaultValue },
+				outputGain: ~pso ?? { SynthDescLib.global.at(\clean_spectralPhaseDecorrelator).controlDict[\outputGain].defaultValue },
+				blend: ~psb ?? { SynthDescLib.global.at(\clean_spectralPhaseDecorrelator).controlDict[\blend].defaultValue },
+				bus: ~out
+			])
+		}, { ~psd.notNil or: ~psb.notNil });
 
-// presetStore.(\psd);
-);
+		// presetStore.(\psd);
+	);
 
 	// A low pass filter for the first half of the range, and a high pass for the rest.
 	~clean.addModule(\lhf, { |cleanEvent|
@@ -557,6 +623,27 @@ SynthDef(\clean_spectralPhaseDecorrelator, {
 		);
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
+
+
+		~clean.addModule(\flp,
+			{ |cleanEvent|
+				cleanEvent.sendSynth(\clean_channel_flip ++ numChannels,
+					[
+						flp: ~flp,
+						out: ~out
+				])
+
+		}, { ~flp.notNil });
+
+		SynthDef(\clean_channel_flip ++ numChannels, { |out=0, in=0 flp=0|
+			var sig = In.ar(out, numChannels);
+			sig = Select.ar(flp, [
+				sig,
+				sig.reverse
+			]);
+			ReplaceOut.ar(out, sig)
+		}, [\ir, \ir]).add;
+
 
 	~clean.addModule(\brf,
 		{ |cleanEvent|
