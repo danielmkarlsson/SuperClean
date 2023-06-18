@@ -73,6 +73,8 @@ cvl:	The cav low pass filter after the reverb. Range is zero to one.
 bit:	Roughly translates to bit rate reduction. Value range is zero to infinity. Lower values give more action.
 sam:	Roughly translates to sample rate reduction. Value range is zero to infinity. Higher values give more action.
 flp:	Flips the channels in a Stereo sound. Left becomes right and vice versa. Range is 0 or 1, where 0 is unaffected and 1 is flipped.
+dfm:    A stereo distortion based on DFM1. This is the wet / dry. Range is zero to one where 0.0 is all dry and 1.0 is all wet.
+dfg:    This sets the gain of the dfm distortion. The range is 0.0 to 999.0.
 
 
 The parameters below aren't actually part of SuperClean, but are very useful,
@@ -181,7 +183,7 @@ can also be adjusted relative to the main clap sound by usingthe tho key. Contro
 character of the sound with the srp (sharpness) parameter, which allows you to tune
 the claps, sounding maybe a bit more "real" somewhere between 0.3 and 0.35, and more
 synthetic elsewhere. The srq parameter, the band-pass filter's resonance allows you to
-dial in the tone a bit more. The dmp key controls a final LPF that acts a dampener for 
+dial in the tone a bit more. The dmp key controls a final LPF that acts a dampener for
 the sound.
 
 srp: (0, 1) parameter range
@@ -243,9 +245,10 @@ bnc:
 
 The \dfd synth definition is a transient excited filter, the filter itself is noisy and can self oscillate
 den: the density of transients.
-res: the resonance of the filter. 1 is a tremendous sweetspot. Range is 0 to 1.01.
-typ: the type of filter where 0.0 is low pass and 1.0 is high pass.
-nsl: the noise level. Range is 0 to infinity. Go easy here, as a little goes a very long way.
+res: the resonance of the filter. 1.0 is a tremendously narrow sweetspot. Range is 0.0 to 1.01.
+typ: the type of filter, where 0.0 is low pass, and 1.0 is high pass.
+nsl: the noise level. Range is 0.0 to infinity. Go easy here, as a little goes a very long way.
+Please be advised that as this synthdef is dual mono, it does not respond to panning in any way.
 
 freq:
 den:

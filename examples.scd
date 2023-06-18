@@ -6,30 +6,31 @@ Pdef(0,
 		Pbind(*[
 			type: \cln,
 			snd: \fmx,
-			rps: Pexprand(9, 99),
-			hr1: Pdup(Pkey(\rps) - Pwhite(0, 7), Pshuf((1 .. 4), inf)),
-			hr2: Pdup(Pkey(\rps) + Pwhite(0, 7), Pshuf((1 .. 4), inf)),
-			hr3: Pdup(Pkey(\rps) - Pwhite(0, 7), Pshuf((1 .. 4), inf)),
-			hr4: Pdup(Pkey(\rps) + Pwhite(0, 7), Pshuf((1 .. 4), inf)),
+			dup: Pexprand(9, 99),
+			hr1: Pdup(Pkey(\dup) - Pwhite(0, 7), Pshuf((1 .. 4), inf)),
+			hr2: Pdup(Pkey(\dup) + Pwhite(0, 7), Pshuf((1 .. 4), inf)),
+			hr3: Pdup(Pkey(\dup) - Pwhite(0, 7), Pshuf((1 .. 4), inf)),
+			hr4: Pdup(Pkey(\dup) + Pwhite(0, 7), Pshuf((1 .. 4), inf)),
 			fdb: Pexprand(0.0001, 100.0),
-			mi2: Pdup(Pkey(\rps) + Pwhite(0, 7), Pshuf((0.0001 .. 4.0), inf)),
-			mi3: Pdup(Pkey(\rps) + Pwhite(0, 7), Pshuf((0.0001 .. 4.0), inf)),
-			mi4: Pdup(Pkey(\rps) + Pwhite(0, 7), Pshuf((0.0001 .. 4.0), inf)),
+			mi2: Pdup(Pkey(\dup) + Pwhite(0, 7), Pshuf((0.0001 .. 4.0), inf)),
+			mi3: Pdup(Pkey(\dup) + Pwhite(0, 7), Pshuf((0.0001 .. 4.0), inf)),
+			mi4: Pdup(Pkey(\dup) + Pwhite(0, 7), Pshuf((0.0001 .. 4.0), inf)),
 			amp: Pexprand(0.3, 0.8),
-			en1: Pdup(Pkey(\rps) + Pwhite(0, 7), Pexprand(0.0001, 0.555)),
-			en2: Pdup(Pkey(\rps) + Pwhite(0, 7), Pkey(\en1) * Pexprand(0.2, 0.666)),
-			en3: Pdup(Pkey(\rps) + Pwhite(0, 7), Pkey(\en1) * Pkey(\en2) / Pexprand(0.3, 0.777)),
-			en4: Pdup(Pkey(\rps) + Pwhite(0, 7), Pkey(\en1) * Pkey(\en2) / Pkey(\en3) * Pexprand(0.4, 0.888)),
-			cu1: Pdup(Pkey(\rps) + Pwhite(0, 7), Pwhite(0.25, 1.0)),
-			cu2: Pdup(Pkey(\rps) + Pwhite(0, 7), Pwhite(0.25, 1.0)),
-			cu3: Pdup(Pkey(\rps) + Pwhite(0, 7), Pwhite(0.25, 1.0)),
-			cu4: Pdup(Pkey(\rps) + Pwhite(0, 7), Pwhite(0.25, 1.0)),
-			dur: Pdup(Pkey(\rps) + Pwhite(2, 9), 2 / Pbrown(5, 19, Pwhite(1, 3), inf)),
+			en1: Pdup(Pkey(\dup) + Pwhite(0, 7), Pexprand(0.0001, 0.555)),
+			en2: Pdup(Pkey(\dup) + Pwhite(0, 7), Pkey(\en1) * Pexprand(0.2, 0.666)),
+			en3: Pdup(Pkey(\dup) + Pwhite(0, 7), Pkey(\en1) * Pkey(\en2) / Pexprand(0.3, 0.777)),
+			en4: Pdup(Pkey(\dup) + Pwhite(0, 7), Pkey(\en1) * Pkey(\en2) / Pkey(\en3) * Pexprand(0.4, 0.888)),
+			cu1: Pdup(Pkey(\dup) + Pwhite(0, 7), Pwhite(0.25, 1.0)),
+			cu2: Pdup(Pkey(\dup) + Pwhite(0, 7), Pwhite(0.25, 1.0)),
+			cu3: Pdup(Pkey(\dup) + Pwhite(0, 7), Pwhite(0.25, 1.0)),
+			cu4: Pdup(Pkey(\dup) + Pwhite(0, 7), Pwhite(0.25, 1.0)),
+			dur: Pdup(Pkey(\dup) + Pwhite(2, 9), 2 / Pbrown(5, 19, Pwhite(1, 3), inf)),
 			legato: Pkey(\dur) * Pexprand(16, 64),
 			freq: (Pdup(Pexprand(4, 32), 10 * Pexprand(1, 5).round)
 				* Pdup(Pexprand(1, 64), Pexprand(1, 5)).round
-				* Pdup(Pkey(\rps), Pexprand(1, 7).round)),
-			cav: Pseg(Pexprand(0.25, 1.0), Pexprand(8.0, 64.0), \welch, inf),
+				* Pdup(Pkey(\dup), Pexprand(1, 7).round)),
+			cav: 1,
+			ca1: Pseg(Pexprand(0.25, 1.0), Pexprand(8.0, 64.0), \welch, inf),
 			pan: Pbrown(0.0, 1.0, Pdup(Pwhite(1, 3), Pwhite(0.01, 0.1))).trace,
 			atk: Pexprand(0.01, 4.0),
 			hld: Pkey(\dur) * 2,
@@ -38,8 +39,8 @@ Pdef(0,
 			sustain: Pexprand(2.5, 5.0),
 		])
 	)
-).play(quant:1);
-);
+).play
+)
 
 // an example of using the sampler, looks for samples in a folder called mmd
 // deterministic operations, finite duration
@@ -70,8 +71,8 @@ Pdef(0,
 			]), 1, 15,
 		)
 	)
-).play(quant:1);
-);
+).play
+)
 
 // an example using add which is the built in additive synthesizer
 // stochastic operations, indefinite duration
@@ -96,7 +97,7 @@ Pdef(0,
 		sustain: Pexprand(0.25, 1.25),
 		stretch: Pseg(Pexprand(0.75, 1.25), Pexprand(0.5, 8.0), \exp, inf),
 	])
-).play(quant:1);
+).play
 )
 
 
@@ -122,7 +123,7 @@ Pdef(0,
 		midinote: 60 + Pdup(Pwhite(5, 11), Pxrand((-24, Pdup(Pwhite(1, 100), Prand([-9, -10], inf)) .. 24), inf)),
 		legato: Pkey(\atk) + Pkey(\hld) + Pkey(\rel) + Pkey(\sustain),
 	])
-).play(quant:1);
+).play
 )
 
 // an example using drm which is the built in drum synthesizer
@@ -152,7 +153,7 @@ Pdef(0,
 		sustain: Pdup(Pexprand(1, 3), Pexprand(0.1, 2.0)),
 		legato: Pwrand([Pkey(\dur) * 1.5, Pkey(\dur) * 16], [1, 2].normalizeSum, inf),
 	])
-).play(quant:1);
+).play
 )
 
 ( // an example using kps which is a Karplus-Strong physical model of a vibrating string
@@ -169,7 +170,7 @@ Pdef(0,
 		lpf: (20000 - Pexprand(20, 20000)).trace,
 		pan: Pwhite(0.0, 1.0),
 	])
-).play(quant:1);
+).play
 )
 
 ( // an example using hat which is a tunable noise source and a filter
@@ -193,7 +194,7 @@ Pdef(0,
 		dlt: (2 / Pdup(Pn(Pgeom(1, 2, 3), inf), Pn(Pgeom(1, 2, 11), inf))).trace,
 		stretch: 0.7,
 	])
-).play(quant:1);
+).play
 )
 
 ( // an example using dfd which is a transient / noise excited filter that can selfoscillate
@@ -249,5 +250,31 @@ Pdef(0,
 			rts: Pseg([0, 64, 0], Pwhite(30, 90), \sine, inf),
 		])
 	)
-).play(quant:1);
+).play
+)
+
+( // an example of using the dfm stereo distortion on a couple of different instruments
+Pdef(0, // deterministic operations, indefinite duration
+	Pseed(66, // 666666666,
+		Pbind(*[
+			type: \cln,
+			snd: Prand([\dfd, \drm, \kps, \ixa, \sin, \bow], inf),
+			dur: Plprand(0.1, 1.0),
+			amp: Plprand(0.125, 1.0),
+			pan: Pwhite(0.0, 1.0),
+			freq: Plprand(40, 240).round(40),
+			freq: Pdup(Plprand(19, 29), Prand([50, 60, 80, 90, 110], inf)) * [1, 3/2],
+			tun: Plprand(0.0, 8.0).round(1/4),
+			lpf: Plprand(20, 20000),
+			dfm: 1,
+			dfg: Pseg(Pdup(2, Plprand(0.0, 999.0)), Pwhite(1.0, 9.0), \lin, inf).trace,
+			atk: 3,
+			hld: 3,
+			rel: 3,
+			crv: 4.0,
+			crt: -4.0,
+			legato: 99,
+		])
+	)
+).play
 )
