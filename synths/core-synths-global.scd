@@ -185,6 +185,20 @@ They'll come back automatically.
 		Out.ar(effectBus, sig);
 	}, [\ir, \ir]).add;
 
+	SynthDef(\clean_dfm ++ numChannels, {
+		|dryBus, effectBus, gate = 1, dfm = 0, dfg = 1, dfb = 20000, dfa = 20000|
+		var drySignal = In.ar(dryBus, numChannels);
+		var wetSignal = In.ar(effectBus, numChannels);
+		var sig = wetSignal + drySignal;
+		var lgt = 0.0625;
+		sig = sig = DFM1.ar(sig, 20000, 0.0, dfg.clip(0.0, 999.0), 0.0, 0.0);
+		//sig = LeakDC.ar(sig);
+		sig = sig * (1 - dfm.linlin(0.0, 1.0, 1.0, 0.0));
+		CleanPause.ar(sig, graceTime:4);
+		sig = sig * EnvGen.kr(Env.asr, gate, doneAction:2);
+		Out.ar(effectBus, sig);
+	}, [\ir, \ir]).add;
+
 	//"---- core synth defs loaded ----".postln;
 
 }.value
