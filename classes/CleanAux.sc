@@ -60,6 +60,7 @@ CleanAux {
 			GlobalCleanEffect(\clean_cav, [\cav, \cai, \cvt, \cvd, \cvl]),
 			//GlobalCleanEffect(\clean_mir, [\mir, \mii]),
 			GlobalCleanEffect(\clean_tanh, [\tnh, \tng, \tnb, \tna]),
+			GlobalCleanEffect(\clean_dfm, [\dfm, \dfg]),
 			//GlobalCleanEffect(\tap, [\tap, \drp]),
 			GlobalCleanEffect(\clean_rms, [\rmsReplyRate, \rmsPeakLag]).alwaysRun_(true),
 			GlobalCleanEffect(\clean_monitor).alwaysRun_(true),
