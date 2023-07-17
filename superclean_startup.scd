@@ -6,6 +6,7 @@ s.options.numWireBufs = 128; // increase if you get "exception in GraphDef_Recv:
 s.options.memSize = 4096 * 256; // increase if you get "alloc failed" messages
 s.options.maxNodes = 1024 * 32; // increase if drop outs and the message "too many nodes"
 s.options.sampleRate= 44100;
+s.options.blockSize = 16;
 s.options.numOutputBusChannels = 2; // OUTPUT CHANNELS GO HERE
 s.recSampleFormat = "int24";
 s.recHeaderFormat="wav";
