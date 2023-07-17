@@ -24,6 +24,8 @@ if (\SCNvim.asClass.notNil) {
 	}
 };
 
+QtGUI.palette = QPalette.dark; // switch to night mode for floating windows like the meter for example.
+
 // A simple triangle wave synth in stereo with panning and a simple low pass filter
 // This synthDef was written by Mads Kjeldgaard and requires the sc3 plugins
 s.doWhenBooted{
