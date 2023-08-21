@@ -1,10 +1,10 @@
 // make sure you have sc3 plugins installed first
 (
-//var inOut = Server.default.options;inOut.outDevice = "Soundflower (2ch)";inOut.inDevice = "Soundflower (2ch)";//force devices
+//var inOut = Server.default.options;inOut.outDevice = "BlackHole 2ch";inOut.inDevice = "BlackHole 2ch";//force devices
 s.options.numBuffers = 1024 * 64; // increase if you need to load more samples
 s.options.numWireBufs = 128; // increase if you get "exception in GraphDef_Recv: exceeded number of interconnect buffers."
 s.options.memSize = 4096 * 256; // increase if you get "alloc failed" messages
-s.options.maxNodes = 1024 * 32; // increase if drop outs and the message "too many nodes"
+s.options.maxNodes = 1024 * 32; // increase if dropouts and the message "too many nodes"
 s.options.sampleRate= 44100;
 s.options.blockSize = 16;
 s.options.numOutputBusChannels = 2; // OUTPUT CHANNELS GO HERE
