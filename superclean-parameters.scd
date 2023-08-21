@@ -73,8 +73,21 @@ cvl:	The cav low pass filter after the reverb. Range is zero to one.
 bit:	Roughly translates to bit rate reduction. Value range is zero to infinity. Lower values give more action.
 sam:	Roughly translates to sample rate reduction. Value range is zero to infinity. Higher values give more action.
 flp:	Flips the channels in a Stereo sound. Left becomes right and vice versa. Range is 0 or 1, where 0 is unaffected and 1 is flipped.
-dfm:    A stereo distortion based on DFM1. This is the wet / dry. Range is zero to one where 0.0 is all dry and 1.0 is all wet.
-dfg:    This sets the gain of the dfm distortion. The range is 0.0 to 999.0.
+dfm:	A stereo distortion based on DFM1. This is the wet / dry. Range is zero to one where 0.0 is all dry and 1.0 is all wet.
+dfg:	This sets the gain of the dfm distortion. The range is 0.0 to 999.0.
+jpr:	JPverb wet mix, 0.0 to infinity
+jpg:	JPverb input gain, 0.0 to 999.0
+jts:	JPverb t60, approximate reverberation time in seconds 0.0 to 1.0 where zero is about 0.1 seconds and 1.0 is about 60 seconds
+jpd:	JPverb damp, 0.0 to 1.0
+jps:	JPverb room size, 0.0 to 1.0
+jed:	JPverb early diffusion, 0.0 to 1.0
+jmd:	JPverb modulation depth, 0.0 to 1.0
+jmf:	JPverb modulation frequency, 0.0 to 1.0
+jpl:	JPverb low multiplier, 0.0 to 1.0
+jpm:	JPverb mid multiplier, 0.0 to 1.0
+jph:	JPverb high multiplier, 0.0 to 1.0
+jlc:	JPverb low cut, 0.0 to 1.0
+jhc:	JPverb high cut, 0.0 to 1.0
 
 
 The parameters below aren't actually part of SuperClean, but are very useful,

@@ -253,64 +253,7 @@ Pdef(0,
 ).play
 )
 
-( // an example using ixa which is a cpu efficient cousin of FM synthesis with a meandering feel
-Routine{ // deterministic operations, finite duration, music in parts
-    Pdef(0,
-        Pseed(1,
-            Pbind(*[
-                type: \cln,
-                snd: \ixa,
-                rel: 1/2,
-                crv: -8.0,
-                crt: 8.0,
-                inx: (Pseries(0, 1, inf) % Pdup(Pseq((1 .. 21), inf), Pseq((1 .. 22), inf))),
-                scale: Scale.harmonicMinor(\just),
-                degree: Pindex((1 .. 22), Pkey(\inx), inf),
-                lpf: Pkey(\degree).linexp(1, 22, 2500, 160),
-                lhf: Pkey(\degree).linexp(1, 22, 0.5, 0.3),
-                dur: 1/9,
-                amp: Pkey(\degree).linlin(1, 22, 0.5, 1.0) - Pseq((0.0, 0.005 .. 0.045), inf),
-                pan: Pseq([0.5, Plprand(0.0, 0.75, 1), Phprand(0.25, 1.0, 1)], inf),
-                legato: 19,
-                cav: 1/4,
-                cai: Pkey(\degree).explin(7, 22, 0.0, 1.0),
-                octave: 4,
-                mtranspose: (Pseries(0, 1, inf) % Pdup(Pseq((2 .. 9), inf), Pseq((-1 .. -8), inf))),
-                stretch: 0.9,
-                aux: 1,
-            ])
-        )
-    ).play;
-    9.wait;
-    Pdef(1,
-        Pseed(9,
-            Pbind(*[
-                type: \cln,
-                snd: \ixa,
-                atk: 4,
-                hld: Plprand(0.0, 8.0).trace,
-                rel: 1/4,
-                inx: (Pseries(0, 1, inf) % Pdup(Pseq((1 .. 45), inf), Pseq((1 .. 45), inf))),
-                scale: Scale.harmonicMinor(\just),
-                degree: Pindex((0 .. 44), Pkey(\inx), inf),
-                lpf: Pkey(\degree).linlin(0, 45, 2500, 20),
-                lhf: Pkey(\degree).linlin(0, 45, 0.4, 0.0),
-                dur: 1/8,
-                pan: Pwhite(0.0, 1.0),
-                legato: 99,
-                cav: 1/4,
-            ])
-        )
-    ).play;
-    15.wait;
-    Pdef(0).stop;
-    9.wait;
-    Pdef(1).stop;
-}.play
-)
-
-// please be advised; This last example is very LOUD!
-( // an example of using the dfm stereo distortion on a couple of different instruments,
+( // an example of using the dfm stereo distortion on a couple of different instruments
 Pdef(0, // deterministic operations, indefinite duration
 	Pseed(66, // 666666666,
 		Pbind(*[
@@ -331,6 +274,46 @@ Pdef(0, // deterministic operations, indefinite duration
 			crv: 4.0,
 			crt: -4.0,
 			legato: 99,
+		])
+	)
+).play
+)
+
+( // an example of using the jpr reverb on a couple of different instruments
+Pdef(0, // deterministic operations, indefinite duration
+	Pseed(9397,
+		Pbind(*[
+			type: Pwrand2([\cln, \], [11, 1], inf),
+			snd: Prand([\sin, \drm], inf),
+			tun: Plprand(0.0, 3.0),
+			jpr: Pmeanrand(0.0, 1.0), // jpreverb wet mix, 0.0 to 1.0
+			jpg: Plprand(0.0, 2.0), // jpreverb input gain, 0.0 to 999.0
+			jts: Phprand(0.0, 1.0), // jpreverb t60, 0.0 to 1.0
+			jpd: Plprand(0.0, 1.0), // jpreverb damp, 0.0 to 1.0
+			jps: 0, // jpreverb room size, 0.0 to 1.0
+			jed: Plprand(0.0, 1.0), // jpreverb early diffusion, 0.0 to 1.0
+			jmd: 0, // jpreverb modulation depth, 0.0 to 1.0
+			jmf: 0, // jpreverb modulation frequency, 0.0 to 1.0
+			jpl: Pwhite(0.0, 1.0), // jpreverb low multiplier, 0.0 to 1.0
+			jpm: Pwhite(0.0, 1.0), // jpreverb mid multiplier, 0.0 to 1.0
+			jph: Pwhite(0.0, 1.0), // jpreverb high multiplier, 0.0 to 1.0
+			jlc: Phprand(0.0, 1.0), // jpreverb low cut, 0.0 to 1.0
+			jhc: Plprand(0.0, 1.0), // jpreverb high cut, 0.0 to 1.0
+			octave: Prand([0, 1, 2, 3], inf) + Pwhite(-0.01, 0.01),
+			dur: 1 / Pwrand2([2, 8], [1, 4], inf),
+			amp: Plprand(1.0, 4.0).trace,
+			shp: 1,
+			sho: Pwhite(0.0, 1.0),
+			sha: 0,
+			shi: Pwhite(0.0, 1.0),
+			slo: Pwhite(0.0, 1.0),
+			hit: Pwhite(0.0, 1.0),
+			lot: Pwhite(0.0, 1.0),
+			dfm: 1/4,
+			dfg: Phprand(1.0, 8.0),
+			tnh: 1,
+			tng: Phprand(1.0, 2.0),
+			stretch: Pseg(Pdup(2, Phprand(1/3, 4/5)), 10, \lin, inf),
 		])
 	)
 ).play
