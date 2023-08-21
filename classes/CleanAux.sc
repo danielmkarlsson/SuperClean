@@ -34,7 +34,7 @@ CleanAux {
 	init {
 		server = clean.server;
 		if(server.serverRunning.not) {
-			Error("SuperColldier server '%' not running. Couldn't start CleanAux".format(server.name)).warn;
+			Error("SuperCollider server '%' not running. Couldn't start CleanAux".format(server.name)).warn;
 			^this
 		};
 		group = server.nextPermNodeID;
@@ -53,6 +53,8 @@ CleanAux {
 	initDefaultGlobalEffects {
 		this.globalEffects = [
 			// all global effects sleep when the input is quiet for long enough and no parameters are set.
+			GlobalCleanEffect(\clean_jpverb, [\jpr, \jpg, \jts, \jpd, \jps, \jed, \jmd, \jmf, \jpl, \jpm, \jph, \jlc, \jhc]),
+			GlobalCleanEffect(\clean_trem, [\trd, \trr, \tvr, \tvd]),
 			GlobalCleanEffect(\clean_hal, [\hal, \hai, \rts, \bld, \edf, \ldf, \hhp, \hlp]),
 			GlobalCleanEffect(\clean_delay, [\delaytime, \delayfeedback, \delaySend, \delayAmp, \lock, \cps]),
 			GlobalCleanEffect(\clean_reverb, [\rev, \rin, \dry]),
@@ -62,6 +64,7 @@ CleanAux {
 			GlobalCleanEffect(\clean_tanh, [\tnh, \tng, \tnb, \tna]),
 			GlobalCleanEffect(\clean_dfm, [\dfm, \dfg]),
 			//GlobalCleanEffect(\tap, [\tap, \drp]),
+
 			GlobalCleanEffect(\clean_rms, [\rmsReplyRate, \rmsPeakLag]).alwaysRun_(true),
 			GlobalCleanEffect(\clean_monitor).alwaysRun_(true),
 		]
@@ -189,6 +192,10 @@ CleanAux {
 			~hit = 0.0;
 			~nhp = 20;
 			~nlp = 20000;
+			~enb = 0.5;
+			~scb = 2048;
+			~smb = 2048;
+			~enr = 0.5;
 			~flp = 0;
 			//~mii = 1;
 			~unit = \r;
