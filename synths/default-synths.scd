@@ -347,4 +347,20 @@ SynthDef(\bow, { |out=0, sustain = 1, freq=440, amp=1.0, frc=1, gate=1, pos=0.07
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, sig);
 }).store;
+
+SynthDef(\blp, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, nmh = 0, amp = 1.0,
+	pan = 0, atk = 0.01, rel = 1.0, crv = -8.0|
+	var env, gliss, sig, freqclipped;
+	env = Env.perc(atk, rel, amp, crv).kr(doneAction: 2);
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]  //optional curvature
+    ));
+	freqclipped = freq.clip(20, 20000) * gliss;
+	sig = Blip.ar(freqclipped.clip(20, 20000), nmh, 0.75);
+	sig = sig * env;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, sig);
+}).store;
 )

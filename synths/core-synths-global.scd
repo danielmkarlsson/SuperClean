@@ -186,12 +186,12 @@ They'll come back automatically.
 	}, [\ir, \ir]).add;
 
 	SynthDef(\clean_dfm ++ numChannels, {
-		|dryBus, effectBus, gate = 1, dfm = 0, dfg = 1, dfb = 20000, dfa = 20000|
+		|dryBus, effectBus, gate = 1, dfm = 0, dfg = 1, dfb = 20000, dfa = 20000, dff = 20000|
 		var drySignal = In.ar(dryBus, numChannels);
 		var wetSignal = In.ar(effectBus, numChannels);
 		var sig = wetSignal + drySignal;
 		var lgt = 0.0625;
-		sig = sig = DFM1.ar(sig, 20000, 0.0, dfg.clip(0.0, 999.0), 0.0, 0.0);
+		sig = sig = DFM1.ar(sig, dff.clip(20, 20000).lag(12), 0.0, dfg.clip(0.0, 999.0), 0.0, 0.0);
 		//sig = LeakDC.ar(sig);
 		sig = sig * (1 - dfm.linlin(0.0, 1.0, 1.0, 0.0));
 		CleanPause.ar(sig, graceTime:4);
@@ -216,12 +216,15 @@ They'll come back automatically.
 
 	// JPverb based reverb
 	SynthDef(\clean_jpverb ++ numChannels, {
-		|dryBus, effectBus, gate=1, jpr=0, jpg=1, jts=60, jpd=0, jps=0.0, jed=1, jmd=0, jmf=0.0, jpl=0.5, jpm=0.5, jph=0.5, jlc=1, jhc=1000|
-		var sig;
+		|dryBus, effectBus, gate=1, jpr=0, jpg=1, jts=1, jpd=0.8, jps=0.2, jed=1, jmd=0.0, jmf=0.3, jpl=0.8, jpm=0.6, jph=0.4, jlc=1, jhc=1|
+        var lgt = 0.0625;
+        var sig;
 		sig = In.ar(dryBus, numChannels).asArray.sum;
 		sig = sig * jpg.clip(0.0, 999.0);
 		sig = sig = tanh(sig);
-		sig = JPverb.ar(sig, jts.clip(0.0, 1.0).linlin(0.0, 1.0, 0.1, 60.0), jpd.clip(0.0, 1.0), jps.clip(0.0, 1.0).linlin(0.0, 1.0, 0.5, 5.0), jed.clip(0.0, 1.0), jmd.clip(0.0, 1.0), jmf.clip(0.0, 1.0), jpl.clip(0.0, 1.0), jpm.clip(0.0, 1.0), jph.clip(0.0, 1.0), jlc.clip(0.0, 1.0).linexp(0.0, 1.0, 100.0, 6000.0), jhc.clip(0.0, 1.0).linexp(0.0, 1.0, 1000.0, 10000.0));
+		sig = JPverb.ar(sig, jts.clip(0.0, 1.0).linlin(0.0, 1.0, 0.1, 60.0).lag.(lgt), jpd.clip(0.0, 1.0).lag.(lgt), jps.clip(0.0, 1.0).linlin(0.0, 1.0, 0.5, 5.0).lag.(lgt), jed.clip(0.0, 1.0).linlin(0.0,
+            1.0, 0.8, 1.0).lag.(lgt), jmd.clip(0.0, 1.0).lag.(lgt), jmf.clip(0.0, 1.0).lag.(lgt), jpl.clip(0.0, 1.0).lag.(lgt), jpm.clip(0.0, 1.0).lag.(lgt), jph.clip(0.0, 1.0).lag.(lgt), jlc.clip(0.0, 1.0).linexp(0.0, 1.0, 100.0,
+                6000.0).lag.(lgt), jhc.clip(0.0, 1.0).linexp(0.0, 1.0, 1000.0, 10000.0).lag.(lgt));
 		sig = sig * jpr;
 		CleanPause.ar(sig, graceTime:4);
 		Out.ar(effectBus, sig);

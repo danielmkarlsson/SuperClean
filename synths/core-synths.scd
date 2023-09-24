@@ -330,7 +330,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	SynthDef(\clean_rma ++ ~clean.numChannels, { |out, rma = 0, rmf = 0, rdf, rdt = 0.5|
 		var signal, mod;
 		signal = In.ar(out, ~clean.numChannels);
-		mod = rma * SinOsc.ar(Clip.kr(XLine.kr(rdf, rmf, rdt), 20, 20000));
+		mod = rma * SinOsc.ar(Clip.kr(XLine.kr(rmf, rdf, rdt), 0.01, 20000));
 		signal = ring1(signal, mod); // Looks confusing huh? Well ring1, as it turns out, is an operator, search for it in the docs
 		ReplaceOut.ar(out, signal);
 	}, [\ir, \ir, \ir, \ir]).add;
