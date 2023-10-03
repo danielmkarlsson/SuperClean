@@ -197,6 +197,10 @@ CleanAux {
 			~smb = 2048;
 			~enr = 0.5;
 			~flp = 0;
+			~rma = 0;
+			~rmf = 0;
+			~rdf = 0;
+			~rdt = 10;
 			//~mii = 1;
 			~unit = \r;
 			~midinote = #{ ~note ? ~num + (~octave * 12) };
