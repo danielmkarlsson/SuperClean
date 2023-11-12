@@ -175,7 +175,7 @@ They'll come back automatically.
 		var lgt = 0.0625;
 		//sig = In.ar(dryBus, numChannels).asArray.sum;
 		sig = LPF.ar(sig, tnb.clip(20, 20000).lag(lgt));
-		sig = sig * tng.clip(0.0, 999.0);
+		sig = sig * tng.clip(0.0, 999.0).lag(0.1);
 		sig = sig = tanh(sig);
 		sig = LPF.ar(sig, tna.clip(20, 20000).lag(lgt));
 		sig = LeakDC.ar(sig);
@@ -191,7 +191,7 @@ They'll come back automatically.
 		var wetSignal = In.ar(effectBus, numChannels);
 		var sig = wetSignal + drySignal;
 		var lgt = 0.0625;
-		sig = sig = DFM1.ar(sig, dff.clip(20, 20000).lag(12), 0.0, dfg.clip(0.0, 999.0), 0.0, 0.0);
+		sig = sig = DFM1.ar(sig, dff.clip(20, 20000).lag(12), 0.0, dfg.clip(0.0, 999.0).lag(0.1), 0.0, 0.0);
 		//sig = LeakDC.ar(sig);
 		sig = sig * (1 - dfm.linlin(0.0, 1.0, 1.0, 0.0));
 		CleanPause.ar(sig, graceTime:4);
