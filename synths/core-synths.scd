@@ -325,7 +325,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 				out: ~out
 			]
 		)
-	}, { ~rma.notNil });
+	}, { ~rma.notNil and: { ~rma != 0.0 and: { ~rmf != 0.0 and: { ~rdf != 0.0 } } } });
 
 	SynthDef(\clean_rma ++ ~clean.numChannels, { |out, rma = 0, rmf = 0, rdf, rdt = 0.5|
 		var signal, mod;
@@ -633,7 +633,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 						out: ~out
 				])
 
-		}, { ~flp.notNil });
+		}, { ~flp.notNil and: { ~flp >= 0.5 } });
 
 		SynthDef(\clean_channel_flip ++ numChannels, { |out=0, in=0 flp=0|
 			var sig = In.ar(out, numChannels);
