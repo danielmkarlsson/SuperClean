@@ -486,9 +486,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, { ~hbrick.notNil });
 
 	SynthDef('spectral-hbrick' ++ ~clean.numChannels, { |out, hbrick|
-		var signal, chain, in, clean, teeth = 256;
+		var signal, chain;
 		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_BrickWall(chain, wipe: hbrick * 0.6)); // Signal almost disappears around 0.5 therefore it's scaled a bit
 		ReplaceOut.ar(out, signal)
@@ -505,9 +504,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, { ~lbrick.notNil });
 
 	SynthDef('spectral-lbrick' ++ ~clean.numChannels, { |out, lbrick|
-		var signal, chain, in, clean, teeth = 256;
+		var signal, chain;
 		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		// lbrick parameter scaled to negative range to activate lopass filter (see ugen help file)
 		signal = IFFT(PV_BrickWall(chain, wipe: lbrick.linlin(0.0,1.0,0.0,(-1.0))));
@@ -526,9 +524,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, { ~ral.notNil or: ~img.notNil });
 
 	SynthDef('spectral-conformer' ++ ~clean.numChannels, { |out, real = 0.5, imag = 0.5|
-		var signal, chain, in, clean, teeth = 256;
+		var signal, chain;
 		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(
 			PV_ConformalMap(chain, real.linlin(0.0,1.0,0.01,2.0), imag.linlin(0.00,1.0,0.01,10.0))
@@ -547,9 +544,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, { ~enh.notNil });
 
 	SynthDef('spectral-enhance' ++ ~clean.numChannels, { |out, enhance = 0.5|
-		var signal, chain, in, clean, teeth = 256;
+		var signal, chain;
 		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(
 			PV_SpectralEnhance(chain,
