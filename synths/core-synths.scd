@@ -244,9 +244,9 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 
 	SynthDef(\clean_envelope ++ numChannels, { |out, attack = 0, hold = 0, release = inf, crv = 0.3, crt = 0.3|
 		var signal = In.ar(out, numChannels);
-		signal = signal * EnvGen.ar(Env.linen(attack, hold, release, 1, [crv, 0, crt]));
+		signal = signal * EnvGen.ar(Env.linen(attack, hold, release, 1, [crv, 0, crt]), doneAction: 14);
 		ReplaceOut.ar(out, signal);
-	}, [\ir, \ir, \ir, \ir]).add;
+	}, #[\ir, \ir, \ir, \ir, \ir, \ir]).add;
 
 	// Frequency shifter
 	// Total shift is sum of `fshift` (in Hz) and `fshiftnote` times the current note frequency.
