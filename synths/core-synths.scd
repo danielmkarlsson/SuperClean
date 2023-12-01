@@ -635,14 +635,10 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 
 		}, { ~flp.notNil and: { ~flp >= 0.5 } });
 
-		SynthDef(\clean_channel_flip ++ numChannels, { |out=0, in=0 flp=0|
-			var sig = In.ar(out, numChannels);
-			sig = Select.ar(flp, [
-				sig,
-				sig.reverse
-			]);
+		SynthDef(\clean_channel_flip ++ numChannels, { |out=0|
+			var sig = In.ar(out, numChannels).reverse;
 			ReplaceOut.ar(out, sig)
-		}, [\ir, \ir]).add;
+		}, #[\ir]).add;
 
 
 	~clean.addModule(\brf,
