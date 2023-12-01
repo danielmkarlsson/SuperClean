@@ -166,7 +166,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	SynthDef(\clean_bpf ++ numChannels, { |out, bandqf = 440, bandq = 10|
 		var signal = In.ar(out, numChannels);
 		//bandq = max(1, bandq); // limit quality, avoid division by zero
-		bandq = bandq.clip(0, 1).linlin(0, 1, 1, 10000);
+		bandq = bandq.linlin(0, 1, 1, 10000);
 		bandqf = max(20, bandqf); // limit lower end, avoid blow up
 		bandqf = bandqf.abs.clip(20, 20000);
 
@@ -369,7 +369,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 
 	SynthDef('spectral-delay' ++ ~clean.numChannels, { |out, tsdelay = 0.5, xsdelay = 0.5, sda = 0, sdq = 0.005|
 
-		var signal, delayTime, delays, freqs, filtered;
+		var signal, delayTime, filtered;
 		var size = 16;
 		var maxDelayTime = 0.2;
 		signal = In.ar(out, ~clean.numChannels);
@@ -413,7 +413,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, { ~cmb.notNil });
 
 	SynthDef('spectral-comb' ++ ~clean.numChannels, { |out, comb|
-		var signal, chain, in, clean, teeth = 256;
+		var signal, chain, teeth = 256;
 		signal = In.ar(out, ~clean.numChannels);
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_RectComb(chain, numTeeth: teeth * comb.abs.clip(0.0, 1.0), width: 1-comb.abs.clip(0.0, 1.0)));
@@ -431,7 +431,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, { ~smr.notNil });
 
 	SynthDef('spectral-smear' ++ ~clean.numChannels, { |out, smear|
-		var signal, chain, in;
+		var signal, chain;
 		signal = In.ar(out, ~clean.numChannels);
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_MagSmear(chain, bins: smear.linexp(0.0,1.0,1,64)));
@@ -449,9 +449,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, { ~scm.notNil });
 
 	SynthDef('spectral-scram' ++ ~clean.numChannels, { |out, scram|
-		var signal, chain, in, clean, teeth = 256;
+		var signal, chain;
 		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_BinScramble(chain, wipe: scram, width: scram));
 		ReplaceOut.ar(out, signal)
@@ -468,9 +467,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, { ~sbs.notNil });
 
 	SynthDef('spectral-binshift' ++ ~clean.numChannels, { |out, binshift|
-		var signal, chain, in, clean, teeth = 256;
+		var signal, chain;
 		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_BinShift(chain, stretch: binshift.linlin(0.0,1.0,0.01,4.0),
 			shift: binshift * 10, interp: 1));
