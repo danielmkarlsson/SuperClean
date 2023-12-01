@@ -17,14 +17,14 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 
 		SynthDef(name, { |out, bufnum, sustain = 1, bgn = 0, spd = 1, endspd = 1, freq = 440, pan = 0|
 
-			var sound, rate, phase;
+			var sound, rate, offset;
 
 			// Playback speed.
 			rate = Line.kr(spd, endspd, sustain) * (freq / 60.midicps);
 
-			// Sample phase.
+			// Start position.
 			// BufSampleRate adjusts the rate if the sound file doesn't have the same rate as the soundcard.
-			phase =  Sweep.ar(1, rate * BufSampleRate.ir(bufnum)) + (BufFrames.ir(bufnum) * bgn);
+			offset = BufFrames.ir(bufnum) * bgn;
 
 			/*
 			sound = BufRd.ar(
@@ -35,7 +35,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 			interpolation: 4
 			);
 			*/
-			sound = PlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, startPos: phase, loop: 0.0, doneAction:0);
+			sound = PlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, startPos: offset, loop: 0.0, doneAction:0);
 			sound = CleanPan.ar(sound, numChannels, pan);
 
 			Out.ar(out, sound)
