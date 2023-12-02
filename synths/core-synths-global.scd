@@ -150,7 +150,7 @@ They'll come back automatically.
 
 	// NHHall based reverb
 	SynthDef(\clean_hal ++ numChannels, {
-		|dryBus, effectBus, gate=1, hal, hai = 1, hhp=20, hlp=20000, rts=1, bld=0.5, edf=0.5, ldf=0.5|
+		|dryBus, effectBus, gate=1, hal = 0, hai = 1, hhp=20, hlp=20000, rts=1, bld=0.5, edf=0.5, ldf=0.5|
 		var lgt = 0.0625;
 		var signal = In.ar(dryBus, numChannels);
 		signal = signal * hai.lag(lgt);
@@ -162,7 +162,7 @@ They'll come back automatically.
 		};
 		signal = signal * EnvGen.kr(Env.asr, gate, doneAction:2);
 		signal = LeakDC.ar(signal);
-		signal = signal * (1 - hal -1).lag(lgt);
+		signal = signal * hal.lag(lgt);
 		CleanPause.ar(signal.sum, graceTime:4);
 		Out.ar(effectBus, signal);
 	}, [\ir, \ir]).add;
