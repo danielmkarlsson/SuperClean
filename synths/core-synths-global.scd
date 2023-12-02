@@ -40,7 +40,7 @@ They'll come back automatically.
 	}, [\ir, \ir, \kr, \kr]).add;
 
 	// RMS measurement, sending back to editor
-	SynthDef(\clean_rms ++ numChannels, { |gate = 1, dryBus, effectBus, rmsReplyRate, rmsPeakLag, auxIndex|
+	SynthDef(\clean_rms ++ numChannels, { |gate = 1, dryBus, effectBus, rmsReplyRate = 20, rmsPeakLag = 3, auxIndex|
 		var drySignal = In.ar(dryBus, numChannels);
 		var wetSignal = In.ar(effectBus, numChannels);
 		var signal = wetSignal + drySignal;
