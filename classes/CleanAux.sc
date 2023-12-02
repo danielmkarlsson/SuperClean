@@ -65,7 +65,7 @@ CleanAux {
 			GlobalCleanEffect(\clean_dfm, [\dfm, \dfg, \dff]),
 			//GlobalCleanEffect(\tap, [\tap, \drp]),
 
-			GlobalCleanEffect(\clean_rms, [\rmsReplyRate, \rmsPeakLag]).alwaysRun_(true),
+			GlobalCleanEffect(\clean_rms, [\rmsReplyRate, \rmsPeakLag]),
 			GlobalCleanEffect(\clean_monitor).alwaysRun_(true),
 		]
 	}
