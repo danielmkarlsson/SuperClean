@@ -212,7 +212,8 @@ CleanAux {
 			~jpm = 0.6; 
 			~jph = 0.4; 
 			~jlc = 1.0;
-			~jhc = 1.0;	
+			~jhc = 1.0;
+			~cai = 1.0;
 			//~mii = 1;
 			~unit = \r;
 			~midinote = #{ ~note ? ~num + (~octave * 12) };
