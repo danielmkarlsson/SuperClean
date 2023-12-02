@@ -18,7 +18,8 @@ spd:	Sample playback speed, default is 1.0, negative numbers play the sample bac
 atk:	The attack time of the envelope, the envelope parameters are expressed in seconds, 1.0 here means a one second fade in time.
 hld:	The hold time of the amplitude envelope.
 rel:	The release time of the amplitude envelope.
-crv:	Envelope curvature, swings both ways. That is to say it uses both positive and negative values, try values between -8 to 8
+crv:	Attack curvature, swings both ways. That is to say it uses both positive and negative values, try values between -8 to 8
+crt:	Release curvature, swings both ways. That is to say it uses both positive and negative values, try values between -8 to 8
 lpf:	Low pass filter, value range is 20 to 20000
 hpf:	High pass filter, value range is 20 to 20000
 bpf:	Band pass filter, value range is 20 to 20000
