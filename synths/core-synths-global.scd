@@ -40,7 +40,7 @@ They'll come back automatically.
 	}, [\ir, \ir, \kr, \kr]).add;
 
 	// RMS measurement, sending back to editor
-	SynthDef(\clean_rms ++ numChannels, { |gate = 1, dryBus, effectBus, rmsReplyRate, rmsPeakLag, auxIndex|
+	SynthDef(\clean_rms ++ numChannels, { |gate = 1, dryBus, effectBus, rmsReplyRate = 20, rmsPeakLag = 3, auxIndex|
 		var drySignal = In.ar(dryBus, numChannels);
 		var wetSignal = In.ar(effectBus, numChannels);
 		var signal = wetSignal + drySignal;
@@ -102,7 +102,7 @@ They'll come back automatically.
 		var in, snd, loop, depth;
 		in = In.ar(dryBus, numChannels).asArray.sum;
 		in = in * rin.lag(LFNoise1.kr(1).range(0.01, 0.02)); // regulate input
-		4.do { in = AllpassN.ar(in, 0.03, { Rand(0.005, 0.02) }.dup(numChannels), 1) };
+		4.do { in = AllpassN.ar(in, 0.02, { Rand(0.005, 0.02) }.dup(numChannels), 1) };
 		depth = rev.lag(0.02).linexp(0, 1, 0.01, 0.98); // change depth between 0.1 and 0.98
 		loop = LocalIn.ar(numChannels) * { depth + Rand(0, 0.05) }.dup(numChannels);
 		loop = OnePole.ar(loop, 0.5);  // 0-1
@@ -127,7 +127,7 @@ They'll come back automatically.
 		sig = GVerb.ar(
 			sig * cai.clip(0.0, 1.0).lag(lgt),
 			250,
-			cvt.clip(0.0, 1.0).linlin(0.0, 1.0, 0.001, 30).lag(lgt),
+			cvt.linlin(0.0, 1.0, 0.001, 30).lag(lgt),
 			cvd.clip(0.0, 1.0).lag(lgt), 0.5, 15, 1, 0.7, 0.5);
 		sig = LPF.ar(sig, cvl.clip(0.0, 1.0).lag(lgt).linexp(0.0, 1.0, 20.0, 1000.0));
 		sig = sig * (1 - cav.lag(lgt) - 1);
@@ -150,8 +150,8 @@ They'll come back automatically.
 
 	// NHHall based reverb
 	SynthDef(\clean_hal ++ numChannels, {
-		|dryBus, effectBus, gate=1, hal, hai = 1, hhp=20, hlp=20000, rts=1, bld=0.5, edf=0.5, ldf=0.5|
-		var wet, lgt = 0.0625;
+		|dryBus, effectBus, gate=1, hal = 0, hai = 1, hhp=20, hlp=20000, rts=1, bld=0.5, edf=0.5, ldf=0.5|
+		var lgt = 0.0625;
 		var signal = In.ar(dryBus, numChannels);
 		signal = signal * hai.lag(lgt);
 		signal = HPF.ar(signal, hhp.clip(20,20000).lag(lgt));
@@ -162,7 +162,7 @@ They'll come back automatically.
 		};
 		signal = signal * EnvGen.kr(Env.asr, gate, doneAction:2);
 		signal = LeakDC.ar(signal);
-		signal = signal * (1 - hal -1).lag(lgt);
+		signal = signal * hal.lag(lgt);
 		CleanPause.ar(signal.sum, graceTime:4);
 		Out.ar(effectBus, signal);
 	}, [\ir, \ir]).add;
@@ -179,7 +179,7 @@ They'll come back automatically.
 		sig = sig = tanh(sig);
 		sig = LPF.ar(sig, tna.clip(20, 20000).lag(lgt));
 		sig = LeakDC.ar(sig);
-		sig = sig * (1 - tnh.linlin(0.0, 1.0, 1.0, 0.0));
+		sig = sig * tnh;
 		CleanPause.ar(sig, graceTime:4);
 		sig = sig * EnvGen.kr(Env.asr, gate, doneAction:2);
 		Out.ar(effectBus, sig);
@@ -193,7 +193,7 @@ They'll come back automatically.
 		var lgt = 0.0625;
 		sig = sig = DFM1.ar(sig, dff.clip(20, 20000).lag(12), 0.0, dfg.clip(0.0, 999.0).lag(0.1), 0.0, 0.0);
 		//sig = LeakDC.ar(sig);
-		sig = sig * (1 - dfm.linlin(0.0, 1.0, 1.0, 0.0));
+		sig = sig * dfm;
 		CleanPause.ar(sig, graceTime:4);
 		sig = sig * EnvGen.kr(Env.asr, gate, doneAction:2);
 		Out.ar(effectBus, sig);
@@ -205,7 +205,7 @@ They'll come back automatically.
 		var wetSignal = In.ar(effectBus, numChannels);
 		var sig = wetSignal + drySignal;
 		var lgt = 0.5;
-		var trem = trd.clip(0.0, 1.0).linlin(0.0, 1.0, 0.0, 2.0).lag(lgt) * SinOsc.kr(trr.clip(0, 999).lag(lgt) + LFNoise1.kr(tvr.clip(0, 99).linlin(0.0, 99.0, 0.0, 999.0).lag(lgt), tvd.clip(0, 999).lag(lgt)));
+		var trem = trd.linlin(0.0, 1.0, 0.0, 2.0).lag(lgt) * SinOsc.kr(trr.clip(0, 999).lag(lgt) + LFNoise1.kr(tvr.linlin(0.0, 99.0, 0.0, 999.0).lag(lgt), tvd.clip(0, 999).lag(lgt)));
 		var mix = 1 + trem;
 		sig = sig * mix;
 		sig = sig;
@@ -222,7 +222,7 @@ They'll come back automatically.
 		sig = In.ar(dryBus, numChannels).asArray.sum;
 		sig = sig * jpg.clip(0.0, 999.0);
 		sig = sig = tanh(sig);
-		sig = JPverb.ar(sig, jts.clip(0.0, 1.0).linlin(0.0, 1.0, 0.1, 60.0).lag.(lgt), jpd.clip(0.0, 1.0).lag.(lgt), jps.clip(0.0, 1.0).linlin(0.0, 1.0, 0.5, 5.0).lag.(lgt), jed.clip(0.0, 1.0).linlin(0.0,
+		sig = JPverb.ar(sig, jts.linlin(0.0, 1.0, 0.1, 60.0).lag.(lgt), jpd.clip(0.0, 1.0).lag.(lgt), jps.linlin(0.0, 1.0, 0.5, 5.0).lag.(lgt), jed.linlin(0.0,
             1.0, 0.8, 1.0).lag.(lgt), jmd.clip(0.0, 1.0).lag.(lgt), jmf.clip(0.0, 1.0).lag.(lgt), jpl.clip(0.0, 1.0).lag.(lgt), jpm.clip(0.0, 1.0).lag.(lgt), jph.clip(0.0, 1.0).lag.(lgt), jlc.clip(0.0, 1.0).linexp(0.0, 1.0, 100.0,
                 6000.0).lag.(lgt), jhc.clip(0.0, 1.0).linexp(0.0, 1.0, 1000.0, 10000.0).lag.(lgt));
 		sig = sig * jpr;

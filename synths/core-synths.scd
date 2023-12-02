@@ -15,19 +15,17 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 
 		var name = format("clean_sample_%_%", sampleNumChannels, numChannels);
 
-		SynthDef(name, { |out, bufnum, sustain = 1, bgn = 0, end = 1, spd = 1, endspd = 1, freq = 440, pan = 0|
+		SynthDef(name, { |out, bufnum, sustain = 1, bgn = 0, spd = 1, endspd = 1, freq = 440, pan = 0|
 
-			var sound, rate, phase, sawrate, numFrames;
+			var sound, rate, offset;
 
 			// Playback speed.
 			rate = Line.kr(spd, endspd, sustain) * (freq / 60.midicps);
 
-			// Sample phase.
+			// Start position.
 			// BufSampleRate adjusts the rate if the sound file doesn't have the same rate as the soundcard.
-			phase =  Sweep.ar(1, rate * BufSampleRate.ir(bufnum)) + (BufFrames.ir(bufnum) * bgn);
+			offset = BufFrames.ir(bufnum) * bgn;
 
-			numFrames = BufFrames.ir(bufnum);
-			sawrate = rate * BufSampleRate.ir(bufnum) / (absdif(bgn, end) * numFrames);
 			/*
 			sound = BufRd.ar(
 			numChannels: sampleNumChannels,
@@ -37,11 +35,11 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 			interpolation: 4
 			);
 			*/
-			sound = PlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, startPos: phase, loop: 0.0, doneAction:0);
+			sound = PlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, startPos: offset, loop: 0.0, doneAction:0);
 			sound = CleanPan.ar(sound, numChannels, pan);
 
 			Out.ar(out, sound)
-		}, [\ir, \ir, \ir, \ir, \ir, \ir, \ir, \ir]).add;
+		}, #[\ir, \ir, \ir, \ir, \ir, \ir, \ir, \ir]).add;
 	};
 
 	/*
@@ -168,7 +166,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	SynthDef(\clean_bpf ++ numChannels, { |out, bandqf = 440, bandq = 10|
 		var signal = In.ar(out, numChannels);
 		//bandq = max(1, bandq); // limit quality, avoid division by zero
-		bandq = bandq.clip(0, 1).linlin(0, 1, 1, 10000);
+		bandq = bandq.linlin(0, 1, 1, 10000);
 		bandqf = max(20, bandqf); // limit lower end, avoid blow up
 		bandqf = bandqf.abs.clip(20, 20000);
 
@@ -246,9 +244,9 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 
 	SynthDef(\clean_envelope ++ numChannels, { |out, attack = 0, hold = 0, release = inf, crv = 0.3, crt = 0.3|
 		var signal = In.ar(out, numChannels);
-		signal = signal * EnvGen.ar(Env.linen(attack, hold, release, 1, [crv, 0, crt]));
+		signal = signal * EnvGen.ar(Env.linen(attack, hold, release, 1, [crv, 0, crt]), doneAction: 14);
 		ReplaceOut.ar(out, signal);
-	}, [\ir, \ir, \ir, \ir]).add;
+	}, #[\ir, \ir, \ir, \ir, \ir, \ir]).add;
 
 	// Frequency shifter
 	// Total shift is sum of `fshift` (in Hz) and `fshiftnote` times the current note frequency.
@@ -325,7 +323,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 				out: ~out
 			]
 		)
-	}, { ~rma.notNil });
+	}, { ~rma.notNil and: { ~rma != 0.0 and: { ~rmf != 0.0 and: { ~rdf != 0.0 } } } });
 
 	SynthDef(\clean_rma ++ ~clean.numChannels, { |out, rma = 0, rmf = 0, rdf, rdt = 0.5|
 		var signal, mod;
@@ -371,7 +369,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 
 	SynthDef('spectral-delay' ++ ~clean.numChannels, { |out, tsdelay = 0.5, xsdelay = 0.5, sda = 0, sdq = 0.005|
 
-		var signal, delayTime, delays, freqs, filtered;
+		var signal, delayTime, filtered;
 		var size = 16;
 		var maxDelayTime = 0.2;
 		signal = In.ar(out, ~clean.numChannels);
@@ -415,7 +413,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, { ~cmb.notNil });
 
 	SynthDef('spectral-comb' ++ ~clean.numChannels, { |out, comb|
-		var signal, chain, in, clean, teeth = 256;
+		var signal, chain, teeth = 256;
 		signal = In.ar(out, ~clean.numChannels);
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_RectComb(chain, numTeeth: teeth * comb.abs.clip(0.0, 1.0), width: 1-comb.abs.clip(0.0, 1.0)));
@@ -433,7 +431,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, { ~smr.notNil });
 
 	SynthDef('spectral-smear' ++ ~clean.numChannels, { |out, smear|
-		var signal, chain, in;
+		var signal, chain;
 		signal = In.ar(out, ~clean.numChannels);
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_MagSmear(chain, bins: smear.linexp(0.0,1.0,1,64)));
@@ -451,9 +449,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, { ~scm.notNil });
 
 	SynthDef('spectral-scram' ++ ~clean.numChannels, { |out, scram|
-		var signal, chain, in, clean, teeth = 256;
+		var signal, chain;
 		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_BinScramble(chain, wipe: scram, width: scram));
 		ReplaceOut.ar(out, signal)
@@ -470,9 +467,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, { ~sbs.notNil });
 
 	SynthDef('spectral-binshift' ++ ~clean.numChannels, { |out, binshift|
-		var signal, chain, in, clean, teeth = 256;
+		var signal, chain;
 		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_BinShift(chain, stretch: binshift.linlin(0.0,1.0,0.01,4.0),
 			shift: binshift * 10, interp: 1));
@@ -490,9 +486,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, { ~hbrick.notNil });
 
 	SynthDef('spectral-hbrick' ++ ~clean.numChannels, { |out, hbrick|
-		var signal, chain, in, clean, teeth = 256;
+		var signal, chain;
 		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(PV_BrickWall(chain, wipe: hbrick * 0.6)); // Signal almost disappears around 0.5 therefore it's scaled a bit
 		ReplaceOut.ar(out, signal)
@@ -509,9 +504,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, { ~lbrick.notNil });
 
 	SynthDef('spectral-lbrick' ++ ~clean.numChannels, { |out, lbrick|
-		var signal, chain, in, clean, teeth = 256;
+		var signal, chain;
 		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		// lbrick parameter scaled to negative range to activate lopass filter (see ugen help file)
 		signal = IFFT(PV_BrickWall(chain, wipe: lbrick.linlin(0.0,1.0,0.0,(-1.0))));
@@ -530,9 +524,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, { ~ral.notNil or: ~img.notNil });
 
 	SynthDef('spectral-conformer' ++ ~clean.numChannels, { |out, real = 0.5, imag = 0.5|
-		var signal, chain, in, clean, teeth = 256;
+		var signal, chain;
 		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(
 			PV_ConformalMap(chain, real.linlin(0.0,1.0,0.01,2.0), imag.linlin(0.00,1.0,0.01,10.0))
@@ -551,9 +544,8 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	}, { ~enh.notNil });
 
 	SynthDef('spectral-enhance' ++ ~clean.numChannels, { |out, enhance = 0.5|
-		var signal, chain, in, clean, teeth = 256;
+		var signal, chain;
 		signal = In.ar(out, ~clean.numChannels);
-		clean = signal;
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(
 			PV_SpectralEnhance(chain,
@@ -633,16 +625,12 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 						out: ~out
 				])
 
-		}, { ~flp.notNil });
+		}, { ~flp.notNil and: { ~flp >= 0.5 } });
 
-		SynthDef(\clean_channel_flip ++ numChannels, { |out=0, in=0 flp=0|
-			var sig = In.ar(out, numChannels);
-			sig = Select.ar(flp, [
-				sig,
-				sig.reverse
-			]);
+		SynthDef(\clean_channel_flip ++ numChannels, { |out=0|
+			var sig = In.ar(out, numChannels).reverse;
 			ReplaceOut.ar(out, sig)
-		}, [\ir, \ir]).add;
+		}, #[\ir]).add;
 
 
 	~clean.addModule(\brf,
