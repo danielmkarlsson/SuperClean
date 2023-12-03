@@ -121,7 +121,7 @@ They'll come back automatically.
 
 	// cav, pronounced "cave"
 	SynthDef(\clean_cav ++ numChannels, {
-		|dryBus, effectBus, gate = 1, in, out, cav = 1, cai = 1, cvt = 30, cvd = 0.5,  cvl = 1000|
+		|dryBus, effectBus, gate = 1, in, out, cav = 0, cai = 1, cvt = 30, cvd = 0.5,  cvl = 1000|
 		var sig, lgt = 0.5;
 		sig = In.ar(dryBus, numChannels).asArray.sum;
 		sig = GVerb.ar(
@@ -130,7 +130,8 @@ They'll come back automatically.
 			cvt.linlin(0.0, 1.0, 0.001, 30).lag(lgt),
 			cvd.clip(0.0, 1.0).lag(lgt), 0.5, 15, 1, 0.7, 0.5);
 		sig = LPF.ar(sig, cvl.clip(0.0, 1.0).lag(lgt).linexp(0.0, 1.0, 20.0, 1000.0));
-		sig = sig * (1 - cav.lag(lgt) - 1);
+		//sig = sig * (1 - cav.lag(lgt) - 1);
+		sig = sig * cav.lag(lgt);
 		CleanPause.ar(sig, graceTime:4);
 		Out.ar(effectBus, sig);
 	}, [\ir, \ir]).add;
