@@ -24,7 +24,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 
 			// Start position.
 			// BufSampleRate adjusts the rate if the sound file doesn't have the same rate as the soundcard.
-			offset = BufFrames.ir(bufnum) * bgn.clip(0.0, 1.0);
+			offset = BufFrames.ir(bufnum) * bgn;
 
 			/*
 			sound = BufRd.ar(
