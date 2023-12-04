@@ -35,7 +35,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 			interpolation: 4
 			);
 			*/
-			sound = PlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, startPos: offset, loop: 0.0, doneAction: 2);
+			sound = PlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, startPos: offset, loop: 0.0, doneAction: 0);
 			sound = CleanPan.ar(sound, numChannels, pan);
 
 			Out.ar(out, sound)
