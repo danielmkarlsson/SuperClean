@@ -35,7 +35,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 			interpolation: 4
 			);
 			*/
-			sound = PlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, startPos: offset, loop: 0.0, doneAction:0);
+			sound = PlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, startPos: offset, loop: 0.0, doneAction: 2);
 			sound = CleanPan.ar(sound, numChannels, pan);
 
 			Out.ar(out, sound)
@@ -81,12 +81,11 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 				fzv: ~fzv,
 				out: ~out
 			]
-	)}, { ~fuz.notNil or: { ~fzv.notNil } });
+	)}, { ~fuz.notNil or: { ~fzv.notNil and: { ~fuz != 0.0 } } });
 
-	SynthDef (\fuz ++ ~clean.numChannels, { |out, fzv = 3, fuz = 0|
-		var sig, dry, gate, in;
-		in = In.ar(out, numChannels);
-		sig = in;
+	SynthDef (\fuz ++ ~clean.numChannels, { |out, fzv = 3|
+		var sig, dry, gate;
+		sig = In.ar(out, numChannels);
 		gate = Amplitude.ar(sig,0.005,0.005) > 0.002;
 		sig = (sig * 4).tanh;
 		sig = MidEQ.ar(sig,100,1,20);
@@ -98,8 +97,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		sig = LPF.ar(sig,8000);
 		sig = (sig+dry).tanh;
 		sig = MidEQ.ar(sig,4000,1,-20);
-		sig = Select.ar(fuz, [in, sig * gate]);
-		ReplaceOut.ar(out, sig)
+		ReplaceOut.ar(out, sig * gate)
 	}, [\ir, \ir]).add;
 
 	~clean.addModule(\bit,
@@ -414,9 +412,10 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 
 	SynthDef('spectral-comb' ++ ~clean.numChannels, { |out, comb|
 		var signal, chain, teeth = 256;
+		var amount = comb.abs.clip(0.0, 1.0);
 		signal = In.ar(out, ~clean.numChannels);
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
-		signal = IFFT(PV_RectComb(chain, numTeeth: teeth * comb.abs.clip(0.0, 1.0), width: 1-comb.abs.clip(0.0, 1.0)));
+		signal = IFFT(PV_RectComb(chain, numTeeth: teeth * amount, width: 1 - amount));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
@@ -625,7 +624,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 						out: ~out
 				])
 
-		}, { ~flp.notNil and: { ~flp >= 0.5 } });
+		}, { ~flp.notNil and: { ~flp != 0.0 } });
 
 		SynthDef(\clean_channel_flip ++ numChannels, { |out=0|
 			var sig = In.ar(out, numChannels).reverse;
