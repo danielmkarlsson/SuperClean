@@ -35,6 +35,7 @@ CleanEvent {
 	}
 
 	mergeSoundEvent {
+		var synthEvent, synthDesc;
 		var soundEvent = aux.clean.soundLibrary.getEvent(~snd, ~num);
 		if(soundEvent.isNil) {
 			// only call ~notFound if no ~diversion is given that anyhow redirects control
@@ -49,20 +50,24 @@ CleanEvent {
 			// synth's envelope release time cut along with event if legato < 1
 			~legato = if(~legato ?? { 1 } >= 1) {
 				~legato ?? { 1 } + (~dur ?? { 1 } * (~rel ?? {
-					if(~clean.soundLibrary.synthEvents[~snd].notNil) {
-						if(SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\release].notNil) {
-							SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\release].defaultValue
+					synthEvent = ~clean.soundLibrary.synthEvents[~snd];
+					if(synthEvent.notNil) {
+						synthDesc = SynthDescLib.global.at(synthEvent[0].[\instrument]);
+						if(synthDesc.controlDict[\release].notNil) {
+							synthDesc.controlDict[\release].defaultValue
 						} {
-							if(SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\rel].notNil) {
-								SynthDescLib.global.at(~clean.soundLibrary.synthEvents[~snd][0].[\instrument]).controlDict[\rel].defaultValue
+							if(synthDesc.controlDict[\rel].notNil) {
+								synthDesc.controlDict[\rel].defaultValue
 						} { 1 } }
-					} { if(SynthDescLib.global.at(~snd).notNil) {
-						if(SynthDescLib.global.at(~snd).controlDict[\release].notNil) {
-							SynthDescLib.global.at(~snd).controlDict[\release].defaultValue
-						} {
-							if(SynthDescLib.global.at(~snd).controlDict[\rel].notNil) {
-								SynthDescLib.global.at(~snd).controlDict[\rel].defaultValue
-						} {	1 } }
+					} {
+						synthDesc = SynthDescLib.global.at(~snd);
+						if(synthDesc.notNil) {
+							if(synthDesc.controlDict[\release].notNil) {
+								synthDesc.controlDict[\release].defaultValue
+							} {
+								if(synthDesc.controlDict[\rel].notNil) {
+									synthDesc.controlDict[\rel].defaultValue
+							} {	1 } }
 				} { 1 } } }))
 			} {
 				~legato
@@ -165,7 +170,8 @@ CleanEvent {
 	}
 
 	finaliseParameters {
-		~amp = pow(~amp.value, 1) * ~amp.value;
+		~amp = ~amp.value;
+		~amp = pow(~amp, 1) * ~amp;
 		~channel !? { ~pan = ~pan.value + (~channel.value / ~numChannels) };
 		~pan = ~pan * 2 - 1; // convert unipolar (0..1) range into bipolar one (-1...1)
 		~delayAmp = ~dla ? 0.0; // below is how you would rename parameter names to anything you want

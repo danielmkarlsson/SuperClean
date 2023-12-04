@@ -35,13 +35,13 @@ SynthDef(\add,  {| out, ada = 0.001, adr = 1, amp = 1, adc = 1, freq = 200, pan 
         [bno, bnt],
         [0, 0, bnc]  //optional curvature
     ));
-	freqclipped = freq.clip(20, 20000) * gliss;
+	freqclipped = (freq * gliss).clip(20, 20000);
 	ee = Env([0, 1, 0], [ada ,adr + slw], [-30, 30]);
 	e = Env.perc(ada, adr + 0.0001, amp, adc);
 	ee = EnvGen.ar(ee);
 	e = EnvGen.ar(e, doneAction:2);
-	o = SinOsc.ar(freqclipped.clip(20, 20000) * ee);
-	o = o * e * AmpComp.kr(freqclipped.clip(20, 20000), 40, 0.3);
+	o = SinOsc.ar(freqclipped * ee);
+	o = o * e * AmpComp.kr(freqclipped, 40, 0.3);
 	o = CleanPan.ar(o, ~clean.numChannels, pan);
 	Out.ar(out, o);
 }).store;
@@ -58,17 +58,17 @@ SynthDef(\fmx, {| sustain = 1, pan, amp = 0.1, out = 0,
         [bno, bnt],
         [0, 0, bnc]  //optional curvature
     ));
-	freqclipped = freq.clip(20, 20000) * gliss;
+	freqclipped = (freq * gliss).clip(20, 20000);
 	env4 = EnvGen.ar(Env.perc(en4, 1-en4, curve:cu4), timeScale:sustain);
 	env3 = EnvGen.ar(Env.perc(en3, 1-en3, curve:cu3), timeScale:sustain);
 	env2 = EnvGen.ar(Env.perc(en2, 1-en2, curve:cu2), timeScale:sustain);
 	env1 = EnvGen.ar(Env.perc(en1, 1-en1, curve:cu1), timeScale:sustain, doneAction:2);
 	modComp = freq.explin(20, 20000, 1, 0.01);
-	sig = SinOscFB.ar(freqclipped.clip(20, 20000) * hr4, mi1 * modComp, mi4 * modComp) * env4;
-	sig = SinOsc.ar(freqclipped.clip(20, 20000) * hr3, sig + [0, pi/2], mi3 * modComp) * env3;
-	sig = SinOsc.ar(freqclipped.clip(20, 20000) * hr2, sig, mi2 * modComp) * env2;
-	sig = SinOsc.ar(freqclipped.clip(20, 20000) * hr1 + [det.neg, det], sig ) * env1;
-	sig = sig * AmpCompA.kr(freqclipped.clip(20, 20000), 17.323914436055);
+	sig = SinOscFB.ar(freqclipped * hr4, mi1 * modComp, mi4 * modComp) * env4;
+	sig = SinOsc.ar(freqclipped * hr3, sig + [0, pi/2], mi3 * modComp) * env3;
+	sig = SinOsc.ar(freqclipped * hr2, sig, mi2 * modComp) * env2;
+	sig = SinOsc.ar(freqclipped * hr1 + [det.neg, det], sig ) * env1;
+	sig = sig * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig = (sig * amp*0.7) * LFNoise1.ar(0).range(1, 1);
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, tanh(LeakDC.ar(sig)));
@@ -87,11 +87,11 @@ SynthDef(\ixa, {| out, sustain = 1, pan, amp = 0.5, freq = 440, bnd = 0, bno = 0
         [bno, bnt],
         [0, 0, bnc]  //optional curvature
     ));
-	freqclipped = freq.clip(20, 20000) * gliss;
+	freqclipped = (freq * gliss).clip(20, 20000);
 	slopeBelow = LFNoise2.kr(bes).range(0, ber);
 	slopeAbove = LFNoise2.kr(abs).range(0, abr);
 	threshold = LFNoise2.kr(ths).range(0, thr);
-	phase = Phasor.ar(0, freqclipped.clip(20, 20000) / SampleRate.ir, 0, 1);
+	phase = Phasor.ar(0, freqclipped / SampleRate.ir, 0, 1);
 	phase = Select.ar(phase > threshold, [phase * slopeAbove, threshold + ((phase - threshold) * slopeBelow)]);
 	sig = SinOsc.ar(0, phase * 2pi);
 	sig = sig * env;
@@ -110,8 +110,8 @@ SynthDef(\sin, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fre
         [bno, bnt],
         [0, 0, bnc]  //optional curvature
     ));
-	freqclipped = freq.clip(20, 20000) * gliss;
-	sig = FSinOsc.ar(freqclipped.clip(20, 20000), iph, 0.75);
+	freqclipped = (freq * gliss).clip(20, 20000);
+	sig = FSinOsc.ar(freqclipped, iph, 0.75);
 	sig = sig * env;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, sig);
@@ -127,8 +127,8 @@ SynthDef(\saw, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fre
         [bno, bnt],
         [0, 0, bnc]  //optional curvature
     ));
-	freqclipped = freq.clip(20, 20000) * gliss;
-	sig = VarSaw.ar(freqclipped.clip(20, 20000), iph, wid, 0.75);
+	freqclipped = (freq * gliss).clip(20, 20000);
+	sig = VarSaw.ar(freqclipped, iph, wid, 0.75);
 	sig = sig * env;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, sig);
@@ -144,8 +144,8 @@ SynthDef(\sqr, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fre
         [bno, bnt],
         [0, 0, bnc]  //optional curvature
     ));
-	freqclipped = freq.clip(20, 20000) * gliss;
-	sig = Pulse.ar(freqclipped.clip(20, 20000), wid, 0.75);
+	freqclipped = (freq * gliss).clip(20, 20000);
+	sig = Pulse.ar(freqclipped, wid, 0.75);
 	sig = sig * env;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, sig);
@@ -157,8 +157,8 @@ SynthDef(\sqr, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fre
 (
 SynthDef(\in, { |out, sustain = 1, spd = 1, bgn = 0, end = 1, pan, glisserate, offset|
 	var env, sound, rate, phase;
-	phase = Line.ar(bgn, end, sustain);
-	rate = (bgn + 1) * (spd + Sweep.kr(1, glisserate));
+	//phase = Line.ar(bgn, end, sustain);
+	//rate = (bgn + 1) * (spd + Sweep.kr(1, glisserate));
 	sound = SoundIn.ar([0, 1]); // stereo in
 	OffsetOut.ar(out,
 		CleanPan.ar(sound, ~clean.numChannels, pan)
@@ -193,7 +193,7 @@ SynthDef(\clean_from, { |out, sustain = 1, in, pan|
 (
 SynthDef(\inr, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, bnd, offset|
 	var env, sound, rate, phase;
-	phase = Line.ar(bgn, end, sustain);
+	//phase = Line.ar(bgn, end, sustain);
 	rate = (bgn + 1) * (spd + Sweep.kr(1, bnd)) * freq / 440;
 	sound = SoundIn.ar([0, 1]); // stereo in
 	sound = PitchShift.ar(sound, 0.1, rate, 0.02, 0.01);
@@ -218,8 +218,8 @@ SynthDef(\kps, {|out, sustain=1, pan, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq
         [bno, bnt],
         [0, 0, bnc]  //optional curvature
     ));
-	freqclipped = freq.clip(20, 20000) * gliss;
-	sound = CombC.ar(sound, 0.05, freqclipped.clip(20, 20000).reciprocal*(1-(0/100)), sustain)
+	freqclipped = (freq * gliss).clip(20, 20000);
+	sound = CombC.ar(sound, 0.05, freqclipped.reciprocal*(1-(0/100)), sustain)
 	+ CombL.ar(sound, 0.05, pitch.reciprocal*(1+(0/100)), sustain);
 	OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env)) // move pan up before the two delay lines are introduced, hard pan them
 }).store
@@ -317,9 +317,9 @@ SynthDef(\dfd, {|out = 0, freq = 440, res = 1, den = 0, amp = 1, pan = 0.5, atk 
         [bno, bnt],
         [0, 0, bnc]  //optional curvature
     ));
-	freqclipped = freq.clip(20, 7139) * gliss;
+	freqclipped = (freq * gliss).clip(20, 7139);
 	env = Env.perc(atk, rel, amp * 300, crv).kr(doneAction: 2);
-	sig = DFM1.ar(Dust2.ar(den.dup(~clean.numChannels), amp), freqclipped.clip(20, 7139), res.clip(0.0, 1.01), 1, typ, nsl);
+	sig = DFM1.ar(Dust2.ar(den.dup(~clean.numChannels), amp), freqclipped, res.clip(0.0, 1.01), 1, typ, nsl);
 	sig = sig * env;
 	//sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, sig);
@@ -335,9 +335,9 @@ SynthDef(\bow, { |out=0, sustain = 1, freq=440, amp=1.0, frc=1, gate=1, pos=0.07
         [bno, bnt],
         [0, 0, bnc]  //optional curvature
     ));
-	freqclipped = freq.clip(20, 5000) * gliss;
+	freqclipped = (freq * gliss).clip(20, 5000);
 	env = Env.perc(atk, rel, amp * 0.666, gst).kr(doneAction: 2);
-	sig = DWGBowed.ar(freqclipped.clip(20, 5000), amp, frc, gate, pos, 0.1, idc, hfl, smp, ihf);
+	sig = DWGBowed.ar(freqclipped, amp, frc, gate, pos, 0.1, idc, hfl, smp, ihf);
 	sig = DWGSoundBoard.ar(sig);
 	sig = BPF.ar(sig, 118, 1) + sig;
 	sig = BPF.ar(sig, 430, 1) + sig;
@@ -357,8 +357,8 @@ SynthDef(\blp, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fre
         [bno, bnt],
         [0, 0, bnc]  //optional curvature
     ));
-	freqclipped = freq.clip(20, 20000) * gliss;
-	sig = Blip.ar(freqclipped.clip(20, 20000), nmh, 0.75);
+	freqclipped = (freq * gliss).clip(20, 20000);
+	sig = Blip.ar(freqclipped, nmh, 0.75);
 	sig = sig * env;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, sig);
