@@ -227,12 +227,25 @@ CleanEvent {
 	}
 
 	playSynths {
-		var cutGroup;
+		var cutGroup, cuedBuffer;
+
 		~cut = ~cut.value;
 		if(~cut != 0) {
 			cutGroup = aux.getCutGroup(~cut);
 			~hash ?? { ~hash = ~snd.identityHash }; // just to be safe
 		};
+
+		if(currentEnvironment.proto[\disk].notNil, {
+			cuedBuffer = Buffer.cueSoundFile(
+				server,
+				currentEnvironment.proto.path,
+				(~bgn ? 0) * currentEnvironment.proto.bufNumFrames,
+				currentEnvironment.proto.bufNumChannels,
+				SuperClean.cuedBufferSize
+			);
+			currentEnvironment.proto.buffer = cuedBuffer.bufnum;
+			server.sync;
+		});
 
 		server.makeBundle(~latency, { // use this to build a bundle
 
@@ -246,6 +259,11 @@ CleanEvent {
 			modules.do(_.value(this));
 			this.sendGateSynth; // this one needs to be last
 
+			if(cuedBuffer.notNil, {
+				Group.basicNew(server, ~synthGroup).onFree({
+					cuedBuffer.close.free;
+				});
+			});
 		});
 
 	}

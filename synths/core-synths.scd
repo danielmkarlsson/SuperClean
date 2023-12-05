@@ -39,7 +39,22 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 			sound = CleanPan.ar(sound, numChannels, pan);
 
 			Out.ar(out, sound)
-		}, #[\ir, \ir, \ir, \ir, \ir, \ir, \ir, \ir]).add;
+		}, #[\ir, \ir, \ir, \ir, \ir, \ir, \ir, \kr]).add;
+
+		name = format("clean_sampledisk_%_%", sampleNumChannels, numChannels);
+
+		SynthDef(name, { |out, bufnum, sustain = 1, spd = 1, endspd = 1, freq = 440, pan = 0|
+
+			var sound, rate;
+
+			// Playback speed.
+			rate = Line.kr(spd, endspd, sustain) * (freq / 60.midicps);
+
+			sound = VDiskIn.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate);
+			sound = CleanPan.ar(sound, numChannels, pan);
+
+			Out.ar(out, sound)
+		}, #[\ir, \ir, \ir, \ir, \ir, \ir, \kr]).add;
 	};
 
 	/*
