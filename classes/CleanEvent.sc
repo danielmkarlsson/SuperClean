@@ -244,7 +244,6 @@ CleanEvent {
 				SuperClean.cuedBufferSize
 			);
 			currentEnvironment.proto.buffer = cuedBuffer.bufnum;
-			server.sync;
 		});
 
 		server.makeBundle(~latency, { // use this to build a bundle
