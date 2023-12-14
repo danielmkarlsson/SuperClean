@@ -53,12 +53,13 @@ are updating because otherwise you might run into some double trouble there with
 
 [Julian Rohrhuber](https://www.rsh-duesseldorf.de/en/institutes/institute-for-music-and-media/faculty/rohrhuber-julian/) built this thing initially, 
 then I changed some things here and there. I had a lot of help from friends along the way. 
-What you have here is essentially a shameless ripoff / fork of / homage to SuperDirt. A special shoutout to [Marcus Pal](https://www.marcuspal.com/) 
-who initially created the FM synth and the 
-additive synth.  
+What you have here is essentially a shameless ripoff / fork of / homage to SuperDirt.  
+[Marcus Pal](https://www.marcuspal.com/) initially created `\fmx` `\add`.  
 `mir` builds on the work of [David Granström](https://davidgranstrom.com/), specifically [EZConv](https://github.com/davidgranstrom/EZConv) 
 which is just amazing.  
 `ixa` builds on the work of [Nathan Ho](https://nathan.ho.name/posts/ixa-synthesis/).
+Huge thanks to [Fredrik Olofsson](http://fredrikolofsson.com/) for really cleaning things up with a ton of bugfixes, optimizations and adding 
+the absolutely life changing ability to read sound files from disk instead of from RAM in SuperClean.
 
 ## Requirements
 
@@ -73,19 +74,31 @@ dependencies means less things that can go sideways with the install procedure. 
 
 ## Be free to be you
 
-Here's a way to hot swap in samples as needed:
+Here's a way to hot swap samples into RAM as needed:
 
 ```text
 ~clean.loadSoundFiles("~/Downloads/rnb");
 ```
 
+If you're in a hurry and typing is a bore this uses fewer chars and is therefore faster:
+
+```text
+~clean.lsf("~/Downloads/rnb");
+```
+
+If you don't have a lot of RAM and or you have very long and heavy soundfiles you can cue them from your harddrive instead:
+
+```text
+~clean.csf("~/Downloads/drn");
+```
+
 Get your own samples in there! That's what I think everyone should do. That way you'll make this thing your own, and in no
-time you'll be making your own kind of weird music. This also means you don't have to wait around for a bunch of samples
-to load in to ram all the time when you need to start over quickly because reasons.
+time you'll be making your own kind of weird music. This hotswapping strategy also means you don't have to wait around for a 
+bunch of samples to load in to RAM all the time when you need to start over quickly because reasons.
 
 ## Safe is necessary
 
-I asked Scott to make sure that the filters are only able to accept values in the range of human hearing, 20 to 20000 hz.
+Extra care has been to make sure that the filters are only able to accept values in the range of human hearing, 20 to 20000 hz.
 This way the filters won't blow up. Also there is a nifty limiter that saves our ears ~~if~~ when things get unexpectedly
 loud. This limiter can also be leaned in to on purpose yielding all manner of hawt sound. Be sure to not miss out on the
 fun of sending values greater than one to `amp`.
@@ -267,7 +280,7 @@ computer that you found in the tech trash, then this is for you:
 
 ## How does it work?
 I guess you could say it's a hack of the event type. You turn on SuperClean, as you might turn on the power for a 
-rack containing samplers, synths and effects like this:
+physical rack containing samplers, synths and effects like this:
 
 ```
 (
