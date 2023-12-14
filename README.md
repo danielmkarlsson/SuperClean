@@ -54,7 +54,7 @@ are updating because otherwise you might run into some double trouble there with
 [Julian Rohrhuber](https://www.rsh-duesseldorf.de/en/institutes/institute-for-music-and-media/faculty/rohrhuber-julian/) built this thing initially, 
 then I changed some things here and there. I had a lot of help from friends along the way. 
 What you have here is essentially a shameless ripoff / fork of / homage to SuperDirt.  
-[Marcus Pal](https://www.marcuspal.com/) initially created `\fmx` `\add`.  
+[Marcus Pal](https://www.marcuspal.com/) initially created `\fmx` and `\add`.  
 `mir` builds on the work of [David Granström](https://davidgranstrom.com/), specifically [EZConv](https://github.com/davidgranstrom/EZConv) 
 which is just amazing.  
 `ixa` builds on the work of [Nathan Ho](https://nathan.ho.name/posts/ixa-synthesis/).  
