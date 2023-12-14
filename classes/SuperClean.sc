@@ -10,7 +10,8 @@ It keeps a number of clean auxs (see below).
 
 SuperClean {
 
-    // class vars
+	classvar <>cuedBufferSize = 32768;
+
 	var <numChannels, <server;
 	var <soundLibrary;
 	var <>auxs;
@@ -88,8 +89,26 @@ SuperClean {
 		soundLibrary = argSoundLibrary;
 	}
 
+
+	cueSoundFileFolder { |folderPath, name, appendToExisting = false|
+		soundLibrary.loadSoundFileFolder(folderPath, name, appendToExisting, false)
+	}
+
+	cueSoundFiles { |paths, appendToExisting = false, namingFunction|
+		soundLibrary.loadSoundFiles(paths, appendToExisting, namingFunction, false)
+	}
+
+	csf { |paths, appendToExisting = false, namingFunction|
+		soundLibrary.loadSoundFiles(paths, appendToExisting, namingFunction, false)
+	}
+
+	cueSoundFile { |path, name, appendToExisting = false|
+		soundLibrary.loadSoundFile(path, name, appendToExisting, false)
+	}
+
+
 	loadOnly { |names, path, appendToExisting = false|
-		soundLibrary.loadOnly(names, path, appendToExisting )
+		soundLibrary.loadOnly(names, path, appendToExisting)
 	}
 
 	loadSoundFileFolder { |folderPath, name, appendToExisting = false|
@@ -97,16 +116,17 @@ SuperClean {
 	}
 
 	loadSoundFiles { |paths, appendToExisting = false, namingFunction|
-		soundLibrary.loadSoundFiles(paths, appendToExisting = false, namingFunction)
+		soundLibrary.loadSoundFiles(paths, appendToExisting, namingFunction)
 	}
 
 	lsf { |paths, appendToExisting = false, namingFunction|
-		soundLibrary.loadSoundFiles(paths, appendToExisting = false, namingFunction)
+		soundLibrary.loadSoundFiles(paths, appendToExisting, namingFunction)
 	}
 
 	loadSoundFile { |path, name, appendToExisting = false|
 		soundLibrary.loadSoundFile(path, name, appendToExisting)
 	}
+
 
 	freeAllSoundFiles {
 		soundLibrary.freeAllSoundFiles

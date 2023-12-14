@@ -28,7 +28,7 @@ CleanSoundLibrary {
 		this.freeAllSoundFiles;
 	}
 
-	addBuffer { |name, buffer, appendToExisting = false|
+	addBuffer { |name, buffer, appendToExisting = false, cued = false|
 		var event;
 		if(buffer.isNil) { Error("tried to add Nil to buffer library").throw };
 		if(synthEvents[name].notNil) {
@@ -40,7 +40,7 @@ CleanSoundLibrary {
 			"\nreplacing '%' (%)\n".postf(name, buffers[name].size);
 			this.freeSoundFiles(name);
 		};
-		event = this.makeEventForBuffer(buffer);
+		event = if(cued) { this.makeEventForCuedBuffer(buffer) } { this.makeEventForBuffer(buffer) };
 		buffers[name] = buffers[name].add(buffer);
 		bufferEvents[name] = bufferEvents[name].add(event);
 		if(verbose) { "new sample buffer named '%':\n%\n\n".postf(name, event) };
@@ -72,7 +72,7 @@ CleanSoundLibrary {
 		event.use {
 			~unitDuration = {
 				var synthDesc = SynthDescLib.at(~instrument.value);
-				var sustainControl, unitDuration;
+				var sustainControl;
 				if(synthDesc.notNil) {
 					sustainControl = synthDesc.controlDict.at(\sustain);
 					if(sustainControl.notNil) {
@@ -147,7 +147,7 @@ CleanSoundLibrary {
 		//"\nfile reading complete\n\n".post;
 	}
 
-	loadSoundFiles { |paths, appendToExisting = false, namingFunction = (_.basename)| // paths are folderPaths
+	loadSoundFiles { |paths, appendToExisting = false, namingFunction = (_.basename), allocate = true| // paths are folderPaths
 		var folderPaths, memory;
 		//var defaultSamplePath =  this.prGetSuperCleanPath +/+ "clean-samples" +/+ "mmd";
 		var defaultSamplePath =  this.prGetSuperCleanPath +/+ "clean-samples/*"; // Will wildcard work on "other" os's?
@@ -162,14 +162,14 @@ CleanSoundLibrary {
 		memory = this.memoryFootprint;
 		"\nloading % sample bank%:\n".postf(folderPaths.size, if(folderPaths.size > 1) { "snd" } { "" });
 		folderPaths.do { |folderPath|
-			this.loadSoundFileFolder(folderPath, namingFunction.(folderPath), appendToExisting)
+			this.loadSoundFileFolder(folderPath, namingFunction.(folderPath), appendToExisting, allocate)
 		};
 		"\nRequired % MB of memory.\n\n".format(
 			this.memoryFootprint - memory div: 1e6
 		).post;
 	}
 
-	loadSoundFileFolder { |folderPath, name, appendToExisting = false|
+	loadSoundFileFolder { |folderPath, name, appendToExisting = false, allocate = true|
 		var files;
 
 		if(File.exists(folderPath).not) {
@@ -181,7 +181,7 @@ CleanSoundLibrary {
 
 		if(files.notEmpty) {
 			name = name.asSymbol;
-			this.loadSoundFilePaths(files, name, appendToExisting);
+			this.loadSoundFilePaths(files, name, appendToExisting, allocate);
 			"% (%) ".postf(name, buffers[name].size);
 		} {
 			"empty sample folder: %\n".postf(folderPath)
@@ -189,14 +189,14 @@ CleanSoundLibrary {
 
 	}
 
-	loadSoundFilePaths { |filePaths, name, appendToExisting = false|
+	loadSoundFilePaths { |filePaths, name, appendToExisting = false, allocate = true|
 		var buf;
 
 		filePaths.do { |filepath|
 			try {
-				buf = this.readSoundFile(filepath);
+				buf = this.readSoundFile(filepath, allocate: allocate);
 				if(buf.notNil) {
-					this.addBuffer(name, buf, appendToExisting);
+					this.addBuffer(name, buf, appendToExisting, cued: allocate.not);
 					appendToExisting = true; // append all others
 				}
 			}
@@ -204,18 +204,18 @@ CleanSoundLibrary {
 
 	}
 
-	loadSoundFile { |path, name, appendToExisting = false|
-		var buf = this.readSoundFile(path);
-		if(buf.notNil) { this.addBuffer(name, buf, appendToExisting) }
+	loadSoundFile { |path, name, appendToExisting = false, allocate = true|
+		var buf = this.readSoundFile(path, allocate: allocate);
+		if(buf.notNil) { this.addBuffer(name, buf, appendToExisting, cued: allocate.not) }
 	}
 
-	readSoundFile { |path|
+	readSoundFile { |path, allocate = true|
 		var fileExt = (path.splitext[1] ? "").toLower;
 		if(fileExtensions.includesEqual(fileExt).not) {
 			if(verbose) { "\nignored file: %\n".postf(path) };
 			^nil
 		}
-		^Buffer.readWithInfo(server, path)
+		^Buffer.cleanReadWithInfo(server, path, allocate: allocate)
 	}
 
 	/* access */
@@ -263,6 +263,24 @@ CleanSoundLibrary {
 		^format("clean_sample_%_%", buffer.numChannels, this.numChannels).asSymbol
 	}
 
+	makeEventForCuedBuffer { |buffer|
+		var baseFreq = 60.midicps;
+		^(
+			buffer: buffer.bufnum,
+			instrument: this.instrumentForCuedBuffer(buffer),
+			bufNumFrames: buffer.numFrames,
+			bufNumChannels: buffer.numChannels,
+			unitDuration: { buffer.duration * baseFreq / ~freq.value },
+			hash: buffer.identityHash,
+			disk: true,
+			path: buffer.path
+		)
+	}
+
+	instrumentForCuedBuffer { |buffer|
+		^format("clean_sampledisk_%_%", buffer.numChannels, this.numChannels).asSymbol
+	}
+
 	openFolder { |name, index = 0|
 		var buf, list;
 		list = buffers.at(name);
@@ -298,19 +316,36 @@ CleanSoundLibrary {
 			.format(buffers.size, this.memoryFootprint div: 1e6).postln;
 		};
 		keys.do { |name|
+			var count = 0;
 			var all = buffers[name];
-			"% (%)   % - % sec (% kB)\n".postf(
+			"% (%)   % - % sec (% kB)%\n".postf(
 				name,
 				buffers[name].size,
 				all.minItem { |x| x.duration }.duration.round(0.01),
 				all.maxItem { |x| x.duration }.duration.round(0.01),
-				all.sum { |x| x.memoryFootprint } div: 1e3
+				bufferEvents[name].sum { |x|
+					if(x['disk'].isNil) {
+						x['bufNumFrames']
+					} {
+						count = count + 1;
+						SuperClean.cuedBufferSize
+					} * x['bufNumChannels'] * 4 // in bytes
+				} div: 1e3,
+				if(count > 0) {", % cued".format(count)} {""}
 			)
 		}
 	}
 
 	memoryFootprint {
-		^buffers.sum { |array| array.sum { |buffer| buffer.memoryFootprint.asFloat } } // in bytes
+		^bufferEvents.sum { |array|
+			array.sum { |x|
+				if(x['disk'].isNil) {
+					x['bufNumFrames']
+				} {
+					SuperClean.cuedBufferSize
+				} * x['bufNumChannels'] * 4 // in bytes
+			}
+		}
 	}
 
 	/* private implementation */
