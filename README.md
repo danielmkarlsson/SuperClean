@@ -57,7 +57,7 @@ What you have here is essentially a shameless ripoff / fork of / homage to Super
 [Marcus Pal](https://www.marcuspal.com/) initially created `\fmx` `\add`.  
 `mir` builds on the work of [David Granström](https://davidgranstrom.com/), specifically [EZConv](https://github.com/davidgranstrom/EZConv) 
 which is just amazing.  
-`ixa` builds on the work of [Nathan Ho](https://nathan.ho.name/posts/ixa-synthesis/).
+`ixa` builds on the work of [Nathan Ho](https://nathan.ho.name/posts/ixa-synthesis/).  
 Huge thanks to [Fredrik Olofsson](http://fredrikolofsson.com/) for really cleaning things up with a ton of bugfixes, optimizations and adding 
 the absolutely life changing ability to read sound files from disk instead of from RAM in SuperClean.
 
