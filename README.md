@@ -59,7 +59,7 @@ What you have here is essentially a shameless ripoff / fork of / homage to Super
 which is just amazing.  
 `ixa` builds on the work of [Nathan Ho](https://nathan.ho.name/posts/ixa-synthesis/).  
 Huge thanks to [Fredrik Olofsson](http://fredrikolofsson.com/) for really cleaning things up with a ton of bugfixes, optimizations and adding 
-the absolutely life changing ability to read sound files from disk instead of from RAM in SuperClean.
+the absolutely life changing ability to read sound files from disk instead of RAM in SuperClean.
 
 ## Requirements
 
