@@ -204,7 +204,7 @@ SynthDef(\inr, { |out, sustain = 1, freq = 440, spd = 1, bgn=0, end=1, pan, bnd,
 );
 
 
-// Karplus-Strong physical modeling of a vibrating string, using a delay line (CombL) excited by an intial pulse (Impulse).
+// Karplus-Strong physical modeling of a vibrating string, using a delay line (CombL) excited by an initial pulse (Impulse).
 // There are two delay lines.
 // "bnd" is used for a pitch glide, and "sustain" changes the envelope timescale.
 (
@@ -219,8 +219,8 @@ SynthDef(\kps, {|out, sustain=1, pan, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq
         [0, 0, bnc]  //optional curvature
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	sound = CombC.ar(sound, 0.05, freqclipped.reciprocal*(1-(0/100)), sustain)
-	+ CombL.ar(sound, 0.05, pitch.reciprocal*(1+(0/100)), sustain);
+	sound = CombC.ar(sound, 0.05, freqclipped.reciprocal*(1-(0/100)), sustain) 
+	+ CombL.ar(sound, 0.05, freqclipped.reciprocal*(1+(0/100)), sustain);
 	OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env)) // move pan up before the two delay lines are introduced, hard pan them
 }).store
 );
