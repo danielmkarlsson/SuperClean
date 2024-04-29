@@ -132,7 +132,12 @@ SynthDef(\wts, {
       [\vcur.kr(-2)]
     ), doneAction: 0);
   var freqclipped = (\freq.kr(440) * gliss).clip(20, 20000);
-  var sig = VOsc.ar(\buf.kr(0) + ((\bufn.kr(1) - 1) * venv), freqclipped, \phs.kr(0), env);
+  var sig = VOsc.ar(
+    \buf.kr(0) + ((\bufn.kr(1) - 1) * venv),
+    freqclipped,
+    \phs.kr(0),
+    env
+  ).fold(\flo.kr(-1), \fhi.kr(1));
   sig = CleanPan.ar(sig, ~clean.numChannels, \pan.kr(0));
   Out.ar(\out.kr(0), sig);
 }).store;
