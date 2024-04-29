@@ -118,7 +118,7 @@ SynthDef(\sin, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fre
 }).store;
 
 
-// A wavetable vector synth based on VOsc. (cred: https://vsandstrom.github.io) <------------------
+// A wavetable vector synth based on VOsc. (cred: https://vsandstrom.github.io)
 SynthDef(\wts, {
   var env = Env.perc(\atk.kr(0.0), \rel.kr(1.0), \amp.kr(1.0), \crv.kr(-8)).kr(doneAction: 2);
   var gliss = EnvGen.kr(Env(
