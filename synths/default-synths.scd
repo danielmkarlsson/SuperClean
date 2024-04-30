@@ -119,7 +119,7 @@ SynthDef(\sin, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fre
 
 
 // A wavetable vector synth based on VOsc. (cred: https://vsandstrom.github.io)
-SynthDef(\wts, {
+SynthDef(\vct, {
   var env = Env.perc(
     \atk.kr(0.0),
     \rel.kr(1.0),
@@ -134,15 +134,16 @@ SynthDef(\wts, {
     )
   );
   var venv = EnvGen.kr(Env(
-    [\vbeg.kr(0.0), \vend.kr(0.99)], 
-    [\vdur.kr(0.2)],
-    [\vcur.kr(-2)]
+    [\vbg.kr(0.0), \vnd.kr(0.99)], 
+    [\vdr.kr(0.2)],
+    [\vcr.kr(-2)]
   ), doneAction: 0);
   var freqclipped = (\freq.kr(440) * gliss).clip(20, 20000);
   var sig = VOsc.ar( 
     \buf.kr(0) + ((\bufn.kr(1) - 1) * venv),
     freqclipped,
-    \phs.kr(0)
+    \phs.kr(0),
+    \fmp.kr(1.0)
   ).fold(\flo.kr(-1), \fhi.kr(1));
   sig = CleanPan.ar(sig, ~clean.numChannels, \pan.kr(0));
   Out.ar(\out.kr(0), sig * env);
