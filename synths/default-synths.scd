@@ -118,6 +118,38 @@ SynthDef(\sin, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fre
 }).store;
 
 
+// A wavetable vector synth based on VOsc. (cred: https://vsandstrom.github.io)
+SynthDef(\vct, {
+  var env = Env.perc(
+    \atk.kr(0.0),
+    \rel.kr(1.0),
+    \amp.kr(1.0),
+    \crv.kr(-8)
+  ).kr(doneAction: 2);
+  var gliss = EnvGen.kr(
+    Env(
+        [1, 1, 1 + \bnd.kr(0).clip(-1.0, 1.0)],
+        [\bno.kr(0), \bnt.kr(0.2)],
+        [0, 0, \bnc.kr(0)]  //optional curvature
+    )
+  );
+  var venv = EnvGen.kr(Env(
+    [\vbg.kr(0.0), \vnd.kr(0.99)], 
+    [\vdr.kr(0.2)],
+    [\vcr.kr(-2)]
+  ), doneAction: 0);
+  var freqclipped = (\freq.kr(440) * gliss).clip(20, 20000);
+  var sig = VOsc.ar( 
+    \buf.kr(0) + ((\bufn.kr(1) - 1) * venv),
+    freqclipped,
+    \phs.kr(0),
+    \fmp.kr(1.0)
+  ).fold(\flo.kr(-1), \fhi.kr(1));
+  sig = CleanPan.ar(sig, ~clean.numChannels, \pan.kr(0));
+  Out.ar(\out.kr(0), sig * env);
+}).store;
+
+
 // A saw wave oscillator.
 SynthDef(\saw, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, iph = 0, wid = 0.25, amp = 1.0, pan = 0, atk = 0.0, rel = 1.0, crv = -8.0|
 	var env, gliss, sig, freqclipped;
@@ -166,7 +198,6 @@ SynthDef(\in, { |out, sustain = 1, spd = 1, bgn = 0, end = 1, pan, glisserate, o
 }).store
 );
 
-
 // Read input from nth routing bus.
 // See also: effect "to".
 (
@@ -177,6 +208,7 @@ SynthDef(\clean_from, { |out, sustain = 1, in, pan|
 		CleanPan.ar(sound, ~clean.numChannels, pan)
 	)
 }).store;
+
 
 ~clean.soundLibrary.addSynth(\from,
 	(
