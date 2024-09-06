@@ -6,10 +6,7 @@ Resources for learning SuperCollider and SuperClean with special emphasis on Pat
 
 - [Pattern Guide](http://doc.sccode.org/Tutorials/A-Practical-Guide/PG_01_Introduction.html)
 - [A Gentle Introduction to SuperCollider](https://ccrma.stanford.edu/~ruviaro/texts/A_Gentle_Introduction_To_SuperCollider.pdf)
-- [Pattern Documentation](http://doc.sccode.org/Browse.html#Streams-Patterns-Events%3EPatterns) - click on a category under "Patterns" to see what's avaliable
-
-## Videos/Tutorials
-
+- [Pattern Documentation](http://doc.sccode.org/Browse.html#Streams-Patterns-Events%3EPatterns) - click on a category under "Patterns" to see what's available
 
 ## Code Examples & Communities
 

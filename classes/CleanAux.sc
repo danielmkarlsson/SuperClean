@@ -8,7 +8,7 @@ set up auxs in the startup.scd file. Look for this line:
 ~clean.start([0,2,4,6]);
 
 The above line gives you 8 outputs.
-Another way to set your auxs would be to use them as sends to different effects:
+Another way to set up your auxs would be to use them as sends to different effects:
 
 ~clean.start([0,0,0]);
 
@@ -20,7 +20,7 @@ It is also possible to use both delay and reverb on the same aux.
 
 CleanAux {
 
-	var <clean,  <outBus, <auxIndex;
+	var <clean, <outBus, <auxIndex;
 	var <server;
 	var <synthBus, <globalEffectBus, <dryBus;
 	var <group, <globalEffects, <cutGroups;
@@ -54,7 +54,7 @@ CleanAux {
 		this.globalEffects = [
 			// all global effects sleep when the input is quiet for long enough and no parameters are set.
 			GlobalCleanEffect(\clean_jpverb, [\jpr, \jpg, \jts, \jpd, \jps, \jed, \jmd, \jmf, \jpl, \jpm, \jph, \jlc, \jhc]),
-			GlobalCleanEffect(\clean_trem, [\trd, \trr, \tvr, \tvd]),
+			//GlobalCleanEffect(\clean_trem, [\trd, \trr, \tvr, \tvd]),
 			GlobalCleanEffect(\clean_hal, [\hal, \hai, \rts, \bld, \edf, \ldf, \hhp, \hlp]),
 			GlobalCleanEffect(\clean_delay, [\delaytime, \delayfeedback, \delaySend, \delayAmp, \lock, \cps]),
 			GlobalCleanEffect(\clean_reverb, [\rev, \rin, \dry]),
@@ -198,23 +198,25 @@ CleanAux {
 			~enr = 0.5;
 			~flp = 0;
 			~rma = 0;
-			~rmf = 0;
-			~rdf = 0;
+			~rmf = 200;
+			~rdf = 200;
 			~rdt = 10;
 			~jpg = 1.0;
-			~jts = 1.0; 
-			~jpd = 0.8; 
-			~jps = 0.2; 
-			~jed = 1.0; 
-			~jmd = 0.0; 
-			~jmf = 0.3; 
-			~jpl = 0.8; 
-			~jpm = 0.6; 
-			~jph = 0.4; 
+			~jts = 1.0;
+			~jpd = 0.8;
+			~jps = 0.2;
+			~jed = 1.0;
+			~jmd = 0.0;
+			~jmf = 0.3;
+			~jpl = 0.8;
+			~jpm = 0.6;
+			~jph = 0.4;
 			~jlc = 1.0;
 			~jhc = 1.0;
 			~cai = 1.0;
 			//~mii = 1;
+			~buf =  "b[0].bufnum";
+			~bufn =  "b.size";
 			~unit = \r;
 			~midinote = #{ ~note ? ~num + (~octave * 12) };
 			~freq = #{
@@ -246,7 +248,6 @@ CleanAux {
 					~octaveRatio = octaveRatio;
 					~num = num;
 					~midinote = midinote;
-					//~note = note;
 					~freq.value;
                 }
             };
@@ -261,7 +262,7 @@ CleanAux {
 			~detuneFreq = 0.0;     // detune in Hertz
 			~harmonic = 1.0;    // harmonic ratio
 			~octaveRatio = 2.0;
-			~num = 0; // sample number or note
+			~num = 0; // sample number
 			//~freq = #{ ~midinote.value.midicps };
 			~delta = 1.0;
 			~latency = 0.0;

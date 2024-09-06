@@ -1,8 +1,8 @@
 
-// these are the global effects on each orbit
-~clean.orbits.do { |x| x.globalEffects.postln }
+// these are the global effects on each aux
+~clean.auxs.do { |x| x.globalEffects.postln }
 
-// say you want to add a global low pass filter on the first orbit
+// say you want to add a global low pass filter on the first aux
 
 // first you generate the synth defs for it
 (
@@ -24,23 +24,14 @@ var numChannels = ~clean.numChannels;
 )
 
 
-// then add the effect to the orbit
+// then add the effect to the aux
 (
-~clean.orbits.do { |x|
-	x.globalEffects = ~clean.orbits[0].globalEffects.addFirst(
+~clean.auxs.do { |x|
+	x.globalEffects = ~clean.auxs[0].globalEffects.addFirst(
 		GlobalCleanEffect(\clean_global_lpf, [\dry])
 	)
 };
-~clean.orbits[0].initNodeTree;
+~clean.auxs[0].initNodeTree;
 )
 
-~clean.orbits.do { |x| x.globalEffects.postln; " ----------".postln; }
-
-// then play some tidal pattern ...
-// in tidal
-
-cps (40/120)
-
-d1 $ sound "[sn [sn sn]][sn [sn sn*3]][sn [sn*5 sn]][bd bd]" # dry "0.4" # orbit "0 1"
-
-// for proper use, better replace "dry" with a specific name and add that to tidal, e.g. "lpfdry" or whatever.
+~clean.auxs.do { |x| x.globalEffects.postln; " ----------".postln; }

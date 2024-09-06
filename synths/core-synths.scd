@@ -26,15 +26,6 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 			// BufSampleRate adjusts the rate if the sound file doesn't have the same rate as the soundcard.
 			offset = BufFrames.ir(bufnum) * bgn;
 
-			/*
-			sound = BufRd.ar(
-			numChannels: sampleNumChannels,
-			bufnum: bufnum,
-			phase: phase,
-			loop: 0,
-			interpolation: 4
-			);
-			*/
 			sound = PlayBuf.ar(sampleNumChannels, bufnum, BufRateScale.ir(bufnum) * rate, startPos: offset, loop: 0.0, doneAction: 0);
 			sound = CleanPan.ar(sound, numChannels, pan);
 
@@ -101,17 +92,17 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	SynthDef (\fuz ++ ~clean.numChannels, { |out, fzv = 3|
 		var sig, dry, gate;
 		sig = In.ar(out, numChannels);
-		gate = Amplitude.ar(sig,0.005,0.005) > 0.002;
+		gate = Amplitude.ar(sig,0.005, 0.005) > 0.002;
 		sig = (sig * 4).tanh;
-		sig = MidEQ.ar(sig,100,1,20);
+		sig = MidEQ.ar(sig, 100, 1, 20);
 		dry = sig;
 		sig = (Limiter.ar(sig * 50) * fzv).wrap(-1, 1) + sig;
 		sig = sig.tanh;
-		sig = MidEQ.ar(sig,200,1,20);
-		sig = MidEQ.ar(sig,1000,1,-20);
-		sig = LPF.ar(sig,8000);
-		sig = (sig+dry).tanh;
-		sig = MidEQ.ar(sig,4000,1,-20);
+		sig = MidEQ.ar(sig,200, 1, 20);
+		sig = MidEQ.ar(sig,1000, 1, -20);
+		sig = LPF.ar(sig, 8000);
+		sig = (sig + dry).tanh;
+		sig = MidEQ.ar(sig, 4000, 1, -20);
 		ReplaceOut.ar(out, sig * gate)
 	}, [\ir, \ir]).add;
 
@@ -127,7 +118,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 
 	SynthDef(\bit ++ numChannels, { |out, crush = 4|
 		var signal = In.ar(out, numChannels);
-		signal = signal.round(0.5 ** (crush-1));
+		signal = signal.round(0.5 ** (crush - 1));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
 
@@ -178,7 +169,6 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 
 	SynthDef(\clean_bpf ++ numChannels, { |out, bandqf = 440, bandq = 10|
 		var signal = In.ar(out, numChannels);
-		//bandq = max(1, bandq); // limit quality, avoid division by zero
 		bandq = bandq.linlin(0, 1, 1, 10000);
 		bandqf = max(20, bandqf); // limit lower end, avoid blow up
 		bandqf = bandqf.abs.clip(20, 20000);
@@ -366,7 +356,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		Out.ar(out, mod);
 	}, [\ir, \ir]).add;
 
-	//These spectral effects below are Mads Kjeldgaard's handywork.
+	//These spectral effects below are Mads Kjeldgaard's handywork. https://madskjeldgaard.dk/
 	// Spectral delay
 	~clean.addModule(\sda, { |cleanEvent|
 		cleanEvent.sendSynth('spectral-delay' ++ ~clean.numChannels,
@@ -484,7 +474,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		var signal, chain;
 		signal = In.ar(out, ~clean.numChannels);
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
-		signal = IFFT(PV_BinShift(chain, stretch: binshift.linlin(0.0,1.0,0.01,4.0),
+		signal = IFFT(PV_BinShift(chain, stretch: binshift.linlin(0.0, 1.0, 0.01, 4.0),
 			shift: binshift * 10, interp: 1));
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
@@ -542,7 +532,7 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		signal = In.ar(out, ~clean.numChannels);
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(
-			PV_ConformalMap(chain, real.linlin(0.0,1.0,0.01,2.0), imag.linlin(0.00,1.0,0.01,10.0))
+			PV_ConformalMap(chain, real.linlin(0.0, 1.0, 0.01, 2.0), imag.linlin(0.00, 1.0, 0.01, 10.0))
 		).tanh;
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir, \ir]).add;
@@ -563,9 +553,9 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 		chain = signal.asArray.collect { |x| FFT(LocalBuf(2048), x) };
 		signal = IFFT(
 			PV_SpectralEnhance(chain,
-				enhance.linlin(0.0,1.0,1,16),
-				enhance.linlin(0.0,1.0,1.0,5.0),
-				enhance.linlin(0.0,1.0,0.0,0.99))
+				enhance.linlin(0.0, 1.0, 1, 16),
+				enhance.linlin(0.0, 1.0, 1.0, 5.0),
+				enhance.linlin(0.0, 1.0, 0.0, 0.99))
 		).tanh; // .tanh is used as a crude limiter here beacause sometimes this ugen goes crazy
 		ReplaceOut.ar(out, signal)
 	}, [\ir, \ir]).add;
@@ -575,7 +565,6 @@ the SynthDefs, but alas they do not. Default values for parameters get set in Cl
 	// Activate it by providing the \psd or \psb key a value in a pattern.
 	// Parameters:
 	// psd | psa | psi | pso | psb
-	// // (NEW: )
 	(
 		SynthDef(\clean_spectralPhaseDecorrelator, {
 			var bus = \bus.ir, inputGain = \inputGain.kr(1), outputGain = \outputGain.kr(1), blend = \blend.kr(0.5).linlin(0.0, 1.0, -1.0, 1.0),

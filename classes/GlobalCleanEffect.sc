@@ -26,7 +26,7 @@ GlobalCleanEffect {
 		)
 	}
 
-	release { |releaseTime = 0.2|
+	release { |releaseTime = 0.02|
 		if(synth.notNil) {
 			synth.server.sendBundle(nil,
 				['/error', -1], // Surpress error, because we don't keep track of server state.

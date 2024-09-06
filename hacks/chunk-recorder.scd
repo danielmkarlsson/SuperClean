@@ -4,9 +4,9 @@
 (
 var functions = ();  // make a dictionary of functions
 var recSynth, recBufs, counter = 0, recording = false;
-var path = "~/tidalchunks/";
-var whichOrbit = ~clean.orbits[0];
-var maxTime = 4; // allow a maximum of four seconds, adjust to your needs: this represents one tidal cycle
+var path = "~/chunks/";
+var whichAux = ~clean.auxs[0];
+var maxTime = 4; // allow a maximum of four seconds, adjust to your needs: this represents one cycle
 var prevTime;
 
 if(pathMatch(path +/+ "*").isEmpty) { unixCmd("mkdir" + path) };
@@ -59,5 +59,5 @@ functions[\stopRec] = {
 
 // open the directory with the sound files
 
-systemCmd("open" + "~/tidalchunks/");
+systemCmd("open" + "~/chunks/");
 

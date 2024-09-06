@@ -118,6 +118,39 @@ SynthDef(\sin, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fre
 }).store;
 
 
+// A wavetable vector synth based on VOsc. (cred: https://vsandstrom.github.io)
+SynthDef(\vct, {
+  var env = Env.perc(
+    \atk.kr(0.0),
+    \rel.kr(1.0),
+    \amp.kr(1.0),
+    \crv.kr(-8)
+  ).kr(doneAction: 2);
+  var gliss = EnvGen.kr(
+    Env(
+        [1, 1, 1 + \bnd.kr(0).clip(-1.0, 1.0)],
+        [\bno.kr(0), \bnt.kr(0.2)],
+        [0, 0, \bnc.kr(0)]  //optional curvature
+    )
+  );
+  var venv = EnvGen.kr(Env(
+    [\vbg.kr(0.0), \vnd.kr(0.99)],
+    [\vdr.kr(0.2)],
+    [\vcr.kr(-2)]
+  ), doneAction: 0);
+  var freqclipped = (\freq.kr(440) * gliss).clip(20, 20000);
+  var sig = VOsc.ar(
+    \buf.kr(0) + ((\bufn.kr(1) - 1) * venv),
+    freqclipped,
+    \phs.kr(0),
+    \fmp.kr(1.0)
+  ).fold(\flo.kr(-1), \fhi.kr(1));
+  sig = CleanPan.ar(sig, ~clean.numChannels, \pan.kr(0));
+  Out.ar(\out.kr(0), sig * env);
+}).store;
+
+
+
 // A saw wave oscillator.
 SynthDef(\saw, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, iph = 0, wid = 0.25, amp = 1.0, pan = 0, atk = 0.0, rel = 1.0, crv = -8.0|
 	var env, gliss, sig, freqclipped;
@@ -166,7 +199,6 @@ SynthDef(\in, { |out, sustain = 1, spd = 1, bgn = 0, end = 1, pan, glisserate, o
 }).store
 );
 
-
 // Read input from nth routing bus.
 // See also: effect "to".
 (
@@ -177,6 +209,7 @@ SynthDef(\clean_from, { |out, sustain = 1, in, pan|
 		CleanPan.ar(sound, ~clean.numChannels, pan)
 	)
 }).store;
+
 
 ~clean.soundLibrary.addSynth(\from,
 	(
@@ -219,7 +252,7 @@ SynthDef(\kps, {|out, sustain=1, pan, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq
         [0, 0, bnc]  //optional curvature
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	sound = CombC.ar(sound, 0.05, freqclipped.reciprocal*(1-(0/100)), sustain) 
+	sound = CombC.ar(sound, 0.05, freqclipped.reciprocal*(1-(0/100)), sustain)
 	+ CombL.ar(sound, 0.05, freqclipped.reciprocal*(1+(0/100)), sustain);
 	OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env)) // move pan up before the two delay lines are introduced, hard pan them
 }).store
@@ -256,6 +289,7 @@ SynthDef(\hat, {|out, sustain=1, pan, bnd, tun|
 	OffsetOut.ar(out, CleanPan.ar(sound, ~clean.numChannels, pan, env))
 }).store
 );
+
 
 
 // Clap Synthesizer. This builds on the work of Nathan Ho: https://youtu.be/L9D78W8C-3w
@@ -307,6 +341,27 @@ SynthDef(\cleanS_clap, {
 presetStore.(\clp);
 );
 
+// This also build on the work of Nathan Ho and was adapted from a Kick SynthDef on his fantastic blog: https://nathan.ho.name/posts/accelerating-rhythms/
+SynthDef(\snr, {|out, fiz = 1, het = 6, snp = 0, pan = 0.5, rnb = 1|
+	var sig;
+	sig = LFNoise0.ar(
+		fiz.linlin(0.0, 1.0, 10000, 20000)
+		* (1 + (4 * Env.perc(0, 0.1).ar))
+		* (1 + (2 * Env.perc(0, 0.01).ar))
+		* (1 + (1 * Env.perc(0, 0.001).ar))
+		* ([rnb.clip(0.0, 1.0), rnb.clip(0.0, 1.0).neg]).midiratio // rnb as in the Renick Bell hard pan detune trick
+	);
+	sig = sig * (1 + (Env.perc(0, snp.clip(0.0, 1.0)).ar));
+	sig = sig * het.linlin(0, 1, -6, 6).dbamp;
+	sig = sig.tanh;
+	sig = sig + (BPF.ar(Hasher.ar(Sweep.ar), 4142, 0.01) * Env.perc(0.001, 0.01).ar * -10.dbamp);
+	sig = sig + (BPF.ar(Hasher.ar(Sweep.ar), 2321, 0.01) * Env.perc(0.001, 0.01).ar * -1.dbamp);
+	sig = sig * het.linlin(0, 1, -6, 6).dbamp;
+	sig = sig.tanh;
+	sig = sig * Env.perc(0.0, 0.325).ar(Done.freeSelf);
+	sig = sig * het.linlin(0, 1, 0, -9).dbamp;
+	OffsetOut.ar(out, CleanPan.ar(sig, ~clean.numChannels, pan))
+}).store;
 
 // Transient excited filter.
 SynthDef(\dfd, {|out = 0, freq = 440, res = 1, den = 0, amp = 1, pan = 0.5, atk = 0.0, rel = 1.0, crv = -8.0, typ = 0.0, nsl = 0,
@@ -363,4 +418,5 @@ SynthDef(\blp, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fre
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, sig);
 }).store;
+
 )

@@ -1,3 +1,4 @@
+/*
 // make sure you have sc3 plugins installed first
 (
 //var inOut = Server.default.options;inOut.outDevice = "BlackHole 2ch";inOut.inDevice = "BlackHole 2ch";//force devices
@@ -50,5 +51,18 @@ s.waitForBoot {
 	~clean.start([0,0,0]); // first 8 out looks like [0,2,4,6]
 	SuperClean.default = ~clean; // make the clean key sequenceable inside of SuperCollider
 	"[ SuperClean up + running ]".postln;
+};
+)
+*/
+
+(
+// Configurar la ruta del archivo Setup.scd
+var setupFilePath = "~/Setup.scd";
+
+// Verificar si el archivo existe y luego ejecutarlo
+if (File.exists(setupFilePath)) {
+    setupFilePath.loadPath;
+} {
+    "El archivo Setup.scd no se encontró en la ruta especificada.".postln;
 };
 )

@@ -10,7 +10,7 @@ CleanEvent {
 	play {
 		event.parent = aux.defaultParentEvent;
 		event.use {
-			// snd and num stand for synth/sample and note/number
+			// snd and num stand for synth/sample and number
 			~snd ?? { this.splitName };
 			// unless aux wide diversion returns something, we proceed
 			~diversion.(this) ?? {
@@ -38,7 +38,7 @@ CleanEvent {
 		var synthEvent, synthDesc;
 		var soundEvent = aux.clean.soundLibrary.getEvent(~snd, ~num);
 		if(soundEvent.isNil) {
-			// only call ~notFound if no ~diversion is given that anyhow redirects control
+			// only call ~notFound if no ~diversion is given that somehow redirects control
 			if(~diversion.isNil) { ~notFound.value }
 		} {
 			// the stored sound event becomes the environment's proto slot, which partly can override its parent
@@ -161,7 +161,7 @@ CleanEvent {
 		// for every buffer, unitDuration is (and should be) defined.
 		~buffer !? { sustain = min(unitDuration, sustain) };
 
-		~fadeTime = min(~fadeTime.value, sustain * 0.19098);
+		~fadeTime = min(~fadeTime.value, sustain * 0.19098); // is this number magic?
 		~fadeInTime = if(~bgn != 0) { ~fadeTime } { 0.0 };
 		~sustain = sustain - (~fadeTime + ~fadeInTime);
 		~spd = spd;
@@ -174,14 +174,13 @@ CleanEvent {
 		~amp = pow(~amp, 1) * ~amp;
 		~channel !? { ~pan = ~pan.value + (~channel.value / ~numChannels) };
 		~pan = ~pan * 2 - 1; // convert unipolar (0..1) range into bipolar one (-1...1)
-		~delayAmp = ~dla ? 0.0; // below is how you would rename parameter names to anything you want
+		~delayAmp = ~dla ? 0.0;
 		~delaytime = ~dlt ? 0.0;
 		~delayfeedback = ~dlf ? 0.0;
 		~bandf = ~bpf ? 0.0;
 		~bandq = ~bpq ? 0.0;
 
-
-		~latency = ~latency + ~lag.value + (~offset.value * ~spd.value); // don't accidentally change this tho
+		~latency = ~latency + ~lag.value + (~offset.value * ~spd.value);
 	}
 
 	getMsgFunc { |instrument|
@@ -264,9 +263,5 @@ CleanEvent {
 				});
 			});
 		});
-
 	}
-
-
 }
-

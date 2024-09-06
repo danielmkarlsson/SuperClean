@@ -130,9 +130,9 @@ CleanSoundLibrary {
 		var path;
 		path = Main.packages.asDict.at('SuperClean');
 		if (path.isNil, {
-			path = Main.packages.asDict.at('SuperClean-master');
+			path = Main.packages.asDict.at('SuperClean-main');
 			if (path.isNil, {
-				"SuperClean:: The SuperClean root folder should be named either 'SuperClean' or 'SuperClean-master'".warn;
+				"SuperClean:: The SuperClean root folder should be named either 'SuperClean' or 'SuperClean-main'".warn;
 			})
 		});
 		^path

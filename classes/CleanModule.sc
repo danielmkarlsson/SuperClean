@@ -1,11 +1,10 @@
 /*
 
 CleanModules encapsulate two functions:
-1) For testing for parameters (whether or not to start a synth at all).
+1) For testing parameters (whether or not to start a synth at all).
 2) Activated when the parameters are found in the message.
 
 */
-
 
 CleanModule {
 	var <name, <func, <test;

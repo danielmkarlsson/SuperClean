@@ -1,30 +1,16 @@
 /*
 
-How to add new effects to Tidal and SuperClean.
+How to add new effects to SuperClean.
 
 This is a three step process.
 
-1. add the desired parameters to Tidal, so it can be used
+1. add the desired parameters to SuperCLean, so it can be used
 2. add a module definition to Superclean, so it can be found when the parameter is not nil
 3. add the synth def to SuperClean, so it can be played
 
 
 The following example adds a weird spectral delay
 This assumes you have an instance of SuperClean accessible via ~clean
-
-*/
-
-
-// in Haskell
-
-// (1) in  Sound/Tidal/Params.hs
-// this adds two new  parameters "tsdelay" (float, delay time) and "xsdelay" (int, delay structure)
-
-// ... run this tidal code (or put it in your tidal boot script):
-/*
-
-let tsdelay = pF "tsdelay"
-    xsdelay = pI "xsdelay"
 
 */
 
@@ -81,14 +67,4 @@ SynthDef("spectral-delay" ++ numChannels, { |out, tsdelay, xsdelay = 1, sustain|
 
 }).add;
 )
-
-/*
-
-now you should be able to write in tidal:
-
-d1 $ sound "can*4" # tsdelay "0 0.25 0.5 0.75 1" # xsdelay "3 124 3 12 62 2"
-
-
-
-*/
 

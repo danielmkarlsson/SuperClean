@@ -68,8 +68,8 @@ They'll come back automatically.
 		delaytime = delaytime * if(lock, reciprocal(cps), 1);
 		delaytime = delaytime.clip(0, maxdelaytime); // Just to be sure.
 		// From sc3-plugins.
-		signal = \SwitchDelay.asClass.ar(input, 1, 1, delaytime, delayfeedback.clip(0.0, 1.0), maxdelaytime);
-		DetectSilence.ar(signal, time:1, doneAction: 1);
+		signal = \SwitchDelay.asClass.ar(input, 0, 1, delaytime, delayfeedback.clip(0.0, 1.0), maxdelaytime);
+		//DetectSilence.ar(signal, time:1, doneAction: 1);
 		// doesn't work properly. We don't really know when it's not used anymore.
 		// this would have to be an explicit signal from sclang
 		signal = signal * EnvGen.kr(Env.asr, gate, doneAction:2);
@@ -199,7 +199,7 @@ They'll come back automatically.
 		Out.ar(effectBus, sig);
 	}, [\ir, \ir]).add;
 
-	SynthDef(\clean_trem ++ numChannels, {
+/*	SynthDef(\clean_trem ++ numChannels, {
 		|dryBus, effectBus, gate = 1, trd=0.5, trr=0.25, tvr=0, tvd=0.0|
 		var drySignal = In.ar(dryBus, numChannels);
 		var wetSignal = In.ar(effectBus, numChannels);
@@ -211,7 +211,7 @@ They'll come back automatically.
 		CleanPause.ar(sig, graceTime:4);
 		sig = sig * EnvGen.kr(Env.asr, gate, doneAction:2);
 		Out.ar(effectBus, sig);
-	}, [\ir, \ir]).add;
+	}, [\ir, \ir]).add; */
 
 	// JPverb based reverb
 	SynthDef(\clean_jpverb ++ numChannels, {
@@ -228,6 +228,7 @@ They'll come back automatically.
 		CleanPause.ar(sig, graceTime:4);
 		Out.ar(effectBus, sig);
 	}, [\ir, \ir]).add;
+
 
 	//"---- core synth defs loaded ----".postln;
 

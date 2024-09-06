@@ -1,7 +1,7 @@
 
 // add a compressor module
 (
-~clean.orbits.do { |x|
+~clean.auxs.do { |x|
 	x.globalEffects = [
 		GlobalCleanEffect(\clean_delay, [\delaytime, \delayfeedback, \delayAmp, \lock, \cps]),
 		GlobalCleanEffect(\clean_reverb, [\size, \room, \dry]),
@@ -15,7 +15,7 @@
 // now play with different variants while you listen:
 
 
-// a cleany hyperbolic tangens
+// a dirty hyperbolic tangens
 (
 SynthDef("clean_compressor" ++ ~clean.numChannels, { |dryBus, effectBus, gate = 1|
 	var signal = In.ar(dryBus, ~clean.numChannels);
@@ -28,7 +28,7 @@ SynthDef("clean_compressor" ++ ~clean.numChannels, { |dryBus, effectBus, gate = 
 s.freeAll; // restart all synths
 )
 
-// a cleany hyperbolic tangens, randomly drifting
+// a dirty hyperbolic tangens, randomly drifting
 (
 SynthDef("clean_compressor" ++ ~clean.numChannels, { |dryBus, effectBus, gate = 1|
 	var signal = In.ar(dryBus, ~clean.numChannels);
@@ -59,5 +59,13 @@ SynthDef("clean_compressor" ++ ~clean.numChannels, { |dryBus, effectBus, gate = 
 s.freeAll; // restart all synths
 )
 
+(
+Pdef(0,
+	Pbind(*[
+		type: \cln,
+		snd: \drm,
+	])
+).play;
+)
 
 

@@ -121,12 +121,7 @@ CleanEventTypes {
 				};
 
 				true // always return something != nil to end processing in CleanEvent
-
 			}
-
 		)
 	}
-
 }
-
-

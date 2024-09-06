@@ -1,7 +1,5 @@
 /*
 
-SuperCollider implementation of Clean.
-
 This object handles local effects.
 These are relative to a server and a number of output channels.
 It keeps a number of clean auxs (see below).

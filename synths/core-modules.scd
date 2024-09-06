@@ -13,10 +13,9 @@ This could be:
 - a sample that is played
 - a generic synth, which allows us to embed a SynthDef name in a pattern next to sample names
 A SynthDef could receive any number of the parameters in the event, e.g.
-sustain, spd, endspd, bgn, end, pan, bnd
+sustain, spd, bgn, end, pan, bnd
 it ought to use "out" as bus output argument.
 the diversion is a hook to add an arbitrary function instead of a synthdef.
-this may be refactored later.
 */
 (
 
@@ -67,7 +66,6 @@ they respond to the existence of a value for one of the parameters
 
 // # from 3 # toArg "freq"
 // synth needs to have an audio rate control.
-// it would be nice to be able to map several arguments
 
 ~clean.addModule(\map_from,
 	{ |cleanEvent|
@@ -81,5 +79,4 @@ they respond to the existence of a value for one of the parameters
 			~clean.numChannels
 		)
 }, { ~toArg.notNil });
-
 );

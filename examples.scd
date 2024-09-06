@@ -2,41 +2,40 @@
 // deterministic operations, indefinite duration
 (
 Pdef(0,
-	Pseed(4,
+	Pseed(8,
 		Pbind(*[
 			type: \cln,
 			snd: \fmx,
-			dup: Pexprand(9, 99),
-			hr1: Pdup(Pkey(\dup) - Pwhite(0, 7), Pshuf((1 .. 4), inf)),
-			hr2: Pdup(Pkey(\dup) + Pwhite(0, 7), Pshuf((1 .. 4), inf)),
-			hr3: Pdup(Pkey(\dup) - Pwhite(0, 7), Pshuf((1 .. 4), inf)),
-			hr4: Pdup(Pkey(\dup) + Pwhite(0, 7), Pshuf((1 .. 4), inf)),
-			fdb: Pexprand(0.0001, 100.0),
-			mi2: Pdup(Pkey(\dup) + Pwhite(0, 7), Pshuf((0.0001 .. 4.0), inf)),
-			mi3: Pdup(Pkey(\dup) + Pwhite(0, 7), Pshuf((0.0001 .. 4.0), inf)),
-			mi4: Pdup(Pkey(\dup) + Pwhite(0, 7), Pshuf((0.0001 .. 4.0), inf)),
-			amp: Pexprand(0.3, 0.8),
-			en1: Pdup(Pkey(\dup) + Pwhite(0, 7), Pexprand(0.0001, 0.555)),
+			dup: Pexprand(9, 29),
+			hr1: Pdup(Pkey(\dup) - Pwhite(0, 7), Pxshuf((1 .. 5), inf)),
+			hr2: Pdup(Pkey(\dup) + Pwhite(0, 7), Pxshuf((1 .. 5), inf)),
+			hr3: Pdup(Pkey(\dup) - Pwhite(0, 7), Pxshuf((1 .. 5), inf)),
+			hr4: Pdup(Pkey(\dup) + Pwhite(0, 7), Pxshuf((1 .. 5), inf)),
+			mi1: Pexprand(0.00001, 19.0),
+			mi2: Pdup(Pkey(\dup) + Pwhite(0, 7), Pxshuf((0.1 .. 5.0), inf)).trace,
+			mi3: Pdup(Pkey(\dup) + Pwhite(0, 7), Pxshuf((0.1 .. 5.0), inf)),
+			mi4: Pdup(Pkey(\dup) + Pwhite(0, 7), Pxshuf((0.1 .. 5.0), inf)),
+			en1: Pdup(Pkey(\dup) + Pwhite(0, 7), Pexprand(0.01, 0.555)),
 			en2: Pdup(Pkey(\dup) + Pwhite(0, 7), Pkey(\en1) * Pexprand(0.2, 0.666)),
 			en3: Pdup(Pkey(\dup) + Pwhite(0, 7), Pkey(\en1) * Pkey(\en2) / Pexprand(0.3, 0.777)),
 			en4: Pdup(Pkey(\dup) + Pwhite(0, 7), Pkey(\en1) * Pkey(\en2) / Pkey(\en3) * Pexprand(0.4, 0.888)),
-			cu1: Pdup(Pkey(\dup) + Pwhite(0, 7), Pwhite(0.25, 1.0)),
-			cu2: Pdup(Pkey(\dup) + Pwhite(0, 7), Pwhite(0.25, 1.0)),
-			cu3: Pdup(Pkey(\dup) + Pwhite(0, 7), Pwhite(0.25, 1.0)),
-			cu4: Pdup(Pkey(\dup) + Pwhite(0, 7), Pwhite(0.25, 1.0)),
-			dur: Pdup(Pkey(\dup) + Pwhite(2, 9), 2 / Pbrown(5, 19, Pwhite(1, 3), inf)),
-			legato: Pkey(\dur) * Pexprand(16, 64),
-			freq: (Pdup(Pexprand(4, 32), 10 * Pexprand(1, 5).round)
-				* Pdup(Pexprand(1, 64), Pexprand(1, 5)).round
-				* Pdup(Pkey(\dup), Pexprand(1, 7).round)),
-			cav: 1,
-			ca1: Pseg(Pexprand(0.25, 1.0), Pexprand(8.0, 64.0), \welch, inf),
-			pan: Pbrown(0.0, 1.0, Pdup(Pwhite(1, 3), Pwhite(0.01, 0.1))).trace,
-			atk: Pexprand(0.01, 4.0),
+			cu1: Pdup(Pkey(\dup) + Pwhite(0, 7), Pmeanrand(-4.0, 4.0)),
+			cu2: Pdup(Pkey(\dup) + Pwhite(0, 7), Pmeanrand(-4.0, 4.0)),
+			cu3: Pdup(Pkey(\dup) + Pwhite(0, 7), Pmeanrand(-4.0, 4.0)),
+			cu4: Pdup(Pkey(\dup) + Pwhite(0, 7), Pmeanrand(-4.0, 4.0)),
+			amp: Pdup(Plprand(1, 5), Pexprand(0.25, 0.5)),
+			dur: 1 / Pdup(Pkey(\dup) + Pwhite(2, 9), Pbrown(5, 19, Pwhite(1, 3), inf)),
+			freq: (Pdup(Pexprand(4, 32), 10 * Pexprand(1, 5).asInteger)
+				* Pdup(Pexprand(1, 64), Pexprand(1, 5).asInteger)
+				* Pdup(Pkey(\dup), Pexprand(1, 7).asInteger)),
+			cav: 2,
+			cai: Pseg(Phprand(0.5, 1.0), Pexprand(8.0, 64.0), \welch, inf),
+			pan: Pbrown(0.0, 1.0, Pdup(Pwhite(1, 3), Pwhite(0.01, 0.1))),
+			atk: Pexprand(1.0, 8.0),
 			hld: Pkey(\dur) * 2,
 			rel: Pkey(\dur) * 2,
-			crv: 5,
-			sustain: Pexprand(2.5, 5.0),
+			crv: 3,
+			sustain: Pkey(\atk) + Pkey(\hld) + Pkey(\rel) * 8,
 		])
 	)
 ).play
@@ -52,21 +51,21 @@ Pdef(0,
 				type: \cln,
 				snd: \mmd,
 				num: Pwhite(0, 23),
-				dur: Pwrand([1/12, 1/3], [9, 1].normalizeSum, inf),
+				dur: Pwrand2([1/12, 1/3], [9, 1], inf),
 				rel: Pdup(Pwhite(1, 8), Pseq([1/16, 1/17, 1/18, 1/19, 1/20, 1/21, 1/22, 1/8, 2], inf)) * Pexprand(0.1, 10.0),
 				amp: Pexprand(1.0, 8.0),
-				pan: Pdup(Pwhite(0, 28), Pwrand([Pwhite(0.0, 0.333), Pwhite(0.666, 1.0)], [1, 1.5].normalizeSum, inf)),
-				lpf: Pwrand([625, 1250, 2500, 5000, 10000, 20000], (1 .. 6).normalizeSum, inf),
-				spd: Pwrand([
-                    1/64, 1/32, 1/16, 1/8, 1/4, 1/2, 1, 2, 4, 8, 16, 32, 64],
-                    [1, 2, 4, 8, 16, 32, 64, 32, 16, 8, 4,  2, 1].normalizeSum,inf),
+				pan: Pdup(Pwhite(0, 28), Pwrand2([Pwhite(0.0, 0.333), Pwhite(0.666, 1.0)], [1, 1.5], inf)),
+				lpf: Pwrand2([625, 1250, 2500, 5000, 10000, 20000], (1 .. 6), inf),
+				spd: Pwrand2([
+					1/64, 1/32, 1/16, 1/8, 1/4, 1/2, 1, 2, 4, 8, 16, 32, 64],
+				[1, 2, 4, 8, 16, 32, 64, 32, 16, 8, 4,  2, 1],inf),
 				shp: Pwhite(0.0, 1.0).trace,
 				dla: 0.001,
 				dlf: 0.94,
-				dlt: 1/2 / Pdup(Pwrand([1, 2, 3], [256, 16, 1].normalizeSum,inf), Pbrown(1, 199, Prand((1 .. 19), inf))),
-				rin: Pwrand([0,0.05], [9, 1].normalizeSum, inf),
+				dlt: 1/2 / Pdup(Pwrand2([1, 2, 3], [256, 16, 1],inf), Pbrown(1, 199, Prand((1 .. 19), inf))),
+				rin: Pwrand2([0,0.05], [9, 1], inf),
 				rev: 0.97,
-				dry: Pdup(Pwhite(1, 9), Pwrand([0.25, 1], [3, 1].normalizeSum, inf)),
+				dry: Pdup(Pwhite(1, 9), Pwrand2([0.25, 1], [3, 1], inf)),
 				hpf: 40,
 			]), 1, 15,
 		)
@@ -74,7 +73,7 @@ Pdef(0,
 ).play
 )
 
-// an example using add which is the built in additive synthesizer
+// an example using add which can be used a kind of additive synthesizer
 // stochastic operations, indefinite duration
 (
 Pdef(0,
@@ -114,7 +113,7 @@ Pdef(0,
 		hld: Pdup(Pwhite(5, 11), Pwhite(3.0, 5.0), inf),
 		rel: Pdup(Pwhite(5, 11), Pwhite(5.0, 11.0), inf),
 		crv: -8,
-		amp: Pseg(Pexprand(0.5, 0.9), Pexprand(0.25, 4.0), \exp, inf),
+		amp: Pseg(Pexprand(0.425, 0.85), Pexprand(0.25, 4.0), \exp, inf),
 		pan: Pwhite(0.0, 1.0),
 		wid: Pwhite(0.0, 1.0),
 		iph: Pexprand(0.0001, 1.0),
@@ -162,7 +161,7 @@ Pdef(0,
 	Pbind(*[
 		type: \cln,
 		snd: \kps,
-		amp: Pexprand(0.5, 1.0),
+		amp: Pexprand(0.4, 0.8),
 		freq: 32 * Prand([1, 2, 4, 8, 16], inf) * (1, 3 .. 11),
 		dur: 1 / Pdup(Pwhite(5, 11), Pwhite(5, 11)),
 		sustain: Pexprand(0.5, 4.0),
@@ -197,6 +196,30 @@ Pdef(0,
 ).play
 )
 
+( // an example using clp which is a handclap synth
+// stochastic operations, indefinite duration
+Pdef(0,
+	Pbind(*[
+		type: \cln,
+		snd: \clp,
+		atk: 0,
+		rel: Pseg(Pdup(2, Pwhite(0.2, 0.8)), Pwhite(9.0, 11.0), \lin, inf),
+		crv: -8,
+		dur: Pseg([1, 1/24], 10, \lin, inf),
+		stretch: Pseg(Pdup(2, Pwhite(0.01, 1.0)), Plprand(1.0, 11.0), \lin, inf),
+		pan: Pseg(Pdup(2, Pmeanrand(0.0, 1.0)), Plprand(1.0, 11.0), \lin, inf),
+		amp: Pseg(Pdup(2, Plprand(0.4, 0.8)), Plprand(1.0, 11.0), \lin, inf),
+		srp: Pseg(Pdup(2, Pwhite(0.0, 1.0)), Pwhite(9.0, 11.0), \lin, inf),
+		srq: Pseg(Pdup(2, Pwhite(0.0, 1.0)), Pwhite(9.0, 11.0), \lin, inf),
+		bdy: Pseg(Pdup(2, Plprand(0.0, 1.0)), Pwhite(9.0, 11.0), \lin, inf),
+		tha: Pseg(Pdup(2, Plprand(0.0, 1.0)), Pwhite(9.0, 11.0), \lin, inf),
+		tho: Pseg(Pdup(2, Plprand(0.0, 1.0)), Pwhite(9.0, 11.0), \lin, inf),
+		dmp: Pseg(Pdup(2, Phprand(20.0, 20000.0)), Plprand(1.0, 11.0), \lin, inf).trace,
+		sustain: Pkey(\rel),
+	])
+).play
+)
+
 ( // an example using dfd which is a transient / noise excited filter that can selfoscillate
 Pdef(0, // deterministic operations, indefinite duration
 	Pseed(192,
@@ -213,6 +236,21 @@ Pdef(0, // deterministic operations, indefinite duration
 			stretch: Pseg([1, 4, 1, 0.75, 1], [10, 5, 10], \sin, inf),
 		])
 	)
+).play
+)
+
+// an example using blp which is a sine wave which lets you add a number of harmonics
+( // stochastic operations, finite duration
+Pdef(0,
+	Pbind(*[
+		type: \cln,
+		snd: \blp,
+		dur: 1 / Pdup(Plprand(9, 49), Pwhite(7.0, 13.0)),
+		pan: Pseq([0, 0.25, 0.5, 1, 0.75, 0.5], 99),
+		nmh: Pseries(1, 1, inf) % Pseq((1 .. 39), inf).trace,
+		amp: (Pseries(1, 1, inf) % Pseq((1 .. 29), inf)).linlin(0, 29, 0.7, 0.9),
+		sustain: 9,
+	])
 ).play
 )
 

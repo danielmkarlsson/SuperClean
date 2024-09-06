@@ -5,7 +5,6 @@ Then you can use this script to dynamically try and load them.
 
 */
 
-
 (
 // Keep track of what we have tried to load
 var failed = Set.new;
