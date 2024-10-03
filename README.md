@@ -31,24 +31,6 @@ Move it to your SuperCollider Extensions folder. The Extensions folder can easil
 Drag the updated SuperClean folder to the Extensions folder, which replaces the old SuperClean folder and you are done.
 Make sure this folder is called SuperClean, not SuperClean-*something*.
 
-If you went with the Quarks option from way back when that was a thing, then click below:
-
-<details>  
-<br>
-I have found that in order to be able to update consistently across 
-different operating systems I need to first uninstall by running this line in SuperCollider:  
-
-  `Quarks.uninstall("SuperClean");`
-
-I then manually delete the old SuperClean folder, reinstall with the above dragging to the folder Extensions method, then recompile the class library.
-
-If you have used the old quarks method in the past then take extra special care to delete that old quarks SuperClean folder as you 
-are updating because otherwise you might run into some double trouble there with your new SuperClean folder in Extensions. 
-</details>
-
-
-	
-
 ## Origins and acknowledgements
 
 [Julian Rohrhuber](https://www.rsh-duesseldorf.de/en/institutes/institute-for-music-and-media/faculty/rohrhuber-julian/) built this thing initially, 
