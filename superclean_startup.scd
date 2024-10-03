@@ -1,13 +1,14 @@
-/*
 // make sure you have sc3 plugins installed first
 (
-//var inOut = Server.default.options;inOut.outDevice = "BlackHole 2ch";inOut.inDevice = "BlackHole 2ch";//force devices
+//var inOut = Server.default.options;inOut.outDevice = "BlackHole 2ch";inOut.inDevice = "BlackHole 2ch"; //force devices
 s.options.numBuffers = 1024 * 64; // increase if you need to load more samples
 s.options.numWireBufs = 128; // increase if you get "exception in GraphDef_Recv: exceeded number of interconnect buffers."
+s.options.numAudioBusChannels = 2048; // increase if you get "ERROR: Meta_Bus:audio: failed to get an audio bus allocated."
 s.options.memSize = 4096 * 256; // increase if you get "alloc failed" messages
 s.options.maxNodes = 1024 * 32; // increase if dropouts and the message "too many nodes"
 s.options.sampleRate= 44100;
-s.options.blockSize = 16;
+//s.options.blockSize = 512; // default is 64, is good for heavy CPU taks but no input / no feedback stuff
+s.options.maxSynthDefs_(10000);
 s.options.numOutputBusChannels = 2; // OUTPUT CHANNELS GO HERE
 s.recSampleFormat = "int24";
 s.recHeaderFormat="wav";
@@ -48,21 +49,8 @@ s.waitForBoot {
 	~clean.loadSoundFiles; // hot swap in samples from anywhere!
 	// for example: ~clean.loadSoundFiles("~/Downloads/rnb");
 	s.sync; // optionally: wait for samples to be read
-	~clean.start([0,0,0]); // first 8 out looks like [0,2,4,6]
+	~clean.start([0, 0, 0, 0]); // first 8 out looks like [0,2,4,6]
 	SuperClean.default = ~clean; // make the clean key sequenceable inside of SuperCollider
 	"[ SuperClean up + running ]".postln;
-};
-)
-*/
-
-(
-// Configurar la ruta del archivo Setup.scd
-var setupFilePath = "~/Setup.scd";
-
-// Verificar si el archivo existe y luego ejecutarlo
-if (File.exists(setupFilePath)) {
-    setupFilePath.loadPath;
-} {
-    "El archivo Setup.scd no se encontró en la ruta especificada.".postln;
 };
 )
