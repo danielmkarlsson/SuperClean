@@ -234,7 +234,7 @@ CleanEvent {
 			~hash ?? { ~hash = ~snd.identityHash }; // just to be safe
 		};
 
-		if(currentEnvironment.proto[\disk].notNil, {
+		if(currentEnvironment.proto.notNil and:{currentEnvironment.proto[\disk].notNil}, {
 			cuedBuffer = Buffer.cueSoundFile(
 				server,
 				currentEnvironment.proto.path,
