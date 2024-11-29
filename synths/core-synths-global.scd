@@ -63,7 +63,7 @@ They'll come back automatically.
 		|dryBus, effectBus, gate = 1, delaytime = 1, delayfeedback = 0.5, delaySend = 1, delayAmp = 1, lock = 0, cps = 1|
 		var signal;
 		var input = In.ar(dryBus, numChannels);
-		var maxdelaytime = 16;
+		var maxdelaytime = 128;
 		input = input * delaySend.lag(LFNoise1.kr(1).range(0.01, 0.02)); // Regulate input.
 		delaytime = delaytime * if(lock, reciprocal(cps), 1);
 		delaytime = delaytime.clip(0, maxdelaytime); // Just to be sure.
