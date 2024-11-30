@@ -31,7 +31,7 @@ bpq:	Band pass filter resonance. Value range is 0.0, 1.0 where 0.0 is no resonan
 lhf:	Low & high pass filter combo where 0.5 does nothing, 0.0 sets the lpf to 20hz and 1.0 sets the hpf to 20000
 dla:	Delay amplitude. Value range is 0.0 to infinity.
 dlf:	Delay feedback, proly good to think of 0.94 as the max sane value, although the value range is actually 0.0 to 1.0
-dlt:	Delay time, value range is a very low float to 16.0
+dlt:	Delay time, value range is a very low float to 128.0
 rin:	Reverb input gain. Value range is 0.0, 1.0
 rev:	Reverb time (or room size, if we can imagine that). Value range is 0.0, 1.0
 dry:	Decrease the amplitude of the reverb. Value range is 0.0, 1.0
