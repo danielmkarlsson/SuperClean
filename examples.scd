@@ -1,3 +1,29 @@
+// Mir is an impulse response based reverb
+(
+Pdef(0,
+    Pbind(*[
+        type: \cln,
+		snd: Prand([\fmx, \ixa, \saw], inf),
+        mir: 2,
+		mii: Phprand(0.0, 1.0),
+		wid: Pexprand(1.0, 1.5) - 1,
+		atk: Pexprand(1.0, 10.0),
+		rel: Pexprand(0.1, 1.0),
+		sustain: Pkey(\atk) + Pkey(\rel),
+		amp: Pdup(Pexprand(1, 5), Plprand(0.25, 0.5)),
+		scale: Scale.pelog(\just),
+		octave: Pdup(Pexprand(1, 5), Pwhite(2, 5)),
+		degree: Pdup(Pexprand(1, 5), Pwhite(0, 11)),
+		lpf: Prand([Phprand(20.0, 20000.0, 1), Pexprand(20, 20000, 1)], inf),
+		dur: 1 / Phprand(1.0, 11.0),
+		hr1: Pexprand(1.0, 15.0).round(0.5) - 1,
+		hr2: Pexprand(1.0, 15.0).round(0.5) - 1,
+		hr3: Pexprand(1.0, 15.0).round(0.5) - 1,
+		hr4: Pexprand(1.0, 15.0).round(0.5) - 1,
+    ])
+).play
+)
+
 // an example using fmx which is the built in four operator FM synthesizer,
 // deterministic operations, indefinite duration
 (
