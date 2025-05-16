@@ -135,8 +135,9 @@ They'll come back automatically.
 		Out.ar(effectBus, sig);
 	}, [\ir, \ir]).add;
 
-/*	// Impulse Response based reverb
-	~path = Main.packages.asDict.at('SuperClean') +/+ "/clean-samples/mmd/mir/mir4.wav";
+	// Impulse Response based reverb
+	//~path = Main.packages.asDict.at('SuperClean') +/+ "/clean-samples/mmd/mir/Large Church.aif";
+	~path = Main.packages.asDict.at('SuperClean') +/+ "clean-samples" +/+ "mmd" +/+ "mir" +/+ "mir-4eqed.wav";
 	~ezConvX = EZConvX(~path);
 	SynthDef(\clean_mir ++ numChannels, {
 		|dryBus, effectBus, gate = 1, in, out, mii = 1 mir = 0.0 |
@@ -146,7 +147,7 @@ They'll come back automatically.
 		sig = sig * (1 - mir.lag(lgt) - 1);
 		CleanPause.ar(sig, graceTime:4);
 		Out.ar(effectBus, sig);
-	}, [\ir, \ir]).add; */
+	}, [\ir, \ir]).add;
 
 	// NHHall based reverb
 	SynthDef(\clean_hal ++ numChannels, {
@@ -215,7 +216,7 @@ They'll come back automatically.
 
 	// JPverb based reverb
 	SynthDef(\clean_jpverb ++ numChannels, {
-		|dryBus, effectBus, gate=1, jpr=0, jpg=1, jts=1, jpd=0.8, jps=0.2, jed=1, jmd=0.0, jmf=0.3, jpl=0.8, jpm=0.6, jph=0.4, jlc=1, jhc=1|
+		|dryBus, effectBus, gate=1, jpr=0, jpg=1, jts=1, jpd=0.8, jps=1.0, jed=1, jmd=0.0, jmf=0.3, jpl=0.8, jpm=0.6, jph=0.4, jlc=1, jhc=1|
         var lgt = 0.0625;
         var sig;
 		sig = In.ar(dryBus, numChannels).asArray.sum;
