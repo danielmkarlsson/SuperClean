@@ -60,7 +60,7 @@ CleanAux {
 			GlobalCleanEffect(\clean_reverb, [\rev, \rin, \dry]),
 			//GlobalCleanEffect(\clean_grainfb, [\grainfb]),
 			GlobalCleanEffect(\clean_cav, [\cav, \cai, \cvt, \cvd, \cvl]),
-			//GlobalCleanEffect(\clean_mir, [\mir, \mii]),
+			GlobalCleanEffect(\clean_mir, [\mir, \mii]),
 			GlobalCleanEffect(\clean_tanh, [\tnh, \tng, \tnb, \tna]),
 			GlobalCleanEffect(\clean_dfm, [\dfm, \dfg, \dff]),
 			//GlobalCleanEffect(\tap, [\tap, \drp]),
@@ -204,7 +204,7 @@ CleanAux {
 			~jpg = 1.0;
 			~jts = 1.0;
 			~jpd = 0.8;
-			~jps = 0.2;
+			~jps = 1.0;
 			~jed = 1.0;
 			~jmd = 0.0;
 			~jmf = 0.3;
