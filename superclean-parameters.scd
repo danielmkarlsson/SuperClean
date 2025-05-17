@@ -29,6 +29,10 @@ lpq:	Low pass filter resonance. Value range is 0.0, 1.0 where 0.0 is no resonanc
 hpq:	High pass filter resonance. Value range is 0.0, 1.0 where 0.0 is no resonance and 1.0 is all the way resonant.
 bpq:	Band pass filter resonance. Value range is 0.0, 1.0 where 0.0 is no resonance and 1.0 is all the way resonant.
 lhf:	Low & high pass filter combo where 0.5 does nothing, 0.0 sets the lpf to 20hz and 1.0 sets the hpf to 20000
+brf:	Band reject filter, value range is 20 to 20000
+brq:	Band reject filter resonance. Value range is 0.0, 1.0 where 0.0 is no resonance and 1.0 is all the way resonant.
+brn:	Number of Band reject filters. Value range is 0.0, 1.0 where 0.0 is one filter 1.0 is ten filters.
+bro:	Band reject filter offset. Offset up to 1/3 octave per filter.
 dla:	Delay amplitude. Value range is 0.0 to infinity.
 dlf:	Delay feedback, proly good to think of 0.94 as the max sane value, although the value range is actually 0.0 to 1.0
 dlt:	Delay time, value range is a very low float to 128.0
@@ -68,7 +72,8 @@ psb:    Phase decorellator blend. Value range is 0.0, 1.0
 
 >>> GLOBAL effect parameters (added to the sum of all sounds in an aux) <<<
 
-hal:	A hall reverb, this is the wet parameter, or put another way, the amplitude of the reverb. Value range is 0.0, 1.0
+mir:	An Impulse Response based reverb, this is the wet parameter, or put another way, the amplitude of the reverb. Range is zero to infinity
+hal:	The input or send into the mir reverb. Value range is 0.0, 1.0
 hai:	The input or send into the hal reverb. Value range is 0.0, 1.0
 rts:	The RT60 value of the reverb. This goes from 0 to 999. That top value is approaching inifity. It is super duper long.
 edf:	Early diffusion of the hal reverb. Value range is 0.0, 1.0
