@@ -33,7 +33,7 @@ SynthDef(\add,  {| out, ada = 0.001, adr = 1, amp = 1, adc = 1, freq = 200, pan 
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
-        [0, 0, bnc]  //optional curvature
+        [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
 	ee = Env([0, 1, 0], [ada ,adr + slw], [-30, 30]);
@@ -47,34 +47,6 @@ SynthDef(\add,  {| out, ada = 0.001, adr = 1, amp = 1, adc = 1, freq = 200, pan 
 }).store;
 
 
-// A four operator FM synth.
-SynthDef(\fmx, {| sustain = 1, pan, amp = 0.1, out = 0,
-	freq = 440, mi1 = 0.8, hr4 = 1 ,hr3 = 2, hr2 = 1, hr1= 0, mi4 = 1, mi3 = 0.5,
-	mi2 = 4, en1 = 0, en2 = 0, en3 = 0, en4 = 0, cu1 = 0, cu2 = 0, cu3 = 0,
-	cu4 = 0, det = 0.0, bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
-	var env4, env3, env2, env1, sig, modComp, gliss, freqclipped;
-	gliss = EnvGen.kr(Env(
-        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
-        [bno, bnt],
-        [0, 0, bnc]  //optional curvature
-    ));
-	freqclipped = (freq * gliss).clip(20, 20000);
-	env4 = EnvGen.ar(Env.perc(en4, 1-en4, curve:cu4), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3, 1-en3, curve:cu3), timeScale:sustain);
-	env2 = EnvGen.ar(Env.perc(en2, 1-en2, curve:cu2), timeScale:sustain);
-	env1 = EnvGen.ar(Env.perc(en1, 1-en1, curve:cu1), timeScale:sustain, doneAction:2);
-	modComp = freq.explin(20, 20000, 1, 0.01);
-	sig = SinOscFB.ar(freqclipped * hr4, mi1 * modComp, mi4 * modComp) * env4;
-	sig = SinOsc.ar(freqclipped * hr3, sig + [0, pi/2], mi3 * modComp) * env3;
-	sig = SinOsc.ar(freqclipped * hr2, sig, mi2 * modComp) * env2;
-	sig = SinOsc.ar(freqclipped * hr1 + [det.neg, det], sig ) * env1;
-	sig = sig * AmpCompA.kr(freqclipped, 17.323914436055);
-	sig = (sig * amp*0.7) * LFNoise1.ar(0).range(1, 1);
-	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
-	Out.ar(out, tanh(LeakDC.ar(sig)));
-}).store;
-
-
 // This synthdef builds on the work of Nathan Ho. https://nathan.ho.name/posts/ixa-synthesis/
 SynthDef(\ixa, {| out, sustain = 1, pan, amp = 0.5, freq = 440, bnd = 0, bno = 0, bnt = 0.2, bnc = 0,
     bes = 2, abs = 2, ths = 2, ber = 1, abr = 1, thr = 1, crv, atk = 0.0, rel = 1.0|
@@ -85,7 +57,7 @@ SynthDef(\ixa, {| out, sustain = 1, pan, amp = 0.5, freq = 440, bnd = 0, bno = 0
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
-        [0, 0, bnc]  //optional curvature
+        [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
 	slopeBelow = LFNoise2.kr(bes).range(0, ber);
@@ -108,7 +80,7 @@ SynthDef(\sin, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fre
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
-        [0, 0, bnc]  //optional curvature
+        [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
 	sig = FSinOsc.ar(freqclipped, iph, 0.75);
@@ -130,7 +102,7 @@ SynthDef(\vct, {
     Env(
         [1, 1, 1 + \bnd.kr(0).clip(-1.0, 1.0)],
         [\bno.kr(0), \bnt.kr(0.2)],
-        [0, 0, \bnc.kr(0)]  //optional curvature
+        [0, 0, \bnc.kr(0)]
     )
   );
   var venv = EnvGen.kr(Env(
@@ -158,7 +130,7 @@ SynthDef(\saw, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fre
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
-        [0, 0, bnc]  //optional curvature
+        [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
 	sig = VarSaw.ar(freqclipped, iph, wid, 0.75);
@@ -175,7 +147,7 @@ SynthDef(\sqr, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fre
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
-        [0, 0, bnc]  //optional curvature
+        [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
 	sig = Pulse.ar(freqclipped, wid, 0.75);
@@ -249,7 +221,7 @@ SynthDef(\kps, {|out, sustain=1, pan, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
-        [0, 0, bnc]  //optional curvature
+        [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
 	sound = CombC.ar(sound, 0.05, freqclipped.reciprocal*(1-(0/100)), sustain)
@@ -341,6 +313,7 @@ SynthDef(\cleanS_clap, {
 presetStore.(\clp);
 );
 
+
 // This also build on the work of Nathan Ho and was adapted from a Kick SynthDef on his fantastic blog: https://nathan.ho.name/posts/accelerating-rhythms/
 SynthDef(\snr, {|out, fiz = 1, het = 6, snp = 0, pan = 0.5, rnb = 1|
 	var sig;
@@ -363,6 +336,7 @@ SynthDef(\snr, {|out, fiz = 1, het = 6, snp = 0, pan = 0.5, rnb = 1|
 	OffsetOut.ar(out, CleanPan.ar(sig, ~clean.numChannels, pan))
 }).store;
 
+
 // Transient excited filter.
 SynthDef(\dfd, {|out = 0, freq = 440, res = 1, den = 0, amp = 1, pan = 0.5, atk = 0.0, rel = 1.0, crv = -8.0, typ = 0.0, nsl = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
@@ -370,7 +344,7 @@ SynthDef(\dfd, {|out = 0, freq = 440, res = 1, den = 0, amp = 1, pan = 0.5, atk 
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
-        [0, 0, bnc]  //optional curvature
+        [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 7139);
 	env = Env.perc(atk, rel, amp * 300, crv).kr(doneAction: 2);
@@ -388,7 +362,7 @@ SynthDef(\bow, { |out=0, sustain = 1, freq=440, amp=1.0, frc=1, gate=1, pos=0.07
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
-        [0, 0, bnc]  //optional curvature
+        [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 5000);
 	env = Env.perc(atk, rel, amp * 0.666, gst).kr(doneAction: 2);
@@ -403,6 +377,8 @@ SynthDef(\bow, { |out=0, sustain = 1, freq=440, amp=1.0, frc=1, gate=1, pos=0.07
 	Out.ar(out, sig);
 }).store;
 
+
+// blip based synth
 SynthDef(\blp, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, nmh = 0, amp = 1.0,
 	pan = 0, atk = 0.01, rel = 1.0, crv = -8.0|
 	var env, gliss, sig, freqclipped;
@@ -410,13 +386,1316 @@ SynthDef(\blp, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fre
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
-        [0, 0, bnc]  //optional curvature
+        [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
 	sig = Blip.ar(freqclipped, nmh, 0.75);
 	sig = sig * env;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, sig);
+}).store;
+
+
+// A four operator FM synth. It's a straight shot through the operators.
+SynthDef(\fmx, {| sustain = 1, pan, amp = 0.1, out = 0,
+	freq = 440, mi1 = 0.8, hr4 = 1 ,hr3 = 2, hr2 = 1, hr1= 0, mi4 = 1, mi3 = 0.5,
+	mi2 = 4, en1 = 0, en2 = 0, en3 = 0, en4 = 0, cu1 = 0, cu2 = 0, cu3 = 0,
+	cu4 = 0, det = 0.0, bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env4, env3, env2, env1, sig, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]
+    ));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env4 = EnvGen.ar(Env.perc(en4, 1-en4, curve:cu4), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3, 1-en3, curve:cu3), timeScale:sustain);
+	env2 = EnvGen.ar(Env.perc(en2, 1-en2, curve:cu2), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1, 1-en1, curve:cu1), timeScale:sustain, doneAction:2);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+	sig = SinOscFB.ar(freqclipped * hr4, mi1 * modComp, mi4 * modComp) * env4;
+	sig = SinOsc.ar(freqclipped * hr3, sig + [0, pi/2], mi3 * modComp) * env3;
+	sig = SinOsc.ar(freqclipped * hr2, sig, mi2 * modComp) * env2;
+	sig = SinOsc.ar(freqclipped * hr1 + [det.neg, det], sig ) * env1;
+	sig = sig * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = (sig * amp*0.7) * LFNoise1.ar(0).range(1, 1);
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+
+// A six operator FM synth. Algorithm 1, hopefully
+SynthDef(\fm0, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]
+    ));
+	//EnvGen.ar(Env.linen(attack, hold, release, 1, [crv, 0, crt]), doneAction: 2); // lifted from \clean_envelope in core-synths.scd
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, pi/2], mi4 * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig3 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+
+}).store;
+
+
+// A six operator FM synth. Algorithm 2, hopefully
+SynthDef(\fm1, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]
+    ));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig2 = SinOscFB.ar(freqclipped * hr2, hr2 * modComp, mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, pi/2], mi4 * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig3 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 3, hopefully
+SynthDef(\fm2, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]
+    ));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig3 = SinOsc.ar(freqclipped * hr3, 0, (mi3 - mi3) * modComp) * env3;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, pi/2], mi4 * modComp) * env4;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig4 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 4, hopefully
+SynthDef(\fm3, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig3 = SinOsc.ar(freqclipped * hr3, 0, (mi3 - mi3) * modComp) * env3;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig6 = SinOsc.ar(freqclipped * hr6, LocalIn.ar(2) + [0, pi/2], mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, pi/2], mi4 * modComp) * env4;
+	LocalOut.ar(sig4);
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig4 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+
+
+// A six operator FM synth. Algorithm 5, hopefully
+SynthDef(\fm4, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]
+    ));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig4 = SinOsc.ar(freqclipped * hr4, 0, (mi4 - mi4) * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig5 = sig5 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig3 / 4) + (sig5 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 6, hopefully
+SynthDef(\fm5, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig4 = SinOsc.ar(freqclipped * hr4, 0, (mi4 - mi4) * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig6 = SinOsc.ar(freqclipped * hr6, LocalIn.ar(2) + [0, pi/2], mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	LocalOut.ar(sig5);
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig5 = sig5 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig3 / 4) + (sig5 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 7, hopefully
+SynthDef(\fm6, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]
+    ));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+
+	sig4 = SinOsc.ar(freqclipped * hr4, 0, (mi4 - mi4) * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + sig5 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig3 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 8, hopefully
+SynthDef(\fm7, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]
+    ));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+
+	sig4 = SinOscFB.ar(freqclipped * hr4, mi4 * modComp, mi4 * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + sig5 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig3 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 9, hopefully
+SynthDef(\fm8, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]
+    ));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig2 = SinOscFB.ar(freqclipped * hr2, mi2 * modComp, mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+
+	sig4 = SinOsc.ar(freqclipped * hr4, 0, (mi4 - mi4) * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + sig5 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig3 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 10, hopefully
+SynthDef(\fm9, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]
+    ));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig5 = SinOsc.ar(freqclipped * hr5, 0, (mi5 - mi5) * modComp) * env5;
+	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, pi/2], mi4 * modComp) * env4;
+
+	sig3 = SinOscFB.ar(freqclipped * hr3, mi3 * modComp, mi3 * modComp) * env3;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig4 / 4) + (sig1 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 11, hopefully
+SynthDef(\fma, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]
+    ));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig5 = SinOsc.ar(freqclipped * hr5, 0, (mi5 - mi5) * modComp) * env5;
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, pi/2], mi4 * modComp) * env4;
+
+	sig3 = SinOsc.ar(freqclipped * hr3, 0, (mi3 - mi3) * modComp) * env3;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig4 / 4) + (sig1 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 12, hopefully
+SynthDef(\fmb, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]
+    ));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig2 = SinOscFB.ar(freqclipped * hr1, mi1 * modComp, mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig4 = SinOsc.ar(freqclipped * hr4, 0, (mi4 - mi4) * modComp) * env4;
+	sig5 = SinOsc.ar(freqclipped * hr5, 0, (mi5 - mi5) * modComp) * env5;
+	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + sig5 + sig6 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig3 / 4) + (sig1 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 13, hopefully
+SynthDef(\fmc, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]
+    ));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig4 = SinOsc.ar(freqclipped * hr4, 0, (mi4 - mi4) * modComp) * env4;
+	sig5 = SinOsc.ar(freqclipped * hr5, 0, (mi5 - mi5) * modComp) * env5;
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + sig5 + sig6 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig3 / 4) + (sig1 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 14, hopefully
+SynthDef(\fmd, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]
+    ));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig4 = SinOsc.ar(freqclipped * hr4, 0, (mi4 - mi4) * modComp) * env4;
+	sig5 = SinOsc.ar(freqclipped * hr5, 0, (mi5 - mi5) * modComp) * env5;
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + sig5 + sig6 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig3 / 4) + (sig1 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 15, hopefully
+SynthDef(\fme, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]
+    ));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig2 = SinOscFB.ar(freqclipped * hr2, mi2 * modComp, mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, 0, (mi5 - mi5) * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, pi/2], mi1 * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig3 / 4) + (sig1 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 16, hopefully
+SynthDef(\fmf, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]
+    ));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+
+	sig4 = SinOsc.ar(freqclipped * hr4, 0, (mi4 - mi4) * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + sig3 + sig5 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = (sig1 / 4) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 17, hopefully
+SynthDef(\fmg, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+        [1, 1, 1 + bnd.clip(-1.0, 1.0)],
+        [bno, bnt],
+        [0, 0, bnc]
+    ));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+
+	sig4 = SinOsc.ar(freqclipped * hr4, 0, (mi4 - mi4) * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig2 = SinOscFB.ar(freqclipped * hr2, mi2 * modComp, mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + sig3 + sig5 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = (sig1 / 4) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 18, hopefully
+SynthDef(\fmh, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, pi/2], mi4 * modComp) * env4;
+
+	sig3 = SinOscFB.ar(freqclipped * hr3, mi3 * modComp, mi3 * modComp) * env3;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + sig3 + sig4 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = (sig1 / 4) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 19, hopefully
+SynthDef(\fmi, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, pi/2], mi4 * modComp) * env4;
+
+	sig3 = SinOsc.ar(freqclipped * hr3, 0, (mi3 - mi3) * modComp) * env3;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig5 = sig5 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig4 / 4) + (sig5 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 20, hopefully
+SynthDef(\fmj, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, 0, (mi5 - mi5) * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, pi/2], mi4 * modComp) * env4;
+
+	sig3 = SinOscFB.ar(freqclipped * hr3, mi3 * modComp, mi3 * modComp) * env3;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig3 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig4 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 21, hopefully
+SynthDef(\fmk, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, pi/2], mi4 * modComp) * env4;
+
+	sig3 = SinOscFB.ar(freqclipped * hr3, mi3 * modComp, mi3 * modComp) * env3;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig3 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig5 = sig5 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig4 / 4) + (sig5 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 22, hopefully
+SynthDef(\fml, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, pi/2], mi4 * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig6 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig3 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig5 = sig5 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig3 / 4) + (sig4 / 4) + (sig5 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 23, hopefully
+SynthDef(\fmm, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, pi/2], mi4 * modComp) * env4;
+
+	sig3 = SinOsc.ar(freqclipped * hr3, 0, (mi3 - mi3) * modComp) * env3;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2;
+
+	sig1 = SinOsc.ar(freqclipped * hr1, 0, (mi1 - mi1) * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig5 = sig5 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig4 / 4) + (sig5 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 24, hopefully
+SynthDef(\fmn, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, pi/2], mi4 * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig6 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+
+	sig1 = SinOsc.ar(freqclipped * hr1, 0, (mi1 - mi1) * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig5 = sig5 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig3 / 4) + (sig4 / 4) + (sig5 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 25, hopefully
+SynthDef(\fmo, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, pi/2], mi4 * modComp) * env4;
+
+	sig3 = SinOsc.ar(freqclipped * hr3, 0, (mi3 - mi3) * modComp) * env3;
+
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+
+	sig1 = SinOsc.ar(freqclipped * hr1, 0, (mi1 - mi1) * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig5 = sig5 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig3 / 4) + (sig4 / 4) + (sig5 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 26, hopefully
+SynthDef(\fmp, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, 0, (mi5 - mi5) * mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, pi/2], mi4 * modComp) * env4;
+
+	sig3 = SinOsc.ar(freqclipped * hr3, 0, (mi3 - mi3) * modComp) * env3;
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+
+	sig1 = SinOsc.ar(freqclipped * hr1, 0, (mi1 - mi1) * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig4 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 27, hopefully
+SynthDef(\fmq, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, 0, (mi5 - mi5) * mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, pi/2], mi4 * modComp) * env4;
+
+	sig3 = SinOscFB.ar(freqclipped * hr3, mi3 * modComp, mi3 * modComp) * env3;
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+
+	sig1 = SinOsc.ar(freqclipped * hr1, 0, (mi1 - mi1) * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig4 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 28, hopefully
+SynthDef(\fmr, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
+
+	sig5 = SinOscFB.ar(freqclipped * hr5, mi5 * modComp, mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, pi/2], mi4 * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig6 = sig6 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig3 / 4) + (sig6 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 29, hopefully
+SynthDef(\fms, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+
+	sig4 = SinOsc.ar(freqclipped * hr4, 0, (mi4 - mi4) * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+
+	sig1 = SinOsc.ar(freqclipped * hr1, 0, (mi1 - mi1) * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig5 = sig5 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig3 / 4) + (sig5 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 30, hopefully
+SynthDef(\fmt, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
+
+	sig5 = SinOscFB.ar(freqclipped * hr5, mi5 * modComp, mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, pi/2], mi4 * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3;
+
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+
+	sig1 = SinOsc.ar(freqclipped * hr1, 0, (mi1 - mi1) * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig6 = sig6 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig3 / 4) + (sig6 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 31, hopefully
+SynthDef(\fmu, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+
+	sig4 = SinOsc.ar(freqclipped * hr4, 0, (mi4 - mi4) * modComp) * env4;
+
+	sig3 = SinOsc.ar(freqclipped * hr3, 0, (mi3 - mi3) * modComp) * env3;
+
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+
+	sig1 = SinOsc.ar(freqclipped * hr1, 0, (mi1 - mi1) * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig5 = sig5 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig3 / 4) + (sig4 / 4) + (sig5 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+
+// A six operator FM synth. Algorithm 32, hopefully
+SynthDef(\fmv, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
+	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cu1.neg]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cu2.neg]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cu3.neg]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cu4.neg]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cu5.neg]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cu6.neg]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
+
+	sig5 = SinOsc.ar(freqclipped * hr5, 0, (mi5 - mi5) * modComp) * env5;
+
+	sig4 = SinOsc.ar(freqclipped * hr4, 0, (mi4 - mi4) * modComp) * env4;
+
+	sig3 = SinOsc.ar(freqclipped * hr3, 0, (mi3 - mi3) * modComp) * env3;
+
+	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
+
+	sig1 = SinOsc.ar(freqclipped * hr1, 0, (mi1 - mi1) * modComp) * env1;
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig5 = sig5 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig6 = sig6 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig3 / 4) + (sig4 / 4) + (sig5 / 4) + (sig6 / 4)) * amp * 0.7;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
 }).store;
 
 )
