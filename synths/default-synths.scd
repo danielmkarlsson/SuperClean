@@ -434,6 +434,12 @@ SynthDef(\fm0, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -441,12 +447,12 @@ SynthDef(\fm0, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
     ));
 	//EnvGen.ar(Env.linen(attack, hold, release, 1, [crv, 0, crt]), doneAction: 2); // lifted from \clean_envelope in core-synths.scd
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
 	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1;
@@ -474,18 +480,24 @@ SynthDef(\fm1, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
         [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOscFB.ar(freqclipped * hr2, hr2 * modComp, mi2 * modComp) * env2;
@@ -513,18 +525,24 @@ SynthDef(\fm2, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
         [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig3 = SinOsc.ar(freqclipped * hr3, 0, (mi3 - mi3) * modComp) * env3;
@@ -552,18 +570,24 @@ SynthDef(\fm3, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig3 = SinOsc.ar(freqclipped * hr3, 0, (mi3 - mi3) * modComp) * env3;
@@ -594,18 +618,24 @@ SynthDef(\fm4, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
         [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
@@ -635,18 +665,24 @@ SynthDef(\fm5, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
@@ -677,18 +713,24 @@ SynthDef(\fm6, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
         [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
@@ -717,18 +759,24 @@ SynthDef(\fm7, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
         [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
@@ -757,18 +805,24 @@ SynthDef(\fm8, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
         [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOscFB.ar(freqclipped * hr2, mi2 * modComp, mi2 * modComp) * env2;
@@ -797,18 +851,24 @@ SynthDef(\fm9, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
         [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig5 = SinOsc.ar(freqclipped * hr5, 0, (mi5 - mi5) * modComp) * env5;
@@ -836,18 +896,24 @@ SynthDef(\fma, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
         [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig5 = SinOsc.ar(freqclipped * hr5, 0, (mi5 - mi5) * modComp) * env5;
@@ -875,18 +941,24 @@ SynthDef(\fmb, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
         [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOscFB.ar(freqclipped * hr1, mi1 * modComp, mi2 * modComp) * env2;
@@ -914,18 +986,24 @@ SynthDef(\fmc, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
         [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
@@ -954,18 +1032,24 @@ SynthDef(\fmd, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
         [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
@@ -993,18 +1077,24 @@ SynthDef(\fme, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
         [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOscFB.ar(freqclipped * hr2, mi2 * modComp, mi2 * modComp) * env2;
@@ -1032,18 +1122,24 @@ SynthDef(\fmf, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
         [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
@@ -1071,18 +1167,24 @@ SynthDef(\fmg, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
         [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
@@ -1110,18 +1212,24 @@ SynthDef(\fmh, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
@@ -1148,18 +1256,24 @@ SynthDef(\fmi, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
@@ -1188,18 +1302,24 @@ SynthDef(\fmj, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
@@ -1228,18 +1348,24 @@ SynthDef(\fmk, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
@@ -1269,18 +1395,24 @@ SynthDef(\fml, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
@@ -1310,18 +1442,24 @@ SynthDef(\fmm, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
@@ -1352,18 +1490,24 @@ SynthDef(\fmn, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
@@ -1395,18 +1539,24 @@ SynthDef(\fmo, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
@@ -1439,18 +1589,24 @@ SynthDef(\fmp, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
@@ -1480,18 +1636,24 @@ SynthDef(\fmq, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
@@ -1521,18 +1683,24 @@ SynthDef(\fmr, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
@@ -1562,18 +1730,24 @@ SynthDef(\fms, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
@@ -1605,18 +1779,24 @@ SynthDef(\fmt, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOsc.ar(freqclipped * hr6, 0, (mi6 - mi6) * modComp) * env6;
@@ -1648,18 +1828,24 @@ SynthDef(\fmu, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
@@ -1693,18 +1879,24 @@ SynthDef(\fmv, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
 		[0, 0, bnc]
 	));
 	freqclipped = (freq * gliss).clip(20, 20000);
-	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, cr1]), timeScale:sustain, doneAction:2);
-	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, cr2]), timeScale:sustain);
-	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, cr3]), timeScale:sustain, doneAction:2);
-	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, cr4]), timeScale:sustain);
-	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, cr5]), timeScale:sustain);
-	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, cr6]), timeScale:sustain);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain, doneAction:2);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain, doneAction:2);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp, mi6 * modComp) * env6;
@@ -1712,7 +1904,7 @@ SynthDef(\fmv, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	sig5 = SinOsc.ar(freqclipped * hr5, 0, (mi5 - mi5) * modComp) * env5;
 
 	sig4 = SinOsc.ar(freqclipped * hr4, 0, (mi4 - mi4) * modComp) * env4;
-
+	//
 	sig3 = SinOsc.ar(freqclipped * hr3, 0, (mi3 - mi3) * modComp) * env3;
 
 	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2;
