@@ -424,7 +424,7 @@ SynthDef(\fmx, {| sustain = 1, pan, amp = 0.1, out = 0,
 }).store;
 
 
-// A six operator FM synth. Algorithm 1
+// A six operator FM synth loosely based on algorithm 1
 SynthDef(\fm0, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 3, hr2 = 3, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 2,
 	mi1 = 1.5, mi2 = 0.0, mi3 = 1.0, mi4 = 0.5, mi5 = 0.5, mi6 = 3.0,
@@ -473,7 +473,7 @@ SynthDef(\fm0, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 2, hopefully
+// A six operator FM synth loosely based on algorithm 2
 SynthDef(\fm1, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 1, hr2 = 1, hr3 = 1, hr4 = 1, hr5 = 1, hr6 = 1,
 	mi1 = 1.5, mi2 = 1.0, mi3 = 1.0, mi4 = 1.5, mi5 = 0.5, mi6 = 1.0,
@@ -519,7 +519,7 @@ SynthDef(\fm1, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 3, hopefully
+// A six operator FM synth loosely based on algorithm 3
 SynthDef(\fm2, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 1, hr2 = 2, hr3 = 1, hr4 = 2, hr5 = 3, hr6 = 4,
 	mi1 = 1.5, mi2 = 2.0, mi3 = 0.0, mi4 = 0.5, mi5 = 2.0, mi6 = 0.125,
@@ -565,7 +565,7 @@ SynthDef(\fm2, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 4, hopefully
+// A six operator FM synth loosely based on algorithm 4
 SynthDef(\fm3, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 1, hr2 = 1, hr3 = 1, hr4 = 1, hr5 = 1, hr6 = 1,
 	mi1 = 1.0, mi2 = 2.5, mi3 = 1.0, mi4 = 0.5, mi5 = 2.5, mi6 = 1.0,
@@ -612,7 +612,7 @@ SynthDef(\fm3, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 5, hopefully
+// A six operator FM synth loosely based on algorithm 5
 SynthDef(\fm4, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 1, hr2 = 0, hr3 = 3, hr4 = 0, hr5 = 5, hr6 = 7,
 	mi1 = 0.5, mi2 = 0.0, mi3 = 1.0, mi4 = 0.0, mi5 = 0.5, mi6 = 0.75,
@@ -660,7 +660,7 @@ SynthDef(\fm4, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 6, hopefully
+// A six operator FM synth loosely based on algorithm 6
 SynthDef(\fm5, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
 	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
@@ -709,7 +709,7 @@ SynthDef(\fm5, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 7, hopefully
+// A six operator FM synth loosely based on algorithm 7
 SynthDef(\fm6, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 2, hr2 = 1, hr3 = 1, hr4 = 2, hr5 = 1, hr6 = 1,
 	mi1 = 1.0, mi2 = 0.0, mi3 = 4.0, mi4 = 0.0, mi5 = 4.0, mi6 = 200.0,
@@ -756,7 +756,7 @@ SynthDef(\fm6, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 8, hopefully
+// A six operator FM synth loosely based on algorithm 8
 SynthDef(\fm7, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 1, hr2 = 1, hr3 = 2, hr4 = 2, hr5 = 2, hr6 = 4,
 	mi1 = 1.0, mi2 = 0.0, mi3 = 0.3, mi4 = 1.2, mi5 = 3.0, mi6 = 0.0,
@@ -803,7 +803,7 @@ SynthDef(\fm7, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 9, hopefully
+// A six operator FM synth loosely based on algorithm 9
 SynthDef(\fm8, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 3, hr2 = 2, hr3 = 4, hr4 = 4, hr5 = 5, hr6 = 6,
 	mi1 = 1.0, mi2 = 3.25, mi3 = 0.125, mi4 = 0.0, mi5 = 3.0, mi6 = 0.0,
@@ -850,7 +850,7 @@ SynthDef(\fm8, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 10, hopefully
+// A six operator FM synth loosely based on algorithm 10
 SynthDef(\fm9, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 1, hr2 = 7, hr3 = 6, hr4 = 4, hr5 = 5, hr6 = 2,
 	mi1 = 1.0, mi2 = 5.0, mi3 = 9.0, mi4 = 1.0, mi5 = 0.0, mi6 = 0.0,
@@ -896,7 +896,7 @@ SynthDef(\fm9, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 11, hopefully
+// A six operator FM synth loosely based on algorithm 11
 SynthDef(\fma, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 2, hr2 = 1, hr3 = 4, hr4 = 1, hr5 = 2, hr6 = 3,
 	mi1 = 1.0, mi2 = 1.0, mi3 = 0.0, mi4 = 1.5, mi5 = 0.0, mi6 = 2.0,
@@ -942,7 +942,7 @@ SynthDef(\fma, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 12, hopefully
+// A six operator FM synth loosely based on algorithm 12
 SynthDef(\fmb, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 1, hr2 = 2, hr3 = 4, hr4 = 6, hr5 = 4, hr6 = 2,
 	mi1 = 2.0, mi2 = 4.0, mi3 = 2.0, mi4 = 0.0, mi5 = 0.0, mi6 = 0.0,
@@ -988,7 +988,7 @@ SynthDef(\fmb, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 13, hopefully
+// A six operator FM synth loosely based on algorithm 13
 SynthDef(\fmc, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 1, hr2 = 1, hr3 = 1, hr4 = 1, hr5 = 1, hr6 = 1,
 	mi1 = 1.0, mi2 = 0.0, mi3 = 1.0, mi4 = 0.0, mi5 = 0.0, mi6 = 10.0,
@@ -1035,7 +1035,7 @@ SynthDef(\fmc, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 14, hopefully
+// A six operator FM synth loosely based on algorithm 14
 SynthDef(\fmd, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 1, hr2 = 3, hr3 = 1, hr4 = 1, hr5 = 5, hr6 = 1,
 	mi1 = 1.0, mi2 = 0.0, mi3 = 0.5, mi4 = 0.0, mi5 = 0.0, mi6 = 200.0,
@@ -1081,7 +1081,7 @@ SynthDef(\fmd, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 15, hopefully
+// A six operator FM synth loosely based on algorithm 15
 SynthDef(\fme, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 3, hr2 = 3, hr3 = 2, hr4 = 2, hr5 = 3, hr6 = 4,
 	mi1 = 1.0, mi2 = 4.0, mi3 = 1.0, mi4 = 0.0, mi5 = 0.0, mi6 = 0.0,
@@ -1127,7 +1127,7 @@ SynthDef(\fme, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 16, hopefully
+// A six operator FM synth loosely based on algorithm 16
 SynthDef(\fmf, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 1, hr2 = 1, hr3 = 1, hr4 = 4, hr5 = 3, hr6 = 2,
 	mi1 = 1.0, mi2 = 0.0, mi3 = 1.0, mi4 = 0.0, mi5 = 1.0, mi6 = 2000.0,
@@ -1172,7 +1172,7 @@ SynthDef(\fmf, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 17, hopefully
+// A six operator FM synth loosely based on algorithm 17
 SynthDef(\fmg, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 1, hr2 = 3, hr3 = 2, hr4 = 6, hr5 = 4, hr6 = 12,
 	mi1 = 1.0, mi2 = 2.0, mi3 = 2.0, mi4 = 0.0, mi5 = 2.0, mi6 = 0.0,
@@ -1217,7 +1217,7 @@ SynthDef(\fmg, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 18, hopefully
+// A six operator FM synth loosely based on algorithm 18
 SynthDef(\fmh, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 2, hr2 = 1, hr3 = 3, hr4 = 4, hr5 = 6, hr6 = 8,
 	mi1 = 1.0, mi2 = 0.0, mi3 = 3.5, mi4 = 0.8, mi5 = 0.7, mi6 = 0.0,
@@ -1261,7 +1261,7 @@ SynthDef(\fmh, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 19, hopefully
+// A six operator FM synth loosely based on algorithm 19
 SynthDef(\fmi, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 2, hr2 = 1, hr3 = 1, hr4 = 2, hr5 = 1, hr6 = 1,
 	mi1 = 0.2, mi2 = 1.0, mi3 = 0.0, mi4 = 0.3, mi5 = 2.0, mi6 = 4.0,
@@ -1308,7 +1308,7 @@ SynthDef(\fmi, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 20, hopefully
+// A six operator FM synth loosely based on algorithm 20
 SynthDef(\fmj, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 3, hr2 = 4, hr3 = 1, hr4 = 2, hr5 = 5, hr6 = 3,
 	mi1 = 1.0, mi2 = 1.0, mi3 = 1.15, mi4 = 1.0, mi5 = 0.0, mi6 = 0.0,
@@ -1355,7 +1355,7 @@ SynthDef(\fmj, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 21, hopefully
+// A six operator FM synth loosely based on algorithm 21
 SynthDef(\fmk, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 6, hr2 = 3, hr3 = 3, hr4 = 1, hr5 = 1, hr6 = 2,
 	mi1 = 1.0, mi2 = 1.0, mi3 = 1.0, mi4 = 1.0, mi5 = 1.0, mi6 = 0.0,
@@ -1403,7 +1403,7 @@ SynthDef(\fmk, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 22, hopefully
+// A six operator FM synth loosely based on algorithm 22
 SynthDef(\fml, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 2, hr2 = 3, hr3 = 4, hr4 = 5, hr5 = 6, hr6 = 7,
 	mi1 = 1.0, mi2 = 0.0, mi3 = 1.0, mi4 = 1.0, mi5 = 1.0, mi6 = 128.0,
@@ -1451,7 +1451,7 @@ SynthDef(\fml, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 23, hopefully
+// A six operator FM synth loosely based on algorithm 23
 SynthDef(\fmm, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 0.5, hr2 = 1, hr3 = 2, hr4 = 0.25, hr5 = 0.5, hr6 = 0.125,
 	mi1 = 0.0, mi2 = 0.75, mi3 = 0.0, mi4 = 2.0, mi5 = 3.0, mi6 = 1.0,
@@ -1488,7 +1488,7 @@ SynthDef(\fmm, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	sig3 = SinOsc.ar(freqclipped * hr3) * env3;
 	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2 * tp2;
 
-	sig1 = SinOsc.ar(freqclipped * hr1) * env1 * tp1;
+	sig1 = SinOscFB.ar(freqclipped * hr1, mi1 * modComp) * env1 * tp1;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -1500,7 +1500,7 @@ SynthDef(\fmm, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 24, hopefully
+// A six operator FM synth loosely based on algorithm 24
 SynthDef(\fmn, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 0.25, hr2 = 0.5, hr3 = 1.5, hr4 = 0.5, hr5 = 2.0, hr6 = 0.5,
 	mi1 = 0.0, mi2 = 0.0, mi3 = 1.0, mi4 = 1.0, mi5 = 1.0, mi6 = 11.0,
@@ -1535,9 +1535,9 @@ SynthDef(\fmn, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, pi/2], mi4 * modComp) * env4 * tp4;
 	sig3 = SinOsc.ar(freqclipped * hr3, sig6 + [0, pi/2], mi3 * modComp) * env3 * tp3;
 
-	sig2 = SinOsc.ar(freqclipped * hr2) * env2 * tp2;
+	sig2 = SinOscFB.ar(freqclipped * hr2, mi2 * modComp) * env2 * tp2;
 
-	sig1 = SinOsc.ar(freqclipped * hr1) * env1 * tp1;
+	sig1 = SinOscFB.ar(freqclipped * hr1, mi1 * modComp) * env1 * tp1;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -1550,12 +1550,12 @@ SynthDef(\fmn, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 25, hopefully
+// A six operator FM synth loosely based on algorithm 25
 SynthDef(\fmo, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
-	hr1 = 1, hr2 = 1, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
-	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
-	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
-	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	hr1 = 2, hr2 = 3, hr3 = 4, hr4 = 5, hr5 = 6, hr6 = 7,
+	mi1 = 100.0, mi2 = 300.0, mi3 = 150.0, mi4 = 1.0, mi5 = 1.0, mi6 = 200.0,
+	en1 = 0.01478, en2 = 0.2455789, en3 = 0.035678, en4 = 0.439350, en5 = 0.05279, en6 = 0.690743,
+	cu1 = 8.0, cu2 = 8.0, cu3 = 8.0, cu4 = 8.0, cu5 = 8.0, cu6 = 8.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
@@ -1602,12 +1602,12 @@ SynthDef(\fmo, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 }).store;
 
 
-// A six operator FM synth. Algorithm 26, hopefully
+// A six operator FM synth loosely based on algorithm 26
 SynthDef(\fmp, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
-	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
-	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
-	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
-	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	hr1 = 2.0, hr2 = 3.0, hr3 = 2.0, hr4 = 0.5, hr5 = 0.25, hr6 = 3.0,
+	mi1 = 0.0, mi2 = 1.0, mi3 = 0.0, mi4 = 1.0, mi5 = 0.0, mi6 = 14.0,
+	en1 = 0.25, en2 = 0.25, en3 = 0.25, en4 = 0.0, en5 = 0.03125, en6 = 0.0,
+	cu1 = 4.0, cu2 = 4.0, cu3 = 4.0, cu4 = 2.0, cu5 = 4.0, cu6 = 8.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
@@ -1637,25 +1637,25 @@ SynthDef(\fmp, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, pi/2], mi4 * modComp) * env4 * tp4;
 
 	sig3 = SinOsc.ar(freqclipped * hr3) * env3;
-	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2 * tp2;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2 * tp2;
 
-	sig1 = SinOsc.ar(freqclipped * hr1) * env1 * tp1;
+	sig1 = SinOscFB.ar(freqclipped * hr1, mi1 * modComp) * env1 * tp1;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
-	sig = ((sig1 / 4) + (sig2 / 4) + (sig4 / 4)) * amp * 0.7;
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig4 / 4)) * amp * 1.2;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, Limiter.ar(sig.sanitize));
 }).store;
 
 
-// A six operator FM synth. Algorithm 27, hopefully
+// A six operator FM synth loosely based on algorithm 27
 SynthDef(\fmq, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
-	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
+	hr1 = 2.0, hr2 = 2.0, hr3 = 2.0, hr4 = 0.5, hr5 = 0.25, hr6 = 3.0,
 	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
-	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
-	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	en1 = 0.1, en2 = 0.2, en3 = 0.3, en4 = 0.4, en5 = 0.5, en6 = 0.0,
+	cu1 = 1.0, cu2 = 2.0, cu3 = 4.0, cu4 = 4.0, cu5 = 4.0, cu6 = 1.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
@@ -1680,30 +1680,30 @@ SynthDef(\fmq, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
-	sig6 = SinOsc.ar(freqclipped * hr6) * env6;
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
 	sig5 = SinOsc.ar(freqclipped * hr5) * env5;
 	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, pi/2], mi4 * modComp) * env4 * tp4;
 
 	sig3 = SinOscFB.ar(freqclipped * hr3, mi3 * modComp) * env3;
-	sig2 = SinOsc.ar(freqclipped * hr2, 0, (mi2 - mi2) * modComp) * env2 * tp2;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2 * tp2;
 
-	sig1 = SinOsc.ar(freqclipped * hr1) * env1 * tp1;
+	sig1 = SinOscFB.ar(freqclipped * hr1, mi1 * modComp) * env1 * tp1;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
-	sig = ((sig1 / 4) + (sig2 / 4) + (sig4 / 4)) * amp * 0.7;
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig4 / 4)) * amp * 1.2;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, Limiter.ar(sig.sanitize));
 }).store;
 
 
-// A six operator FM synth. Algorithm 28, hopefully
+// A six operator FM synth loosely based on algorithm 28
 SynthDef(\fmr, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
-	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
-	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
-	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
-	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	hr1 = 0.25, hr2 = 0.5, hr3 = 1.0, hr4 = 2.0, hr5 = 4.0, hr6 = 0.5,
+	mi1 = 1.0, mi2 = 0.0, mi3 = 1.0, mi4 = 10.0, mi5 = 10.0, mi6 = 0.0,
+	en1 = 0.0, en2 = 0.0, en3 = 0.0, en4 = 0.0, en5 = 0.0, en6 = 0.0,
+	cu1 = 2.0, cu2 = 4.0, cu3 = 6.0, cu4 = 8.0, cu5 = 10.0, cu6 = 12.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
@@ -1740,18 +1740,18 @@ SynthDef(\fmr, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig6 = sig6 * AmpCompA.kr(freqclipped, 17.323914436055);
-	sig = ((sig1 / 4) + (sig3 / 4) + (sig6 / 4)) * amp * 0.7;
+	sig = ((sig1 / 4) + (sig3 / 4) + (sig6 / 4)) * amp * 1.2;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, Limiter.ar(sig.sanitize));
 }).store;
 
 
-// A six operator FM synth. Algorithm 29, hopefully
+// A six operator FM synth loosely based on algorithm 29
 SynthDef(\fms, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
-	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
-	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
-	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
-	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	hr1 = 1.0, hr2 = 0.5, hr3 = 0.25, hr4 = 1.0, hr5 = 0.5, hr6 = 0.25,
+	mi1 = 0.25, mi2 = 1.125, mi3 = 1.0, mi4 = 0.0, mi5 = 1.0, mi6 = 1.5,
+	en1 = 0.16, en2 = 0.08, en3 = 0.04, en4 = 0.02, en5 = 0.01, en6 = 0.0,
+	cu1 = 1.2, cu2 = 3.4, cu3 = 5.6, cu4 = 7.8, cu5 = 5.6, cu6 = 8.9,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
@@ -1782,28 +1782,28 @@ SynthDef(\fms, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	sig4 = SinOsc.ar(freqclipped * hr4) * env4;
 	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3 * tp3;
 
-	sig2 = SinOsc.ar(freqclipped * hr2) * env2 * tp2;
+	sig2 = SinOscFB.ar(freqclipped * hr2, mi2 * modComp) * env2 * tp2;
 
-	sig1 = SinOsc.ar(freqclipped * hr1) * env1 * tp1;
+	sig1 = SinOscFB.ar(freqclipped * hr1, mi1 * modComp) * env1 * tp1;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig5 = sig5 * AmpCompA.kr(freqclipped, 17.323914436055);
-	sig = ((sig1 / 4) + (sig2 / 4) + (sig3 / 4) + (sig5 / 4)) * amp * 0.7;
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig3 / 4) + (sig5 / 4)) * amp * 1.2;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, Limiter.ar(sig.sanitize));
 }).store;
 
 
-// A six operator FM synth. Algorithm 30, hopefully
+// A six operator FM synth loosely based on algorithm 30
 SynthDef(\fmt, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
-	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
-	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
-	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
-	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	hr1 = 0.5, hr2 = 2.0, hr3 = 4.0, hr4 = 0.5, hr5 = 0.25, hr6 = 0.25,
+	mi1 = 0.75, mi2 = 0.5, mi3 = 0.75, mi4 = 2.0, mi5 = 100.0, mi6 = 0.5,
+	en1 = 0.0, en2 = 0.0, en3 = 0.01, en4 = 0.0, en5 = 0.0, en6 = 0.0,
+	cu1 = 2.0, cu2 = 4.0, cu3 = 0.0, cu4 = -4.0, cu5 = -8.0, cu6 = 2.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
-	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+	tp1 = 1.0, tp2 = 1.0, tp3 = 0.5, tp6 = 2.0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1826,32 +1826,32 @@ SynthDef(\fmt, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
-	sig6 = SinOsc.ar(freqclipped * hr6) * env6 * tp6;
+	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6 * tp6;
 
 	sig5 = SinOscFB.ar(freqclipped * hr5, mi5 * modComp) * env5;
 	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, pi/2], mi4 * modComp) * env4;
 	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3 * tp3;
 
-	sig2 = SinOsc.ar(freqclipped * hr2) * env2 * tp2;
+	sig2 = SinOscFB.ar(freqclipped * hr2, mi2 * modComp) * env2 * tp2;
 
-	sig1 = SinOsc.ar(freqclipped * hr1) * env1 * tp1;
+	sig1 = SinOscFB.ar(freqclipped * hr1, mi1 * modComp) * env1 * tp1;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig6 = sig6 * AmpCompA.kr(freqclipped, 17.323914436055);
-	sig = ((sig1 / 4) + (sig2 / 4) + (sig3 / 4) + (sig6 / 4)) * amp * 0.7;
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig3 / 4) + (sig6 / 4)) * amp * 1.2;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, Limiter.ar(sig.sanitize));
 }).store;
 
 
-// A six operator FM synth. Algorithm 31, hopefully
+// A six operator FM synth loosely based on algorithm 31
 SynthDef(\fmu, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
-	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
-	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
-	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
-	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	hr1 = 0.25, hr2 = 0.5, hr3 = 1.0, hr4 = 1.5, hr5 = 3.0, hr6 = 2.0,
+	mi1 = 2.0, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
+	en1 = 0.0, en2 = 0.3, en3 = 0.2, en4 = 0.1, en5 = 0.5, en6 = 0.4,
+	cu1 = 4.0, cu2 = 2.0, cu3 = 6.0, cu4 = 3.0, cu5 = 8.0, cu6 = 5.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
@@ -1879,33 +1879,33 @@ SynthDef(\fmu, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
 	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5 * tp5;
 
-	sig4 = SinOsc.ar(freqclipped * hr4) * env4 * tp4;
+	sig4 = SinOscFB.ar(freqclipped * hr4, mi4 * modComp) * env4 * tp4;
 
-	sig3 = SinOsc.ar(freqclipped * hr3) * env3 * tp3;
+	sig3 = SinOscFB.ar(freqclipped * hr3, mi3 * modComp) * env3 * tp3;
 
-	sig2 = SinOsc.ar(freqclipped * hr2) * env2 * tp2;
+	sig2 = SinOscFB.ar(freqclipped * hr2, mi2 * modComp) * env2 * tp2;
 
-	sig1 = SinOsc.ar(freqclipped * hr1) * env1 * tp1;
+	sig1 = SinOscFB.ar(freqclipped * hr1, mi1 * modComp) * env1 * tp1;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig5 = sig5 * AmpCompA.kr(freqclipped, 17.323914436055);
-	sig = ((sig1 / 4) + (sig2 / 4) + (sig3 / 4) + (sig4 / 4) + (sig5 / 4)) * amp * 0.7;
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig3 / 4) + (sig4 / 4) + (sig5 / 4)) * amp * 1.2;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, Limiter.ar(sig.sanitize));
 }).store;
 
 
-// A six operator FM synth. Algorithm 32, hopefully
+// A six operator FM synth loosely based on algorithm 32
 SynthDef(\fmv, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
-	hr1 = 1, hr2 = 0, hr3 = 1, hr4 = 5, hr5 = 4, hr6 = 3,
-	mi1 = 0.35, mi2 = 0.7, mi3 = 1.05, mi4 = 1.4, mi5 = 1.75, mi6 = 2.1,
-	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
-	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
+	hr1 = 0.25, hr2 = 0.5, hr3 = 1.0, hr4 = 2.0, hr5 = 4.0, hr6 = 8.0,
+	mi1 = 0.0, mi2 = 4.0, mi3 = 8.0, mi4 = 16.0, mi5 = 32.0, mi6 = 64.0,
+	en1 = 0.0, en2 = 0.0625, en3 = 0.125, en4 = 0.25, en5 = 0.5, en6 = 1.0,
+	cu1 = 0.0, cu2 = 2.0, cu3 = 4.0, cu4 = 8.0, cu5 = 16.0, cu6 = 32.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
-	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+	tp1 = 1.5, tp2 = 0.1, tp3 = 0.05, tp4 = 0.1, tp5 = 0.1, tp6 = 0.25,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
