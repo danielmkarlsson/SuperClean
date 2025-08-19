@@ -29,6 +29,7 @@ lpq:	Low pass filter resonance. Value range is 0.0, 1.0 where 0.0 is no resonanc
 hpq:	High pass filter resonance. Value range is 0.0, 1.0 where 0.0 is no resonance and 1.0 is all the way resonant.
 bpq:	Band pass filter resonance. Value range is 0.0, 1.0 where 0.0 is no resonance and 1.0 is all the way resonant.
 lhf:	Low & high pass filter combo where 0.5 does nothing, 0.0 sets the lpf to 20hz and 1.0 sets the hpf to 20000
+hlf:	High & low pass filter combo, catches typos and nice to have two, the order of the filters are reversed, not that it matters.
 brf:	Band reject filter, value range is 20 to 20000
 brq:	Band reject filter resonance. Value range is 0.0, 1.0 where 0.0 is no resonance and 1.0 is all the way resonant.
 brn:	Number of Band reject filters. Value range is 0.0, 1.0 where 0.0 is one filter 1.0 is ten filters.
@@ -73,7 +74,8 @@ psb:    Phase decorellator blend. Value range is 0.0, 1.0
 >>> GLOBAL effect parameters (added to the sum of all sounds in an aux) <<<
 
 mir:	An Impulse Response based reverb, this is the wet parameter, or put another way, the amplitude of the reverb. Range is zero to infinity
-hal:	The input or send into the mir reverb. Value range is 0.0, 1.0
+mii:	The input or send into the mir reverb. Value range is 0.0, 1.0
+hal:	The hall reverb output amplitude
 hai:	The input or send into the hal reverb. Value range is 0.0, 1.0
 rts:	The RT60 value of the reverb. This goes from 0 to 999. That top value is approaching inifity. It is super duper long.
 edf:	Early diffusion of the hal reverb. Value range is 0.0, 1.0
@@ -327,3 +329,1370 @@ bnd:
 bnt:
 bno:
 bnc:
+
+There are also 32 six operator FM synths which I loosely based on the algorithms popularized by Yamaha.
+They are called \fm0 to \fmv.
+One important thing about these synths that I need you to know is that their internal envelope times are scaled by the sustain key.
+Really good to keep that in mind when using these synths.
+I care about you and I want you to have a good time here.
+Understanding that the sustain key scales the internal envelopes of these synths is integral to that goal of you having a good time.
+I also want to recommend that you do not use the atk, hld and rel keys on these synths.
+They already have envelopes in there.
+I think that if you use these synths with the added amplitude envelope added on top you are missing out on some gnarly FM envelope phenomena.
+Just go nuts exploring the built in envelopes in the synths.
+Check out my defaults.
+Some of those values are quite extreme.
+Just sit with it for a bit.
+You'll get there.
+
+Here are some code blocks which show the default values for each synth.
+This means that you will get these sounds just by using these synthnames.
+You are also free to overwrite any or all of these values at any time.
+Below the code blocks showcasing the defaults are some examples that use these 6opFM synths together in various constellations.
+
+(
+Pdef(0,
+	Pbind(*[
+		type: \cln,
+		snd: \fm0,
+		amp: 0.5,
+		hr1: 3,
+		hr2: 3,
+		hr3: 1,
+		hr4: 5,
+		hr5: 4,
+		hr6: 2,
+		mi1: 1.5,
+		mi2: 0,
+		mi3: 1,
+		mi4: 0.5,
+		mi5: 0.5,
+		mi6: 3.0,
+		en1: 0.0,
+		en2: 0.0,
+		en3: 0.04,
+		en4: 0.05,
+		en5: 0.0,
+		en6: 0.0,
+		cu1: 8,
+		cu2: 200,
+		cu3: 4,
+		cu4: -2,
+		cu5: -32,
+		cu6: 8,
+		tp1: 1.0,
+		tp3: 1.0,
+		dur: 1/5,
+	])
+).play;
+)
+
+(
+Pdef(1,
+	Pbind(*[
+		type: \cln,
+		snd: \fm1,
+		amp: 0.5,
+		hr1: 1,
+		hr2: 1,
+		hr3: 1,
+		hr4: 1,
+		hr5: 1,
+		hr6: 1,
+		mi1: 1.5,
+		mi2: 1,
+		mi3: 1,
+		mi4: 1.5,
+		mi5: 0.5,
+		mi6: 1.0,
+		en1: 0,
+		en2: 0.01,
+		en3: 0.02,
+		en4: 0.03,
+		en5: 0.04,
+		en6: 0.05,
+		cu1: 8,
+		cu2: 6,
+		cu3: 4,
+		cu4: 2,
+		cu5: 0,
+		cu6: -2,
+		tp1: 1.0,
+		tp3: 1.0,
+		dur: 1/2,
+	])
+).play
+)
+
+(
+Pdef(2,
+	Pbind(*[
+		type: \cln,
+		snd: \fm2,
+		amp: 0.5,
+		hr1: 1,
+		hr2: 2,
+		hr3: 1,
+		hr4: 2,
+		hr5: 3,
+		hr6: 4,
+		mi1: 1.5,
+		mi2: 2,
+		mi3: 0,
+		mi4: 0.5,
+		mi5: 2.0,
+		mi6: 0.125,
+		en1: 0.05,
+		en2: 0.04,
+		en3: 0.03,
+		en4: 0.02,
+		en5: 0.01,
+		en6: 0.0,
+		cu1: 3,
+		cu2: 6,
+		cu3: 2,
+		cu4: 4,
+		cu5: 1,
+		cu6: 8,
+		tp1: 1.0,
+		tp4: 1.0,
+		dur: 1/3
+	])
+).play
+)
+
+(
+Pdef(3,
+	Pbind(*[
+		type: \cln,
+		snd: \fm3,
+		amp: 0.5,
+		hr1: 1,
+		hr2: 1,
+		hr3: 1,
+		hr4: 1,
+		hr5: 1,
+		hr6: 1,
+		mi1: 1.0,
+		mi2: 2.5,
+		mi3: 1.0,
+		mi4: 0.5,
+		mi5: 2.5,
+		mi6: 1.0,
+		en1: 0.001,
+		en2: 0.5,
+		en3: 0.002,
+		en4: 0.004,
+		en5: 0.003,
+		en6: 0.0,
+		cu1: 0,
+		cu2: -2,
+		cu3: 0,
+		cu4: -1,
+		cu5: -6,
+		cu6: -2,
+		tp1: 1.0,
+		tp3: 1.0,
+		tp5: 1.0,
+		dur: 1/4,
+	])
+).play
+)
+
+(
+Pdef(4,
+	Pbind(*[
+		type: \cln,
+		snd: \fm4,
+		amp: 0.5,
+		hr1: 1,
+		hr2: 0,
+		hr3: 3,
+		hr4: 0,
+		hr5: 5,
+		hr6: 7,
+		mi1: 0.5,
+		mi2: 0.0,
+		mi3: 1.0,
+		mi4: 0.0,
+		mi5: 0.5,
+		mi6: 0.75,
+		en1: 0.0,
+		en2: 0.0,
+		en3: 0.05,
+		en4: 0.0,
+		en5: 0.0,
+		en6: 0.1,
+		cu1: 0.25,
+		cu2: 0,
+		cu3: 0.5,
+		cu4: 0,
+		cu5: 5,
+		cu6: -2,
+		tp1: 1.0,
+		tp3: 1.0,
+		tp5: 1.0,
+		dur: 1/5,
+	])
+).play;
+)
+
+(
+Pdef(5,
+	Pbind(*[
+		type: \cln,
+		snd: \fm5,
+		amp: 0.5,
+		hr1: 1,
+		hr2: 3,
+		hr3: 2,
+		hr4: 4,
+		hr5: 3,
+		hr6: 5,
+		mi1: 1.0,
+		mi2: 1.0,
+		mi3: 1.0,
+		mi4: 1.0,
+		mi5: 1.0,
+		mi6: 1.0,
+		en1: 0.0,
+		en2: 0.25,
+		en3: 0.2,
+		en4: 0.35,
+		en5: 0.75,
+		en6: 0.45,
+		cu1: 4.0,
+		cu2: -4,
+		cu3: 4.0,
+		cu4: -4,
+		cu5: 4.0,
+		cu6: -4,
+		tp1: 1,
+		tp3: 1,
+		tp5: 1,
+		dur: 1/2,
+	])
+).play;
+)
+
+(
+Pdef(6,
+	Pbind(*[
+		type: \cln,
+		snd: \fm6,
+		amp: 0.5,
+		hr1: 2,
+		hr2: 1,
+		hr3: 1,
+		hr4: 2,
+		hr5: 1,
+		hr6: 1,
+		mi1: 1.0,
+		mi2: 0.0,
+		mi3: 4.0,
+		mi4: 0.0,
+		mi5: 4.0,
+		mi6: 200.0,
+		en1: 0.1,
+		en2: 0.2,
+		en3: 0.0,
+		en4: 0.3,
+		en5: 0.0,
+		en6: 0.0,
+		cu1: -2.0,
+		cu2: -4.0,
+		cu3: 64.0,
+		cu4: 0.0,
+		cu5: 0.0,
+		cu6: -8.0,
+		tp1: 1,
+		tp3: 0.5,
+		dur: 4/5,
+	])
+).play;
+)
+
+(
+Pdef(7,
+	Pbind(*[
+		type: \cln,
+		snd: \fm7,
+		amp: 0.5,
+		hr1: 1,
+		hr2: 1,
+		hr3: 2,
+		hr4: 2,
+		hr5: 2,
+		hr6: 4,
+		mi1: 1.0,
+		mi2: 0.0,
+		mi3: 0.3,
+		mi4: 1.2,
+		mi5: 3.0,
+		mi6: 0.0,
+		en1: 0.0,
+		en2: 0.0,
+		en3: 0.9,
+		en4: 0.1,
+		en5: 0.2,
+		en6: 0.4,
+		cu1: -2.0,
+		cu2: 32.0,
+		cu3: 1.0,
+		cu4: 1.0,
+		cu5: -2.0,
+		cu6: 5.0,
+		tp1: 0.8,
+		tp3: 1.0,
+		dur: 1/3,
+	])
+).play;
+)
+
+(
+Pdef(8,
+	Pbind(*[
+		type: \cln,
+		snd: \fm8,
+		amp: 0.5,
+		hr1: 3,
+		hr2: 2,
+		hr3: 4,
+		hr4: 4,
+		hr5: 5,
+		hr6: 6,
+		mi1: 1.0,
+		mi2: 3.25,
+		mi3: 0.125,
+		mi4: 0.0,
+		mi5: 3.0,
+		mi6: 0.0,
+		en1: 0.0,
+		en2: 0.0,
+		en3: 0.5,
+		en4: 0.8,
+		en5: 0.7,
+		en6: 0.8,
+		cu1: 0.0,
+		cu2: 16.0,
+		cu3: -2.0,
+		cu4: -3.0,
+		cu5: -4.0,
+		cu6: -5.0,
+		tp1: 0.4,
+		tp3: 1.0,
+		dur: 1/4,
+	])
+).play;
+)
+
+(
+Pdef(9,
+	Pbind(*[
+		type: \cln,
+		snd: \fm9,
+		amp: 0.5,
+		hr1: 1,
+		hr2: 7,
+		hr3: 6,
+		hr4: 4,
+		hr5: 5,
+		hr6: 2,
+		mi1: 1.0,
+		mi2: 5.0,
+		mi3: 9.0,
+		mi4: 1.0,
+		mi5: 0.0,
+		mi6: 0.0,
+		en1: 0.3,
+		en2: 0.9,
+		en3: 0.1,
+		en4: 0.8,
+		en5: 0.2,
+		en6: 0.7,
+		cu1: 2.0,
+		cu2: -1.0,
+		cu3: 8.0,
+		cu4: -4.0,
+		cu5: -8.0,
+		cu6: -2.0,
+		tp1: 0.75,
+		tp4: 1.0,
+		dur: 5/7,
+	])
+).play;
+)
+
+(
+Pdef(10,
+	Pbind(*[
+		type: \cln,
+		snd: \fma,
+		amp: 0.5,
+		hr1: 2,
+		hr2: 1,
+		hr3: 4,
+		hr4: 1,
+		hr5: 2,
+		hr6: 3,
+		mi1: 1.0,
+		mi2: 1.0,
+		mi3: 0.0,
+		mi4: 1.5,
+		mi5: 0.0,
+		mi6: 2.0,
+		en1: 0.5,
+		en2: 0.6,
+		en3: 0.7,
+		en4: 0.0,
+		en5: 0.05,
+		en6: 0.06,
+		cu1: -2.0,
+		cu2: -128.0,
+		cu3: -128.0,
+		cu4: 32.0,
+		cu5: -128.0,
+		cu6: -128.0,
+		tp1: 1.0,
+		tp4: 1.0,
+		dur: 7/5,
+	])
+).play;
+)
+
+(
+Pdef(11,
+	Pbind(*[
+		type: \cln,
+		snd: \fmb,
+		amp: 0.5,
+		hr1: 1,
+		hr2: 2,
+		hr3: 4,
+		hr4: 6,
+		hr5: 4,
+		hr6: 2,
+		mi1: 2.0,
+		mi2: 4.0,
+		mi3: 2.0,
+		mi4: 0.0,
+		mi5: 0.0,
+		mi6: 0.0,
+		en1: 0.9,
+		en2: 0.8,
+		en3: 0.7,
+		en4: 0.6,
+		en5: 0.5,
+		en6: 0.4,
+		cu1: 8.0,
+		cu2: 8.0,
+		cu3: 8.0,
+		cu4: 8.0,
+		cu5: 8.0,
+		cu6: 8.0,
+		tp1: 1.0,
+		tp3: 1.0,
+		dur: 9/5,
+	])
+).play;
+)
+
+(
+Pdef(12,
+	Pbind(*[
+		type: \cln,
+		snd: \fmc,
+		amp: 0.5,
+		hr1: 1,
+		hr2: 1,
+		hr3: 1,
+		hr4: 1,
+		hr5: 1,
+		hr6: 1,
+		mi1: 1.0,
+		mi2: 0.0,
+		mi3: 1.0,
+		mi4: 0.0,
+		mi5: 0.0,
+		mi6: 10.0,
+		en1: 0.0,
+		en2: 0.0,
+		en3: 0.0,
+		en4: 0.0,
+		en5: 0.0,
+		en6: 1.0,
+		cu1: 0.0,
+		cu2: 0.0,
+		cu3: 0.0,
+		cu4: 0.0,
+		cu5: 0.0,
+		cu6: 0.0,
+		tp1: 1.0,
+		tp3: 1.0,
+		dur: 11/5,
+	])
+).play;
+)
+
+(
+Pdef(13,
+	Pbind(*[
+		type: \cln,
+		snd: \fmd,
+		amp: 0.5,
+		hr1: 1,
+		hr2: 3,
+		hr3: 1,
+		hr4: 1,
+		hr5: 5,
+		hr6: 1,
+		mi1: 1.0,
+		mi2: 0.0,
+		mi3: 0.5,
+		mi4: 0.0,
+		mi5: 0.0,
+		mi6: 200.0,
+		en1: 0.8,
+		en2: 0.2,
+		en3: 0.7,
+		en4: 0.3,
+		en5: 0.6,
+		en6: 0.4,
+		cu1: -8.0,
+		cu2: 16.0,
+		cu3: -16.0,
+		cu4: 8.0,
+		cu5: 0.0,
+		cu6: -8.0,
+		tp1: 1.0,
+		tp3: 1.0,
+		dur: 1,
+	])
+).play;
+)
+
+(
+Pdef(14,
+	Pbind(*[
+		type: \cln,
+		snd: \fme,
+		amp: 0.5,
+		hr1: 3,
+		hr2: 3,
+		hr3: 2,
+		hr4: 2,
+		hr5: 3,
+		hr6: 4,
+		mi1: 1.0,
+		mi2: 4.0,
+		mi3: 1.0,
+		mi4: 0.0,
+		mi5: 0.0,
+		mi6: 0.0,
+		en1: 1/16,
+		en2: 0,
+		en3: 0.05,
+		en4: 0,
+		en5: 0,
+		en6: 0,
+		cu1: 8.0,
+		cu2: -8.0,
+		cu3: 32.0,
+		cu4: -8.0,
+		cu5: 2.0,
+		cu6: -4.0,
+		tp1: 1.0,
+		tp3: 1.0,
+		dur: 6/5,
+	])
+).play;
+)
+
+(
+Pdef(15,
+	Pbind(*[
+		type: \cln,
+		snd: \fmf,
+		amp: 0.5,
+		hr1: 1,
+		hr2: 1,
+		hr3: 1,
+		hr4: 4,
+		hr5: 3,
+		hr6: 2,
+		mi1: 1.0,
+		mi2: 0.0,
+		mi3: 1.0,
+		mi4: 0.0,
+		mi5: 1.0,
+		mi6: 2000.0,
+		en1: 0.0,
+		en2: 0.0,
+		en3: 0.0,
+		en4: 0.0,
+		en5: 0.0,
+		en6: 0.0,
+		cu1: 4.0,
+		cu2: 6.0,
+		cu3: 8.0,
+		cu4: 10.0,
+		cu5: 12.0,
+		cu6: 128.0,
+		tp1: 1.0,
+		dur: 7/5,
+	])
+).play;
+)
+
+(
+Pdef(16,
+	Pbind(*[
+		type: \cln,
+		snd: \fmg,
+		amp: 0.5,
+		hr1: 1,
+		hr2: 3,
+		hr3: 2,
+		hr4: 6,
+		hr5: 4,
+		hr6: 12,
+		mi1: 1.0,
+		mi2: 2.0,
+		mi3: 2.0,
+		mi4: 0.0,
+		mi5: 2.0,
+		mi6: 0.0,
+		en1: 0.0,
+		en2: 0.2,
+		en3: 0.2,
+		en4: 0.4,
+		en5: 0.0,
+		en6: 0.2,
+		cu1: 2.0,
+		cu2: 4.0,
+		cu3: 4.0,
+		cu4: 8.0,
+		cu5: 1.0,
+		cu6: 32.0,
+		tp1: 1.0,
+		dur: 8/5,
+	])
+).play;
+)
+
+(
+Pdef(17,
+	Pbind(*[
+		type: \cln,
+		snd: \fmh,
+		amp: 0.5,
+		hr1: 2,
+		hr2: 1,
+		hr3: 3,
+		hr4: 4,
+		hr5: 6,
+		hr6: 8,
+		mi1: 1.0,
+		mi2: 0.0,
+		mi3: 3.5,
+		mi4: 0.8,
+		mi5: 0.7,
+		mi6: 0.0,
+		en1: 0.0,
+		en2: 0.05,
+		en3: 0.1,
+		en4: 0.15,
+		en5: 0.2,
+		en6: 0.25,
+		cu1: 1.0,
+		cu2: -3.0,
+		cu3: 5.0,
+		cu4: -7.0,
+		cu5: 9.0,
+		cu6: -11.0,
+		tp1: 1.0,
+		dur: Pseq([1/5], inf),
+	])
+).play;
+)
+
+(
+Pdef(18,
+	Pbind(*[
+		type: \cln,
+		snd: \fmi,
+		amp: 0.5,
+		hr1: 2,
+		hr2: 1,
+		hr3: 1,
+		hr4: 2,
+		hr5: 1,
+		hr6: 1,
+		mi1: 0.2,
+		mi2: 1.0,
+		mi3: 0.0,
+		mi4: 0.3,
+		mi5: 2.0,
+		mi6: 4.0,
+		en1: 0.0125,
+		en2: 0.025,
+		en3: 0.0375,
+		en4: 0.05,
+		en5: 0.0,
+		en6: 0.0,
+		cu1: 2.0,
+		cu2: 4.0,
+		cu3: 6.0,
+		cu4: 8.0,
+		cu5: 10.0,
+		cu6: 300.0,
+		tp1: 1.0,
+		tp4: 1.0,
+		tp5: 1.0,
+		dur: Pseq([11/5], inf),
+	])
+).play;
+)
+
+(
+Pdef(19,
+	Pbind(*[
+		type: \cln,
+		snd: \fmj,
+		amp: 0.5,
+		hr1: 3,
+		hr2: 4,
+		hr3: 1,
+		hr4: 2,
+		hr5: 5,
+		hr6: 3,
+		mi1: 1.0,
+		mi2: 1.0,
+		mi3: 1.15,
+		mi4: 1.0,
+		mi5: 0.0,
+		mi6: 0.0,
+		en1: 0.5,
+		en2: 0.6,
+		en3: 0.7,
+		en4: 0.0,
+		en5: 0.1,
+		en6: 0.2,
+		cu1: 1.0,
+		cu2: 2.0,
+		cu3: 3.0,
+		cu4: -4.0,
+		cu5: 1.0,
+		cu6: 4.0,
+		tp1: 1.0,
+		tp2: 1.0,
+		tp4: 1.0,
+		dur: Pseq([11/5], inf),
+	])
+).play;
+)
+
+(
+Pdef(20,
+	Pbind(*[
+		type: \cln,
+		snd: \fmk,
+		amp: 0.5,
+		hr1: 6,
+		hr2: 3,
+		hr3: 3,
+		hr4: 1,
+		hr5: 1,
+		hr6: 2,
+		mi1: 1.0,
+		mi2: 1.0,
+		mi3: 1.0,
+		mi4: 1.0,
+		mi5: 1.0,
+		mi6: 0.0,
+		en1: 0.16039591282606,
+		en2: 0.18169086426497,
+		en3: 0.19759377464652,
+		en4: 0.20934272557497,
+		en5: 0.27640253305435,
+		en6: 0.29310788959265,
+		cu1: -0.60202884674072,
+		cu2: 2.3572835922241,
+		cu3: -1.4189023971558,
+		cu4: 2.00159740448,
+		cu5: -3.5240240097046,
+		cu6: 3.0169153213501,
+		tp1: 1.0,
+		tp2: 1.0,
+		tp4: 1.0,
+		tp5: 1.0,
+		dur: Pseq([1/5], inf),
+	])
+).play;
+)
+
+(
+Pdef(21,
+	Pbind(
+		type: \cln,
+		snd: \fml,
+		amp: 0.5,
+		hr1: 2,
+		hr2: 3,
+		hr3: 4,
+		hr4: 5,
+		hr5: 6,
+		hr6: 7,
+		mi1: 1.0,
+		mi2: 0.0,
+		mi3: 1.0,
+		mi4: 1.0,
+		mi5: 1.0,
+		mi6: 128.0,
+		en1: 0.0,
+		en2: 0.3,
+		en3: 0.0,
+		en4: 0.01,
+		en5: 0.25,
+		en6: 1.0,
+		cu1: 2.0,
+		cu2: 0.1,
+		cu3: 0.9,
+		cu4: 0.3,
+		cu5: 0.6,
+		cu6: 16.0,
+		tp1: 1.0,
+		tp3: 1.0,
+		tp4: 1.0,
+		tp5: 1.0,
+		dur: Pseq([1/5], inf),
+	)
+).play;
+)
+
+(
+Pdef(22,
+	Pbind(
+		type: \cln,
+		snd: \fmm,
+		amp: 0.5,
+		hr1: 0.5,
+		hr2: 1,
+		hr3: 2,
+		hr4: 0.25,
+		hr5: 0.5,
+		hr6: 0.125,
+		mi1: 0.0,
+		mi2: 0.75,
+		mi3: 0.0,
+		mi4: 2.0,
+		mi5: 3.0,
+		mi6: 3.0,
+		en1: 0.0,
+		en2: 1/16,
+		en3: 1/15,
+		en4: 1/14,
+		en5: 0.0,
+		en6: 0.0,
+		cu1: 8.0,
+		cu2: 2.0,
+		cu3: 2.0,
+		cu4: 2.0,
+		cu5: 4.0,
+		cu6: 4.0,
+		tp1: 1.0,
+		tp2: 1.0,
+		tp4: 0.25,
+		tp5: 0.25,
+		dur: Pseq([1/5], inf),
+	)
+).play;
+)
+
+(
+Pdef(23,
+	Pbind(
+		type: \cln,
+		snd: \fmn,
+		amp: 0.5,
+		hr1: 0.25,
+		hr2: 0.5,
+		hr3: 1.5,
+		hr4: 0.5,
+		hr5: 2,
+		hr6: 0.5,
+		mi1: 0.0,
+		mi2: 0.0,
+		mi3: 1.0,
+		mi4: 1.0,
+		mi5: 1.0,
+		mi6: 11.0,
+		en1: 1/8,
+		en2: 1/4,
+		en3: 1/16,
+		en4: 1/2,
+		en5: 1/32,
+		en6: 0.0,
+		cu1: 1.0,
+		cu2: 2.0,
+		cu3: 4.0,
+		cu4: 8.0,
+		cu5: 16.0,
+		cu6: 32.0,
+		tp1: 1.0,
+		tp2: 1.0,
+		tp3: 1.0,
+		tp4: 1.0,
+		tp5: 1.0,
+		dur: Pseq([1/5], inf),
+	)
+).play;
+)
+
+(
+Pdef(24,
+	Pbind(
+		type: \cln,
+		snd: \fmo,
+		amp: 0.5,
+		hr1: 2,
+		hr2: 3,
+		hr3: 4,
+		hr4: 5,
+		hr5: 6,
+		hr6: 7,
+		mi1: 100.0,
+		mi2: 300.0,
+		mi3: 150.0,
+		mi4: 1.0,
+		mi5: 1.0,
+		mi6: 200.0,
+		en1: 0.01478,
+		en2: 0.2455789,
+		en3: 0.035678,
+		en4: 0.439350,
+		en5: 0.05279,
+		en6: 0.690743,
+		cu1: 8.0,
+		cu2: 8.0,
+		cu3: 8.0,
+		cu4: 8.0,
+		cu5: 8.0,
+		cu6: 8.0,
+		tp1: 1.0,
+		tp2: 1.0,
+		tp3: 1.0,
+		tp4: 1.0,
+		tp5: 1.0,
+		dur: Pseq([1/5], inf),
+	)
+).play;
+)
+
+(
+Pdef(25,
+	Pbind(
+		type: \cln,
+		snd: \fmp,
+		amp: 0.5,
+		hr1: 2,
+		hr2: 3,
+		hr3: 2,
+		hr4: 0.5,
+		hr5: 0.25,
+		hr6: 3,
+		mi1: 0.0,
+		mi2: 1.0,
+		mi3: 0.0,
+		mi4: 1.0,
+		mi5: 0.0,
+		mi6: 14.0,
+		en1: 0.25,
+		en2: 0.25,
+		en3: 0.25,
+		en4: 0.0,
+		en5: 0.03125,
+		en6: 0.0,
+		cu1: 4.0,
+		cu2: 4.0,
+		cu3: 4.0,
+		cu4: 2.0,
+		cu5: 4.0,
+		cu6: 8.0,
+		tp1: 1.0,
+		tp2: 1.0,
+		tp4: 1.0,
+		dur: Pseq([3/5], inf),
+	)
+).play;
+)
+
+(
+Pdef(26,
+	Pbind(
+		type: \cln,
+		snd: \fmq,
+		amp: 0.5,
+		hr1: 2,
+		hr2: 2,
+		hr3: 2,
+		hr4: 0.5,
+		hr5: 0.25,
+		hr6: 3,
+		mi1: 0.0,
+		mi2: 0.5,
+		mi3: 0.75,
+		mi4: 2.0,
+		mi5: 0.0,
+		mi6: 0.0,
+		en1: 0.1,
+		en2: 0.2,
+		en3: 0.3,
+		en4: 0.4,
+		en5: 0.5,
+		en6: 0.0,
+		cu1: 1.0,
+		cu2: 2.0,
+		cu3: 4.0,
+		cu4: 4.0,
+		cu5: 4.0,
+		cu6: 1.0,
+		tp1: 1.0,
+		tp2: 1.0,
+		tp4: 1.0,
+		dur: Pseq([1/5], inf),
+	)
+).play;
+)
+
+(
+Pdef(27,
+	Pbind(
+		type: \cln,
+		snd: \fmr,
+		amp: 0.5,
+		hr1: 0.25,
+		hr2: 0.5,
+		hr3: 1,
+		hr4: 2,
+		hr5: 4,
+		hr6: 0.5,
+		mi1: 1.0,
+		mi2: 0.0,
+		mi3: 1.0,
+		mi4: 10.0,
+		mi5: 10.0,
+		mi6: 0.0,
+		en1: 0.0,
+		en2: 0.0,
+		en3: 0.0,
+		en4: 0.0,
+		en5: 0.0,
+		en6: 0.0,
+		cu1: 2.0,
+		cu2: 4.0,
+		cu3: 6.0,
+		cu4: 8.0,
+		cu5: 10.0,
+		cu6: 12.0,
+		tp1: 1.0,
+		tp3: 1.0,
+		tp6: 1.0,
+		dur: Pseq([11/5], inf),
+	)
+).play;
+)
+
+(
+Pdef(28,
+	Pbind(
+		type: \cln,
+		snd: \fms,
+		amp: 0.5,
+		hr1: 1.0,
+		hr2: 0.5,
+		hr3: 0.25,
+		hr4: 1.0,
+		hr5: 0.5,
+		hr6: 0.25,
+		mi1: 0.25,
+		mi2: 1.125,
+		mi3: 1.0,
+		mi4: 0.0,
+		mi5: 1.0,
+		mi6: 1.5,
+		en1: 0.16,
+		en2: 0.08,
+		en3: 0.04,
+		en4: 0.02,
+		en5: 0.01,
+		en6: 0.0,
+		cu1: 1.2,
+		cu2: 3.4,
+		cu3: 5.6,
+		cu4: 7.8,
+		cu5: 5.6,
+		cu6: 8.9,
+		tp1: 1.0,
+		tp2: 1.0,
+		tp3: 1.0,
+		tp5: 1.0,
+		dur: Pseq([1/5], inf),
+	)
+).play;
+)
+
+(
+Pdef(29,
+	Pbind(
+		type: \cln,
+		snd: \fmt,
+		amp: 0.5,
+		hr1: 0.5,
+		hr2: 2,
+		hr3: 4,
+		hr4: 0.5,
+		hr5: 0.25,
+		hr6: 0.25,
+		mi1: 0.75,
+		mi2: 0.5,
+		mi3: 0.75,
+		mi4: 2.0,
+		mi5: 100.0,
+		mi6: 0.5,
+		en1: 0.0,
+		en2: 0.0,
+		en3: 0.01,
+		en4: 0.0,
+		en5: 0.0,
+		en6: 0.0,
+		cu1: 2.0,
+		cu2: 4.0,
+		cu3: 0.0,
+		cu4: -4.0,
+		cu5: -8.0,
+		cu6: 2.0,
+		tp1: 1.0,
+		tp2: 1.0,
+		tp3: 0.5,
+		tp6: 2.0,
+		dur: Pseq([1/5], inf),
+	)
+).play;
+)
+
+(
+Pdef(30,
+	Pbind(
+		type: \cln,
+		snd: \fmu,
+		amp: 0.5,
+		hr1: 0.25,
+		hr2: 0.5,
+		hr3: 1.0,
+		hr4: 1.5,
+		hr5: 3.0,
+		hr6: 2.0,
+		mi1: 2.0,
+		mi2: 1.5,
+		mi3: 1.75,
+		mi4: 0.5,
+		mi5: 1.5,
+		mi6: 10.0,
+		en1: 0.0,
+		en2: 0.3,
+		en3: 0.2,
+		en4: 0.1,
+		en5: 0.5,
+		en6: 0.4,
+		cu1: 4.0,
+		cu2: 2.0,
+		cu3: 6.0,
+		cu4: 3.0,
+		cu5: 8.0,
+		cu6: 5.0,
+		tp1: 1.0,
+		tp2: 1.0,
+		tp3: 1.0,
+		tp4: 1.0,
+		tp5: 1.0,
+		dur: Pseq([6/5], inf),
+	)
+).play;
+)
+
+(
+Pdef(31,
+	Pbind(
+		type: \cln,
+		snd: \fmv,
+		amp: 0.5,
+		hr1: 0.25,
+		hr2: 0.5,
+		hr3: 1.0,
+		hr4: 2.0,
+		hr5: 4.0,
+		hr6: 8.0,
+		mi1: 0.0,
+		mi2: 4.0,
+		mi3: 8.0,
+		mi4: 16.0,
+		mi5: 32.0,
+		mi6: 64.0,
+		en1: 0.0,
+		en2: 0.0625,
+		en3: 0.125,
+		en4: 0.25,
+		en5: 0.5,
+		en6: 1.0,
+		cu1: 0.0,
+		cu2: 2.0,
+		cu3: 4.0,
+		cu4: 8.0,
+		cu5: 16.0,
+		cu6: 32.0,
+		tp1: 1.5,
+		tp2: 0.1,
+		tp3: 0.05,
+		tp4: 0.1,
+		tp5: 0.1,
+		tp6: 0.25,
+		dur: Pseq([13/5], inf),
+	)
+).play;
+)
+
+( // this comes in real handy when you have more than a couple Pdefs
+var n = 32;
+n.do {|i|
+    "Pdef(%) stopped.".format(i).postln;
+    Pdef(i).stop;
+};
+)
+
+( // tap morph
+thisThread.randSeed = 9399;
+~sgt = Pwhite(10.0, 40.0).asStream;
+~a = {arg seed, snd;
+    var b = Pbind(*[
+        type: \cln,
+		snd: snd,
+		dur: 1/10,
+		amp: Pseg([0, 0.9, 0], Pfunc{~sgt.next}, \wel, inf),
+		tp1: Pseg(Pwhite(0.0, 1.0), Pfunc{~sgt.next}, \wel, inf).trace,
+		tp2: Pkey(\tp1).linlin(0, 1, 1, 0),
+		tp3: Pkey(\tp2),
+		tp4: Pkey(\tp2),
+		tp5: Pkey(\tp2),
+		jpr: 1/4,
+		stretch: Pseg(Pmeanrand(5.0, 11.0).asInteger, Pfunc{~sgt.next}, \sin, inf),
+		pan: Pseg(Pmeanrand(0.0, 1.0), Pfunc{~sgt.next}, \sin, inf),
+	]);
+Pseed(seed, Pseq([b], inf));
+};
+Pdef(0, ~a.(12, \fm0)).play;
+Pdef(1, ~a.(13, \fm1)).play;
+Pdef(2, ~a.(14, \fm2)).play;
+Pdef(3, ~a.(15, \fm3)).play;
+Pdef(4, ~a.(16, \fm4)).play;
+Pdef(5, ~a.(17, \fm5)).play;
+Pdef(6, ~a.(18, \fm6)).play;
+Pdef(7, ~a.(19, \fm7)).play;
+Pdef(8, ~a.(110, \fm8)).play;
+Pdef(9, ~a.(120, \fm9)).play;
+Pdef(10, ~a.(30, \fma)).play;
+Pdef(11, ~a.(31, \fmb)).play;
+Pdef(12, ~a.(32, \fmc)).play;
+Pdef(13, ~a.(33, \fmd)).play;
+Pdef(14, ~a.(34, \fme)).play;
+Pdef(15, ~a.(35, \fmi)).play;
+Pdef(16, ~a.(36, \fmj)).play;
+Pdef(17, ~a.(37, \fmk)).play;
+Pdef(18, ~a.(38, \fml)).play;
+Pdef(19, ~a.(39, \fmm)).play;
+Pdef(20, ~a.(40, \fmn)).play;
+Pdef(21, ~a.(41, \fmo)).play;
+Pdef(22, ~a.(42, \fmp)).play;
+Pdef(23, ~a.(43, \fmq)).play;
+Pdef(24, ~a.(44, \fmr)).play;
+Pdef(25, ~a.(45, \fms)).play;
+Pdef(26, ~a.(46, \fmt)).play;
+Pdef(27, ~a.(47, \fmu)).play;
+Pdef(28, ~a.(48, \fmv)).play;
+)
+
+( // this comes in real handy when you have more than a couple Pdefs
+var n = 29;
+n.do {|i|
+    "Pdef(%) stopped.".format(i).postln;
+    Pdef(i).stop;
+};
+)
+
+( // all the single carriers
+Pdef(0,
+	Pseed(9299,
+		Pbind(
+			type: Pseed(0, Pwrand2([\cln, \], [1, 2], inf)),
+			snd: Pxshuf([\fmf, \fmg, \fmh], inf),
+			dur: (1 / Phprand(0.0001, 11.0)).trace,
+			amp: Pexprand(0.25, 1.25),
+			pan: Pmeanrand(0.0, 1.0),
+			sustain: Pkey(\dur) * Pexprand(9, 29),
+			scale: Pdup(Pseed(1, Pexprand(9, 99)), Pxshuf([
+				Scale.harmonicMinor(\sept2),
+				Scale.minor(\sept1),
+				Scale.major(\just),
+				Scale.mixolydian,
+			], inf)),
+			degree: Plprand(0, 7).unique,
+			octave: Pxshuf((2 .. 6), inf),
+			jpr: 1,
+		)
+	)
+).play
+)
+
+( // all 32 6opFM symths together
+Pdef(0,
+    Pseed(9990,
+        Pbind(
+            type: Pwrand2([\cln, \], [11, 1], inf),
+            snd: Pxshuf([
+                \fm0, \fm1, \fm2, \fm3, \fm4, \fm5, \fm6, \fm7, \fm8, \fm9,
+                \fma, \fmb, \fmc, \fmd, \fme, \fmf, \fmg, \fmh, \fmi, \fmj,
+                \fmk, \fml, \fmm, \fmn, \fmo, \fmp, \fmq, \fmr, \fms, \fmt,
+                \fmu, \fmv,
+            ], inf),
+            amp: Pdup(Pexprand(1, 19), Pexprand(0.125, 0.75)),
+            pan: Pseq([Pmeanrand(0.0, 1.0, 1), Pexprand(1.0, 1.5, 1) - 1, 1.5 - Pexprand(0.5, 1.0, 1)], inf),
+            jpr: 0.3,
+            jpg: Pseg(Pexprand(0.3, 3.0), Pwhite(0.1, 4.0), \lin, inf),
+            jps: Pseg(1.9 - Pexprand(0.9, 1.0), 10.1 - Pexprand(0.1, 10.0), \lin, inf),
+            dur: Pwhite(1.0, 2.0) / Pseg(Pexprand(1, 64), Pwhite(0.1, 4.0), \sin, inf),
+            stretch: Pexprand(0.5, 2.0),
+            scale: Pdup(Pexprand(9, 999), Pxshuf([
+                Scale.major(\just),
+                Scale.minor(\sept1),
+                Scale.harmonicMinor(\sept2),
+                Scale.minorPentatonic,
+                Scale.harmonicMajor,
+                Scale.mixolydian,
+                Scale.phrygian,
+                Scale.lydian,
+                Scale.locrian,
+                Scale.pelog,
+            ], inf)),
+            tp1: Pseg(1.5 - Pexprand(0.5, 1.0), Pwhite(10.0, 40.0), \wel, inf).trace,
+            tp2: Pseg(1.5 - Pexprand(0.5, 1.0), Pwhite(10.0, 40.0), \wel, inf),
+            tp3: Pseg(1.5 - Pexprand(0.5, 1.0), Pwhite(10.0, 40.0), \wel, inf),
+            tp4: Pseg(1.5 - Pexprand(0.5, 1.0), Pwhite(10.0, 40.0), \wel, inf),
+            tp5: Pseg(1.5 - Pexprand(0.5, 1.0), Pwhite(10.0, 40.0), \wel, inf),
+            tp6: Pseg(1.5 - Pexprand(0.5, 1.0), Pwhite(10.0, 40.0), \wel, inf),
+            degree: Pdup(Pexprand(4, 11), Plprand(-14, 35).unique),
+            hpf: Pseg(Pdup(2, Pexprand(20, 200).asInteger.unique), Pwhite(0.1, 4.0), \wel, inf),
+            sustain: Pexprand(0.3, 3.0),
+        )
+    )
+).play
+)
