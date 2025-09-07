@@ -432,6 +432,7 @@ SynthDef(\fm0, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 8.0, cu2 = 200.0, cu3 = 4.0, cu4 = -2.0, cu5 = -32, cu6 = 8.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp3 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -440,6 +441,7 @@ SynthDef(\fm0, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -454,12 +456,12 @@ SynthDef(\fm0, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
 	modComp = freq.explin(20, 20000, 1, 0.01);
 	sig2 = SinOsc.ar(freqclipped * hr2) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, (sig2 * modComp) + [0, pi/2]) * env1 * tp1;
+	sig1 = SinOsc.ar(freqclipped * hr1, (sig2 * modComp) + [0, width]) * env1 * tp1;
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, pi/2], mi4 * modComp) * env4;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3 * tp3;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, width], mi4 * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, width], mi3 * modComp) * env3 * tp3;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -481,6 +483,7 @@ SynthDef(\fm1, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 8, cu2 = 6, cu3 = 4, cu4 = 2, cu5 = 0, cu6 = -2,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp3 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -489,6 +492,7 @@ SynthDef(\fm1, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -504,12 +508,12 @@ SynthDef(\fm1, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOscFB.ar(freqclipped * hr2, mi2 * modComp) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig6 = SinOsc.ar(freqclipped * hr6) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, pi/2], mi4 * modComp) * env4;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3 * tp3;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, width], mi4 * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, width], mi3 * modComp) * env3 * tp3;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -527,6 +531,7 @@ SynthDef(\fm2, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 0.05, cu2 = 0.04, cu3 = 0.03, cu4 = 0.02, cu5 = 0.01, cu6 = 0,
 	cr1 = 3, cr2 = 6, cr3 = 2, cr4 = 4, cr5 = 1, cr6 = 8,
 	tp1 = 1, tp4 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -535,6 +540,7 @@ SynthDef(\fm2, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -550,12 +556,12 @@ SynthDef(\fm2, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig3 = SinOsc.ar(freqclipped * hr3) * env3;
-	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, width], mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, pi/2], mi4 * modComp) * env4 * tp4;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, width], mi4 * modComp) * env4 * tp4;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -572,7 +578,8 @@ SynthDef(\fm3, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	en1 = 0.01, en2 = 0.5, en3 = 0.02, en4 = 0.04, en5 = 0.03, en6 = 0.0,
 	cu1 = 0, cu2 = -2, cu3 = 0, cu4 = -1, cu5 = -6, cu6 = -2,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
-	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+	tp1 = 1, tp4 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -581,6 +588,7 @@ SynthDef(\fm3, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -596,12 +604,12 @@ SynthDef(\fm3, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig3 = SinOsc.ar(freqclipped * hr3) * env3;
-	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, width], mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
-	sig6 = SinOsc.ar(freqclipped * hr6, LocalIn.ar(2) + [0, pi/2], mi6 * modComp) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, pi/2], mi4 * modComp) * env4 * tp4;
+	sig6 = SinOsc.ar(freqclipped * hr6, LocalIn.ar(2) + [0, width], mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, width], mi4 * modComp) * env4 * tp4;
 	LocalOut.ar(sig4);
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -620,6 +628,7 @@ SynthDef(\fm4, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 0.25, cu2 = 0, cu3 = 0.5, cu4 = 0, cu5 = 0, cu6 = 5,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -628,6 +637,7 @@ SynthDef(\fm4, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -643,13 +653,13 @@ SynthDef(\fm4, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOsc.ar(freqclipped * hr2) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig4 = SinOsc.ar(freqclipped * hr4) * env4;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3 * tp3;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, width], mi3 * modComp) * env3 * tp3;
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5 * tp5;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5 * tp5;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -668,6 +678,7 @@ SynthDef(\fm5, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -676,6 +687,7 @@ SynthDef(\fm5, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -691,13 +703,13 @@ SynthDef(\fm5, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOsc.ar(freqclipped * hr2) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig4 = SinOsc.ar(freqclipped * hr4) * env4;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3 * tp3;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, width], mi3 * modComp) * env3 * tp3;
 
-	sig6 = SinOsc.ar(freqclipped * hr6, LocalIn.ar(2) + [0, pi/2], mi6 * modComp) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5 * tp5;
+	sig6 = SinOsc.ar(freqclipped * hr6, LocalIn.ar(2) + [0, width], mi6 * modComp) * env6;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5 * tp5;
 	LocalOut.ar(sig5);
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -717,6 +729,7 @@ SynthDef(\fm6, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = -2, cu2 = -4, cu3 = 64, cu4 = 0, cu5 = 0, cu6 = -8,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp3 = 0.5,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -725,6 +738,7 @@ SynthDef(\fm6, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -740,13 +754,13 @@ SynthDef(\fm6, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOsc.ar(freqclipped * hr2) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5;
 
 	sig4 = SinOsc.ar(freqclipped * hr4) * env4;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + sig5 + [0, pi/2], mi3 * modComp) * env3 * tp3;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + sig5 + [0, width], mi3 * modComp) * env3 * tp3;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -764,6 +778,7 @@ SynthDef(\fm7, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = -2.0, cu2 = 32.0, cu3 = 1.0, cu4 = 1.0, cu5 = -2.0, cu6 = 5.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 0.8, tp3 = 1.0,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -772,6 +787,7 @@ SynthDef(\fm7, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -787,13 +803,13 @@ SynthDef(\fm7, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOsc.ar(freqclipped * hr2) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig6 = SinOsc.ar(freqclipped * hr6) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5;
 
 	sig4 = SinOscFB.ar(freqclipped * hr4, mi4 * modComp) * env4;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + sig5 + [0, pi/2], mi3 * modComp) * env3 * tp3;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + sig5 + [0, width], mi3 * modComp) * env3 * tp3;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -811,6 +827,7 @@ SynthDef(\fm8, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 0.0, cu2 = 16.0, cu3 = -2.0, cu4 = -3.0, cu5 = -4.0, cu6 = -5.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 0.4, tp3 = 1.0,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -819,6 +836,7 @@ SynthDef(\fm8, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -834,13 +852,13 @@ SynthDef(\fm8, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOscFB.ar(freqclipped * hr2, mi2 * modComp) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig6 = SinOsc.ar(freqclipped * hr6) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5;
 
 	sig4 = SinOsc.ar(freqclipped * hr4) * env4;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + sig5 + [0, pi/2], mi3 * modComp) * env3 * tp3;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + sig5 + [0, width], mi3 * modComp) * env3 * tp3;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -858,6 +876,7 @@ SynthDef(\fm9, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 2.0, cu2 = -1.0, cu3 = 8.0, cu4 = -4.0, cu5 = -8.0, cu6 = -2.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 0.75, tp4 = 1.0,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -866,6 +885,7 @@ SynthDef(\fm9, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -882,11 +902,11 @@ SynthDef(\fm9, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 
 	sig5 = SinOsc.ar(freqclipped * hr5) * env5;
 	sig6 = SinOsc.ar(freqclipped * hr6) * env6;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, pi/2], mi4 * modComp) * env4 * tp4;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, width], mi4 * modComp) * env4 * tp4;
 
 	sig3 = SinOscFB.ar(freqclipped * hr3, mi3 * modComp) * env3;
-	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, width], mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -904,6 +924,7 @@ SynthDef(\fma, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = -2.0, cu2 = -128.0, cu3 = -128.0, cu4 = 32.0, cu5 = -128.0, cu6 = -128.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp4 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -912,6 +933,7 @@ SynthDef(\fma, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -928,11 +950,11 @@ SynthDef(\fma, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 
 	sig5 = SinOsc.ar(freqclipped * hr5) * env5;
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, pi/2], mi4 * modComp) * env4 * tp4;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, width], mi4 * modComp) * env4 * tp4;
 
 	sig3 = SinOsc.ar(freqclipped * hr3) * env3;
-	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, width], mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -950,6 +972,7 @@ SynthDef(\fmb, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 8.0, cu2 = 8.0, cu3 = 8.0, cu4 = 8.0, cu5 = 8.0, cu6 = 8.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp3 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -958,6 +981,7 @@ SynthDef(\fmb, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -973,12 +997,12 @@ SynthDef(\fmb, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOscFB.ar(freqclipped * hr2, mi1 * modComp, mi2 * modComp) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig4 = SinOsc.ar(freqclipped * hr4) * env4;
 	sig5 = SinOsc.ar(freqclipped * hr5) * env5;
 	sig6 = SinOsc.ar(freqclipped * hr6) * env6;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + sig5 + sig6 + [0, pi/2], mi3 * modComp) * env3 * tp3;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + sig5 + sig6 + [0, width], mi3 * modComp) * env3 * tp3;
 
 	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -996,6 +1020,7 @@ SynthDef(\fmc, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp3 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1004,6 +1029,7 @@ SynthDef(\fmc, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -1019,13 +1045,13 @@ SynthDef(\fmc, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOsc.ar(freqclipped * hr2) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig4 = SinOsc.ar(freqclipped * hr4) * env4;
 	sig5 = SinOsc.ar(freqclipped * hr5) * env5;
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
 
-	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + sig5 + sig6 + [0, pi/2], mi3 * modComp) * env3 * tp3;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + sig5 + sig6 + [0, width], mi3 * modComp) * env3 * tp3;
 
 	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -1043,6 +1069,7 @@ SynthDef(\fmd, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = -8.0, cu2 = 16.0, cu3 = -16.0, cu4 = 8.0, cu5 = 0.0, cu6 = -8.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp3 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1051,6 +1078,7 @@ SynthDef(\fmd, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -1066,12 +1094,12 @@ SynthDef(\fmd, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOsc.ar(freqclipped * hr2) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
 	sig5 = SinOsc.ar(freqclipped * hr5) * env5;
 	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6) * env4;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3 * tp3;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, width], mi3 * modComp) * env3 * tp3;
 
 	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -1089,6 +1117,7 @@ SynthDef(\fme, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 8.0, cu2 = -8.0, cu3 = 32.0, cu4 = -8.0, cu5 = 2.0, cu6 = -4.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp3 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1097,6 +1126,7 @@ SynthDef(\fme, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -1112,12 +1142,12 @@ SynthDef(\fme, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig2 = SinOscFB.ar(freqclipped * hr2, mi2 * modComp) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig6 = SinOsc.ar(freqclipped * hr6) * env6;
 	sig5 = SinOsc.ar(freqclipped * hr5) * env5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, pi/2], mi1 * modComp) * env4;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3 * tp3;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, width], mi1 * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, width], mi3 * modComp) * env3 * tp3;
 
 	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -1134,6 +1164,7 @@ SynthDef(\fmf, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	en1 = 0.0, en2 = 0.0, en3 = 0.0, en4 = 0.0, en5 = 0.0, en6 = 0.0,
 	cu1 = 4.0, cu2 = 6.0, cu3 = 8.0, cu4 = 10.0, cu5 = 12.0, cu6 = 128.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1142,6 +1173,7 @@ SynthDef(\fmf, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -1157,13 +1189,13 @@ SynthDef(\fmf, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5;
 
 	sig4 = SinOsc.ar(freqclipped * hr4) * env4;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, width], mi3 * modComp) * env3;
 
 	sig2 = SinOsc.ar(freqclipped * hr2) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + sig3 + sig5 + [0, pi/2], mi1 * modComp) * env1;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + sig3 + sig5 + [0, width], mi1 * modComp) * env1;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig = (sig1 / 4) * amp * 1.2;
@@ -1179,6 +1211,7 @@ SynthDef(\fmg, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	en1 = 0.0, en2 = 0.2, en3 = 0.2, en4 = 0.4, en5 = 0.0, en6 = 0.2,
 	cu1 = 2.0, cu2 = 4.0, cu3 = 4.0, cu4 = 8.0, cu5 = 1.0, cu6 = 32.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1187,6 +1220,7 @@ SynthDef(\fmg, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -1202,13 +1236,13 @@ SynthDef(\fmg, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOsc.ar(freqclipped * hr6) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5;
 
 	sig4 = SinOsc.ar(freqclipped * hr4) * env4;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, width], mi3 * modComp) * env3;
 
 	sig2 = SinOscFB.ar(freqclipped * hr2, mi2 * modComp) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + sig3 + sig5 + [0, pi/2], mi1 * modComp) * env1;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + sig3 + sig5 + [0, width], mi1 * modComp) * env1;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig = (sig1 / 4) * amp * 1.2;
@@ -1224,6 +1258,7 @@ SynthDef(\fmh, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	en1 = 0.0, en2 = 0.05, en3 = 0.1, en4 = 0.15, en5 = 0.2, en6 = 0.25,
 	cu1 = 1.0, cu2 = -3.0, cu3 = 5.0, cu4 = -7.0, cu5 = 9.0, cu6 = -11.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1232,6 +1267,7 @@ SynthDef(\fmh, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -1247,12 +1283,12 @@ SynthDef(\fmh, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOsc.ar(freqclipped * hr6) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, pi/2], mi4 * modComp) * env4;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, width], mi4 * modComp) * env4;
 
 	sig3 = SinOscFB.ar(freqclipped * hr3, mi3 * modComp) * env3;
 	sig2 = SinOsc.ar(freqclipped * hr2) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + sig3 + sig4 + [0, pi/2], mi1 * modComp) * env1;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + sig3 + sig4 + [0, width], mi1 * modComp) * env1;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig = (sig1 / 4) * amp * 1.2;
@@ -1269,6 +1305,7 @@ SynthDef(\fmi, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 2.0, cu2 = 4.0, cu3 = 6.0, cu4 = 8.0, cu5 = 10.0, cu6 = 300.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp4 = 1, tp5 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1277,6 +1314,7 @@ SynthDef(\fmi, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -1292,12 +1330,12 @@ SynthDef(\fmi, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5 * tp5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, pi/2], mi4 * modComp) * env4 * tp4;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5 * tp5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, width], mi4 * modComp) * env4 * tp4;
 
 	sig3 = SinOsc.ar(freqclipped * hr3) * env3;
-	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, width], mi2 * modComp) * env2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -1316,6 +1354,7 @@ SynthDef(\fmj, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 1.0, cu2 = 2.0, cu3 = 3.0, cu4 = -4.0, cu5 = 1.0, cu6 = 4.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp4 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1324,6 +1363,7 @@ SynthDef(\fmj, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -1340,11 +1380,11 @@ SynthDef(\fmj, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 
 	sig6 = SinOsc.ar(freqclipped * hr6) * env6;
 	sig5 = SinOsc.ar(freqclipped * hr5) * env5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, pi/2], mi4 * modComp) * env4 * tp4;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, width], mi4 * modComp) * env4 * tp4;
 
 	sig3 = SinOscFB.ar(freqclipped * hr3, mi3 * modComp) * env3;
-	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2 * tp2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig3 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, width], mi2 * modComp) * env2 * tp2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig3 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -1363,6 +1403,7 @@ SynthDef(\fmk, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = -0.60202884674072, cu2 = 2.3572835922241, cu3 = -1.4189023971558, cu4 = 2.00159740448, cu5 = -3.5240240097046, cu6 = 3.0169153213501,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp4 = 1, tp5 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1371,6 +1412,7 @@ SynthDef(\fmk, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -1386,12 +1428,12 @@ SynthDef(\fmk, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOsc.ar(freqclipped * hr6) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5 * tp5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, pi/2], mi4 * modComp) * env4 * tp4;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5 * tp5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, width], mi4 * modComp) * env4 * tp4;
 
 	sig3 = SinOscFB.ar(freqclipped * hr3, mi3 * modComp) * env3;
-	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2 * tp2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig3 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, width], mi2 * modComp) * env2 * tp2;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig3 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -1411,6 +1453,7 @@ SynthDef(\fml, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 2.0, cu2 = 0.1, cu3 = 0.9, cu4 = 0.3, cu5 = 0.6, cu6 = 16.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp3 = 1, tp4 = 1, tp5 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1419,6 +1462,7 @@ SynthDef(\fml, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -1434,12 +1478,12 @@ SynthDef(\fml, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5 * tp5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, pi/2], mi4 * modComp) * env4 * tp4;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig6 + [0, pi/2], mi3 * modComp) * env3 * tp3;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5 * tp5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, width], mi4 * modComp) * env4 * tp4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig6 + [0, width], mi3 * modComp) * env3 * tp3;
 
 	sig2 = SinOsc.ar(freqclipped * hr2) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -1459,6 +1503,7 @@ SynthDef(\fmm, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 8.0, cu2 = 2.0, cu3 = 2.0, cu4 = 2.0, cu5 = 4.0, cu6 = 16.0,
 	cr1 = 0.0, cr2 = 0.0, cr3 = 0.0, cr4 = 0.0, cr5 = 0.0, cr6 = 0.0,
 	tp1 = 1.0, tp2 = 1.0, tp4 = 0.25, tp5 = 0.25,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1467,6 +1512,7 @@ SynthDef(\fmm, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -1482,11 +1528,11 @@ SynthDef(\fmm, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5 * tp5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, pi/2], mi4 * modComp) * env4 * tp4;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5 * tp5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, width], mi4 * modComp) * env4 * tp4;
 
 	sig3 = SinOsc.ar(freqclipped * hr3) * env3;
-	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2 * tp2;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, width], mi2 * modComp) * env2 * tp2;
 
 	sig1 = SinOscFB.ar(freqclipped * hr1, mi1 * modComp) * env1 * tp1;
 
@@ -1508,6 +1554,7 @@ SynthDef(\fmn, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 1.0, cu2 = 2.0, cu3 = 4.0, cu4 = 8.0, cu5 = 16.0, cu6 = 32.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1516,6 +1563,7 @@ SynthDef(\fmn, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -1531,9 +1579,9 @@ SynthDef(\fmn, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5 * tp5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, pi/2], mi4 * modComp) * env4 * tp4;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig6 + [0, pi/2], mi3 * modComp) * env3 * tp3;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5 * tp5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, width], mi4 * modComp) * env4 * tp4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig6 + [0, width], mi3 * modComp) * env3 * tp3;
 
 	sig2 = SinOscFB.ar(freqclipped * hr2, mi2 * modComp) * env2 * tp2;
 
@@ -1558,6 +1606,7 @@ SynthDef(\fmo, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 8.0, cu2 = 8.0, cu3 = 8.0, cu4 = 8.0, cu5 = 8.0, cu6 = 8.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1566,6 +1615,7 @@ SynthDef(\fmo, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -1581,8 +1631,8 @@ SynthDef(\fmo, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5 * tp5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, pi/2], mi4 * modComp) * env4 * tp4;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5 * tp5;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig6 + [0, width], mi4 * modComp) * env4 * tp4;
 
 
 	sig3 = SinOscFB.ar(freqclipped * hr3, mi3 * modComp) * env3 * tp3;
@@ -1610,6 +1660,7 @@ SynthDef(\fmp, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 4.0, cu2 = 4.0, cu3 = 4.0, cu4 = 2.0, cu5 = 4.0, cu6 = 8.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1618,6 +1669,7 @@ SynthDef(\fmp, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -1634,10 +1686,10 @@ SynthDef(\fmp, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
 	sig5 = SinOsc.ar(freqclipped * hr5) * env5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, pi/2], mi4 * modComp) * env4 * tp4;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, width], mi4 * modComp) * env4 * tp4;
 
 	sig3 = SinOsc.ar(freqclipped * hr3) * env3;
-	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2 * tp2;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, width], mi2 * modComp) * env2 * tp2;
 
 	sig1 = SinOscFB.ar(freqclipped * hr1, mi1 * modComp) * env1 * tp1;
 
@@ -1658,6 +1710,7 @@ SynthDef(\fmq, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 1.0, cu2 = 2.0, cu3 = 4.0, cu4 = 4.0, cu5 = 4.0, cu6 = 1.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1666,6 +1719,7 @@ SynthDef(\fmq, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -1682,10 +1736,10 @@ SynthDef(\fmq, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
 	sig5 = SinOsc.ar(freqclipped * hr5) * env5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, pi/2], mi4 * modComp) * env4 * tp4;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + sig6 + [0, width], mi4 * modComp) * env4 * tp4;
 
 	sig3 = SinOscFB.ar(freqclipped * hr3, mi3 * modComp) * env3;
-	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, pi/2], mi2 * modComp) * env2 * tp2;
+	sig2 = SinOsc.ar(freqclipped * hr2, sig3 + [0, width], mi2 * modComp) * env2 * tp2;
 
 	sig1 = SinOscFB.ar(freqclipped * hr1, mi1 * modComp) * env1 * tp1;
 
@@ -1706,6 +1760,7 @@ SynthDef(\fmr, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 2.0, cu2 = 4.0, cu3 = 6.0, cu4 = 8.0, cu5 = 10.0, cu6 = 12.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1714,6 +1769,7 @@ SynthDef(\fmr, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -1731,11 +1787,11 @@ SynthDef(\fmr, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	sig6 = SinOsc.ar(freqclipped * hr6) * env6 * tp6;
 
 	sig5 = SinOscFB.ar(freqclipped * hr5, mi5 * modComp) * env5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, pi/2], mi4 * modComp) * env4;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3 * tp3;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, width], mi4 * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, width], mi3 * modComp) * env3 * tp3;
 
 	sig2 = SinOsc.ar(freqclipped * hr2) * env2;
-	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, pi/2], mi1 * modComp) * env1 * tp1;
+	sig1 = SinOsc.ar(freqclipped * hr1, sig2 + [0, width], mi1 * modComp) * env1 * tp1;
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig3 = sig3 * AmpCompA.kr(freqclipped, 17.323914436055);
@@ -1754,6 +1810,7 @@ SynthDef(\fms, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 1.2, cu2 = 3.4, cu3 = 5.6, cu4 = 7.8, cu5 = 5.6, cu6 = 8.9,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1762,6 +1819,7 @@ SynthDef(\fms, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -1777,10 +1835,10 @@ SynthDef(\fms, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5 * tp5;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5 * tp5;
 
 	sig4 = SinOsc.ar(freqclipped * hr4) * env4;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3 * tp3;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, width], mi3 * modComp) * env3 * tp3;
 
 	sig2 = SinOscFB.ar(freqclipped * hr2, mi2 * modComp) * env2 * tp2;
 
@@ -1804,6 +1862,7 @@ SynthDef(\fmt, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 2.0, cu2 = 4.0, cu3 = 0.0, cu4 = -4.0, cu5 = -8.0, cu6 = 2.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1.0, tp2 = 1.0, tp3 = 0.5, tp6 = 2.0,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1812,6 +1871,7 @@ SynthDef(\fmt, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -1829,8 +1889,8 @@ SynthDef(\fmt, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6 * tp6;
 
 	sig5 = SinOscFB.ar(freqclipped * hr5, mi5 * modComp) * env5;
-	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, pi/2], mi4 * modComp) * env4;
-	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, pi/2], mi3 * modComp) * env3 * tp3;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig5 + [0, width], mi4 * modComp) * env4;
+	sig3 = SinOsc.ar(freqclipped * hr3, sig4 + [0, width], mi3 * modComp) * env3 * tp3;
 
 	sig2 = SinOscFB.ar(freqclipped * hr2, mi2 * modComp) * env2 * tp2;
 
@@ -1854,6 +1914,7 @@ SynthDef(\fmu, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 4.0, cu2 = 2.0, cu3 = 6.0, cu4 = 3.0, cu5 = 8.0, cu6 = 5.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1862,6 +1923,7 @@ SynthDef(\fmu, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -1877,7 +1939,7 @@ SynthDef(\fmu, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	modComp = freq.explin(20, 20000, 1, 0.01);
 
 	sig6 = SinOscFB.ar(freqclipped * hr6, mi6 * modComp) * env6;
-	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, pi/2], mi5 * modComp) * env5 * tp5;
+	sig5 = SinOsc.ar(freqclipped * hr5, sig6 + [0, width], mi5 * modComp) * env5 * tp5;
 
 	sig4 = SinOscFB.ar(freqclipped * hr4, mi4 * modComp) * env4 * tp4;
 
@@ -1906,6 +1968,7 @@ SynthDef(\fmv, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	cu1 = 0.0, cu2 = 2.0, cu3 = 4.0, cu4 = 8.0, cu5 = 16.0, cu6 = 32.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
 	tp1 = 1.5, tp2 = 0.1, tp3 = 0.05, tp4 = 0.1, tp5 = 0.1, tp6 = 0.25,
+    wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
 	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
@@ -1914,6 +1977,7 @@ SynthDef(\fmv, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
 	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
 	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
 	gliss = EnvGen.kr(Env(
 		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
 		[bno, bnt],
@@ -1947,6 +2011,51 @@ SynthDef(\fmv, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	sig5 = sig5 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig6 = sig6 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig = ((sig1 / 4) + (sig2 / 4) + (sig3 / 4) + (sig4 / 4) + (sig5 / 4) + (sig6 / 4)) * amp * 1.2;
+	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
+	Out.ar(out, Limiter.ar(sig.sanitize));
+}).store;
+
+// A six operator FM synth with maximal modulation 
+SynthDef(\fmw, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
+	hr1 = 1, hr2 = 1, hr3 = 1, hr4 = 1, hr5 = 1, hr6 = 1,
+	mi0 = 1.0, mi1 = 1.0, mi2 = 2.5, mi4 = 0.5, mi5 = 2.5, mi6 = 1.0,
+	en1 = 0.01, en2 = 0.5, en3 = 0.02, en4 = 0.04, en5 = 0.03, en6 = 0.0,
+	cu1 = 0, cu2 = -2, cu3 = 0, cu4 = -1, cu5 = -6, cu6 = -2,
+	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
+	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+    wid = 1,
+	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
+	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
+	var crv1 = Select.kr(abs((cr1 > 0) - (cr1 < 0)), [cu1.neg, cr1]);
+	var crv2 = Select.kr(abs((cr2 > 0) - (cr2 < 0)), [cu2.neg, cr2]);
+	var crv3 = Select.kr(abs((cr3 > 0) - (cr3 < 0)), [cu3.neg, cr3]);
+	var crv4 = Select.kr(abs((cr4 > 0) - (cr4 < 0)), [cu4.neg, cr4]);
+	var crv5 = Select.kr(abs((cr5 > 0) - (cr5 < 0)), [cu5.neg, cr5]);
+	var crv6 = Select.kr(abs((cr6 > 0) - (cr6 < 0)), [cu6.neg, cr6]);
+    var width = wid.linlin(0, 1, 0, pi/2);
+	gliss = EnvGen.kr(Env(
+		[1, 1, 1 + bnd.clip(-1.0, 1.0)],
+		[bno, bnt],
+		[0, 0, bnc]
+	));
+	freqclipped = (freq * gliss).clip(20, 20000);
+	env1 = EnvGen.ar(Env.perc(en1.linlin(0, 1, 0.02, 0.998), 1-en1.linlin(0, 1, 0.02, 0.998), curve:[cu1, crv1]), timeScale:sustain);
+	env2 = EnvGen.ar(Env.perc(en2.linlin(0, 1, 0.02, 0.998), 1-en2.linlin(0, 1, 0.02, 0.998), curve:[cu2, crv2]), timeScale:sustain);
+	env3 = EnvGen.ar(Env.perc(en3.linlin(0, 1, 0.02, 0.998), 1-en3.linlin(0, 1, 0.02, 0.998), curve:[cu3, crv3]), timeScale:sustain);
+	env4 = EnvGen.ar(Env.perc(en4.linlin(0, 1, 0.02, 0.998), 1-en4.linlin(0, 1, 0.02, 0.998), curve:[cu4, crv4]), timeScale:sustain);
+	env5 = EnvGen.ar(Env.perc(en5.linlin(0, 1, 0.02, 0.998), 1-en5.linlin(0, 1, 0.02, 0.998), curve:[cu5, crv5]), timeScale:sustain);
+	env6 = EnvGen.ar(Env.perc(en6.linlin(0, 1, 0.02, 0.998), 1-en6.linlin(0, 1, 0.02, 0.998), curve:[cu6, crv6]), timeScale:sustain);
+	modComp = freq.explin(20, 20000, 1, 0.01);
+
+    sig1 = SinOsc.ar(freqclipped * hr1, LocalIn.ar(2) + [0, width], mi1 * modComp) * env1 * tp1;
+    sig2 = SinOsc.ar(freqclipped * hr2, sig1 + [0, width], mi2 * modComp) * env2 * tp2;
+
+	LocalOut.ar(sig1);
+	LocalOut.ar(sig2);
+
+	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig2 / 4)) * amp * 1.2;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, Limiter.ar(sig.sanitize));
 }).store;
