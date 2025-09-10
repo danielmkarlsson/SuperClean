@@ -627,7 +627,7 @@ SynthDef(\fm4, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	en1 = 0.0, en2 = 0.0, en3 = 0.05, en4 = 0.0, en5 = 0.0, en6 = 0.1,
 	cu1 = 0.25, cu2 = 0, cu3 = 0.5, cu4 = 0, cu5 = 0, cu6 = 5,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
-	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+	tp1 = 1, tp3 = 1, tp5 = 1,
     wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
@@ -677,7 +677,7 @@ SynthDef(\fm5, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	en1 = 0.02, en2 = 0.02, en3 = 0.02, en4 = 0.02, en5 = 0.02, en6 = 0.02,
 	cu1 = 0, cu2 = 0, cu3 = 0, cu4 = 0, cu5 = 0, cu6 = 0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
-	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+	tp1 = 1, tp3 = 1, tp5 = 1,
     wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
@@ -1553,7 +1553,7 @@ SynthDef(\fmn, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	en1 = 0.125, en2 = 0.25, en3 = 0.0625, en4 = 0.5, en5 = 0.03125, en6 = 0.0,
 	cu1 = 1.0, cu2 = 2.0, cu3 = 4.0, cu4 = 8.0, cu5 = 16.0, cu6 = 32.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
-	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1,
     wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
@@ -1605,7 +1605,7 @@ SynthDef(\fmo, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	en1 = 0.01478, en2 = 0.2455789, en3 = 0.035678, en4 = 0.439350, en5 = 0.05279, en6 = 0.690743,
 	cu1 = 8.0, cu2 = 8.0, cu3 = 8.0, cu4 = 8.0, cu5 = 8.0, cu6 = 8.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
-	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1,
     wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
@@ -1659,7 +1659,7 @@ SynthDef(\fmp, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	en1 = 0.25, en2 = 0.25, en3 = 0.25, en4 = 0.0, en5 = 0.03125, en6 = 0.0,
 	cu1 = 4.0, cu2 = 4.0, cu3 = 4.0, cu4 = 2.0, cu5 = 4.0, cu6 = 8.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
-	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+	tp1 = 1, tp2 = 1, tp4 = 1,
     wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
@@ -1709,7 +1709,7 @@ SynthDef(\fmq, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	en1 = 0.1, en2 = 0.2, en3 = 0.3, en4 = 0.4, en5 = 0.5, en6 = 0.0,
 	cu1 = 1.0, cu2 = 2.0, cu3 = 4.0, cu4 = 4.0, cu5 = 4.0, cu6 = 1.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
-	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+	tp1 = 1, tp2 = 1, tp4 = 1,
     wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
@@ -1759,7 +1759,7 @@ SynthDef(\fmr, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	en1 = 0.0, en2 = 0.0, en3 = 0.0, en4 = 0.0, en5 = 0.0, en6 = 0.0,
 	cu1 = 2.0, cu2 = 4.0, cu3 = 6.0, cu4 = 8.0, cu5 = 10.0, cu6 = 12.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
-	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+	tp1 = 1, tp3 = 1, tp6 = 1,
     wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
@@ -1809,7 +1809,7 @@ SynthDef(\fms, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	en1 = 0.16, en2 = 0.08, en3 = 0.04, en4 = 0.02, en5 = 0.01, en6 = 0.0,
 	cu1 = 1.2, cu2 = 3.4, cu3 = 5.6, cu4 = 7.8, cu5 = 5.6, cu6 = 8.9,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
-	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+	tp1 = 1, tp2 = 1, tp3 = 1, tp5 = 1,
     wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
@@ -1913,7 +1913,7 @@ SynthDef(\fmu, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	en1 = 0.0, en2 = 0.3, en3 = 0.2, en4 = 0.1, en5 = 0.5, en6 = 0.4,
 	cu1 = 4.0, cu2 = 2.0, cu3 = 6.0, cu4 = 3.0, cu5 = 8.0, cu6 = 5.0,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
-	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1, tp6 = 1,
+	tp1 = 1, tp2 = 1, tp3 = 1, tp4 = 1, tp5 = 1,
     wid = 1,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env1, env2, env3, env4, env5, env6, sig, sig1, sig2, sig3, sig4, sig5, sig6, modComp, gliss, freqclipped;
