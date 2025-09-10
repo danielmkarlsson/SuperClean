@@ -382,3 +382,22 @@ Pdef(0, // deterministic operations, indefinite duration
 	)
 ).play
 )
+
+( // wid is used here to make sure the bass is in mono below 200Hz
+Pdef(0, // with the six operator FM synths
+	Pbind(
+		type: \cln,
+		snd: Prand([
+			\fm0, \fm1, \fm2, \fm3, \fm4, \fm5, \fm6, \fm7, \fm8, \fm9,
+			\fma, \fmb, \fmc, \fmd, \fme, \fmf, \fmg, \fmh, \fmi, \fmj,
+			\fmk, \fml, \fmm, \fmn, \fmo, \fmp, \fmq, \fmr, \fms, \fmt,
+			\fmu, \fmv,
+		], inf),
+		dur: 1 / Pexprand(2.5, 5.0),
+		sustain: Pexprand(0.25, 2),
+		freq: Pdup(Plprand(1, 9), Pwhite(20, 400).round(20)).trace,
+		wid: Pkey(\freq).linlin(200, 201, 0, 1),
+		amp: Plprand(0.5, 0.75),
+	)
+).play
+)
