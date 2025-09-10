@@ -73,7 +73,7 @@ psb:    Phase decorellator blend. Value range is 0.0, 1.0
 
 >>> GLOBAL effect parameters (added to the sum of all sounds in an aux) <<<
 
-mir:	An Impulse Response based reverb, this is the wet parameter, or put another way, the amplitude of the reverb. Range is zero to infinity
+mir:	An Impulse Response based reverb, this is the wet parameter, or the amplitude of the reverb. Range is zero to infinity
 mii:	The input or send into the mir reverb. Value range is 0.0, 1.0
 hal:	The hall reverb output amplitude
 hai:	The input or send into the hal reverb. Value range is 0.0, 1.0
@@ -338,7 +338,8 @@ I care about you and I want you to have a good time here.
 Understanding that the sustain key scales the internal envelopes of these synths is integral to that goal of you having a good time.
 I also want to recommend that you do not use the atk, hld and rel keys on these synths.
 They already have envelopes in there.
-I think that if you use these synths with the added amplitude envelope added on top you are missing out on some gnarly FM envelope phenomena.
+I think that if you use these synths with the added amplitude envelope added on top,
+then you would be missing out on some gnarly FM envelope phenomena.
 Just go nuts exploring the built in envelopes in the synths.
 Check out my defaults.
 Some of those values are quite extreme.
@@ -1562,73 +1563,6 @@ Pdef(31,
 ).play;
 )
 
-( // this comes in real handy when you have more than a couple Pdefs
-var n = 32;
-n.do {|i|
-    "Pdef(%) stopped.".format(i).postln;
-    Pdef(i).stop;
-};
-)
-
-( // tap morph
-thisThread.randSeed = 9399;
-~sgt = Pwhite(10.0, 40.0).asStream;
-~a = {arg seed, snd;
-    var b = Pbind(*[
-        type: \cln,
-		snd: snd,
-		dur: 1/10,
-		amp: Pseg([0, 0.9, 0], Pfunc{~sgt.next}, \wel, inf),
-		tp1: Pseg(Pwhite(0.0, 1.0), Pfunc{~sgt.next}, \wel, inf).trace,
-		tp2: Pkey(\tp1).linlin(0, 1, 1, 0),
-		tp3: Pkey(\tp2),
-		tp4: Pkey(\tp2),
-		tp5: Pkey(\tp2),
-		jpr: 1/4,
-		stretch: Pseg(Pmeanrand(5.0, 11.0).asInteger, Pfunc{~sgt.next}, \sin, inf),
-		pan: Pseg(Pmeanrand(0.0, 1.0), Pfunc{~sgt.next}, \sin, inf),
-	]);
-Pseed(seed, Pseq([b], inf));
-};
-Pdef(0, ~a.(12, \fm0)).play;
-Pdef(1, ~a.(13, \fm1)).play;
-Pdef(2, ~a.(14, \fm2)).play;
-Pdef(3, ~a.(15, \fm3)).play;
-Pdef(4, ~a.(16, \fm4)).play;
-Pdef(5, ~a.(17, \fm5)).play;
-Pdef(6, ~a.(18, \fm6)).play;
-Pdef(7, ~a.(19, \fm7)).play;
-Pdef(8, ~a.(110, \fm8)).play;
-Pdef(9, ~a.(120, \fm9)).play;
-Pdef(10, ~a.(30, \fma)).play;
-Pdef(11, ~a.(31, \fmb)).play;
-Pdef(12, ~a.(32, \fmc)).play;
-Pdef(13, ~a.(33, \fmd)).play;
-Pdef(14, ~a.(34, \fme)).play;
-Pdef(15, ~a.(35, \fmi)).play;
-Pdef(16, ~a.(36, \fmj)).play;
-Pdef(17, ~a.(37, \fmk)).play;
-Pdef(18, ~a.(38, \fml)).play;
-Pdef(19, ~a.(39, \fmm)).play;
-Pdef(20, ~a.(40, \fmn)).play;
-Pdef(21, ~a.(41, \fmo)).play;
-Pdef(22, ~a.(42, \fmp)).play;
-Pdef(23, ~a.(43, \fmq)).play;
-Pdef(24, ~a.(44, \fmr)).play;
-Pdef(25, ~a.(45, \fms)).play;
-Pdef(26, ~a.(46, \fmt)).play;
-Pdef(27, ~a.(47, \fmu)).play;
-Pdef(28, ~a.(48, \fmv)).play;
-)
-
-( // this comes in real handy when you have more than a couple Pdefs
-var n = 29;
-n.do {|i|
-    "Pdef(%) stopped.".format(i).postln;
-    Pdef(i).stop;
-};
-)
-
 ( // all the single carriers
 Pdef(0,
 	Pseed(9299,
@@ -1653,7 +1587,7 @@ Pdef(0,
 ).play
 )
 
-( // all 32 6opFM symths together
+( // all 32 6opFM synths with defaults and subtle tap morph on all taps
 Pdef(0,
     Pseed(9990,
         Pbind(
@@ -1691,7 +1625,7 @@ Pdef(0,
             tp6: Pseg(1.5 - Pexprand(0.5, 1.0), Pwhite(10.0, 40.0), \wel, inf),
             degree: Pdup(Pexprand(4, 11), Plprand(-14, 35).unique),
             hpf: Pseg(Pdup(2, Pexprand(20, 200).asInteger.unique), Pwhite(0.1, 4.0), \wel, inf),
-            sustain: Pexprand(0.3, 3.0),
+            sustain: Pexprand(0.3, 2.0),
         )
     )
 ).play
