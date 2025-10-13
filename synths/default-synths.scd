@@ -74,9 +74,9 @@ SynthDef(\ixa, {| out, sustain = 1, pan, amp = 0.5, freq = 440, bnd = 0, bno = 0
 
 // A sine wave oscillator.
 SynthDef(\sin, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, iph = 0, amp = 1.0,
-	pan = 0, atk = 0.0, rel = 1.0, crv = -8.0|
+	pan = 0, atk = 0.0, hld = 0.0, rel = 1.0, crv = -8.0, crt = 8.0|
 	var env, gliss, sig, freqclipped;
-	env = Env.perc(atk, rel, amp, crv).kr(doneAction: 2);
+	env = EnvGen.ar(Env.linen(atk, hld, rel, 1, [crv, 0, crt]));
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -124,9 +124,9 @@ SynthDef(\vct, {
 
 
 // A saw wave oscillator.
-SynthDef(\saw, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, iph = 0, wid = 0.25, amp = 1.0, pan = 0, atk = 0.0, rel = 1.0, crv = -8.0|
+SynthDef(\saw, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, iph = 0, wid = 0.25, amp = 1.0, pan = 0, atk = 0.0, hld = 0.0, rel = 1.0, crv = -8.0, crt = 8.0|
 	var env, gliss, sig, freqclipped;
-	env = Env.perc(atk, rel, amp, crv).kr(doneAction: 2);
+	env = EnvGen.ar(Env.linen(atk, hld, rel, 1, [crv, 0, crt]));
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -141,9 +141,9 @@ SynthDef(\saw, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, fre
 
 
 // A square wave oscillator.
-SynthDef(\sqr, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, amp = 0.5, pan = 0, atk = 0.0, rel = 1.0, crv = -8.0, wid = 0.25|
+SynthDef(\sqr, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, amp = 0.5, pan = 0, atk = 0.0, hld = 0.0, rel = 1.0, crv = -8.0, crt = 8.0, wid = 0.25|
 	var env, gliss, sig, freqclipped;
-	env = Env.perc(atk, rel, amp*0.5, crv).kr(doneAction: 2);
+	env = env = EnvGen.ar(Env.linen(atk, hld, rel, 1, [crv, 0, crt]));
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -314,7 +314,7 @@ presetStore.(\clp);
 );
 
 
-// This also build on the work of Nathan Ho and was adapted from a Kick SynthDef on his fantastic blog: https://nathan.ho.name/posts/accelerating-rhythms/
+// This also builds on the work of Nathan Ho and was adapted from a Kick SynthDef on his fantastic blog: https://nathan.ho.name/posts/accelerating-rhythms/
 SynthDef(\snr, {|out, fiz = 1, het = 6, snp = 0, pan = 0.5, rnb = 1|
 	var sig;
 	sig = LFNoise0.ar(
@@ -338,7 +338,7 @@ SynthDef(\snr, {|out, fiz = 1, het = 6, snp = 0, pan = 0.5, rnb = 1|
 
 
 // Transient excited filter.
-SynthDef(\dfd, {|out = 0, freq = 440, res = 1, den = 0, amp = 1, pan = 0.5, atk = 0.0, rel = 1.0, crv = -8.0, typ = 0.0, nsl = 0,
+SynthDef(\dfd, {|out = 0, freq = 440, res = 1, den = 0, amp = 1, pan = 0.5, atk = 0.0, hld = 0.0, rel = 1.0, crv = -8.0, crt = 8.0, typ = 0.0, nsl = 0,
 	bnd = 0, bno = 0, bnt = 0.2, bnc = 0|
 	var env, sig, freqclipped, gliss;
 	gliss = EnvGen.kr(Env(
@@ -347,9 +347,10 @@ SynthDef(\dfd, {|out = 0, freq = 440, res = 1, den = 0, amp = 1, pan = 0.5, atk 
         [0, 0, bnc]
     ));
 	freqclipped = (freq * gliss).clip(20, 7139);
-	env = Env.perc(atk, rel, amp * 300, crv).kr(doneAction: 2);
+	env = EnvGen.ar(Env.linen(atk, hld, rel, 1, [crv, 0, crt]));
 	sig = DFM1.ar(Dust2.ar(den.dup(~clean.numChannels), amp), freqclipped, res.clip(0.0, 1.01), 1, typ, nsl);
-	sig = sig * env;
+	//sig = RLPF.ar(Dust2.ar(den.dup(~clean.numChannels), amp), freqclipped, res.clip(0.0, 1.01), 1);
+	sig = sig * 40 * env;
 	//sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, sig);
 }).store;
@@ -380,9 +381,9 @@ SynthDef(\bow, { |out=0, sustain = 1, freq=440, amp=1.0, frc=1, gate=1, pos=0.07
 
 // blip based synth
 SynthDef(\blp, {|out = 0, sustain = 1, bnd = 0, bno = 0, bnt = 0.2, bnc = 0, freq = 440, nmh = 0, amp = 1.0,
-	pan = 0, atk = 0.01, rel = 1.0, crv = -8.0|
+	pan = 0, atk = 0.01, hld = 0.0, rel = 1.0, crv = -8.0, crt = 8.0|
 	var env, gliss, sig, freqclipped;
-	env = Env.perc(atk, rel, amp, crv).kr(doneAction: 2);
+	env = EnvGen.ar(Env.linen(atk, hld, rel, 1, [crv, 0, crt]));
 	gliss = EnvGen.kr(Env(
         [1, 1, 1 + bnd.clip(-1.0, 1.0)],
         [bno, bnt],
@@ -2015,10 +2016,10 @@ SynthDef(\fmv, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	Out.ar(out, Limiter.ar(sig.sanitize));
 }).store;
 
-// A six operator FM synth with maximal modulation 
+// A six operator FM synth with maximal modulation
 SynthDef(\fmw, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
 	hr1 = 1, hr2 = 1, hr3 = 1, hr4 = 1, hr5 = 1, hr6 = 1,
-	mi0 = 1.0, mi1 = 1.0, mi2 = 2.5, mi4 = 0.5, mi5 = 2.5, mi6 = 1.0,
+	mi0 = 1.0, mi1 = 1.0, mi2 = 2.5, mi3 = 1.0, mi4 = 0.5, mi5 = 2.5, mi6 = 1.0,
 	en1 = 0.01, en2 = 0.5, en3 = 0.02, en4 = 0.04, en5 = 0.03, en6 = 0.0,
 	cu1 = 0, cu2 = -2, cu3 = 0, cu4 = -1, cu5 = -6, cu6 = -2,
 	cr1 = 0, cr2 = 0, cr3 = 0, cr4 = 0, cr5 = 0, cr6 = 0,
@@ -2050,12 +2051,19 @@ SynthDef(\fmw, {| sustain = 1, pan = 0.5, amp = 0.1, out = 0, freq = 440,
     sig1 = SinOsc.ar(freqclipped * hr1, LocalIn.ar(2) + [0, width], mi1 * modComp) * env1 * tp1;
     sig2 = SinOsc.ar(freqclipped * hr2, sig1 + [0, width], mi2 * modComp) * env2 * tp2;
 
+    sig3 = SinOscFB.ar(freqclipped * hr3, mi3 * modComp) * env3;
+	sig4 = SinOsc.ar(freqclipped * hr4, sig3 + [0, width], mi4 * modComp) * env4 * tp4;
+
+    sig5 = SinOscFB.ar(freqclipped * hr5, mi5 * modComp) * env5;
+	sig6 = SinOsc.ar(freqclipped * hr6, sig5 + [0, width], mi6 * modComp) * env6 * tp6;
+
 	LocalOut.ar(sig1);
 	LocalOut.ar(sig2);
 
 	sig1 = sig1 * AmpCompA.kr(freqclipped, 17.323914436055);
 	sig2 = sig2 * AmpCompA.kr(freqclipped, 17.323914436055);
-	sig = ((sig1 / 4) + (sig2 / 4)) * amp * 1.2;
+	sig4 = sig4 * AmpCompA.kr(freqclipped, 17.323914436055);
+	sig = ((sig1 / 4) + (sig2 / 4) + (sig4 / 4) + (sig6 / 4)) * amp * 1.2;
 	sig = CleanPan.ar(sig, ~clean.numChannels, pan);
 	Out.ar(out, Limiter.ar(sig.sanitize));
 }).store;
