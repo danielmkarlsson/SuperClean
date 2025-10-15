@@ -29,9 +29,9 @@ Move it to your SuperCollider Extensions folder. The Extensions folder can easil
 Drag the updated SuperClean folder to the Extensions folder, which replaces the old SuperClean folder and you are done.
 Make sure this folder is called SuperClean, not SuperClean-*something*.
 
-## Origins and acknowledgements
+## Origins and copyright acknowledgements
 
-[Julian Rohrhuber](https://www.rsh-duesseldorf.de/en/institutes/institute-for-music-and-media/faculty/rohrhuber-julian/) built this thing initially, 
+[Julian Rohrhuber](https://www.rsh-duesseldorf.de/en/institutes/institute-for-music-and-media/faculty/rohrhuber-julian/) [and friends](https://github.com/musikinformatik/SuperDirt/graphs/contributors) built this thing initially, 
 then I changed some things here and there. I had a lot of help from friends along the way. 
 What you have here is essentially a shameless ripoff / fork of / homage to SuperDirt.  
 [Marcus Pal](https://www.marcuspal.com/) initially created `\fmx` and `\add`.  
@@ -40,6 +40,10 @@ which is just amazing.
 `ixa` builds on the work of [Nathan Ho](https://nathan.ho.name/posts/ixa-synthesis/).  
 Huge thanks to [Fredrik Olofsson](http://fredrikolofsson.com/) for really cleaning things up with a ton of bugfixes, optimizations and adding 
 the absolutely life changing ability to read sound files from disk instead of RAM in SuperClean.
+
+SuperDirt is a port of [slub](https://slub.org/) software namely [dirt](https://codeberg.org/uzu/dirt) (created 2005 as datadirt), made by Alex McLean, but heavily based on [MSG](cors.slab.org/MSG-1.10.tar.gz) (2001) by Adrian Ward.
+
+All shared under the terms of the GNU Public License version 2 or later.
 
 ## Requirements
 
