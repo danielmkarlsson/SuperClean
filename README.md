@@ -1,3 +1,5 @@
+This project has moved to [Codeberg](https://codeberg.org/t36s/SuperClean) because of this platforms continued enshittification and end-stage capitalism shenanigans.
+
 # SuperClean
 A framework comprising of some basic utilities for use inside of SuperCollider.  
 
